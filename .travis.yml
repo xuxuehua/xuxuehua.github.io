@@ -8,11 +8,11 @@ script:
 - yes | simiki init
 - simiki g
 - cd ./output
+- touch CNAME && echo "xuxuehua.com" > CNAME
 - git init
 - git add .
-- git commit -m 'Update'
-- git remote add origin master "https://${GH_TOEN}@${GH_REF}" > /dev/null 2>&1
-- git push --quiet --set-upstream master master
+- git commit -m 'Updated automatically by Travis-CI'
+- git push --quiet --force "https://${GH_TOEN}@${GH_REF}" master:master
 branches:
   only:
   - simiki
