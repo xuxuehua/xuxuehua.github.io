@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>Getting Started - XuXuehua.com</title>
+    <meta name="keywords" content="XuXuehua.com"/>
+    <meta name="description" content="Personal Wiki page"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#intro">intro</a>&nbsp;&#187;&nbsp;Getting Started
+    <span class="updated">Page Updated&nbsp;
+      2099-06-02 00:00
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">Getting Started</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#simiki">Simiki</a></li>
+<li><a href="#this-is-test">This is test</a><ul>
+<li><a href="#second">second</a></li>
+<li><a href="#quick-start">Quick Start</a><ul>
+<li><a href="#install">Install</a></li>
+<li><a href="#update">Update</a></li>
+<li><a href="#init-site">Init Site</a></li>
+<li><a href="#create-a-new-wiki">Create a new wiki</a></li>
+<li><a href="#generate">Generate</a></li>
+<li><a href="#preview">Preview</a></li>
+</ul>
+</li>
+<li><a href="#others">Others</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="simiki">Simiki</h1>
+<h1 id="this-is-test">This is test</h1>
+<h2 id="second">second</h2>
+<p><a href="https://pypi.python.org/pypi/simiki"><img alt="Latest Version" src="http://img.shields.io/pypi/v/simiki.svg" /></a><br />
+<a href="https://github.com/tankywoo/simiki/blob/master/LICENSE"><img alt="The MIT License" src="http://img.shields.io/badge/license-MIT-yellow.svg" /></a><br />
+<a href="https://travis-ci.org/tankywoo/simiki"><img alt="Build Status" src="https://travis-ci.org/tankywoo/simiki.svg" /></a><br />
+<a href="https://coveralls.io/r/tankywoo/simiki"><img alt="Coverage Status" src="https://img.shields.io/coveralls/tankywoo/simiki.svg" /></a></p>
+<p>Simiki is a simple wiki framework, written in <a href="https://www.python.org/">Python</a>.</p>
+<ul>
+<li>Easy to use. Creating a wiki only needs a few steps</li>
+<li>Use <a href="http://daringfireball.net/projects/markdown/">Markdown</a>. Just open your editor and write</li>
+<li>Store source files by category</li>
+<li>Static HTML output</li>
+<li>A CLI tool to manage the wiki</li>
+</ul>
+<p>Simiki is short for <code>Simple Wiki</code> :)</p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="install">Install</h3>
+<div class="hlcode"><pre><span class="n">pip</span> <span class="n">install</span> <span class="n">simiki</span>
+</pre></div>
+
+
+<h3 id="update">Update</h3>
+<div class="hlcode"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">simiki</span>
+</pre></div>
+
+
+<h3 id="init-site">Init Site</h3>
+<div class="hlcode"><pre><span class="n">mkdir</span> <span class="n">mywiki</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="n">mywiki</span>
+<span class="n">simiki</span> <span class="n">init</span>
+</pre></div>
+
+
+<h3 id="create-a-new-wiki">Create a new wiki</h3>
+<div class="hlcode"><pre><span class="n">simiki</span> <span class="n">new</span> <span class="o">-</span><span class="n">t</span> <span class="s">&quot;Hello Simiki&quot;</span> <span class="o">-</span><span class="n">c</span> <span class="n">first</span><span class="o">-</span><span class="n">catetory</span>
+</pre></div>
+
+
+<h3 id="generate">Generate</h3>
+<div class="hlcode"><pre><span class="n">simiki</span> <span class="n">g</span>
+</pre></div>
+
+
+<h3 id="preview">Preview</h3>
+<div class="hlcode"><pre><span class="n">simiki</span> <span class="n">p</span> <span class="o">-</span><span class="n">w</span>
+</pre></div>
+
+
+<p>For more information, <code>simiki -h</code> or have a look at <a href="http://simiki.org">Simiki.org</a></p>
+<h2 id="others">Others</h2>
+<ul>
+<li><a href="http://simiki.org">simiki.org</a></li>
+<li><a href="https://github.com/tankywoo/simiki">https://github.com/tankywoo/simiki</a></li>
+<li>Email: <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#101;&#64;&#116;&#97;&#110;&#107;&#121;&#119;&#111;&#111;&#46;&#99;&#111;&#109;">&#109;&#101;&#64;&#116;&#97;&#110;&#107;&#121;&#119;&#111;&#111;&#46;&#99;&#111;&#109;</a></li>
+<li><a href="https://github.com/tankywoo/simiki/wiki/Simiki-Users">Simiki Users</a></li>
+</ul>
+<h2 id="license">License</h2>
+<div class="hlcode"><pre><span class="err">​```</span><span class="n">sequence</span>
+<span class="n">Alice</span><span class="o">-&gt;</span><span class="n">Bob</span><span class="o">:</span> <span class="n">Hello</span> <span class="n">Bob</span><span class="p">,</span> <span class="n">how</span> <span class="n">are</span> <span class="n">you</span><span class="o">?</span>
+<span class="n">Note</span> <span class="n">right</span> <span class="n">of</span> <span class="n">Bob</span><span class="o">:</span> <span class="n">Bob</span> <span class="n">thinks</span>
+<span class="n">Bob</span><span class="o">--&gt;</span><span class="n">Alice</span><span class="o">:</span> <span class="n">I</span> <span class="n">am</span> <span class="n">good</span> <span class="n">thanks</span><span class="o">!</span>
+<span class="err">​```</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2018 XuXuehua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2018-05-28 11:18:25</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

@@ -1,0 +1,25 @@
+language: python
+
+python:
+- '3.6'
+
+install:
+- pip install ghp-import
+- pip install simiki
+
+script:
+- simiki g
+- cd ~/output
+- git init
+- git add .
+- git commit -m 'Update'
+- git push --force --quiet "https://${GH_TOEN}@${GH_REF}" master:master
+
+branches:
+  only:
+  - simiki
+
+env:
+  global:
+  - GH_REF: github.com/xuxuehua/xuxuehua.github.io.git
+  
