@@ -1,12 +1,9 @@
 language: python
-
 python:
 - '3.6'
-
 install:
 - pip install ghp-import
 - pip install simiki
-
 script:
 - yes | simiki init
 - simiki g
@@ -15,12 +12,10 @@ script:
 - git add .
 - git commit -m 'Update'
 - git push --force --quiet "https://${GH_TOEN}@${GH_REF}" master:master
-
 branches:
   only:
   - simiki
-
 env:
   global:
   - GH_REF: github.com/xuxuehua/xuxuehua.github.io.git
-  
+  - secure: Qrm/6UdgQcNAj8JZ38rcq31XELrdhkSBAHIWXB6FkP5HwAPNcThzXsVXqkunUkDEGN8IjcEIBSdKh/m7lnEesuAaU0T6+FW9z0/PZLabx8ggH4xktRbkjcIv0juJJVeKP0eHppoBQd3NnTRNUYG7NnfHIPkL7Zx5zMokAS40dHQzRJ2qzcZv856oxaBojmkXZm6Lx/LKbtl+NYBB3j+CSQoSAot6Ukd7sQqB/nlTanO8/8ULffKNFq0AutqynSUcfA11rlcyki9KhxagllSsmFdmto35NtsnU1IZirbUwm0o5UGsp6cRIhd9/kndouHETOzpTzCXna8IaMwk13GYlUCCaXStlyoUbjG9uI22RQqJNj/G68RGANqBMu9Sca5BWrEPQ2DzIkAKeJpsErh2fWvRUph8VFYQ2Kgy8IUtY0ixuJp+xkj95Nc8VEgZ9veu8lSC5Zz/TcZ/AsspIBp5fkyRaAwgE+MP4uhhFxovV1kghZI/Tndilcjhdk84Ro3GC+QWYhcWAgfnFNV+SyolOCnn9r3joI2n3maUsuYcL6wLQWDtWdT/9UELDvnqUpyzPhZ/OphL2WinOrAz2d8BEm62y4paBdSaET0eauDbE+cclS3tShI54rqQgKKbJwU4lrKcV5BPpsvQildafbnxHNviZFzfOv4dlj6UXcyFX1g=
