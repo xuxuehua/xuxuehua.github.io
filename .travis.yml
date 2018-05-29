@@ -11,7 +11,8 @@ script:
 - git init
 - git add .
 - git commit -m 'Update'
-- git push --force --quiet "https://${GH_TOEN}@${GH_REF}" master:master
+- git remote add origin master "https://${GH_TOEN}@${GH_REF}" > /dev/null 2>&1
+- git push --quiet --set-upstream master master
 branches:
   only:
   - simiki
