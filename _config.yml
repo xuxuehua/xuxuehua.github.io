@@ -11,7 +11,7 @@ root: /
 source: content
 destination: output
 themes_dir: themes
-theme: cod
+theme: simple2
 
 category:
   - name: Linux  # 目录名
