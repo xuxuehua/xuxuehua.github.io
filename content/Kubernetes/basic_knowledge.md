@@ -1,5 +1,6 @@
 ---
 title: "Basic_Knowledge"
+layout: simple2
 date: 2018-06-02 19:03
 ---
 
