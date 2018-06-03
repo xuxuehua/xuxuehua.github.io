@@ -8,6 +8,7 @@ date: 2018-06-02 19:03
 
 # 基础知识
 
+![alt](https://cdn.pbrd.co/images/HocvM1f.png)
 
 
 ## Kubernetes 特性
@@ -33,6 +34,10 @@ date: 2018-06-02 19:03
 
 
 ## Kubernetes 架构
+
+
+
+![alt](https://cdn.pbrd.co/images/HocwGKR.png)
 
 
 
@@ -68,7 +73,7 @@ date: 2018-06-02 19:03
 
 * Kubelet
 
-  > 负责pod对应的容器创建，启动停止等任务
+  > 负责pod对应的容器创建，启动停止等任务， 与master 节点协作，实现集群管理
   >
   > 于Master node协同同坐
 
@@ -78,7 +83,7 @@ date: 2018-06-02 19:03
   >
   > 缓存代理，通过iptables的nat表实现
 
-* Docker
+* Docker Engine
 
   > Docker 引擎，负责本机的容器创建和管理工作
 
@@ -116,13 +121,27 @@ spec:
 
 ### Label 
 
-> label是一个key=value的键值对，可以附加到各种资源对象上
+> label是一个key=value的键值对，可以附加到各种资源对象上， 列入Node，Pod， Service， Replication Controller等
+
+
+
+#### Label Selector 
+
+> 很多object可能有相同的label通过label selector， 客户端可以指定object集合，通过label selector 对object的集合进行操作
+
+* Equality-based: 可以使用=， ==， !=操作， 逗号分隔多个表达式
+
+* Et-based:  可以使用in， notin， ! 操作符
+
+  e.g.`kubectl get pods -l 'environment=production,tier=frontend' $ kubectl get pods -l 'environment in (production), tier in (frontend)'`
 
 
 
 ### Replication Controller
 
 > 定义了一个期望的场景，声明某种pod的副本数量在任意时刻都符合某个预期值
+
+e.g. `apiVersion: extensions/v1beat1 kind: Replication metadata: name: frontend `
 
 
 
@@ -134,16 +153,26 @@ spec:
 
 ### Horizontal Pod Autoscaler
 
-> 对资源实现削峰填谷
+> 对资源实现削峰填谷， 提高集群的整体资源利用率
 
-
+![alt](https://cdn.pbrd.co/images/HocsZti.png)
 
 #### Metrics 支持
 
 * autoscaling/v1
   * CPU
 * autoscaling/v2
-  * Memory / Other
+  * Memory 
+
+  * 自定义
+
+    * Kubernetes1.6起支持，必须在kube-controller-manager中配制下列两项
+
+      > --horizontal-pod-autoscaler-use-rest-clients=true
+      >
+      > --api-server 指向kube-aggregator, 或--api-server=true
+
+      
 
 
 
@@ -155,12 +184,75 @@ spec:
 
 
 
+* Pod, RC, Service 关系
+
+
+
+![alt](https://cdn.pbrd.co/images/Hocxo86.png)
+
+
+
+ * service 事例
+
+   ```
+   kind: Service
+   opiVersion: v1
+   metadata:
+     name: my-service
+   spec:
+     selector:
+       app: MyApp
+     ports:
+       - protocol: TCP
+         port: 80
+         targetPort: 9376
+   ```
+
+   
+
+
+
 #### Endpoint
 
 > Endpoint: Pod IP + Container Port 
 
-
 ​    
+
+## Kubernetes 服务发现机制
+
+> 支持两种服务发现模式 - 环境变量和DNS
+
+
+
+### 环境变量
+
+> 当Pod运行在Node上，Kubelet会为每个活跃的Service添加一组环境变量
+
+### DNS
+
+> Kubernetes 通过Add on 方式引入DNS，把服务名称作为DNS域名，这样，程序就可以直接使用服务名来建立通信连接，目前大部分应用都采用DNS这种机制
+
+
+
+### 外部系统访问service问题
+
+* Node IP： node物理节点的IP
+* Pod IP：Pod的IP
+* Cluster IP：Service 的IP （不可以ping测试）
+
+
+
+### 服务类型
+
+* Cluster IP:  通过集群内部IP暴露服务，服务之能够在集群内部访问，默认是ServiceType
+* Node Pord：每个
+* 
+
+
+
+
+
+
 
 ​    
 
