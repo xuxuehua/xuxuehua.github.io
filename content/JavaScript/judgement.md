@@ -39,3 +39,10 @@ if (age >= 18) { // 如果age >= 18为true，则执行if语句块
       alert('kid');
   }
   ```
+
+
+
+## 默认判定
+
+* JavaScript把`null`、`undefined`、`0`、`NaN`和空字符串`''`视为`false`，其他值一概视为`true`
+
