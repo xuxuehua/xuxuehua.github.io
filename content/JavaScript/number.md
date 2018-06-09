@@ -60,8 +60,7 @@ Infinity; // Infinity表示无限大，当数值超过了JavaScript的Number所�
 
 
 
-
- ## 比较运算
+## 比较运算
 
 * 对Number做比较时，可以通过比较运算符得到一个布尔值
 
