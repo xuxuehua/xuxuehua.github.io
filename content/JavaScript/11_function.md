@@ -950,9 +950,17 @@ apple,strawberry,banana,pear,orange
 ```
 'use strict';
 function get_primes(arr) {
-    return arr.filter(function() {
-        
-    })
+    return arr.filter(function (x) {
+        if (x <= 1) {
+            return false;
+        }
+        for (let i=2; i<x; i++) {
+            if (x % i === 0) {
+                return false;
+            }
+        }
+        return true;
+    });
 }
 ```
 
