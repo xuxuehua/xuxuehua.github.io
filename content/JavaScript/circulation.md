@@ -212,3 +212,52 @@ B, index = 1
 C, index = 2
 ```
 
+
+
+### 作用于Set
+
+* `Set`与`Array`类似，但`Set`没有索引，因此回调函数的前两个参数都是元素本身：
+
+```
+var s = new Set(['A', 'B', 'C']);
+s.forEach(function (element, sameElement, set) {
+    console.log(element);
+});
+>>>
+A
+B
+C
+```
+
+
+
+### 作用于Map
+
+* `Map`的回调函数参数依次为`value`、`key`和`map`本身：
+
+```
+var m = new Map([[1, 'x'], [2, 'y'], [3, 'z']]);
+m.forEach(function (value, key, map) {
+    console.log(value);
+});
+>>>
+x
+y
+z
+```
+
+
+
+### 作用于Array
+
+```
+var a = ['A', 'B', 'C'];
+a.forEach(function (element) {
+    console.log(element);
+});
+>>>
+A
+B
+CÁ
+```
+
