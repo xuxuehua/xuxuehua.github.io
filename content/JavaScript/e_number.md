@@ -1,5 +1,5 @@
 ---
-title: "number"
+title: "E_number 数字"
 date: 2018-06-04 11:35
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "2_string"
+title: "B_string 字符串"
 date: 2018-06-04 15:58
 ---
 

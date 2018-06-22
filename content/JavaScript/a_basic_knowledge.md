@@ -1,5 +1,5 @@
 ---
-title: "1_basic_knowledge"
+title: "A_basic_knowledge 基本知识"
 layout: page
 date: 2018-06-04 11:03
 ---
