@@ -1,6 +1,7 @@
 ---
-title: "1_Smart_contracts"
+title: "Smart_contracts"
 date: 2018-06-17 12:00
+collection: 智能合约
 ---
 
 [TOC]
@@ -17,13 +18,13 @@ date: 2018-06-17 12:00
 pragma solidity ^0.4.21; // 程序版本
 
 contract SimpleStorage {       // 合约声明
-    uint storedData;
+    uint storedData;   	// 状态变量
     
-    function set(uint x) {
+    function set(uint x) {		// 合约的方法
         storedData = x;
     }
     
-    function get() constant returns (uint){
+    function get() constant returns (uint){		
         return storedData;
     }
 }
@@ -37,7 +38,7 @@ contract SimpleStorage {       // 合约声明
 
 
 
-### constant -> view 
+### constant（视觉上的警示） -> view  
 
 * 最新版本变成view 方法
 
@@ -45,7 +46,7 @@ contract SimpleStorage {       // 合约声明
 
 ### pure
 
-* 比constant警示作用更严格，在做库的时候会有用
+* 比constant警示作用更严格，函数中，成员变量无法读写。在做库的时候会有用
 
 
 
@@ -81,7 +82,7 @@ contract SimpleStorage {       // 合约声明
 
 
 
-### uint / int 
+### uint （无符号整型） / int 
 
 * 比较： <=, <, ==, !=, >=, > 
 * 位操作： &, |, ^,~, >>, <<
@@ -91,7 +92,7 @@ contract SimpleStorage {       // 合约声明
 
 ### 地址address
 
-* 智能合约也是有地址
+* 智能合约也是有唯一地址
 
 
 
@@ -277,13 +278,62 @@ struct Employee {
 
 
 
+### MAPPING
+
+* 类似于map(C++), dict(python)
+* Key 只能是(bool, int, address, string)
+* Value (任何类型)
+* mapping(address => Employee) employees
+* 只能做成员变量，不能做本地的局部变量
+
+
+
+#### mapping 底层实现
+
+* 不实用数组+链表，不需要扩容
+* hash函数为keccak256hash，在storage上存储，理论无限大的hash表
+* 无法naiive的遍历整个mapping
+* 赋值 employees[key] = value
+* 取值 value = employees[key]
+* value 是引用，在storage上存储，可以直接修改
+* 当key不存在，value=type's default
 
 
 
 
 
+### 可视度
+
+* public 谁都可见
+* external 只有外部调用可见
+* internal 外部调用不可见，内部和子类可见
+* private 只有当前合约可见
 
 
+
+* 状态变量： public, internal, private 
+  * 默认为internal
+  * public 自动定义取值函数
+  * Private 不代表别的无法肉眼看到，只代表别的区块链智能合约无法看到
+
+
+
+* 合约的所有成员变量都是肉眼可见的
+
+
+
+
+
+* 函数public，external，internal，private
+* 默认public
+
+
+
+
+
+### 继承
+
+* 基本语法
 
 
 
@@ -378,6 +428,49 @@ contract Payroll {
 
 
 
+## Truffle
+
+* Truffle compile 编译合约
+* Truffle migrate
+  * truffle migrate --reset 重新部署合约
+* Truffle console
+* Truffle test
+
+
+
+### truffle box 开发前端应用
+
+
+
+#### 测试
+
+* js
+  * mocha
+  * chai
+* sodility
+
+
+
+
+
+## ganache-cli
+
+* 开启test环境
+
+
+
+
+
+## web3.js
+
+* 一个js和区块链交互的桥梁
+
+
+
+### web3 调用合约方程
+
+* Function_name.call() （只是在node上执行，并不保存到区块链上）
+* Function_name.send()
 
 
 

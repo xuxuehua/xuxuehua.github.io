@@ -1,5 +1,5 @@
 ---
-title: "web_browser"
+title: "web_browser 浏览器"
 date: 2018-06-23 01:45
 collection: 浏览器操作
 ---
@@ -203,3 +203,9 @@ document.cookie; // 'v=123; remember=true; prefer=zh'
 新手开始设计Web页面时喜欢在登录页登录成功时调用`history.back()`，试图回到登录前的页面。这是一种错误的方法。
 
 任何情况，你都不应该使用`history`这个对象了。
+
+
+
+
+
+## 
