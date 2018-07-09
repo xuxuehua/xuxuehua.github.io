@@ -1,7 +1,7 @@
 ---
 title: "selector 选择器"
 date: 2018-06-24 17:56
-colleciton: jQuery
+collection: jQuery
 ---
 
 

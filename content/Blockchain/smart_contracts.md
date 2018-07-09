@@ -451,6 +451,21 @@ contract Payroll {
 
 
 
+```
+nvm install v8
+nvm alias default v8
+npm install --dotenv-extended
+truffle migrate --reset && truffle compile && npm start
+```
+
+
+
+
+
+## metamask
+
+import account 是不受keystone保护，即重装或换电脑回丢失
+
 
 
 ## ganache-cli
