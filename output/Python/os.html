@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>os - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python">Python</a>&nbsp;&#187;&nbsp;os
+    <span class="updated">Page Updated&nbsp;
+      2018-07-02 18:06
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">os</div>
+
+  <h1 id="os">OS 模块</h1>
+<h2 id="system-deprecate">system (deprecate)</h2>
+<p>执行命令，不保存结果</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">os</span>
+<span class="n">print</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">system</span><span class="p">(</span><span class="err">&#39;</span><span class="n">ls</span><span class="err">&#39;</span><span class="p">))</span>   
+</pre></div>
+
+
+<h2 id="popen">popen</h2>
+<p>可以保存执行结果，必须通过read方法处理</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">os</span>
+<span class="n">cmd_result</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="err">&#39;</span><span class="n">ls</span><span class="err">&#39;</span><span class="p">).</span><span class="n">read</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">cmd_result</span><span class="p">)</span>
+</pre></div>
+
+
+<h2 id="mkdir">mkdir</h2>
+<p>创建目录</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">os</span>
+<span class="n">os</span><span class="p">.</span><span class="n">mkdir</span><span class="p">(</span><span class="err">&#39;</span><span class="n">mydir</span><span class="err">&#39;</span><span class="p">)</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2018 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2018-07-12 15:05:29</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

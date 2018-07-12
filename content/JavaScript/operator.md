@@ -1,7 +1,7 @@
 ---
 title: "operator 操作器"
 date: 2018-06-24 20:55
-collection: jQuery
+collection: jQuery
 ---
 
 [TOC]

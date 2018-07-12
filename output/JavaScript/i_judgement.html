@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>I_judgement 条件判断 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#JavaScript">JavaScript</a>&nbsp;&#187;&nbsp;I_judgement 条件判断
+    <span class="updated">Page Updated&nbsp;
+      2018-06-05 17:57
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">I_judgement 条件判断</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#judgement">Judgement</a><ul>
+<li><a href="#_1">定义</a></li>
+<li><a href="#_2">多行条件判断</a></li>
+<li><a href="#_3">默认判定</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="judgement">Judgement</h1>
+<h2 id="_1">定义</h2>
+<ul>
+<li>JavaScript使用<code>if () { ... } else { ... }</code>来进行条件判断</li>
+<li>其中<code>else</code>语句是可选的。如果语句块只包含一条语句，尽管可以省略<code>{}</code>, 但还是不要避免错误</li>
+</ul>
+<div class="hlcode"><pre><span class="n">var</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">18</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 如果age &gt;= 18为true，则执行if语句块</span>
+    <span class="n">alert</span><span class="p">(</span><span class="err">&#39;</span><span class="n">adult</span><span class="err">&#39;</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="c1">// 否则执行else语句块</span>
+    <span class="n">alert</span><span class="p">(</span><span class="err">&#39;</span><span class="n">teenager</span><span class="err">&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2 id="_2">多行条件判断</h2>
+<ul>
+<li>如果还要更细致地判断条件，可以使用多个<code>if...else...</code>的组合：</li>
+</ul>
+<p><code>var age = 3;
+  if (age &gt;= 18) {
+      alert('adult');
+  } else if (age &gt;= 6) {
+      alert('teenager');
+  } else {
+      alert('kid');
+  }</code></p>
+<h2 id="_3">默认判定</h2>
+<ul>
+<li>JavaScript把<code>null</code>、<code>undefined</code>、<code>0</code>、<code>NaN</code>和空字符串<code>''</code>视为<code>false</code>，其他值一概视为<code>true</code></li>
+</ul>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2018 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2018-07-12 15:05:29</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>
