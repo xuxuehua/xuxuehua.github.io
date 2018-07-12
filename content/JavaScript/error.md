@@ -192,3 +192,43 @@ console.log(n);
 因为catch到错误却什么都不执行，就不知道程序执行过程中到底有没有发生错误。
 
 处理错误时，请不要简单粗暴地用`alert()`把错误显示给用户。
+
+
+
+## 异步错误处理
+
+编写JavaScript代码时，我们要时刻牢记，JavaScript引擎是一个事件驱动的执行引擎，代码总是以单线程执行，而回调函数的执行需要等到下一个满足条件的事件出现后，才会被执行。
+
+例如，`setTimeout()`函数可以传入回调函数，并在指定若干毫秒后执行：
+
+```
+function printTime() {
+    console.log('It is time!');
+}
+
+setTimeout(printTime, 1000);
+console.log('done');
+```
+
+上面的代码会先打印`done`，1秒后才会打印`It is time!`。
+
+
+
+如果`printTime()`函数内部发生了错误，我们试图用try包裹`setTimeout()`是无效的：
+
+```
+'use strict';
+function printTime() {
+    throw new Error();
+}
+
+try {
+    setTimeout(printTime, 1000);
+    console.log('done');
+} catch (e) {
+    console.log('error');
+}
+>>>
+done
+```
+

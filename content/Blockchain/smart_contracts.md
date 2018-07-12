@@ -491,3 +491,50 @@ import account 是不受keystone保护，即重装或换电脑回丢失
 
 
 
+
+
+## 合约部署
+
+* Remix + metamask + Myetherwallet 
+* Truffle + Infura
+* Truffle + Ethereum full node (geth, parity) 最终的版本
+
+
+
+## 合约安全
+
+### 外部函数调用安全性
+
+* e.g. re-entry DAO attack 150 loss
+* send or call value时候需要做bool 判断 
+
+
+
+###函数可见性
+
+* Parity wallet hack June 
+
+
+
+### 数学运算
+
+* 小心整型溢出。safemath
+
+
+
+### 随机数与系统时间的依赖性
+
+
+
+### 合约数据可见性
+
+* 在没有完全zksnock之前，代码都是完全可见的
+
+
+
+### 谨慎使用汇编注入
+
+* parity 钱包被注入攻击
+
+
+
