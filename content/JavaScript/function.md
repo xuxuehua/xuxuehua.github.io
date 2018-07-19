@@ -1,6 +1,7 @@
 ---
-title: "K_function 函数"
+title: "function 函数"
 date: 2018-06-10 19:44
+collection: 函数
 ---
 
 [TOC]

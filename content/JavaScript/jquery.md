@@ -1,8 +1,10 @@
 ---
 title: "jquery 基础"
 date: 2018-06-24 17:40
-colleciton: jQuery
+collection: jQuery
 ---
+
+[TOC]
 
 
 

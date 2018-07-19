@@ -1,6 +1,7 @@
 ---
-title: "L_higher_order_function 高阶函数"
+title: "higher_order_function 高阶函数"
 date: 2018-06-15 01:41
+collection: 函数
 ---
 
 [TOC]
