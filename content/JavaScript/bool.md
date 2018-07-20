@@ -1,6 +1,7 @@
 ---
-title: "F_bool 布尔计算"
+title: "bool 布尔计算"
 date: 2018-06-04 16:03
+collection: 基本变量类型
 ---
 
 [TOC]
@@ -9,9 +10,19 @@ date: 2018-06-04 16:03
 
 
 
+
+
 ## 布尔值
 
 * 布尔值和布尔代数的表示完全一致，一个布尔值只有`true`、`false`两种值，要么是`true`，要么是`false`
+
+
+
+### 声明布尔值
+
+```
+var y = new Boolean;
+```
 
 
 

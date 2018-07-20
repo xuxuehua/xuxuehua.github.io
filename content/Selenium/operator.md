@@ -679,6 +679,8 @@ driver.quit()
 
 
 
+## 截图
+
 ### 窗口截图
 
 发布时间 2017年6月13日 
@@ -703,6 +705,21 @@ driver.quit()
 ```
 
 脚本运行完成后打开D盘，就可以找到baidu_img.jpg图片文件了。
+
+
+
+### 元素截图
+
+`screenshot_as_png`
+
+```
+code = self.driver.find_element_by_xpath("//img[@alt='CAPTCHA']")
+        img = code.screenshot_as_png
+        img_name = "./code/code{}.png".format(time.strftime('%Y-%m-%d_%H%M%S', time.localtime(time.time())))
+        with open(img_name, 'wb') as f:
+            f.write(img)
+        rec_code = self.code_recog(img_name)
+```
 
 
 

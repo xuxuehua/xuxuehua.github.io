@@ -1,6 +1,7 @@
 ---
-title: "C_array 数组"
+title: "array 数组"
 date: 2018-06-05 09:42
+collection: 基本变量类型
 ---
 
 [TOC]
@@ -37,6 +38,12 @@ x
 ```
 new Array(1, 2, 3); // 创建了数组[1, 2, 3]
 ```
+
+```
+var cars = new Array("Audi", "BMW", "Benz");
+```
+
+
 
 
 

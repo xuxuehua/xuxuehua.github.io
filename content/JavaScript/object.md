@@ -1,6 +1,7 @@
 ---
-title: "D_object 对象"
+title: "object 对象"
 date: 2018-06-05 09:55
+collection: 基本变量类型
 ---
 
 [TOC]

@@ -1,6 +1,7 @@
 ---
-title: "H_set 类集合"
+title: "set 类集合"
 date: 2018-06-09 22:31
+collection: 基本变量类型
 ---
 
 [TOC]
