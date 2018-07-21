@@ -89,6 +89,52 @@ p.innerHTML = 'ABC <span style="color:red">RED</span> XYZ';
 
 
 
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id="p1">Hello World!</p>
+
+<script>
+document.getElementById("p1").innerHTML="New text!";
+</script>
+
+<p>上面的段落被一条 JavaScript 脚本修改了。</p>
+
+</body>
+</html>
+
+```
+
+
+
+### 修改HTML元素属性
+
+`document.getElementById(id).attribute=new value`
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<img id="image" src="/i/eg_tulip.jpg" />
+
+<script>
+document.getElementById("image").src="/i/shanghai_lupu_bridge.jpg";
+</script>
+
+<p>原始图片是郁金香（eg_tulip.jpg），但是已被修改为卢浦大桥（shanghai_lupu_bridge.jpg）。</p>
+
+</body>
+</html>
+```
+
+
+
+
+
+
 ### 修改`innerText`或`textContent`属性
 
 可以自动对字符串进行HTML编码，保证无法设置任何HTML标签：
@@ -114,6 +160,53 @@ p.style.color = '#ff0000';
 p.style.fontSize = '20px';
 p.style.paddingTop = '2em';
 ```
+
+
+
+### 更改HTML样式
+
+`document.getElementById(id).style.property=new style`
+
+
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id="p1">Hello World!</p>
+<p id="p2">Hello World!</p>
+
+<script>
+document.getElementById("p2").style.color="blue";
+document.getElementById("p2").style.fontFamily="Arial";
+document.getElementById("p2").style.fontSize="larger";
+</script>
+
+<p>上面的段落已被一段脚本修改。</p>
+
+</body>
+</html>
+```
+
+
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1 id="id1">My Heading 1</h1>
+<button type="button" 
+onclick="document.getElementById('id1').style.color='red'">
+点击这里！</button>
+
+</body>
+</html>
+
+```
+
+
 
 
 

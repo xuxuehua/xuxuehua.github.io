@@ -10,7 +10,7 @@ collection: 基本变量类型
 
 
 
-## 定义
+## 创建 JavaScript 对象
 
 * JavaScript的对象是一组由键-值组成的无序集合
 
@@ -26,6 +26,18 @@ var person = {
 ```
 
 > JavaScript对象的键都是字符串类型，值可以是任意数据类型。上述`person`对象一共定义了6个键值对，其中每个键又称为对象的属性，例如，`person`的`name`属性为`'Bob'`，`zipcode`属性为`null`
+
+
+
+```
+person=new Object();
+person.firstname="Bill";
+person.lastname="Gates";
+person.age=56;
+person.eyecolor="blue";
+```
+
+
 
 
 
@@ -114,3 +126,31 @@ var xiaoming = {
 xiaoming.hasOwnProperty('name'); // true
 xiaoming.hasOwnProperty('toString'); // false
 ```
+
+
+
+## 内建方法
+
+
+
+### length
+
+```
+var test = 'test';
+test.length
+>>>
+4
+```
+
+
+
+### toUpperCase
+
+```
+var message="Hello world!";
+var x=message.toUpperCase();
+x
+>>>
+"HELLO WORLD!"
+```
+

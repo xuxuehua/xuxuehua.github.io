@@ -1,5 +1,5 @@
 ---
-title: "B_string 字符串"
+title: "string 字符串"
 date: 2018-06-04 15:58
 collection: 基本变量类型
 ---

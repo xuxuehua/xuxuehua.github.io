@@ -50,7 +50,186 @@ a.click(function () {
 
 ## 鼠标事件
 
-click: 鼠标单击时触发； dblclick：鼠标双击时触发； mouseenter：鼠标进入时触发； mouseleave：鼠标移出时触发； mousemove：鼠标在DOM内部移动时触发； hover：鼠标进入和退出时触发两个函数，相当于mouseenter加上mouseleave。
+click: 鼠标单击时触发； 
+dblclick：鼠标双击时触发； 
+mouseenter：鼠标进入时触发； 
+mouseleave：鼠标移出时触发； 
+mousemove：鼠标在DOM内部移动时触发； 
+hover：鼠标进入和退出时触发两个函数，相当于mouseenter加上mouseleave。
+
+
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1 onclick="this.innerHTML='谢谢!'">请点击该文本</h1>
+
+</body>
+</html>
+```
+
+
+
+* 通过调用函数实现
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function changetext(id)
+{
+id.innerHTML="谢谢!";
+}
+</script>
+</head>
+<body>
+
+<h1 onclick="changetext(this)">请点击该文本</h1>
+
+</body>
+</html>
+```
+
+
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>点击按钮就可以执行 <em>displayDate()</em> 函数。</p>
+
+<button onclick="displayDate()">点击这里</button>
+
+<script>
+function displayDate()
+{
+document.getElementById("demo").innerHTML=Date();
+}
+</script>
+
+<p id="demo"></p>
+
+</body>
+</html>
+
+```
+
+
+
+### onload 和 onunload 事件
+
+```
+<!DOCTYPE html>
+<html>
+<body onload="checkCookies()">
+
+<script>
+function checkCookies()
+{
+if (navigator.cookieEnabled==true)
+	{
+	alert("已启用 cookie")
+	}
+else
+	{
+	alert("未启用 cookie")
+	}
+}
+</script>
+
+<p>提示框会告诉你，浏览器是否已启用 cookie。</p>
+</body>
+</html>
+```
+
+
+
+### onchange 事件
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function myFunction()
+{
+var x=document.getElementById("fname");
+x.value=x.value.toUpperCase();
+}
+</script>
+</head>
+<body>
+
+请输入英文字符：<input type="text" id="fname" onchange="myFunction()">
+<p>当您离开输入字段时，会触发将输入文本转换为大写的函数。</p>
+
+</body>
+</html>
+```
+
+
+
+### onmouseover 和 onmouseout 事件
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<div onmouseover="mOver(this)" onmouseout="mOut(this)" style="background-color:green;width:120px;height:20px;padding:40px;color:#ffffff;">把鼠标移到上面</div>
+
+<script>
+function mOver(obj)
+{
+obj.innerHTML="谢谢"
+}
+
+function mOut(obj)
+{
+obj.innerHTML="把鼠标移到上面"
+}
+</script>
+
+</body>
+</html>
+```
+
+
+
+### onmousedown、onmouseup 以及 onclick 事件
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<div onmousedown="mDown(this)" onmouseup="mUp(this)" style="background-color:green;color:#ffffff;width:90px;height:20px;padding:40px;font-size:12px;">请点击这里</div>
+
+<script>
+function mDown(obj)
+{
+obj.style.backgroundColor="#1ec5e5";
+obj.innerHTML="请释放鼠标按钮"
+}
+
+function mUp(obj)
+{
+obj.style.backgroundColor="green";
+obj.innerHTML="请按下鼠标按钮"
+}
+</script>
+
+</body>
+</html>
+```
+
+
+
+
 
 ## 键盘事件
 
