@@ -18,11 +18,40 @@ collection: 基本变量类型
 
 
 
-### 声明布尔值
+### 声明布尔对象
 
 ```
 var y = new Boolean;
 ```
+
+
+
+#### 初始值为 false
+
+```
+var myBoolean=new Boolean();
+var myBoolean=new Boolean(0);
+var myBoolean=new Boolean(null);
+var myBoolean=new Boolean("");
+var myBoolean=new Boolean(false);
+var myBoolean=new Boolean(NaN);
+```
+
+
+
+
+
+#### 初始值为 True
+
+```
+var myBoolean=new Boolean(1);
+var myBoolean=new Boolean(true);
+var myBoolean=new Boolean("true");
+var myBoolean=new Boolean("false");
+var myBoolean=new Boolean("Bill Gates");
+```
+
+
 
 
 

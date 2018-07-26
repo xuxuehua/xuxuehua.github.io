@@ -1,7 +1,6 @@
 ---
 title: "getpass"
 date: 2018-06-29 22:18
-collection: Python 模块
 ---
 
 [TOC]

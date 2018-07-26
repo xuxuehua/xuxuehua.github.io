@@ -39,6 +39,70 @@ person.eyecolor="blue";
 
 
 
+### 使用函数来构造对象
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+function person(firstname,lastname,age,eyecolor)
+{
+this.firstname=firstname;
+this.lastname=lastname;
+this.age=age;
+this.eyecolor=eyecolor;
+}
+
+myFather=new person("Bill","Gates",56,"blue");
+
+document.write(myFather.firstname + " is " + myFather.age + " years old.");
+</script>
+
+</body>
+</html>
+
+>>>
+Bill is 56 years old.
+```
+
+
+
+### 构造器函数内部定义对象的方法
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+function person(firstname,lastname,age,eyecolor)
+{
+this.firstname=firstname;
+this.lastname=lastname;
+this.age=age;
+this.eyecolor=eyecolor;
+ 
+this.changeName=changeName;
+function changeName(name)
+{
+this.lastname=name;
+}
+}
+myMother=new person("Steve","Jobs",56,"green");
+myMother.changeName("Ballmer");
+document.write(myMother.lastname);
+</script>
+
+</body>
+</html>
+
+>>>
+Ballmer
+```
+
+
+
 
 
 ## 获取对象的属性

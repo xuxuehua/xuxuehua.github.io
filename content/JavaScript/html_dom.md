@@ -264,6 +264,38 @@ list.appendChild(js);
 
 
 
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="div1">
+<p id="p1">这是一个段落。</p>
+<p id="p2">这是另一个段落。</p>
+</div>
+
+<script>
+var para=document.createElement("p");
+var node=document.createTextNode("这是新段落。");
+para.appendChild(node);
+
+var element=document.getElementById("div1");
+element.appendChild(para);
+</script>
+
+</body>
+</html>
+
+>>>
+这是一个段落。
+
+这是另一个段落。
+
+这是新段落。
+```
+
+
+
 ##### 创建一个新的节点，然后插入到指定位置
 
 
@@ -404,6 +436,33 @@ parent.removeChild(parent.children[1]); // <-- 浏览器报错
 浏览器报错：`parent.children[1]`不是一个有效的节点。原因就在于，当`<p>First</p>`节点被删除后，`parent.children`的节点数量已经从2变为了1，索引`[1]`已经不存在了。
 
 因此，删除多个节点时，要注意`children`属性时刻都在变化。
+
+
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="div1">
+<p id="p1">这是一个段落。</p>
+<p id="p2">这是另一个段落。</p>
+</div>
+
+<script>
+var parent=document.getElementById("div1");
+var child=document.getElementById("p1");
+parent.removeChild(child);
+</script>
+
+</body>
+</html>
+
+>>>
+这是另一个段落。
+```
+
+
 
 
 

@@ -187,3 +187,79 @@ re.exec(s); // null，直到结束仍没有匹配到
 > 全局匹配类似搜索，因此不能使用`/^...$/`，那样只会最多匹配一次。
 >
 > 正则表达式还可以指定`i`标志，表示忽略大小写，`m`标志，表示执行多行匹配。 	
+
+
+
+## RegExp 对象的方法
+
+RegExp 对象有 3 个方法：test()、exec() 以及 compile()。
+
+
+
+### test()
+
+```
+<html>
+<body>
+
+<script type="text/javascript">
+var patt1=new RegExp("e");
+
+document.write(patt1.test("The best things in life are free"));
+</script>
+
+</body>
+</html>
+
+>>>
+true
+```
+
+
+
+
+
+### exec()
+
+```
+<html>
+<body>
+
+<script type="text/javascript">
+var patt1=new RegExp("e");
+
+document.write(patt1.exec("The best things in life are free"));
+</script>
+
+</body>
+</html>
+>>>
+e
+```
+
+
+
+### compile()
+
+```
+<html>
+<body>
+
+<script type="text/javascript">
+var patt1=new RegExp("e");
+document.write(patt1.test("The best things in life are free"));
+
+patt1.compile("d");
+
+document.write(patt1.test("The best things in life are free"));
+</script>
+
+</body>
+</html>
+
+>>>
+truefalse
+```
+
+
+

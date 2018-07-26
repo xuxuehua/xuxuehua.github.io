@@ -1,7 +1,6 @@
 ---
 title: "sys"
 date: 2018-07-02 18:05
-collection: Python 模块
 ---
 
 [TOC]

@@ -49,9 +49,34 @@ var cars = new Array("Audi", "BMW", "Benz");
 
 ## 操作数组
 
+
+
+### 循环访问数组元素
+
+```
+var a = new Array();
+undefined
+a[0] = '1';
+"1"
+a[1] = '2';
+"2"
+a[2] = '3';
+"3"
+for (i in a) {console.log(a[i])};
+
+>>>
+1
+2
+3
+```
+
+
+
+
+
 ### 索引访问数组元素
 
-* 数组的元素可以通过索引来访问。请注意，索引的起始值为`0`
+数组的元素可以通过索引来访问。请注意，索引的起始值为`0`
 
 ```
 var arr = [1, 2, 3.14, 'Hello', null, true];
@@ -64,47 +89,67 @@ arr[6]; // 索引超出了范围，返回undefined
 
 ### 获取数组长度
 
-* 要取得`Array`的长度，直接访问`length`属性：
+要取得`Array`的长度，直接访问`length`属性：
 
-  ```
-  var arr = [1, 2, 3.14, 'Hello', null, true];
-  arr.length; // 6
-  ```
-
+```
+var arr = [1, 2, 3.14, 'Hello', null, true];
+arr.length; // 6
+```
 
 
 ### 数组索引赋值
 
-* 直接给`Array`的`length`赋一个新的值会导致`Array`大小的变化：
+直接给`Array`的`length`赋一个新的值会导致`Array`大小的变化：
 
-  ```
-  var arr = [1, 2, 3];
-  arr.length; // 3
-  arr.length = 6;
-  arr; // arr变为[1, 2, 3, undefined, undefined, undefined]
-  arr.length = 2;
-  arr; // arr变为[1, 2]
-  ```
+```
+var arr = [1, 2, 3];
+arr.length; // 3
+arr.length = 6;
+arr; // arr变为[1, 2, 3, undefined, undefined, undefined]
+arr.length = 2;
+arr; // arr变为[1, 2]
+```
 
-  
 
-* Array`可以通过索引把对应的元素修改为新的值，因此，对`Array`的索引进行赋值会直接修改这个`Array：
 
-  ```
-  var arr = ['A', 'B', 'C'];
-  arr[1] = 99;
-  arr; // arr现在变为['A', 99, 'C']
-  ```
+Array`可以通过索引把对应的元素修改为新的值，因此，对`Array`的索引进行赋值会直接修改这个`Array：
 
-* 如果通过索引赋值时，索引超过了范围，同样会引起`Array`大小的变化：
+```
+var arr = ['A', 'B', 'C'];
+arr[1] = 99;
+arr; // arr现在变为['A', 99, 'C']
+```
+如果通过索引赋值时，索引超过了范围，同样会引起`Array`大小的变化：
 
-  ```
-  var arr = [1, 2, 3];
-  arr[5] = 'x';
-  arr; // arr变为[1, 2, 3, undefined, undefined, 'x']
-  ```
-
+```
+var arr = [1, 2, 3];
+arr[5] = 'x';
+arr; // arr变为[1, 2, 3, undefined, undefined, 'x']
+```
 > 大多数其他编程语言不允许直接改变数组的大小，越界访问索引会报错。然而，JavaScript的`Array`却不会有任何错误。在编写代码时，不建议直接修改`Array`的大小，访问索引时要确保索引不会越界。
+
+
+
+### concat 合并数组 
+
+```
+var arr1 = new Array(2);
+undefined
+arr1[0] = 'a';
+"a"
+arr1[1] = 'b';
+"b"
+var arr2 = new Array(2);
+undefined
+arr2[0] = 'c';
+"c"
+arr2[1] = 'd';
+"d"
+arr1.concat(arr2)
+(4) ["a", "b", "c", "d"]
+```
+
+
 
 
 
@@ -189,6 +234,10 @@ arr; // []
 
 ### sort
 
+
+
+#### sort 字符
+
 `sort()`可以对当前`Array`进行排序，它会直接修改当前`Array`的元素位置，直接调用时，按照默认顺序排序：
 
 ```
@@ -196,6 +245,32 @@ var arr = ['B', 'C', 'A'];
 arr.sort();
 arr; // ['A', 'B', 'C']
 ```
+
+
+
+#### sort 数字
+
+```
+var arr =  new Array(5);
+undefined
+arr[0] = '10';
+"10"
+arr[1] = '5';
+"5"
+arr[2] = '40'
+"40"
+arr[3] = '25';
+"25"
+arr[4] = '1000';
+"1000"
+function sortNumber(a, b) {return a - b};
+arr.sort(sortNumber);
+
+>>>
+(5) ["5", "10", "25", "40", "1000"]
+```
+
+
 
 
 

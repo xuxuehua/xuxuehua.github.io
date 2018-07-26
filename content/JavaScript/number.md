@@ -16,6 +16,31 @@ collection: 基本变量类型
 
 ## 定义
 
+JavaScript 不是类型语言。与许多其他编程语言不同，JavaScript 不定义不同类型的数字，比如整数、短、长、浮点等等。
+
+JavaScript 中的所有数字都存储为根为 10 的 64 位（8 比特），浮点数。
+
+
+
+### 精度
+
+整数（不使用小数点或指数计数法）最多为 15 位。
+
+小数的最大位数是 17，但是浮点运算并不总是 100% 准确：
+
+ 
+
+### 八进制和十六进制
+
+如果前缀为 0，则 JavaScript 会把数值常量解释为八进制数，如果前缀为 0 和 "x"，则解释为十六进制数。
+
+```
+var y=0377;
+var z=0xFF;
+```
+
+提示：绝不要在数字前面写零，除非您需要进行八进制转换。
+
 
 
 * JavaScript不区分整数和浮点数，统一用Number表示，以下都是合法的Number类型
@@ -24,6 +49,7 @@ collection: 基本变量类型
 123; // 整数123
 0.456; // 浮点数0.456
 1.2345e3; // 科学计数法表示1.2345x1000，等同于1234.5
+var z=123e-5;   // 0.00123
 -99; // 负数
 NaN; // NaN表示Not a Number，当无法计算结果时用NaN表示
 Infinity; // Infinity表示无限大，当数值超过了JavaScript的Number所能表示的最大值时，就表示为Infinity
@@ -149,11 +175,174 @@ document.write("<br />");
 
 
 
+## 数字属性和方法
+
+### 属性
+
+- MAX VALUE
+- MIN VALUE
+- NEGATIVE INFINITIVE
+- POSITIVE INFINITIVE
+- NaN
+- prototype
+- constructor
+
+### 方法
+
+- toExponential()
+- toFixed()
+- toPrecision()
+- toString()
+- valueOf()
 
 
 
 
 
+## 算数对象
+
+
+
+### round()
+
+四舍五入
+
+```
+<html>
+<body>
+
+<script type="text/javascript">
+
+document.write(Math.round(0.60) + "<br />")
+document.write(Math.round(0.50) + "<br />")
+document.write(Math.round(0.49) + "<br />")
+document.write(Math.round(-4.40) + "<br />")
+document.write(Math.round(-4.60))
+
+</script>
+
+</body>
+</html>
+
+>>>
+1
+1
+0
+-4
+-5
+```
+
+
+
+### random()
+
+random() 方法来返回一个介于 0 和 1 之间的随机数
+
+```
+Math.random()
+0.28042991131344963
+Math.random()
+0.08264409713072896
+Math.random(1)
+0.7369426245073265
+Math.random(100)
+0.2889252689793813
+```
+
+
+
+ random() 来返回一个介于 0 和 10 之间的随机数
+
+```
+Math.random()*11
+1.074765324582574
+Math.random()*11
+10.042596148277743
+Math.random()*11
+6.226359473942004
+```
+
+
+
+
+
+### max()
+
+```
+<html>
+<body>
+
+<script type="text/javascript">
+
+document.write(Math.max(5,7) + "<br />")
+document.write(Math.max(-3,5) + "<br />")
+document.write(Math.max(-3,-5) + "<br />")
+document.write(Math.max(7.25,7.30))
+
+</script>
+
+</body>
+</html>
+
+>>>
+7
+5
+-3
+7.3
+```
+
+
+
+### min()
+
+```
+<html>
+<body>
+
+<script type="text/javascript">
+
+document.write(Math.min(5,7) + "<br />")
+document.write(Math.min(-3,5) + "<br />")
+document.write(Math.min(-3,-5) + "<br />")
+document.write(Math.min(7.25,7.30))
+
+</script>
+
+</body>
+</html>
+
+>>>
+5
+-3
+-5
+7.25
+```
+
+
+
+## 算数值
+
+JavaScript 提供 8 种可被 Math 对象访问的算数值：
+
+- 常数
+- 圆周率
+- 2 的平方根
+- 1/2 的平方根
+- 2 的自然对数
+- 10 的自然对数
+- 以 2 为底的 e 的对数
+- 以 10 为底的 e 的对数
+
+这是在 Javascript 中使用这些值的方法：（与上面的算数值一一对应）
+
+- Math.E
+- Math.PI
+- Math.SQRT2
+- Math.SQRT1_2
+- Math.LN2
+- Math.LN10
+- Math.LOG2E
+- Math.LOG10E
 
 
 

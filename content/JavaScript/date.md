@@ -39,6 +39,23 @@ d; // Fri Jun 19 2015 20:15:30 GMT+0800 (CST)
 
 
 
+### setDate()
+
+```
+d = new Date();
+Thu Jul 26 2018 00:41:52 GMT+0800 (CST)
+d.setDate(d.getDate()+5)
+1532968912006
+d
+Tue Jul 31 2018 00:41:52 GMT+0800 (CST)
+```
+
+
+
+
+
+### getMonth()
+
 建一个指定日期和时间的方法是解析一个符合[ISO 8601](http://www.w3.org/TR/NOTE-datetime)格式的字符串：
 
 ```
@@ -51,9 +68,39 @@ d.getMonth(); // 5
 
 
 
+### setFullYear()
+
+```
+d = new Date();
+Thu Jul 26 2018 00:35:22 GMT+0800 (CST)
+d.setFullYear(1989,2,14);
+605810122816
+d
+Tue Mar 14 1989 00:35:22 GMT+0800 (CST)
+```
+
+
+
+### getDay() 
+
+显示星期
+
+```
+d = new Date();
+Thu Jul 26 2018 00:37:45 GMT+0800 (CST)
+d.getDay()
+4
+```
+
+
+
+
+
 ## 时区
 
 `Date`对象表示的时间总是按浏览器所在时区显示的，不过我们既可以显示本地时间，也可以显示调整后的UTC时间：
+
+### toUTCString()
 
 ```
 var d = new Date(1435146562875);
@@ -64,6 +111,42 @@ d.toUTCString(); // 'Wed, 24 Jun 2015 11:49:22 GMT'，UTC时间，与本地时�
 > 时间戳是一个自增的整数，它表示从1970年1月1日零时整的GMT时区开始的那一刻，到现在的毫秒数。假设浏览器所在电脑的时间是准确的，那么世界上无论哪个时区的电脑，它们此刻产生的时间戳数字都是一样的，所以，时间戳可以精确地表示一个时刻，并且与时区无关。
 
 
+
+
+
+## 实时钟表
+
+```
+<html>
+<head>
+<script type="text/javascript">
+function startTime()
+{
+var today=new Date()
+var h=today.getHours()
+var m=today.getMinutes()
+var s=today.getSeconds()
+// add a zero in front of numbers<10
+m=checkTime(m)
+s=checkTime(s)
+document.getElementById('txt').innerHTML=h+":"+m+":"+s
+t=setTimeout('startTime()',500)
+}
+
+function checkTime(i)
+{
+if (i<10) 
+  {i="0" + i}
+  return i
+}
+</script>
+</head>
+
+<body onload="startTime()">
+<div id="txt"></div>
+</body>
+</html>
+```
 
 
 
