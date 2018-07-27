@@ -76,6 +76,21 @@ PhantomJS浏览器驱动：[phantomjs](http://phantomjs.org/)
 
 
 
+#### Install PhantomJS in Centos
+
+```
+sudo mv $PHANTOM_JS.tar.bz2 /usr/local/share/
+cd /usr/local/share/
+sudo tar xvjf phantomjs-1.9.2-linux-x86_64.tar.bz2
+sudo ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/share/phantomjs
+sudo ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin/phantomjs
+sudo ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/bin/phantomjs
+```
+
+> 上面软链接都需要加上
+
+
+
 #### 驱动调用
 
 ```

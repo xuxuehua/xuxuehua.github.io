@@ -33,7 +33,7 @@ console.log('window inner size: ' + window.innerWidth + ' x ' + window.innerHeig
 
 ------
 
-JavaScript可以获取浏览器提供的很多对象，并进行操作。
+JavaScript可以获取浏览器提供的很多对象，并进行操作。所有浏览器都支持 *window* 对象。
 
 ### window
 
@@ -55,6 +55,10 @@ JavaScript可以获取浏览器提供的很多对象，并进行操作。
 - navigator.appVersion：浏览器版本；
 - navigator.language：浏览器设置的语言；
 - navigator.platform：操作系统类型；
+- navigator.appCodeName  浏览器版本名称
+- navigator.cookieEnabled 启用cookie功能
+- navigator.userAgent 用户代理
+- navigator.systemLanguage 系统语言
 - navigator.userAgent：浏览器设定的`User-Agent`字符串。
 
 > *请注意*，`navigator`的信息可以很容易地被用户修改，所以JavaScript读取的值不一定是正确的
@@ -78,6 +82,8 @@ var width = window.innerWidth || document.body.clientWidth;
 - screen.width：屏幕宽度，以像素为单位；
 - screen.height：屏幕高度，以像素为单位；
 - screen.colorDepth：返回颜色位数，如8、16、24。
+- screen.availWidth - 可用的屏幕宽度
+- screen.availHeight - 可用的屏幕高度
 
 
 
@@ -92,12 +98,15 @@ http://www.example.com:8080/path/index.html?a=1&b=2#TOP
 可以用`location.href`获取。要获得URL各个部分的值，可以这么写：
 
 ```
+location.hostname //返回 web 主机的域名 www.example.com
 location.protocol; // 'http'
 location.host; // 'www.example.com'
 location.port; // '8080'
 location.pathname; // '/path/index.html'
 location.search; // '?a=1&b=2'
 location.hash; // 'TOP'
+location.href //属性返回当前页面的 URL
+location.assign() 方法加载新的文档
 ```
 
 要加载一个新页面，可以调用`location.assign()`。如果要重新加载当前页面，调用`location.reload()`方法非常方便。
@@ -191,6 +200,69 @@ document.cookie; // 'v=123; remember=true; prefer=zh'
 为了解决这个问题，服务器在设置Cookie时可以使用`httpOnly`，设定了`httpOnly`的Cookie将不能被JavaScript读取。这个行为由浏览器实现，主流浏览器均支持`httpOnly`选项，IE从IE6 SP1开始支持。
 
 为了确保安全，服务器端在设置Cookie时，应该始终坚持使用`httpOnly`。
+
+
+
+##### 创建和存储 cookie
+
+创建一个可在 cookie 变量中存储访问者姓名的函数：
+
+```
+function setCookie(c_name,value,expiredays)
+{
+var exdate=new Date()
+exdate.setDate(exdate.getDate()+expiredays)
+document.cookie=c_name+ "=" +escape(value)+
+((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+}
+```
+
+上面这个函数中的参数存有 cookie 的名称、值以及过期天数。
+
+在上面的函数中，我们首先将天数转换为有效的日期，然后，我们将 cookie 名称、值及其过期日期存入 document.cookie 对象。
+
+之后，我们要创建另一个函数来检查是否已设置 cookie：
+
+```
+function getCookie(c_name)
+{
+if (document.cookie.length>0)
+  {
+  c_start=document.cookie.indexOf(c_name + "=")
+  if (c_start!=-1)
+    { 
+    c_start=c_start + c_name.length+1 
+    c_end=document.cookie.indexOf(";",c_start)
+    if (c_end==-1) c_end=document.cookie.length
+    return unescape(document.cookie.substring(c_start,c_end))
+    } 
+  }
+return ""
+}
+```
+
+上面的函数首先会检查 document.cookie 对象中是否存有 cookie。假如 document.cookie 对象存有某些 cookie，那么会继续检查我们指定的 cookie 是否已储存。如果找到了我们要的 cookie，就返回值，否则返回空字符串。
+
+最后，我们要创建一个函数，这个函数的作用是：如果 cookie 已设置，则显示欢迎词，否则显示提示框来要求用户输入名字。
+
+```
+function checkCookie()
+{
+username=getCookie('username')
+if (username!=null && username!="")
+  {alert('Welcome again '+username+'!')}
+else 
+  {
+  username=prompt('Please enter your name:',"")
+  if (username!=null && username!="")
+    {
+    setCookie('username',username,365)
+    }
+  }
+}
+```
+
+
 
 
 
