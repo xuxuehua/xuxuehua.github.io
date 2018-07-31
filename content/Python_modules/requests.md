@@ -158,6 +158,23 @@ http://httpbin.org/get?key1=value1&key2=value2&key2=value3
 
 
 
+#### 下载图片
+
+```
+def download_file(url):
+    print('Downding %s' %url)
+    local_filename = url.split('/')[-1]
+    r = requests.get(url, stream=True)
+    with open(local_filename, 'wb') as f:
+        for chunk in r.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+                f.flush()
+    return local_filename
+```
+
+
+
 
 
 ### 重定向
@@ -367,6 +384,24 @@ b'[{"repository":{"open_issues":0,"url":"https://github.com/...
 >>> r.headers.get('content-type')
 'application/json'
 ```
+
+
+
+#### user-agent (爬虫需更改)
+
+```
+headers = {
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36'
+}
+
+requests.get(url, headers=headers).text
+```
+
+
+
+
+
+
 
 
 
