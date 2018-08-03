@@ -56,6 +56,8 @@ cd test_pipenv
 pipenv install # 创建一个虚拟环境
 ```
 
+Pipfile和Pipfile.lock两个文件互相配合，完成虚拟环境的管理工作
+
 
 
 * `pipenv --three`可以初始化一个`python3`版本的虚拟环境
@@ -97,7 +99,12 @@ Creating a Pipfile for this project...
 ```
 
 
+
+
+
 ### Virtualenv
+
+
 
 
 #### 激活 Virtualenv
@@ -205,9 +212,30 @@ The following environment variables can be set, to do various things:
 
 
 
+#### 定位虚拟环境
+
+```
+$ pipenv --venv
+/Users/kennethreitz/.local/share/virtualenvs/test-Skyy4vr
+```
 
 
 
+####定位Python解释器：
+
+```
+$ pipenv --py
+/Users/kennethreitz/.local/share/virtualenvs/test-Skyy4vre/bin/python
+```
+
+
+
+#### 定位项目路径:
+
+```
+$ pipenv --where
+/Users/kennethreitz/Library/Mobile Documents/com~apple~CloudDocs/repos/kr/pipenv/test
+```
 
 
 
@@ -298,22 +326,22 @@ requests==2.19.1
 
 
 
-### run
+### 虚拟环境运行 run
 
 `pipenv run which python `
 
 pipenv run 可以激活虚拟环境，并使用shell命令
 
 ```
-xhxu-mac:test_pipenv xhxu$ pipenv run ls
-Pipfile		Pipfile.lock
-xhxu-mac:test_pipenv xhxu$ pipenv run which python
-/Users/xhxu/.local/share/virtualenvs/test_pipenv-v79hOH8k/bin/python
-xhxu-mac:test_pipenv xhxu$ pipenv run pwd
-/Users/xhxu/test_pipenv
+xhxu-mac:test_pipenv xhxu$ pipenv run python manage.py runserver
+xhxu-mac:test_pipenv xhxu$ pipenv run python your_script.py
 ```
 
+如果你不想每次运行Python时都输入这么多字符，可以在shell中设置一个别名，例如，
 
+```
+alias prp="pipenv run python"
+```
 
 
 

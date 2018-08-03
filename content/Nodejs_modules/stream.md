@@ -1,5 +1,5 @@
 ---
-title: "stream_node"
+title: "stream"
 date: 2018-07-29 20:20
 ---
 
