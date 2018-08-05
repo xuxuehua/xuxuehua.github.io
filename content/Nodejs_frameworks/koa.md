@@ -1059,3 +1059,66 @@ var env = createEnv('views', {
     }
 });
 ```
+我们就可以用下面的代码来渲染这个模板：
+
+```
+var s = env.render('hello.html', { name: '小明' });
+console.log(s);
+```
+
+获得输出如下：
+
+```
+<h1>Hello 小明</h1>
+```
+
+
+
+定义一个基本的网页框架`base.html`：
+
+```
+<html><body>
+{% block header %} <h3>Unnamed</h3> {% endblock %}
+{% block body %} <div>No body</div> {% endblock %}
+{% block footer %} <div>copyright</div> {% endblock %}
+</body>
+```
+
+`base.html`定义了三个可编辑的块，分别命名为`header`、`body`和`footer`。子模板可以有选择地对块进行重新定义：
+
+```
+{% extends 'base.html' %}
+
+{% block header %}<h1>{{ header }}</h1>{% endblock %}
+
+{% block body %}<p>{{ body }}</p>{% endblock %}
+```
+
+然后，我们对子模板进行渲染：
+
+```
+console.log(env.render('extend.html', {
+    header: 'Hello',
+    body: 'bla bla bla...'
+}));
+```
+
+输出HTML如下：
+
+```
+<html><body>
+<h1>Hello</h1>
+<p>bla bla bla...</p>
+<div>copyright</div> <-- footer没有重定义，所以仍使用父模板的内容
+</body>
+```
+
+ 
+
+### MVC
+
+通过Nunjucks把数据用指定的模板渲染成HTML，然后输出给浏览器，用户就可以看到渲染后的页面了：
+
+![mvc](https://cdn.liaoxuefeng.com/cdn/files/attachments/0014714802383905a3e19e0a96d4f0cbd2daba921364bba000/l)
+
+这就是传说中的MVC：Model-View-Controller，中文名“模型-视图-控制器”。

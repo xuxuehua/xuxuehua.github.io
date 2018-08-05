@@ -61,3 +61,14 @@ $17 -> 25 for parking in NYC
 
 \$6000 by broking your arm, \$3k for company, rest of them for yourself.
 
+
+
+## 身体
+
+能不用身体解决的问题，就不要用身体，因为身体是自己最珍贵的东西。
+
+
+
+## 悲剧
+
+所谓悲剧，就是把美好的事物毁灭给人看。
