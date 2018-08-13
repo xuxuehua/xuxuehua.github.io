@@ -25,9 +25,21 @@ https://nodejs.org/en/
 
 
 
-## npm
+## npm VS cnpm
 
 npm其实是Node.js的包管理工具（package manager）
+
+
+
+因为npm安装插件是从国外服务器下载，受网络影响大，可能出现异常，如果npm的服务器在中国就好了，所以我们乐于分享的淘宝团队干了cnpm这事。
+
+
+
+### cnpm 使用
+
+```
+$ npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
 
 
 

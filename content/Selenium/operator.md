@@ -82,7 +82,8 @@ driver.refresh() #刷新当前页面
 
 - close() 关闭单个窗口
 - quit() 关闭所有窗口
-- 
+
+  
 
 ## WebDriver 操作
 
@@ -106,6 +107,12 @@ driver.find_element_by_id("su").click()
 
 driver.quit()
 ```
+
+
+
+
+
+
 
 ### 提交
 

@@ -70,11 +70,56 @@ for i in range(10):
 
 
 
+### for... else 
+
+完成循环，就执行else
+
+```
+guess_num = 34
+
+for i in range(1):
+    my_num = int(input("my_num: "))
+    if my_num == guess_num:
+        print('Yes')
+        break
+    else:
+        print("No")
+else:
+    print('This is else from for circulation.')
+>>>
+my_num: 1
+No
+This is else from for circulation.
+```
+
+
+
+破坏循环，跳过else
+
+```
+guess_num = 34
+
+for i in range(1):
+    my_num = int(input("my_num: "))
+    if my_num == guess_num:
+        print('Yes')
+        break
+    else:
+        print("No")
+else:
+    print('This is else from for circulation.')
+>>>
+my_num: 34
+Yes
+```
+
+
+
 
 
 ## break
 
-跳出当前循环
+结束整个循环
 
 
 

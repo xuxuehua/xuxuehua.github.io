@@ -7,7 +7,7 @@ date: 2018-07-19 18:03
 
 
 
-# Python - Selenium
+# Selenium
 
 
 
@@ -36,7 +36,7 @@ WebDriver是通过原生浏览器支持或者浏览器扩展来直接控制浏�
 
 
 
-## 安装
+## Python下 安装
 
 `pip install selenium`
 
@@ -110,3 +110,40 @@ driver = webdriver.Opera()     # Opera浏览器
 driver = webdriver.PhantomJS()   # PhantomJS
 ```
 
+
+
+## nodejs 下 安装
+
+```
+mkdir se
+cd se
+npm install --save selenium-webdriver@2.44.0
+```
+
+
+
+###chrome driver
+
+```
+npm install --save chromedriver@2.12.0
+```
+
+
+
+### 简单的环境验证测试
+
+
+
+新建文件start.js，并键入下面的内容。
+
+```
+// start.js
+var webdriver = require('selenium-webdriver');
+
+var driver = new webdriver.Builder().forBrowser('chrome').build();
+
+driver.get('https://www.google.com');
+
+console.log('quit driver');
+driver.quit();
+```

@@ -5,9 +5,27 @@ date: 2018-08-03 10:34
 
 [TOC]
 
+## 不可能三角
+
+区块链在高效低能、去中心化和安全三方面存在“不可能三角”悖论
+
+
+
+### 计算机存储
+
+![img](https://cdn.pbrd.co/images/HyNozgO.png)
+
+
+
 
 
 # 混杂的
+
+
+
+## 技术博客
+
+http://teahour.fm/
 
 
 

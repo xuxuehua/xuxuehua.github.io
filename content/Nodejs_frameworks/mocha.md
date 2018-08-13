@@ -298,6 +298,34 @@ after.
 
 ## 异步测试
 
+### 第一种方法
+
+
+
+目录结构
+
+```
+async-test/
+|
++- .vscode/
+|  |
+|  +- launch.json <-- VSCode 配置文件
+|
++- hello.js <-- 待测试js文件
+|
++- data.txt <-- 数据文件
+|
++- test/ <-- 存放所有test
+｜ ｜
+|  +- await-test.js <-- 异步测试
+|
++- package.json <-- 项目描述文件
+|
++- node_modules/ <-- npm安装的所有依赖包
+```
+
+
+
 在`package.json`中添加依赖包：
 
 ```
@@ -322,3 +350,106 @@ module.exports = async () => {
 };
 ```
 
+
+
+await-test.js
+
+```
+const assert = require('assert');
+
+const hello = require('../hello');
+
+describe('#async hello', () => {
+    describe('#asyncCalculate()', () => {
+    // function(done) {}
+    it('#async with done', (done) => {
+    (async function () {
+        try {
+            let r = await hello();
+            assert.strictEqual(r, 15);
+            done();
+        } catch (err) {
+            done(err);
+        }
+    })();
+});
+
+    it('#async function', async () => {
+        let r = await hello();
+    assert.strictEqual(r, 15);
+});
+
+    it('#sync function', () => {
+        assert(true);
+});
+});
+});
+```
+
+
+
+Result
+
+```
+xhxu-mac:hello-mocha-async xhxu$ ./node_modules/mocha/bin/mocha
+
+
+  #async hello
+    #asyncCalculate()
+Calculate: 1 + (2 + 4) * (9 -2) / 3 = 15
+      ✓ #async with done
+Calculate: 1 + (2 + 4) * (9 -2) / 3 = 15
+      ✓ #async function
+      ✓ #sync function
+
+
+  3 passing (17ms)
+```
+
+
+
+### 第二种方法
+
+在`package.json`中把`script`改为：
+
+```
+"scripts": {
+    "test": "mocha"
+}
+```
+
+这样就可以在命令行窗口通过`npm test`执行测试。
+
+
+
+
+
+## Http测试
+
+思路是在测试前启动koa的app，然后运行async测试，在测试代码中发送http请求，收到响应后检查结果，这样，一个基于http接口的测试就可以自动运行。
+
+结构如下：
+
+```
+koa-test/
+|
++- .vscode/
+|  |
+|  +- launch.json <-- VSCode 配置文件
+|
++- app.js <-- koa app文件
+|
++- start.js <-- app启动入口
+|
++- test/ <-- 存放所有test
+｜ ｜
+|  +- app-test.js <-- 异步测试
+|
++- package.json <-- 项目描述文件
+|
++- node_modules/ <-- npm安装的所有依赖包
+```
+
+
+
+app.js

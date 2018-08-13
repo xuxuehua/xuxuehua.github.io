@@ -13,11 +13,17 @@ date: 2018-07-27 23:20
 
 ## setTimeout
 
+setTimeout()方法用于在指定的毫秒数后调用函数或计算表达式。
+
+
+
 ### 语法
 
-```
-var t=setTimeout("javascript语句",毫秒)
-```
+`setTimeout(code,millisec) `　
+
+**参数：** code （必需）：要调用的函数后要执行的 JavaScript 代码串。millisec（必需）：在执行代码前需等待的毫秒数。 　
+
+**提示：** setTimeout() 只执行 code 一次。如果要多次调用，请使用 setInterval() 或者让 code 自身再次调用 setTimeout()。
 
 
 
@@ -119,4 +125,36 @@ function stopCount()
 
 </html>
 ```
+
+
+
+## setInterval
+
+setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
+
+setInterval() 方法会不停地调用函数，直到 clearInterval() 被调用或窗口被关闭。由 setInterval() 返回的 ID 值可用作 clearInterval() 方法的参数。
+
+
+
+### 语法
+
+**语法:** setInterval(code,millisec[,"lang"])
+
+**参数:** code 必需。要调用的函数或要执行的代码串。millisec 必须。周期性执行或调用 code 之间的时间间隔，以毫秒计。
+
+**返回值:** 一个可以传递给 Window.clearInterval() 从而取消对 code 的周期性执行的值。
+
+
+
+
+
+## 区别
+
+通过上面可以看出，setTimeout和setinterval的最主要区别是：
+
+setTimeout只运行一次，也就是说设定的时间到后就触发运行指定代码，运行完后即结束。如果运行的代码中再次运行同样的setTimeout命令，则可循环运行。（即 要循环运行，需函数自身再次调用 setTimeout()）
+
+而 setinterval是循环运行的，即每到设定时间间隔就触发指定代码。这是真正的定时器。
+
+setinterval使用简单，而setTimeout则比较灵活，可以随时退出循环，而且可以设置为按不固定的时间间隔来运行，比如第一次1秒，第二次2秒，第三次3秒。
 
