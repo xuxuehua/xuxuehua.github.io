@@ -122,6 +122,14 @@ npm install --save selenium-webdriver@2.44.0
 
 
 
+### PhantomJS
+
+```
+npm install phantomjs -g 
+```
+
+
+
 ###chrome driver
 
 ```

@@ -67,3 +67,11 @@ Satoshi Nakamoto
 
 bitcointalk.org
 
+
+
+## bitcoin vs checks vs Credit Card
+
+![img](https://cdn.pbrd.co/images/Hz3AvIK.png)
+
+
+

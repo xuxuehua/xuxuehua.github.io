@@ -11,7 +11,7 @@ date: 2018-07-27 23:20
 
 
 
-## setTimeout
+## setTimeout()
 
 setTimeout()方法用于在指定的毫秒数后调用函数或计算表达式。
 
@@ -24,6 +24,16 @@ setTimeout()方法用于在指定的毫秒数后调用函数或计算表达式�
 **参数：** code （必需）：要调用的函数后要执行的 JavaScript 代码串。millisec（必需）：在执行代码前需等待的毫秒数。 　
 
 **提示：** setTimeout() 只执行 code 一次。如果要多次调用，请使用 setInterval() 或者让 code 自身再次调用 setTimeout()。
+
+
+
+```
+const timeoutObj = setTimeout(() => {
+  console.log('timeout beyond time');
+}, 1500);
+```
+
+
 
 
 
@@ -47,6 +57,8 @@ var t=setTimeout("alert('5 秒！')",5000)
 
 </html>
 ```
+
+
 
 
 
@@ -83,13 +95,27 @@ t=setTimeout("timedCount()",1000)
 
 
 
-## clearTimeout()
 
-### 语法
+
+### clearTimeout()
+
+#### 语法
+
+clearTimeout(timeoutID)
+
+要使用 clearTimeout( ), 我们设定 setTimeout( ) 时 , 要给予这 setTimout( ) 一个名称 , 这名称就是 timeoutID , 我们叫停时 , 就是用这 timeoutID 来叫停 , 这是一个自定义名称 , 但很多人就以 timeoutID 为名。
+
+
 
 ```
-clearTimeout(setTimeout_variable)
+const timeoutObj = setTimeout(() => {
+    console.log('timeout log');
+});
+
+clearTimeout(timeoutObj);
 ```
+
+
 
 
 
@@ -128,7 +154,18 @@ function stopCount()
 
 
 
-## setInterval
+## setImmediate()
+
+```
+const immediateObj = setImmediate(() => {
+    console.log('Immediate executing');
+});
+```
+
+
+
+
+## setInterval()
 
 setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
 
@@ -143,6 +180,28 @@ setInterval() 方法会不停地调用函数，直到 clearInterval() 被调用�
 **参数:** code 必需。要调用的函数或要执行的代码串。millisec 必须。周期性执行或调用 code 之间的时间间隔，以毫秒计。
 
 **返回值:** 一个可以传递给 Window.clearInterval() 从而取消对 code 的周期性执行的值。
+
+
+
+```
+const intervalObj = setInterval(() => {
+    console.log('interval timeout');
+});
+```
+
+
+
+### clearInterval()
+
+```
+const intervalObj = setInterval(() => {
+    console.log('Interval timeout);
+});
+
+clearInterval(intervalObj);
+```
+
+
 
 
 

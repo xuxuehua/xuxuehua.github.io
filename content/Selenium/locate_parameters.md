@@ -7,7 +7,7 @@ date: 2018-07-19 18:17
 
 # 元素定位
 
-## selenium定位方法
+## Python selenium定位方法
 
 Selenium提供了8种定位方式。
 
@@ -174,6 +174,266 @@ Selenium(浏览器自动化测试框架)_百度百科
 自动化基础普及之selenium是啥? - 虫师 - 博客园
 python十大主流开源框架 「菜鸟必看」
 ```
+
+
+
+## nodejs selenium 定位方法
+
+### By.className( name )
+
+selenium**不支持**复合的class属性。比如`class="col-md-1 col-sm-2"`，我们只能通过`col-md-1`或者是`col-sm-2`来定位，不能同时使用这2个class进行定位。
+
+
+
+```
+<p>
+  <label for="input__text3" class="error">Error</label>
+  <input id="input__text3" class="is-error" type="text" placeholder="Text Input">
+</p>
+<p>
+  <label for="input__text4" class="valid">Valid</label>
+  <input id="input__text4" class="is-valid" type="text" placeholder="Text Input">
+</p>
+```
+
+```
+var path = require('path');
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By;
+
+var testFile = "file://" + path.join(__dirname,  "index.html")
+
+var dr = new webdriver.Builder().forBrowser('chrome').build();
+dr.get(testFile)
+
+dr.findElement(By.className('is-error')).sendKeys('should be error');
+dr.findElement(By.className('is-valid')).sendKeys('should be valid');
+```
+
+
+
+### By.css( selector )
+
+```
+<p>
+  <label for="input__search">Search</label>
+  <input id="input__search" type="search" placeholder="Enter Search Term">
+</p>
+<p>
+  <label for="input__text2">Number Input</label>
+  <input id="input__text2" type="number" placeholder="Enter a Number">
+</p>
+<p>
+  <label for="input__text3" class="error">Error</label>
+  <input id="input__text3" class="is-error" type="text" placeholder="Text Input">
+</p>
+<p>
+  <label for="input__text4" class="valid">Valid</label>
+  <input id="input__text4" class="is-valid" type="text" placeholder="Text Input">
+</p>
+```
+
+
+
+```
+var path = require('path');
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By;
+
+var testFile = "file://" + path.join(__dirname,  "index.html");
+
+var dr = new webdriver.Builder().forBrowser('chrome').build();
+dr.get(testFile);
+
+// id selector
+dr.findElement(By.css('#input__search')).sendKeys('测试教程网');
+// attribute selector
+dr.findElement(By.css('input[type="number"]')).sendKeys('66666');
+// class selector
+dr.findElement(By.css('.is-error')).sendKeys('should be error');
+// class selector
+dr.findElement(By.css('.is-valid')).sendKeys('should be valid');
+```
+
+
+
+
+
+### By.id( id )
+
+```
+var path = require('path');
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By;
+
+var testFile = "file://" + path.join(__dirname,  "index.html")
+
+var dr = new webdriver.Builder().forBrowser('chrome').build();
+dr.get(testFile)
+
+dr.findElement(By.id('input__text')).sendKeys('测试教程网');
+dr.findElement(By.id('input__password')).sendKeys('password');
+dr.findElement(By.id('input__webaddress')).sendKeys('http://www.itest.info');
+dr.findElement(By.id('input__emailaddress')).sendKeys('service@itest.info');
+dr.findElement(By.id('input__phone')).sendKeys('13888888888');
+dr.findElement(By.id('input__search')).sendKeys('keywords');
+dr.findElement(By.id('input__text2')).sendKeys('6666666');
+dr.findElement(By.id('input__text3')).sendKeys('should be error');
+dr.findElement(By.id('input__text4')).sendKeys('should be valid');
+```
+
+
+
+### By.js( script, …var_args )
+
+
+
+### By.linkText( text )
+
+链接可以使用By.linkText和By.partialLinkText的方式去定位。
+
+链接的html标签是`<a></a>`。
+
+看这个html代码`<a href="http://www.itet.info">这就是linkText<a>`，这里**[这就是linkText]** 便是这个链接的linkText，partialLinkText指的是部分的链接文本，如果链接的文本过长的时候，使用partialLinkText会起到简化代码的作用。
+
+```
+<ul>
+  <li><a href="#text__headings">Headings</a></li>
+  <li><a href="#text__paragraphs">Paragraphs</a></li>
+  <li><a href="#text__blockquotes">Blockquotes</a></li>
+  <li><a href="#text__lists">Lists</a></li>
+  <li><a href="#text__hr">Horizontal rules</a></li>
+  <li><a href="#text__tables">Tabular data</a></li>
+  <li><a href="#text__code">Code</a></li>
+  <li><a href="#text__inline">Inline elements</a></li>
+</ul>
+```
+
+
+
+```
+var path = require('path');
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By;
+
+var testFile = "file://" + path.join(__dirname,  "index.html");
+
+var dr = new webdriver.Builder().forBrowser('chrome').build();
+dr.get(testFile);
+
+dr.findElement(By.linkText('Headings')).getAttribute('href').then(function(href) {
+  console.log(href);
+});
+
+dr.findElement(By.linkText('Paragraphs')).getAttribute('href').then(function(href) {
+  console.log(href);
+});
+
+dr.findElement(By.linkText('Blockquotes')).getAttribute('href').then(function(href) {
+  console.log(href);
+});
+
+dr.findElement(By.linkText('Lists')).getAttribute('href').then(function(href) {
+  console.log(href);
+});
+
+dr.findElement(By.linkText('Horizontal rules')).getAttribute('href').then(function(href) {
+  console.log(href);
+});
+
+dr.findElement(By.linkText('Tabular data')).getAttribute('href').then(function(href) {
+  console.log(href);
+});
+
+dr.findElement(By.linkText('Code')).getAttribute('href').then(function(href) {
+  console.log(href);
+});
+
+dr.findElement(By.partialLinkText('Inline')).getAttribute('href').then(function(href) {
+  console.log(href);
+});
+
+dr.quit();
+
+>>>
+file://xxxx/index.html#text__headings
+file://xxxx/index.html#text__paragraphs
+file://xxxx/index.html#text__blockquotes
+file://xxxx/index.html#text__lists
+file://xxxx/index.html#text__hr
+file://xxxx/index.html#text__tables
+file://xxxx/index.html#text__code
+file://xxxx/index.html#text__inline
+```
+
+
+
+### By.name( name )
+
+```
+// <input name="username" />
+dr.findElement(By.name('username')).sendKeys('测试教程网');
+
+
+// <input name="password" type="password" />
+dr.findElement(By.name('password')).sendKeys('就不告诉你');
+```
+
+
+
+### By.partialLinkText( text )
+
+
+
+### By.xpath( xpath )
+
+#### xpath语法要点
+
+- `nodename` 选取此节点的所有子节点。
+- `/` 从根节点选取。
+- `//` 从匹配选择的当前节点选择文档中的节点，而不考虑它们的位置。
+- `.` 选取当前节点。
+- `..` 选取当前节点的父节点。
+- `@` 选取属性。
+
+
+
+```
+// <input id="input__text2" type="number" placeholder="Enter a Number">
+dr.findElement(By.xpath('//input[@type="number"]')).sendKeys('66666');
+```
+
+
+
+### 定位一组元素
+
+定位一组元素一般有如下的作用
+
+- 找到一组属性部分相同的元素，遍历元素，做一些批量操作
+- 找到一组属性部分相同的元素，遍历元素，返回**1个或几个**特定的元素，做更精确的定位
+
+findElements方法可以定位一组元素。该方法的参数跟findElement方法一致。
+
+ 
+
+```
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By;
+
+var dr = new webdriver.Builder().forBrowser('chrome').build();
+dr.get('http://www.testclass.net/selenium_javascript/');
+
+dr.findElements(By.css('.post-stub a')).then(function(links){
+  for (var i = 0; i < links.length; i++) {
+    links[i].getAttribute('href').then(function(href) {
+      console.log(href);
+    });
+  }
+});
+dr.quit();
+```
+
+
 
 
 

@@ -74,6 +74,95 @@ driver.refresh() #刷新当前页面
 
 
 
+### 页面等待
+
+#### wait
+
+wait( condition, opt_timeout, opt_message )
+
+wait方法一般用来等待页面上某些条件得到满足后才继续执行脚本。比如等待页面上某个弹出框出现，等某个元素可以被定位到之类。
+
+wait方法中可以传入[Condition](http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_Condition.html)表示一般性条件和[WebElementCondition](http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElementCondition.html)。
+
+如果传入的元素级条件被满足，那么wait方法会返回[ WebElementPromise](http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElementPromise.html)，也就是说可以直接返回满足条件的元素。
+
+如果在规定的时间内(也就是第2个参数)没有等到条件被满足，那么该方法会抛出异常。
+
+一般性用法示例：
+
+```
+// 在10s内id是foo的元素被定位到，然后点击之
+var button = driver.wait(until.elementLocated(By.id('foo')), 10000);
+button.click();
+```
+
+另外wait还可以将执行中的脚本暂停住一段时间，直到第1个参数中的异步操作处理完毕，如下所示
+
+```
+var started = startTestServer();
+driver.wait(started, 5 * 1000, 'Server should start within 5 seconds');
+driver.get(getServerUrl());
+```
+
+#### sleep
+
+sleep可以不管任何情况直接将执行中的脚本直接暂停一段时间。
+
+```
+console.log('start')
+driver.findElement(By.css('.kls')).click();
+// 等待3s
+driver.sleep(3000)
+driver.quit()
+```
+
+sleep在某些时候非常好用，但是希望大家不要乱用，因为这会拖慢脚本的执行速度。
+
+
+
+#### until
+
+until一般跟wait一起用，用于等待页面上的一些条件被满足
+
+
+
+- ableToSwitchToFrame(frame): 直到selenium可以将定位上下文切换到frame里
+- alertIsPresent(): 直到alert出现
+- elementIsDisabled(element): 直到元素灰掉，不能被点击
+- elementIsEnabled(element): 直到元素可以被点击
+- elementIsNotSelected(element): 直到元素不可选
+- elementIsNotVisible(element): 直到元素不可见
+- elementIsSelected(element): 直到元素可选
+- elementIsVisible(element): 直到元素可见
+- elementLocated(locator): 最常用，直到元素可以被定位
+- elementTextContains(element, substr): 直到元素的text包含substr
+- elementTextIs(element, expected_text): 直到元素的text是expected_text
+- elementTextMatches(element,regex): 直到元素的text满足正则表达式regex
+- elementsLocated(locator): 直到一组元素被定位
+- stalenessOf(element): 直到元素被dom树移除或页面刷新
+- titleContains(substr): 直到页面title包含substr
+- titleIs(expected_title): 直到页面的title是expected_title
+- titleMatches(regex): 直到页面的title满足正则表达式regex
+- urlContains(substrUrl): 直到页面url包含substrUrl
+- urlIs(expected_url): 直到页面的url是expected_url
+- urlMatches(regex): 直到页面的url满足正则表达式regex
+
+
+
+until还允许我们自定义条件。我们只需要传入1个回调，该回调返回真值(true)就代表等待的条件被满足。
+
+在javascript，真值表示所有**不是**null, undefined, false, 0, 或 空字符串的值。
+
+```
+driver.wait(function() {
+  return driver.getTitle().then(function(title) {
+    return title === '测试教程网';
+  });
+}, 1000);
+```
+
+
+
 ### 关闭浏览器
 
 发布时间 2017年6月12日 
@@ -236,6 +325,12 @@ context_click()方法用于模拟鼠标右键操作， 在调用时需要指定�
 
 ## 键盘事件
 
+
+
+### send_keys (Python)
+
+
+
 Keys()类提供了键盘上几乎所有按键的方法。 前面了解到， send_keys()方法可以用来模拟键盘输入， 除此 之外， 我们还可以用它来输入键盘上的按键， 甚至是组合键， 如 Ctrl+A、 Ctrl+C 等。
 
 ```
@@ -291,6 +386,84 @@ driver.quit()
 - send_keys(Keys.F1) 键盘 F1
 - ……
 - send_keys(Keys.F12) 键盘 F12
+
+
+
+### sendKeys(nodejs)
+
+
+
+sendKeys()方法可以用来模拟用户按下键盘，组合键比如`ctrl+c`等也可以模拟。
+
+打开一个页面，然后一下往下拉，直到滚动条拉到最底部, 用模拟按空格键的方式实现。
+
+
+
+#### SPACE 空格
+
+```
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By;
+
+var Key = webdriver.Key;
+
+var dr = new webdriver.Builder().forBrowser('chrome').build();
+dr.get('http://www.xuxuehua.com');
+
+// 把页面的body找到，在body上模拟按钮，这是整页面模拟按键事件的小技巧
+var body = dr.findElement(By.css("body"));
+
+// 每隔1.5s按一次空格键
+// setTimeout在js binding中相当于其他binding中的sleep功能
+for (var i = 0; i < 10; i++) {
+  setTimeout(function() {
+    body.sendKeys(Key.SPACE);
+  }, i * 1500);
+}
+```
+
+
+
+
+
+## 组合事件
+
+当页面的交互比较复杂的时候，我们可能会使用到组合事件。比如先把鼠标移动到某个元素上，然后按住鼠标，将该元素拖到另一个地方。为了完成这种操作，我们就需要使用组合事件[ActionSequence](http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_ActionSequence.html)
+
+组合事件中，我们可以组合鼠标和键盘的操作，这些操作将根据我们组合的顺序依次执行。
+
+
+
+### ActionSequence
+
+####  基本用法
+
+- 直接使用`WebDriver.actions()`进行调用，不需要额外的初始化工作;
+- 只有显示调用了`perform()`方法才让所有动作真正得到执行；简而言之，一定要调用`perform()`;
+
+```
+driver.actions().
+     keyDown(Key.SHIFT).
+     click(element1).
+     click(element2).
+     dragAndDrop(element3, element4).
+     keyUp(Key.SHIFT).
+     perform();
+```
+
+
+
+#### 实例方法
+
+- click( opt_elementOrButton, opt_button ): 单击，相当于把鼠标移动到元素的中心，然后点击左键
+- doubleClick( opt_elementOrButton, opt_button ): 双击, 相当于把鼠标移动到元素的中心，然后双击左键
+- this.dragAndDrop( element, location ): 拖拽，第1个参数是拖谁(WebElement)，第2个参数是拽到哪里，可以是WebElement，也可以是坐标`{x: number, y: number}`
+- this.keyDown( key ): 按下一个键，必须是{ALT, CONTROL, SHIFT, COMMAND, META}中的一个， 会一直按着，除非调用keyUp()进行松开
+- this.keyUp( key ): 松开一个键，必须是{ALT, CONTROL, SHIFT, COMMAND, META}中的一个
+- this.mouseDown( opt_elementOrButton, opt_button ): 按下鼠标，除非mouseUp，否则不松开
+- this.mouseMove( location, opt_offset ): 把鼠标移动到元素的中心或者具体位置，当然，第2个参数可以也可以增加1个偏移量, `{x: number, y: number}`
+- this.mouseUp( opt_elementOrButton, opt_button ): 松开鼠标
+- this.sendKeys( …var_args ): 除了具体的Key以外，该方法也可以接受Array，这样模拟组合键就容易多了
 
 
 
@@ -361,7 +534,49 @@ https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx...
 - text：获取搜索条目的文本信息。
 
 
-### 多表单切换
+
+### 断言 (nodejs)
+
+```
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By;
+
+var assert = require('selenium-webdriver/testing/assert');
+
+var dr = new webdriver.Builder().forBrowser('chrome').build();
+dr.get('http://www.testclass.net/');
+
+dr.getTitle().then(function(title) {
+  assert(title).contains('测试教程网');
+});
+
+dr.getCurrentUrl().then(function(url) {
+  assert(url).contains('testclass');
+});
+
+dr.quit()
+```
+
+
+
+上面断言全部通过的时候看不到任何的结果，大家可以试着修改一下断言，让断言失败，这时候就应该可以看到类似下面的信息
+
+```
+AssertionError: 测试教程网 · 测试教程网.indexOf(测试教程网12443) !== -1
+```
+
+
+
+
+
+
+
+
+
+
+
+
+### 多表单切换(Python)
 发布时间 2017年6月20日 
 
 在Web应用中经常会遇到frame/iframe表单嵌套页面的应用，WebDriver只能在一个页面上对元素识别与定位，对于frame/iframe表单内嵌页面上的元素无法直接定位。这时就需要通过switch_to.frame()方法将当前定位的主体切换为frame/iframe表单的内嵌页面中。
@@ -413,7 +628,48 @@ driver.switch_to.parent_frame()
 
 
 
-### 多窗口切换
+### 多表单切换(nodejs)
+
+* switchTo().frame(id)
+
+id可以是1个数字，从0开始。switchTo().frame(0)表示切换到页面上的第1个frame，依此类推;
+id也可以是1个WebElement对象，也就是需要切换到的frame;
+id可以是null，等于是调用了switchTo().defaultContent()方法;
+
+* switchTo().defaultContent()
+
+切换回到主页面，调用这个方法会将定位的上下文切回主页面，此后就可以继续定位主页面上的元素了。
+
+
+
+```
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By;
+
+var dr = new webdriver.Builder().forBrowser('chrome').build();
+dr.get('some url');
+
+// 切换到第2个frame进行元素定位
+dr.switchTo().frame(1).then(function() {
+  dr.findElement(By.id('this-element-is-in-frame'));
+});
+
+// 切换到第id==example-frame的frame中进行元素定位
+dr.findElement(By.id('example-frame')).then(function(iframe) {
+  dr.switchTo().frame(iframe).then(function() {
+    dr.findElement(By.id('this-element-is-in-frame'));
+  });
+});
+
+// 切换回主页面
+dr.switchTo().defaultContent();
+```
+
+
+
+
+
+### 多窗口切换(Python)
 
 发布时间 2017年6月19日 
 
@@ -455,6 +711,40 @@ driver.quit()
 - current_window_handle：获得当前窗口句柄。
 - window_handles：返回所有窗口的句柄到当前会话。
 - switch_to.window()：用于切换到相应的窗口，与上一节的switch_to.frame()类似，前者用于不同窗口的切换，后者用于不同表单之间的切换。
+
+
+
+### 多窗口切换(nodejs)
+
+有时候我们点击链接会弹出新窗口，我们需要去新窗口继续定位和操作元素，这时候就需要用到切换窗口的操作了。
+
+switchTo().window(name_or_handle)方法可以切换到目标窗口。
+
+一般来说，不建议大家直接使用上面的方法去切换，更明智的做法是获取要打开的窗口的链接，然后直接用get访问该链接，这样就不需要写切换窗口的代码了。
+
+
+
+
+* switchTo().window(name_or_handle)
+
+窗口的name，这是为了兼容以前的实现，至于窗口的name是什么，我不太清楚
+窗口句柄，使用driver.getAllWindowHandles()句柄就可以返回浏览器中所有的打开的标签句柄了
+
+
+
+```
+dr.getAllWindowHandles().then(function(handles) }{
+  for (var i = 0; i < handles.length; i++) {
+    dr.switchTo().window(handles[i]);
+  }
+});
+```
+
+
+
+
+
+
 
 
 
@@ -501,7 +791,7 @@ driver.quit()
 
 
 
-### 下拉框选择
+### 下拉框选择(Python)
 
 发布时间 2017年6月17日 
 
@@ -532,6 +822,50 @@ driver.quit()
 ```
 
 Select类用于定位select标签。 select_by_value() 方法用于定位下接选项中的value值。
+
+
+
+### 下拉框选择(nodejs)
+
+下拉列表的标签是select，如上所示，其中
+
+- select表示下拉列表
+- option表示列表里的子项
+
+html里，下拉列表中一共有3项，分别是Option One, Option Two和Option Three。
+
+```
+<select id="select">
+  <optgroup label="Option Group">
+    <option>Option One</option>
+    <option>Option Two</option>
+    <option>Option Three</option>
+  </optgroup>
+</select>
+```
+
+
+
+```
+var path = require('path');
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By;
+
+var testFile = "file://" + path.join(__dirname,  "index.html")
+
+var dr = new webdriver.Builder().forBrowser('chrome').build();
+dr.get(testFile)
+
+dr.findElement(By.id('select')).then(function(select) {
+  dr.findElements(By.css('option')).then(function(options) {
+    options[options.length - 1].click();
+  });
+});
+```
+
+### 运行结果
+
+![img](http://wx4.sinaimg.cn/mw1024/726a2979gy1fhp1kxp8qdj20f606kaa6.jpg)
 
 
 
@@ -686,9 +1020,13 @@ driver.quit()
 
 
 
+
+
+
+
 ## 截图
 
-### 窗口截图
+### 窗口截图(Python)
 
 发布时间 2017年6月13日 
 
@@ -715,6 +1053,26 @@ driver.quit()
 
 
 
+###窗口截图(nodejs)
+
+```
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By;
+
+var Key = webdriver.Key;
+
+var dr = new webdriver.Builder().forBrowser('chrome').build();
+dr.get('http://www.testclass.net/selenium_javascript/');
+dr.takeScreenshot().then(function(data) {
+  require('fs').writeFile('pic.png', data, 'base64');
+  dr.quit();
+})
+```
+
+
+
+
+
 ### 元素截图
 
 `screenshot_as_png`
@@ -727,6 +1085,97 @@ code = self.driver.find_element_by_xpath("//img[@alt='CAPTCHA']")
             f.write(img)
         rec_code = self.code_recog(img_name)
 ```
+
+
+
+
+
+## 执行javascript
+
+使用driver.executeScript(js)方法会在当前的定位上下文里执行相应的js脚本。
+
+### 传参
+
+executeScript方法支持向脚本中传入参数，所有参数的参数都可以在脚本中通过`arguments`对象来引用。我们可以传入下列类型的参数:
+
+- boolean
+- number
+- string
+- WebElement:也就是我们定位到的页面对象
+- Array或者是Object: 只要里面的每一项都是上面的类型就好了
+
+### 返回值
+
+同样的，我们可以接收js脚本的返回值，返回值有下面一些情况
+
+- 如果js返回HTML元素，那么该元素会自动被封装成WebElement
+- null 或者 undefined会被转成null
+- boolean, number, string 不做转换
+- function会被转成相应的字符串表示
+- Array和Object中的每一项都按照上面的规则转换
+
+ 
+
+```
+var path = require('path');
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By;
+
+var url = "http://www.baidu.com/";
+
+var dr = new webdriver.Builder().forBrowser('chrome').build();
+dr.get(url)
+
+// 先隐藏掉百度一下按钮
+// 通过arguments[0]传入百度一下按钮
+var hideBtn = "arguments[0].style.display='none';"
+
+dr.executeScript(hideBtn, dr.findElement(By.id('su')));
+
+
+// 然后返回页面上所有导航链接的文本
+// 通过return返回需要的结果
+var linkTexts = "return $('.mnav').text()"
+dr.executeScript(linkTexts).then(function(texts) {
+  console.log(texts);
+});
+
+// 最后把页面背景变成黑色
+
+dr.executeScript("document.body.style.backgroundColor='black'");
+```
+
+
+
+## 处理javascript弹出框
+
+### 一般的处理方式
+
+当alert弹出之后，我们可以通过类似下面的代码去处理alert
+
+```
+driver.switchTo().alert().dismiss();
+driver.switchTo().alert().accept();
+```
+
+切换到alert/confirm/prompt之后，我们可以进行如下的后续动作
+
+- accept(): 接受,点ok
+- dismiss(): 点取消
+- getText(): 拿到提示文本
+- sendKeys( text ): 如果是prompt的话，可以用该方法输入一些内容
+- authenticateAs( username, password ): 如果是[basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication)的话，可以通过该方法来输入用户名和密码
+
+### 一劳永逸的处理方式
+
+如果我们不在乎alert上提示的内容，只想页面上不弹出alert/confirm/prompt的话，可以通过js来覆盖这些方法的原生实现，从而达到**禁用**弹出框的效果，比如下面的代码就演示了如何禁用alert。
+
+```
+var banAlert = 'window.alert = function(msg){}'
+driver.executeScript(banAlert);
+```
+
+这样在测试过程中，所有的alert都不会弹出。
 
 
 
