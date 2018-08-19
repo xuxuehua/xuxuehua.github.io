@@ -28,9 +28,8 @@ In [28]: T = (1, 2, 3)
 ## 元组常用操作
 
 
-### 查
 
-#### count
+### count
 
 ```
 In [1]: name  = ('Rick', 'Michelle')
@@ -44,7 +43,7 @@ Out[4]: 0
 
 
 
-#### index
+### index
 
 ```
 In [1]: name  = ('Rick', 'Michelle')
@@ -55,7 +54,7 @@ Out[4]: 0
 
 
 
-#### 下标操作及切片
+### 下标操作及切片
 
 ```
 In [7]: T
@@ -92,7 +91,7 @@ Out[16]: (1, 3, 5)
 
 
 
-#### Packing & Unpacking
+### Packing & Unpacking
 
 
 ```python

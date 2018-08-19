@@ -96,6 +96,18 @@ In [23]: L
 Out[23]: []
 ```
 
+
+
+#### del
+
+```
+
+```
+
+
+
+
+
 ### 改
 
 #### reverse
@@ -164,6 +176,34 @@ ValueError                                Traceback (most recent call last)
 ValueError: 8 is not in list
 
 ```
+
+
+
+#### len
+
+```
+
+```
+
+
+
+#### enumerate
+
+```
+
+```
+
+
+
+#### sort
+
+```
+
+```
+
+
+
+### 
 
 ### 复制
 
