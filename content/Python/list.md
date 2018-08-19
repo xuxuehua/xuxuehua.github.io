@@ -10,6 +10,9 @@ collection: 基本变量类型
 list 是最常用的线性数据结构
 list是一系列元素的有序组合
 list是可变的
+list 可以嵌套任何数据类型
+
+
 
 ## 定义列表
 
@@ -271,4 +274,85 @@ Out[41]: [10, 2, 3, 4, 6]
 
 
 
+## 列表解析
 
+> 列表解析是python的重要的语法糖
+> 列表解析的速度比for in迭代快
+
+
+
+### 基本语法
+
+`ret = [expression for item in iterator]` 
+
+等价于 
+```python
+ret = []
+for item in iterator:
+    ret.append(expression)
+```
+
+
+
+
+```python
+In [2]: L
+Out[2]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+In [3]: [x+1 for x in L]
+Out[3]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+```
+
+迭代时间快
+
+```python
+In [10]: timeit.timeit('[x+1 for x in range(10)]')
+
+Out[10]: 2.861458881001454
+
+In [11]: timeit.timeit('''
+    ...: l=[]
+    ...: for x in range(10):
+    ...:     l.append(x+1)
+    ...: ''')
+Out[11]: 3.5815405790053774
+```
+
+
+### 带条件
+
+```python
+Out[12]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+In [13]: [x+1 for x in L if x%2 ==0]
+Out[13]: [1, 3, 5, 7, 9]
+
+In [15]: [x+1 for x in L if x%2 == 0 if x>2]
+Out[15]: [5, 7, 9]
+
+```
+
+## 笛卡尔积
+
+### 基本语法
+
+`ret = [expression for x in X for y in Y]`
+
+等价于
+```python
+ret = []
+for x in X:
+    for y in Y:
+        ret.append(expression)
+```
+
+
+```python
+In [17]: l1 = [1, 2, 3]
+
+In [18]: l2 = [4, 5, 6]
+
+In [19]: [(x, y) for x in l1 for y in l2]
+Out[19]: [(1, 4), (1, 5), (1, 6), (2, 4), (2, 5), (2, 6), (3, 4), (3, 5), (3, 6)]
+```

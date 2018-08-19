@@ -33,6 +33,41 @@ In [28]: d = {'a':1, 'b':2}
 
 
 
+### fromkeys
+
+初始化一个新的字典
+
+```
+In [37]: dict.fromkeys([1, 2, 3], 'test')
+Out[37]: {1: 'test', 2: 'test', 3: 'test'}
+```
+
+* 坑，少用
+
+```
+In [38]: dict.fromkeys([6, 7, 8], [1, {'name': 'rick'}, 2])
+Out[38]: 
+{6: [1, {'name': 'rick'}, 2],
+ 7: [1, {'name': 'rick'}, 2],
+ 8: [1, {'name': 'rick'}, 2]}
+
+In [39]: x = dict.fromkeys([6, 7, 8], [1, {'name': 'rick'}, 2])
+
+In [40]: x[7][1]['name'] = 'Rick'
+
+In [41]: x
+Out[41]: 
+{6: [1, {'name': 'Rick'}, 2],
+ 7: [1, {'name': 'Rick'}, 2],
+ 8: [1, {'name': 'Rick'}, 2]}
+```
+
+
+
+
+
+
+
 ## 字典的常用操作
 
 ### 添加元素
@@ -76,6 +111,81 @@ Out[10]: {'a': 1, 'b': 2, 'c': 3}
 
 In [11]: 'a' in d
 Out[11]: True
+```
+
+
+
+#### keys
+
+```
+In [12]: d
+Out[12]: {'a': 1, 'b': 2, 'c': 3}
+
+In [13]: d.keys()
+Out[13]: dict_keys(['a', 'b', 'c'])
+```
+
+
+
+#### values
+
+```
+In [14]: d.values()
+Out[14]: dict_values([1, 2, 3])
+```
+
+
+
+#### items
+
+```
+In [18]: d
+Out[18]: {'a': 1, 'b': 2, 'c': 3}
+
+In [19]: d.items()
+Out[19]: dict_items([('a', 1), ('b', 2), ('c', 3)])
+```
+
+
+
+### 变更元素
+
+#### setdefault
+
+```
+In [20]: d
+Out[20]: {'a': 1, 'b': 2, 'c': 3}
+
+In [21]: d.setdefault('c')
+Out[21]: 3
+
+In [22]: d.setdefault('d')
+
+In [23]: d
+Out[23]: {'a': 1, 'b': 2, 'c': 3, 'd': None}
+
+
+In [31]: d.setdefault('e', 5)
+Out[31]: 5
+
+In [32]: d
+Out[32]: {'a': 1, 'b': 2, 'c': 3, 'd': None, 'e': 5}
+```
+
+
+
+#### update
+
+```
+In [33]: d
+Out[33]: {'a': 1, 'b': 2, 'c': 3, 'd': None, 'e': 5}
+
+In [34]: x = {'d': 5}
+
+In [35]: d.update(x)
+
+In [36]: d
+Out[36]: {'a': 1, 'b': 2, 'c': 3, 'd': 5, 'e': 5}
 ```
 
 
@@ -196,4 +306,38 @@ In [5]: del d['a']
 
 In [6]: d
 Out[6]: {'b': 2}
+```
+
+## 字典解析
+
+### 基本语法
+
+`ret = {exprK:exprV for item in iterator}`
+
+等价于
+
+```python
+ret = dict()
+for item in iterator:
+    ret.update({exprK: exprV})
+```
+
+```python
+In [24]: d = {'a': 1, 'b': 2}
+
+In [25]: {k:v for k, v in d.items()}
+Out[25]: {'a': 1, 'b': 2}
+
+In [26]: l1
+Out[26]: [1, 2, 3]
+
+In [27]: l2
+Out[27]: [4, 5, 6]
+
+In [28]: {x:y for x in l1 for y in l2}
+Out[28]: {1: 6, 2: 6, 3: 6}
+
+In [29]: {k:v for k, v in [('a', 1), ('b', 2)]}
+Out[29]: {'a': 1, 'b': 2}
+
 ```
