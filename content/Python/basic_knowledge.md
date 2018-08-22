@@ -158,3 +158,27 @@ PyCodeObject和pyc文件。
 
 
 * input 方法
+
+### 多行输入
+
+ ```
+sentinel = 'end' # 遇到这个就结束
+lines = []
+for line in iter(input, sentinel):
+    lines.append(line)
+ ```
+
+
+
+### 带提示的多行输入
+
+```
+from functools import partial
+
+inputNew = partial(input,'Input something pls:\n')
+sentinel = 'end' # 遇到这个就结束
+lines = []
+for line in iter(inputNew, sentinel):
+    lines.append(line)
+```
+

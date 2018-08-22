@@ -69,6 +69,8 @@ var ps = q1.querySelectorAll('div.highlighted > p');
 
 
 
+
+
 ## 更新DOM
 
  ### 修改`innerHTML`属性
@@ -659,7 +661,7 @@ function checkForm() {
 
 ![alt](https://cdn.pbrd.co/images/Hrd5Q1I.png)
 
-​              待上传文件: 
+              待上传文件: 
 
 通常，上传的文件都由后台服务器处理，JavaScript可以在提交表单时对文件扩展名做检查，以便防止用户上传无效格式的文件：
 

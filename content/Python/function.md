@@ -25,6 +25,16 @@ def fn():
 
 ### 变量作用域
 
+#### 全局与局部变量
+
+在子程序中定义的变量称为局部变量，在程序的一开始定义的变量称为全局变量。
+
+全局变量作用域是整个程序，局部变量作用域是定义该变量的子程序。
+
+当全局变量与局部变量同名时：
+
+在定义局部变量的子程序内，局部变量起作用；在其它地方全局变量起作用。
+
 ```python
 a = 100        #全局变量
 def setNum():
@@ -35,7 +45,28 @@ setNum()       #调用函数
 print(a)       #打印全局变量
 ```
 
-### 
+```
+x = 0
+def grandpa():
+    x = 1
+    print('grandpa', x)
+    def dad():
+        x = 2
+        print('father', x)
+        def son():
+            x = 3
+            print('son', x)
+        son()
+    dad()
+grandpa()
+
+>>>
+grandpa 1
+father 2
+son 3
+```
+
+
 
 
 
@@ -359,28 +390,123 @@ print(b)
 
 ## 函数返回值
 
-```python
-def sum(num1, num2):
-    return num1 + num2
-print(sum(1, 3))
-> 
-4
-​````
+函数在执行过程中只要遇到return语句，就会停止执行并返回结果
 
-​```python
-def filter_even(list):
-    list1 = []
-    for i in range(len(list)):
-        if list[i] % 2 ==0:
-            list1.append(list[i])
-            i -= 1
-    return list1
-list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-list2 = filter_even(list)
-print(list2)
-> 
-[2, 4, 6, 8, 10]
+如果未在函数中指定return,那这个函数的返回值为None 
+
+
+
+return = 0, 返回None
+
+return = 1, 返回object
+
+return > 1, 返回tuple
+
 ```
+def test1():
+    pass
+
+
+def test2():
+    return 0
+
+
+def test3():
+    return 0, 10, 'hello'
+
+
+t1 = test1()
+t2 = test2()
+t3 = test3()
+
+print(type(t1), t1)
+print(type(t2), t2)
+print(type(t3), t3)
+
+>>>
+<class 'NoneType'> None
+<class 'int'> 0
+<class 'tuple'> (0, 10, 'hello')
+```
+
+
+
+## 匿名函数
+
+匿名函数就是不需要显式的指定函数
+
+```
+def calc(n):
+    return n**n
+print(calc(10))
+
+```
+
+换成匿名函数
+
+```
+calc = lambda n:n**n
+print(calc(10))
+```
+
+
+
+匿名函数主要是和其它函数搭配使用
+
+```
+res = map(lambda x:x**2,[1,5,7,4,8])
+for i in res:
+    print(i)
+    
+>>>
+1
+25
+49
+16
+64
+```
+
+
+
+
+
+## 函数递归
+
+在函数内部，可以调用其他函数。如果一个函数在内部调用自身本身，这个函数就是递归函数。
+
+递归函数必须明确结束条件
+
+
+
+>  尽量少用
+
+```
+def calc(n):
+    print(n)
+    if int(n/2) ==0:
+        return n
+    return calc(int(n/2))
+ 
+calc(10)
+ 
+>>>
+10
+5
+2
+1
+```
+
+
+
+## 函数式编程
+
+函数式编程要求使用函数，可以把运算过程定义为不同的函数
+
+```
+var result = subtract(multiply(add(1, 2), 3), 4)
+```
+
+
 
 
 
