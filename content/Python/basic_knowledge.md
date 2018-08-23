@@ -182,3 +182,112 @@ for line in iter(inputNew, sentinel):
     lines.append(line)
 ```
 
+
+
+
+
+## 软件目录结构规范
+
+
+
+### 特点
+
+设计一个层次清晰的目录结构，就是为了达到以下两点:
+
+1. 可读性高: 不熟悉这个项目的代码的人，一眼就能看懂目录结构，知道程序启动脚本是哪个，测试目录在哪儿，配置文件在哪儿等等。从而非常快速的了解这个项目。
+2. 可维护性高: 定义好组织规则后，维护者就能很明确地知道，新增的哪个文件和代码应该放在什么目录之下。这个好处是，随着时间的推移，代码/配置的规模增加，项目结构不会混乱，仍然能够组织良好。
+
+
+
+### 目录组织方式
+
+一个较好的Python工程目录结构，已经有一些得到了共识的目录结构。在Stackoverflow的[这个问题](http://stackoverflow.com/questions/193161/what-is-the-best-project-structure-for-a-python-application)上，能看到大家对Python目录结构的讨论。
+
+假设你的项目名为foo, 我比较建议的最方便快捷目录结构这样就足够了:
+
+```
+Foo/
+|-- bin/
+|   |-- foo
+|
+|-- foo/
+|   |-- tests/
+|   |   |-- __init__.py
+|   |   |-- test_main.py
+|   |
+|   |-- __init__.py
+|   |-- main.py
+|
+|-- docs/
+|   |-- conf.py
+|   |-- abc.rst
+|
+|-- setup.py
+|-- requirements.txt
+|-- README
+```
+
+> `bin/`: 存放项目的一些可执行文件，当然你可以起名`script/`之类的也行。
+>
+> `foo/`: 存放项目的所有源代码。(1) 源代码中的所有模块、包都应该放在此目录。不要置于顶层目录。(2) 其子目录`tests/`存放单元测试代码； (3) 程序的入口最好命名为`main.py`。
+>
+> `docs/`: 存放一些文档。
+> `setup.py`: 安装、部署、打包的脚本。
+> `requirements.txt`: 存放软件依赖的外部Python包列表。
+> `README`: 项目说明文件。
+
+
+
+#### README
+
+目的是能简要描述该项目的信息，让读者快速了解这个项目。
+
+它需要说明以下几个事项:
+
+1. 软件定位，软件的基本功能。
+2. 运行代码的方法: 安装环境、启动命令等。
+3. 简要的使用说明。
+4. 代码目录结构说明，更详细点可以说明软件的基本原理。
+5. 常见问题说明。
+
+我觉得有以上几点是比较好的一个`README`。在软件开发初期，由于开发过程中以上内容可能不明确或者发生变化，并不是一定要在一开始就将所有信息都补全。但是在项目完结的时候，是需要撰写这样的一个文档的。
+
+可以参考Redis源码中[Readme](https://github.com/antirez/redis#what-is-redis)的写法，这里面简洁但是清晰的描述了Redis功能和源码结构。
+
+
+
+#### setup.py
+
+用`setup.py`来管理代码的打包、安装、部署问题。业界标准的写法是用Python流行的打包工具[setuptools](https://pythonhosted.org/setuptools/setuptools.html#developer-s-guide)来管理这些事情。这种方式普遍应用于开源项目中。不过这里的核心思想不是用标准化的工具来解决这些问题，而是说，**一个项目一定要有一个安装部署工具**，能快速便捷的在一台新机器上将环境装好、代码部署好和将程序运行起来。
+
+setuptools的[文档](https://pythonhosted.org/setuptools/setuptools.html#developer-s-guide)比较庞大，刚接触的话，可能不太好找到切入点。学习技术的方式就是看他人是怎么用的，可以参考一下Python的一个Web框架，flask是如何写的: [setup.py](https://github.com/mitsuhiko/flask/blob/master/setup.py)
+
+当然，简单点自己写个安装脚本（`deploy.sh`）替代`setup.py`也未尝不可。
+
+
+
+#### requirements.txt
+
+这个文件存在的目的是:
+
+1. 方便开发者维护软件的包依赖。将开发过程中新增的包添加进这个列表中，避免在`setup.py`安装依赖时漏掉软件包。
+2. 方便读者明确项目使用了哪些Python包。
+
+这个文件的格式是每一行包含一个包依赖的说明，通常是`flask>=0.10`这种格式，要求是这个格式能被`pip`识别，这样就可以简单的通过 `pip install -r requirements.txt`来把所有Python包依赖都装好了。具体格式说明： [点这里](https://pip.readthedocs.org/en/1.1/requirements.html)。
+
+
+
+#### 配置文件
+
+1. 模块的配置都是可以灵活配置的，不受外部配置文件的影响。
+2. 程序的配置也是可以灵活控制的。
+
+能够佐证这个思想的是，用过nginx和mysql的同学都知道，nginx、mysql这些程序都可以自由的指定用户配置。
+
+所以，不应当在代码中直接`import conf`来使用配置文件。上面目录结构中的`conf.py`，是给出的一个配置样例，不是在写死在程序中直接引用的配置文件。可以通过给`main.py`启动参数指定配置路径的方式来让程序读取配置内容。当然，这里的`conf.py`你可以换个类似的名字，比如`settings.py`。或者你也可以使用其他格式的内容来编写配置文件，比如`settings.yaml`之类的。
+
+
+
+### 开源软件
+
+如果你想写一个开源软件，目录该如何组织，可以参考[这篇文章](http://www.jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/)。
