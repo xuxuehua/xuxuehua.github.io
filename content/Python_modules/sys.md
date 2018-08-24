@@ -41,3 +41,13 @@ print(sys.path)
 ['/Users/xhxu/python/python3/test', '/Users/xhxu/python/python3', '/Users/xhxu/.pyenv/versions/3.5.3/lib/python35.zip', '/Users/xhxu/.pyenv/versions/3.5.3/lib/python3.5', '/Users/xhxu/.pyenv/versions/3.5.3/lib/python3.5/plat-darwin', '/Users/xhxu/.pyenv/versions/3.5.3/lib/python3.5/lib-dynload', '/Users/xhxu/.pyenv/versions/env3.5.3/lib/python3.5/site-packages', '/Users/xhxu/.pyenv/versions/env3.5.3/lib/python3.5/site-packages/setuptools-28.8.0-py3.5.egg', '/Users/xhxu/.pyenv/versions/env3.5.3/lib/python3.5/site-packages/pip-9.0.1-py3.5.egg']
 ```
 
+
+
+### append
+
+添加环境变量
+
+```
+sys.path.append(BASE_DIR)
+```
+

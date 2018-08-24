@@ -33,7 +33,7 @@ date: 2018-07-02 18:06
 ### os.remove(file)
 删除一个文件
 
-### os.stat（file）
+### os.stat(file)
 获得文件属性
 
 ### os.chmod(file)
@@ -51,7 +51,7 @@ os.mkdir('mydir')
 ### os.rmdir(name)
 删除目录
 
-### os.removedirs（r“c：\python”）
+### os.removedirs(r“c：\python”)
 删除多个目录
 
 ### os.system()
@@ -81,7 +81,7 @@ os.mkdir('mydir')
 ### os.getcwd()
 获得当前工作目录
 
-### os.curdir
+### os.curdir()
 返回当前目录（'.'）
 
 ### os.chdir(dirname)
@@ -100,7 +100,13 @@ os.mkdir('mydir')
 或得文件大小，如果name是目录返回0L
 
 ### os.path.abspath(name)
-获得绝对路径
+获得文件的绝对路径
+
+```
+os.path.abspath(__file__)
+```
+
+
 
 ### os.path.isabs()
 判断是否为绝对路径
@@ -121,7 +127,21 @@ os.mkdir('mydir')
 返回文件名
 
 ### os.path.dirname(path)
-返回文件路径
+返回当前文件路径
+
+```
+os.path.dirname(__file__)
+```
+
+
+
+返回父目录文件路径
+
+```
+os.path.dirname(os.path.dirname(__file__))
+```
+
+
 
 
 
