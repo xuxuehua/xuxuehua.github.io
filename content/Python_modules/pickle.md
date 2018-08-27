@@ -7,7 +7,7 @@ date: 2018-08-24 12:39
 
 # pickle
 
-Python 独有识别
+仅支持Python所有的数据类型
 
 
 

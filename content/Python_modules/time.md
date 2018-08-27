@@ -33,11 +33,19 @@ DST（Daylight Saving Time）即夏令时
 
 时间戳（timestamp）的方式：通常来说，时间戳是指格林威治时间1970年01月01日00时00分00秒(北京时间1970年01月01日08时00分00秒)起至现在的总秒数
 
+```
+time.time()
+```
+
 
 
 
 
 ## 常用方法
+
+![img](https://cdn.pbrd.co/images/HAORLLi.png)
+
+
 
 
 
@@ -167,6 +175,17 @@ time.ctime(987867475)
  
 
  
+
+## sleep()
+
+sleep函数用于将当前线程交出，要求它等待系统将其再次唤醒，如果写程序只有一个线程，这实际上就会阻塞进程，什么也不做。
+
+```
+import time
+def fucn():
+      time.sleep(5)
+      print "hello, world"
+```
 
  
 

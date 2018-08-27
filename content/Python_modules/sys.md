@@ -51,3 +51,33 @@ print(sys.path)
 sys.path.append(BASE_DIR)
 ```
 
+
+
+## verion
+
+ 获取Python解释程序的版本信息
+
+
+
+## exit(n)
+
+```
+退出程序，正常退出时exit(``0``)
+```
+
+
+
+## platform
+
+返回操作系统平台名称
+
+
+
+## maxint         
+
+最大的``Int``值
+
+
+
+
+

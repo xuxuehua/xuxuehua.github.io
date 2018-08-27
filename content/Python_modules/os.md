@@ -13,34 +13,90 @@ date: 2018-07-02 18:06
 
 ## 常用函数
 
-
-
-### os.sep
-取代操作系统特定的路径分隔符
-
-### os.name
-指示你正在使用的工作平台。比如对于Windows，它是'nt'，而对于Linux/Unix用户，它是'posix'。
-
-### os.getcwd
-得到当前工作目录，即当前python脚本工作的目录路径。
-
-### os.getenv()和os.putenv
-分别用来读取和设置环境变量
-
-### os.listdir()
-返回指定目录下的所有文件和目录名
-
-### os.remove(file)
-删除一个文件
-
-### os.stat(file)
-获得文件属性
-
 ### os.chmod(file)
+
 修改文件权限和时间戳
 
 
+
+### os.chdir(dirname)
+
+改变工作目录到dirname
+
+
+
+### os.curdir()
+
+返回当前目录（'.'）
+
+
+
+### os.exit()
+
+终止当前进程
+
+
+
+### os.environ
+
+查看环境变量
+
+```
+In [45]: os.environ
+Out[45]: environ({'TERM_PROGRAM': 'iTerm.app', 'PYENV_ROOT': '/Users/xhxu/.pyenv', 'NVM_CD_FLAGS': '', 'SHELL': '/bin/bash', 'TERM': 'xterm-256color', 'TMPDIR': '/var/folders/rz/7zd4wvf90070rc96bxfc_xf13wzxml/T/', 'Apple_PubSub_Socket_Render': '/private/tmp/com.apple.launchd.iV428QMhhK/Render', 'TERM_PROGRAM_VERSION': '3.0.14', 'TERM_SESSION_ID': 'w0t2p0:1094E04E-FF61-4FC1-A33E-6C31039D1431', 'SDKMAN_PLATFORM': 'Darwin', 'PYENV_VERSION': 'env3.6.3_simiki', 'SDKMAN_CURRENT_API': 'https://api.sdkman.io/2', 'USER': 'xhxu', 'NVM_DIR': '/Users/xhxu/.nvm', 'SDKMAN_LEGACY_API': 'https://api.sdkman.io/1', 'SSH_AUTH_SOCK': '/private/tmp/com.apple.launchd.huXZtZvXV6/Listeners', 'PYENV_DIR': '/Users/xhxu/simiki', '__CF_USER_TEXT_ENCODING': '0x47CFF693:0x0:0x0', 'PYENV_VIRTUALENV_INIT': '1', 'VIRTUAL_ENV': '/Users/xhxu/.pyenv/versions/3.6.3/envs/env3.6.3_simiki', 'PYENV_VIRTUAL_ENV': '/Users/xhxu/.pyenv/versions/3.6.3/envs/env3.6.3_simiki', 'PATH': '/Users/xhxu/.pyenv/versions/env3.6.3_simiki/bin:/usr/local/Cellar/pyenv/1.2.4/libexec:/Users/xhxu/.sdkman/candidates/groovy/current/bin:/Users/xhxu/apache-maven-3.5.3/bin:/Users/xhxu/.jenv/shims:/Users/xhxu/.jenv/bin:/Users/xhxu/.nvm/versions/node/v7.6.0/bin:/usr/local/Cellar/pyenv-virtualenv/1.0.0/shims:/Users/xhxu/.pyenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Wireshark.app/Contents/MacOS', 'PWD': '/Users/xhxu/simiki', 'JENV_LOADED': '1', 'LANG': 'en_US.UTF-8', 'ITERM_PROFILE': 'Default', 'SDKMAN_VERSION': '5.6.3+299', 'PYENV_HOOK_PATH': '/Users/xhxu/.pyenv/pyenv.d:/usr/local/Cellar/pyenv/1.2.4/pyenv.d:/usr/local/etc/pyenv.d:/etc/pyenv.d:/usr/lib/pyenv/hooks', 'XPC_FLAGS': '0x0', '_OLD_VIRTUAL_PS1': '\\h:\\W \\u\\$ ', 'XPC_SERVICE_NAME': '0', 'COLORFGBG': '7;0', 'HOME': '/Users/xhxu', 'SHLVL': '1', 'PYENV_SHELL': 'bash', 'ITERM_SESSION_ID': 'w0t2p0:1094E04E-FF61-4FC1-A33E-6C31039D1431', 'LOGNAME': 'xhxu', 'SDKMAN_DIR': '/Users/xhxu/.sdkman', 'GROOVY_HOME': '/Users/xhxu/.sdkman/candidates/groovy/current', 'NVM_BIN': '/Users/xhxu/.nvm/versions/node/v7.6.0/bin', 'SDKMAN_CANDIDATES_DIR': '/Users/xhxu/.sdkman/candidates', 'SECURITYSESSIONID': '186a7'})
+```
+
+
+
+
+
+### os.getcwd
+
+得到当前工作目录，即当前python脚本工作的目录路径。
+
+### os.getenv()和os.putenv
+
+分别用来读取和设置环境变量
+
+## 
+
+### os.getatime(path)
+
+返回path所指向的尾巴尖或者目录的最后存取时间
+
+
+
+### os.getmtime(path)
+
+返回path所指向的尾巴尖或者目录的最后修改时间
+
+
+
+### os.listdir()
+
+返回指定目录下的所有文件和目录名
+
+
+
+### os.listdir(dirname)
+
+列出dirname下的目录和文件
+
+
+
+### os.linesep
+
+给出当前平台的行终止符。例如，Windows使用'\r\n'，Linux使用'\n'而Mac使用'\r'
+
+```
+In [46]: os.linesep
+Out[46]: '\n'
+```
+
+
+
 ### os.mkdir
+
 创建目录
 
 ```
@@ -48,58 +104,32 @@ import os
 os.mkdir('mydir')
 ```
 
-### os.rmdir(name)
-删除目录
 
-### os.removedirs(r“c：\python”)
-删除多个目录
 
-### os.system()
-运行shell命令
+### os.makedirs
 
-### os.exit()
-终止当前进程
+创建多级目录
 
-### os.linesep
-给出当前平台的行终止符。例如，Windows使用'\r\n'，Linux使用'\n'而Mac使用'\r'
+```
+os.makedirs(r'a/b/c')
+```
 
-### os.path.split()
-返回一个路径的目录名和文件名
 
-### os.path.isfile()
-分别检验给出的路径是一个目录还是文件
 
-### os.path.isdir()
-分别检验给出的路径是一个目录还是文件
 
-### os.path.existe()
-检验给出的路径是否真的存在
 
-### os.listdir(dirname)
-列出dirname下的目录和文件
+### os.name
+指示你正在使用的工作平台。比如对于Windows，它是'nt'，而对于Linux/Unix用户，它是'posix'。
 
-### os.getcwd()
-获得当前工作目录
+```
+In [47]: os.name
+Out[47]: 'posix'
+```
 
-### os.curdir()
-返回当前目录（'.'）
 
-### os.chdir(dirname)
-改变工作目录到dirname
-
-### os.path.isdir(name)
-判断name是不是目录，不是目录就返回false
-
-### os.path.isfile(name)
-判断name这个文件是否存在，不存在返回false
-
-### os.path.exists(name)
-判断是否存在文件或目录name
-
-### os.path.getsize(name)
-或得文件大小，如果name是目录返回0L
 
 ### os.path.abspath(name)
+
 获得文件的绝对路径
 
 ```
@@ -108,8 +138,46 @@ os.path.abspath(__file__)
 
 
 
+### os.path.basename(path)
+
+返回文件名
+
+### os.path.exists(name)
+
+判断是否存在文件或目录name
+
+
+
+### os.path.isfile()
+分别检验给出的路径是一个目录还是文件
+
+### os.path.isdir()
+分别检验给出的路径是一个目录还是文件
+
 ### os.path.isabs()
+
 判断是否为绝对路径
+
+
+
+### os.path.isdir(name)
+判断name是不是目录，不是目录就返回false
+
+### os.path.isfile(name)
+判断name这个文件是否存在，不存在返回false
+
+
+
+### os.path.getsize(name)
+或得文件大小，如果name是目录返回0L
+
+
+
+### os.path.join(path,name)
+
+连接目录与文件名或目录
+
+
 
 ### os.path.normpath(path)
 规范path字符串形式
@@ -120,11 +188,13 @@ os.path.abspath(__file__)
 ### os.path.splitext()
 分离文件名和扩展名
 
-### os.path.join(path,name)
-连接目录与文件名或目录
+### os.path.split()
 
-### os.path.basename(path)
-返回文件名
+返回一个路径的目录名和文件名
+
+
+
+
 
 ### os.path.dirname(path)
 返回当前文件路径
@@ -132,8 +202,6 @@ os.path.abspath(__file__)
 ```
 os.path.dirname(__file__)
 ```
-
-
 
 返回父目录文件路径
 
@@ -143,15 +211,13 @@ os.path.dirname(os.path.dirname(__file__))
 
 
 
+### os.pathsep
 
-
-### os.system (deprecate)
-
-执行命令，不保存结果
+文件路径分隔符
 
 ```
-import os
-print(os.system('ls'))   
+In [43]: os.pathsep
+Out[43]: ':'
 ```
 
 
@@ -165,6 +231,64 @@ import os
 cmd_result = os.open('ls').read()
 print(cmd_result)
 ```
+
+
+
+### os.remove(file)
+
+删除一个文件
+
+
+
+### os.removedirs()
+
+删除多级目录
+
+```
+os.removedirs(r'a/b/c')
+```
+
+### os.rmdir(name)
+
+删除目录
+
+### os.removedirs()
+
+删除多个目录
+
+```
+os.removedirs(r'a/b/c')
+```
+
+
+
+### os.sep
+
+取代操作系统特定的路径分隔符
+
+```
+In [41]: os.sep
+Out[41]: '/'
+```
+
+
+
+
+
+### os.stat(file)
+
+获得文件属性
+
+### os.system (deprecate)
+
+执行命令，不保存结果
+
+```
+import os
+print(os.system('ls'))   
+```
+
+
 
 
 
