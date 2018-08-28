@@ -145,34 +145,18 @@ OOP编程是利用“类”和“对象”来创建各种模型来实现对真�
 
 
 
+# 类的定义
 
+```python
+class ClassName:
+    pass
 
+# 等价于
 
-
-
-
-## Hello world
-
-```
-class Dog:
-
-    def __init__(self, name):
-        self.name = name
-
-    def bark(self):
-        print('%s: wangwang.' % self.name)
-
-d1 = Dog('MyDog')
-
-d1.bark()
-
->>>
-MyDog: wangwang.
+class ClassName(object):
+    pass
 ```
 
-
-
-## 类的声明
 ```python
 class Person:          #定义一个类Person
     def SayHi(self):   #类成员函数必须要有一个参数self,表示类的实例(对象)自身
@@ -183,38 +167,27 @@ p.SayHi()              #调用类Person的成员函数SayHi()
 >>>
 hi
 ```
-```python
-class MyString:
-    str = "MyString"
-    def output(self):
-        print(self.str)
 
-s = MyString()
-s.output()
->>>
-MyString
+
+
+## 方法定义 
+
+```python
+class ClassName:
+    def method_name(self):
+        pass
 ```
 
 
 
-## 数据及行为封装
+## 构造方法
 
 ```python
-class Door():
-    def __init__(self, number, status):
-        self.number = number
-        self.status = status
-        
-    def open(self):
-        self.status = 'opening'
-        
-    def close(self):
-        self.status = 'closed'
-        
-door1 = Door(1, 'closed')
+class ClassName:
+    def __init__(self):
+        pass
 ```
 
-## 构造函数
 ```python
 class MyString:
     def __init__(self):      # __init__构造函数, 通过构造函数对类进行初始化操作
@@ -231,7 +204,129 @@ MyString
 
 
 
-### 带参数的构造函数
+
+
+## 实例化
+
+init 只是初始化类变量的作用
+
+```python
+class A:
+    def __init__(self, x):
+        self.x = x
+
+# 实例化
+a = A(5)
+
+# 绑定实力变量
+print(a.x)
+>>>
+5
+```
+
+
+
+
+
+## 封装
+
+封装只能在类的内部访问
+
+```python
+class A:
+    def __init__(self, x):
+        self.__value = x
+
+    def __add(self):
+        self.__value += i
+
+    def get_value(self):
+        return self.__value
+
+    def __increase(self):
+        self.__add(1)
+
+a = A(5)
+print(a.get_value())
+print(a.__value)
+>>>
+5
+Traceback (most recent call last):
+  File "/Users/xhxu/python/python3/test/3.py", line 17, in <module>
+    print(a.__value)
+AttributeError: 'A' object has no attribute '__value'
+```
+
+
+
+### 数据及行为封装
+
+```python
+class Door():
+    def __init__(self, number, status):
+        self.number = number
+        self.status = status
+        
+    def open(self):
+        self.status = 'opening'
+        
+    def close(self):
+        self.status = 'closed'
+        
+door1 = Door(1, 'closed')
+```
+
+
+
+## 实例类型
+
+```python
+class A:
+    # 通常不建议使用并修改(高手另说)
+    def __new__(cls, *args, **kwargs):
+        print('call __new__')
+        print(type(cls))
+        return object.__new__(cls)
+
+    def __init__(self, x):
+        print('call __init__')
+        # self 是实例本身
+        print(type(self))
+        self.x = x
+
+a = A(5)
+>>>
+call __new__
+<class 'type'>
+call __init__
+<class '__main__.A'>
+```
+
+
+
+
+
+### 传入位置参数
+
+```python
+class A:
+    def __init__(self, x=5):
+        #这里的值不由形式参数x决定，由abcd决定
+        self.abcd = x
+
+a1 = A(5)
+a2 = A()
+a3 = A(8)
+print(a1.abcd)
+print(a2.abcd)
+print(a3.abcd)
+>>>
+5
+5
+8
+```
+
+### 带参数
 
 ```python
 class UserInfo:
@@ -251,30 +346,59 @@ Passwd:123456
 
 
 
-## 析构函数
+## 类变量
+
+类变量对所有的实例都是可见的，可以共享，且初值都是一样的
 
 ```python
-class MyString:
-    def __init__(self):  #构造函数
-        self.str = "MyString"
-    def __del__(self):   #析构函数
-        print("Bye")
+class A:
+    val = 3
+    def __init__(self, x):
+        self.x = 3
 
-    def output(self):
-        print(self.str)
+a1 = A(5)
+print(a1.val)
 
-s = MyString()
+a2 = A(9)
+print(a2.val)
 
-s.output()
-del s   # 删除对象
+a1.val += 1
+print(a1.val)
 >>>
-MyString
-Bye
+3
+3
+4
 ```
 
 
 
-## 静态变量
+
+
+### 私有类变量
+
+私有类变量不能被实例访问
+
+```python
+class A:
+    __value = 3
+    def get_value(self):
+        return self.__value
+
+a = A()
+print(a.get_value())
+print(a.__value)
+>>>
+3
+
+Traceback (most recent call last):
+  File "/Users/xhxu/python/python3/test/3.py", line 8, in <module>
+    print(a.__value)
+AttributeError: 'A' object has no attribute '__value'
+```
+
+
+
+### 静态变量
 
 静态变量和静态方法是类的静态成员，他们与普通的成员变量和成员方法不同，静态类成员与具体的对象没有关系，而是只属于定义他们的类
 
@@ -293,44 +417,28 @@ print(Users.online_count)
 1
 ```
 
-## 静态方法
-
-静态方法只属于定义他的类，而不属于任何一个具体的对象
-
-静态方法无需传入self参数，因此在静态方法中无法访问实例变量
-
-静态方法不能直接访问类的静态变量，但可以通过类名引用静态变量
-
-```python
-class MyClass:
-    var1 = "String1"
-    @staticmethod   #静态方法
-    def staticmd():
-        print('I am static method')
-
-MyClass.staticmd()  #调用了静态方法
-c = MyClass()
-c.staticmd()
->>>
-I am static method
-I am static method
-```
-
-
-
-## 实例变量
-
-实例变量的作用域，就是实例本身
-
-
-
-## 实例方法
-
-
-
 
 
 ## 类方法
+
+类方法传递类本身， 可以访问私有的类变量
+
+```python
+class A:
+    __val = 3
+
+    @classmethod
+    def get_val(cls):
+        return cls.__val
+
+a = A()
+
+print(a.get_val())
+print(A.get_val())
+>>>
+3
+3
+```
 
 与静态方法一样，类方法可以使用类名调用类方法
 
@@ -357,6 +465,131 @@ Class: <class '__main__.MyClass'>,val1: String1, Cannot access value 2
 
 
 
+### 静态方法
+
+不可以访问私有变量
+
+```python
+class A:
+    __value = 3
+
+    @staticmethod
+    def print_value():
+        print(__value)
+
+a = A()
+
+print(a.print_value())
+print(A.print_value())
+>>>
+Traceback (most recent call last):
+  File "/Users/xhxu/python/python3/test/3.py", line 10, in <module>
+    print(a.print_value())
+  File "/Users/xhxu/python/python3/test/3.py", line 6, in print_value
+    print(__value)
+NameError: name '_A__value' is not defined
+```
+
+
+
+静态方法只属于定义他的类，而不属于任何一个具体的对象
+
+静态方法无需传入self参数，因此在静态方法中无法访问实例变量
+
+静态方法不能直接访问类的静态变量，但可以通过类名引用静态变量
+
+```python
+class MyClass:
+    var1 = "String1"
+    @staticmethod   #静态方法
+    def staticmd():
+        print('I am static method')
+
+MyClass.staticmd()  #调用了静态方法
+c = MyClass()
+c.staticmd()
+>>>
+I am static method
+I am static method
+```
+
+
+
+
+
+### 属性设置
+
+```python
+class A:
+    def __init__(self):
+        self.__value = 0
+
+    @property # property 可以访问私有的变量
+    def value(self):
+        if self.__value < 0:
+            return 0
+        return self.__value
+
+    @value.setter # 加了这个装饰器，才会被认为是属性
+    def value(self, val):
+        if isinstance(val, (int, float)) and val >= 0:
+            self.__value = val
+        else:
+            self.__value = 0
+
+a = A()
+a.value = -1
+print(a.value)
+a.value = 3
+print(a.value)
+>>>
+0
+3
+```
+
+
+
+
+
+## 析构函数
+
+```python
+class MyString:
+    def __init__(self):  #构造函数
+        self.str = "MyString"
+    def __del__(self):   #析构函数
+        print("Bye")
+
+    def output(self):
+        print(self.str)
+
+s = MyString()
+
+s.output()
+del s   # 删除对象
+>>>
+MyString
+Bye
+```
+
+
+
+
+
+## 实例变量
+
+实例变量的作用域，就是实例本身
+
+
+
+## 实例方法
+
+
+
+
+
+
+
 ## instance() 函数判断对象类型
 
 使用instance()函数检测一个给定的对象是否属于（继承）某个类或类型，是为True，否为False
@@ -378,102 +611,3 @@ True
 
 
 
-## 类的继承
-
-类可以继承其他类的内容，包括成员变量和成员函数
-
-```python
-import time
-
-class Users:
-    username = ""
-    def __init__(self, uname):      #构造函数
-        self.username = uname
-        print('(Construct fucntion:'+self.username+')')
-
-    def DisplayUsername(self):      #类Users的成员函数DisplayUsername
-        print(self.username)
-
-#继承类Users
-class UserLogin(Users):   #类Users的子类
-    def __init__(self, uname, LastLoginTime):
-        Users.__init__(self, uname)       #调用父类的Users的构造函数
-        self.LastLoginTime = LastLoginTime
-
-    def DisplayLoginTime(self):
-        print('Login time: '+self.LastLoginTime)
-        
-#获取当前时间
-now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-
-MyUser1 = UserLogin('Rick', now)
-MyUser2 = UserLogin('Leo', now)
-MyUser3 = UserLogin('Josh', now)
-
-MyUser1.DisplayUsername()   #访问类Users的函数
-MyUser1.DisplayLoginTime()     #访问子类的函数
-MyUser2.DisplayUsername()
-MyUser2.DisplayLoginTime()
-MyUser3.DisplayUsername()
-MyUser3.DisplayLoginTime()
-
->
-(Construct fucntion:Rick)
-(Construct fucntion:Leo)
-(Construct fucntion:Josh)
-Rick
-Login time: 2016-09-10 16:20:45
-Leo
-Login time: 2016-09-10 16:20:45
-Josh
-Login time: 2016-09-10 16:20:45
-​```
-```
-
-
-
-## 多态
-
-抽象类中定义的一个方法，可以在其子类中重新实现，不同子类中实现的方法也不相同
-
-```python
-from abc import ABCMeta, abstractclassmethod
-
-class Shape(object):
-    __metaclass__ = ABCMeta
-    def __init__(self):
-        self.color = "Black"
-
-@abstractclassmethod
-def draw(self):
-    pass
-
-class circle(Shape):   #Shape子类circle
-    def __init__(self, x, y, r):
-        self.x = x
-        self.y = y
-        self.r = r
-
-    def draw(self):
-        print("Draw Circle: (%d, %d, %d)" %(self.x, self.y, self.r))
-
-class line(Shape):     #Shape 子类line
-    def __init__(self, x1, y1, x2, y2):
-        self.x1 = x1
-        self.y1 = y1
-        self.x2 = x2
-        self.y2 = y2
-
-    def draw(self):       #抽象方法draw()又不同的实现,这就是多态
-        print("Draw Line: (%d, %d, %d, %d)" %(self.x1, self.y1, self.x2, self.y2))
-
-c = circle(10, 10, 5)
-c.draw()
-
-l = line(10, 10, 20, 20)
-l.draw()
-
->
-Draw Circle: (10, 10, 5)
-Draw Line: (10, 10, 20, 20)
-```
