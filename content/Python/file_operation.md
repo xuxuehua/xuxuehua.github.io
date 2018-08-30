@@ -13,7 +13,7 @@ date: 2018-08-19 11:30
 
 ### r
 
-只读模式（默认）
+只读模式（默认） 文件必须存在
 
 ```
 
@@ -23,7 +23,7 @@ date: 2018-08-19 11:30
 
 ### w
 
-只写模式，不可读；不存在则创建；存在则删除内容
+只写文件，若文件存在则文件长度清为0，即该文件内容会消失。若文件不存在则建立该文件。
 
 ```
 
@@ -33,9 +33,7 @@ date: 2018-08-19 11:30
 
 ### a
 
-追加，不覆盖原来的文件
-
-可读，不存在则创建，存在则只追加内容
+以附加的方式打开只写文件。若文件不存在，则会建立该文件，如果文件存在，写入的数据会被加到文件尾，即文件原先的内容会被保留。
 
 ```
 
@@ -43,53 +41,13 @@ date: 2018-08-19 11:30
 
 
 
-### readline()
-
-读取每行的内容
-
-```
-
-```
 
 
-
-### readlines()
-
-读取整个文件，生成列表
-
-```
-
-```
-
-
-
-### f.read()
-
-文件内容替换
-
-```
-for line in fileinput.input('filepath', inplace=1):
-    line = line.replace('oldtext', 'newtext')
-    print(line)
-```
-
-修改某行
-
-```
-with open('foo.txt', 'r++') as f:
-    old = f.read() 
-    f.seek(0)
-    f.write('new line\n' + old)
-line before
-```
-
-
-
-
-
-## + 模式
+## 模式
 
 ### r+
+
+打开可读写的文件，该文件必须存在
 
 ```
 
@@ -99,7 +57,17 @@ line before
 
 ### w+
 
-先创建文件，再写
+可读写文件，若文件存在则文件长度清为零，即该文件内容会消失。若文件不存在则建立该文件。
+
+```
+
+```
+
+
+
+### a+ 
+
+以附加方式打开可读写的文件。若文件不存在，则会建立该文件，如果文件存在，写入的数据会被加到文件尾后，即文件原先的内容会被保留。
 
 ```
 
@@ -177,6 +145,65 @@ line before
 
 
 
+## 文件对象的方法
+
+### readline()
+
+读取每行的内容
+
+```
+
+```
+
+
+
+### readlines()
+
+读取整个文件，生成列表
+
+```
+
+```
+
+
+
+### f.read()
+
+文件内容替换
+
+```
+for line in fileinput.input('filepath', inplace=1):
+    line = line.replace('oldtext', 'newtext')
+    print(line)
+```
+
+修改某行
+
+```
+with open('foo.txt', 'r++') as f:
+    old = f.read() 
+    f.seek(0)
+    f.write('new line\n' + old)
+line before
+```
+
+
+
+### write
+
+写入
+```
+f.write('I like apple!\n')      # 将'I like apple'写入文件并换行
+```
+
+
+
+### close
+
+关闭
+```
+f.close()  #关闭文件
+```
 
 
 

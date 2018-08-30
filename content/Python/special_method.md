@@ -74,6 +74,108 @@ b'call __bytes__ name is Rick'
 
 
 
+## 特殊方法
+
+Python 的多范式依赖于Python对象中的特殊方法
+
+
+
+### 运算符计算
+
+Python 中两个对象能否进行加法运算，需要确认相应的对象是否含有`__add__()`方法
+
+```
+'abc' + 'xyz'
+#实际上执行了如下操作
+'abc'.__add__('xyz')
+```
+
+
+
+其实内置函数也是调用对象的特殊方法
+
+```
+len([1, 2, 3])
+# 实际上是调用的
+[1, 2, 3].__len__()
+```
+
+表元素引用方式, 调用`__getitem__()`方法
+
+```
+In [1]: li = [1, 2, 3, 4, 5]
+
+In [2]: li[3]
+Out[2]: 4
+
+In [3]: li.__getitem__(3)
+Out[3]: 4
+```
+
+`__call__() `特殊方法的对象都会被当做函数
+
+```
+class SampleMore(object):
+    def __call__(self, a):
+        return a + 5
+
+add = SampleMore()
+print(add(2))
+print(map(add, [2, 4, 5]))
+>>>
+7
+<map object at 0x10ebd4588>
+```
+
+
+
+### `__getattr__`
+
+`__getattr__(self, name)` 来查询即时生成的属性。如果通过`__dict__`方法无法找到改属性，Python会调用`__getattr__`方法来即时生成属性。
+
+```
+class Bird(object):
+    feather = True
+
+
+class Chicken(Bird):
+    fly = False
+    def __init__(self, age):
+        self.age = age
+
+    def __getattr__(self, item):
+        if item == 'adult':
+            if self.age > 1.0:
+                return True
+            else:
+                return False
+        raise AttributeError(item)
+
+summer = Chicken(2)
+print(summer.adult)
+summer.age = 0.5
+print(summer.adult)
+>>>
+True
+False
+```
+
+
+
+### `__setattr__`
+`__setattr__(self, name, value)` 
+可用于修改属性，可用于任意属性。
+
+
+
+### `__delattr__`
+`__delattr__(self, name)` 
+可用于删除属性，可用于任意属性。
+
+
+
+
+
 ##比较运算符重载
 
 ```python
@@ -257,6 +359,8 @@ get x
 ### with 语句实现的方法
 
 with 语句可以自动关闭资源
+
+任何定义了`__enter__()` 和`__exit__()`方法的对象都可以用于上下文管理器。文件对象f是内置对象，所以f自动带有这两种特殊方法
 
 ```python
 class Resource:

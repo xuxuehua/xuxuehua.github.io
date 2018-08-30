@@ -12,6 +12,196 @@ collection: 函数
 
 
 
+## abs()
+
+```python
+print(abs(-1))
+>
+1
+```
+
+## pow() 
+
+pow(x, y) 返回x的y次幂
+
+```python
+print(pow(2, 3))
+> 
+8
+```
+
+## Round()  
+
+round(x[, n]) 返回浮点数x的四舍五入值
+
+```python
+print(round(80.2345, 2))
+>
+80.23
+```
+
+## divmod()   
+
+divmod(a, b) 返回a除以b的商和余数，返回一个元组
+
+```python
+print(divmod(8, 3))
+>
+(2, 2)
+```
+
+## lower(), upper(), swapcase(), capitalize(), title()
+
+```python
+str = 'Hello World'
+print(str.lower())
+print(str.upper())
+print(str.swapcase())
+print(str.capitalize())
+print(str.title())
+> 
+hello world
+HELLO WORLD
+hELLO wORLD
+Hello world
+Hello World
+```
+## ljust(), rjust(), center(), zfil()
+
+```python
+str = 'Hello World'
+print(str.ljust(20, '*'))
+print(str.rjust(20, '*'))
+print(str.center(20, '*'))
+print(str.zfill(20))
+> 
+Hello World*********
+*********Hello World
+****Hello World*****
+000000000Hello World
+```
+## find(), index(), rfind(), rindex(), count(), replace(), strip(), lstrip(), rstrip(), expandtabs()
+
+```python
+str = 'Hello World'
+print(str.find('l'))
+print(str.index('l'))
+print(str.rfind('l'))
+print(str.rindex('l'))
+print(str.count('l'))
+print(str.replace(' ', '*'))
+print(str.strip())
+print(str.lstrip())
+print(str.rstrip())
+print(str.expandtabs())
+>
+2
+2
+9
+9
+3
+Hello*World
+Hello World
+Hello World
+Hello World
+Hello World
+```
+## split()
+
+```python
+str = 'Hello World'
+print(str.split(' '))
+>
+['Hello', 'World']
+```
+## splitlines()
+
+```python
+str = 'Hello World'
+print(str.splitlines())
+>
+['Hello World']
+```
+## join()
+
+```python
+list = ['Hello', 'World']
+str = '#'
+print(str.join(list))
+>
+Hello#World
+```
+## startswith(), endswith(), isalnum(), isalpha(), isdigit(), islower(), isupper()
+
+```python
+str = 'Python String Function'
+print(str.startswith('P'))
+print(str.endswith('P'))
+print(str.isalnum())
+print(str.isalpha())
+print(str.isdigit())
+print(str.islower())
+print(str.isupper())
+>
+True
+False
+False
+False
+False
+False
+False
+```
+## help()
+
+```python
+help('print')
+> 
+Help on built-in function print in module builtins:
+
+print(...)
+    print(value, ..., sep=' ', end='\n', file=sys.stdout, flush=False)
+    
+    Prints the values to a stream, or to sys.stdout by default.
+    Optional keyword arguments:
+    file:  a file-like object (stream); defaults to the current sys.stdout.
+    sep:   string inserted between values, default a space.
+    end:   string appended after the last value, default a newline.
+    flush: whether to forcibly flush the stream.
+```
+## type() 
+
+```python
+str = 'Hello'
+print(type(str))
+num = 8
+print(type(num))
+list = [1, 2, 3]
+print(type(list))
+>
+<class 'str'>
+<class 'int'>
+<class 'list'>
+```
+
+## range()
+
+range 进行循环控制
+```
+In [1]: s = 'abcdefghijkl'
+
+In [2]: for i in range(0, len(s), 2):
+   ...:     print(s[i])
+   ...:     
+a
+c
+e
+g
+i
+k
+```
+
+
+
 ## bin()
 
 把十进制数转二进制
@@ -184,6 +374,12 @@ Out[46]: [(8, 0), (6, 2), (51, 3), (1, 4), (-7, 6), (11, 99)]
 
 ## zip
 
+zip()函数从多个列表中依次去除一个元素。每次取出(来自不同列表的)的元素合成一个元组，合并成的元组放入zip()返回的列表中
+
+
+
+### 聚合
+
 ```
 In [47]: a = [1, 2, 3]
 
@@ -197,3 +393,33 @@ In [59]: for i in zip(a, b):
 (3, 'c')
 ```
 
+```python
+ta = [1, 2, 3]
+tb = [4, 5, 6]
+tc = ['a', 'b', 'c']
+
+for (a, b, c) in zip(ta, tb, tc):
+    print(a, b, c)
+>>>
+1 4 a 
+2 5 b
+3 6 c
+```
+
+
+
+### 分解
+
+```python
+ta = [1, 2, 3]
+tb = [4, 5, 6]
+
+zipped = zip(ta, tb)
+print(zipped)
+
+na, nb = zip(*zipped)
+print(na, nb)
+>>>
+<zip object at 0x1034855c8>
+(1, 2, 3) (4, 5, 6)
+```

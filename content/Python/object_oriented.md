@@ -180,6 +180,120 @@ class ClassName:
 
 
 
+### 私有方法
+
+`__val` 但不以__结尾的
+
+```
+class A:
+    def __init__(self, x):
+        self.__val = x
+
+    def __add(self, i):
+        self.__val += i
+
+    def get_val(self):
+        return self.__val
+
+    def increase(self):
+        self.__add(1)
+
+a = A(5)
+
+a.__add
+>>>
+Traceback (most recent call last):
+  File "/Users/xhxu/python/python3/test/10.py", line 15, in <module>
+    a.__add()
+AttributeError: 'A' object has no attribute '__add'
+```
+
+```
+class A:
+    def __init__(self, x):
+        self.__val = x
+
+    def __add(self, i):
+        self.__val += i
+
+    def get_val(self):
+        return self.__val
+
+    def increase(self):
+        self.__add(1)
+
+a = A(5)
+
+print(a.get_val())
+>>>
+5
+```
+
+在类内部对行为进行封装, increase 对__add封装
+
+```
+class A:
+    def __init__(self, x):
+        self.__val = x
+
+    def __add(self, i):
+        self.__val += i
+
+    def get_val(self):
+        return self.__val
+
+    def increase(self):
+        self.__add(1)
+
+a = A(5)
+print(a.get_val())
+
+a.increase()
+print(a.get_val())
+>>>
+5
+6
+```
+
+
+
+#### 私有方法原理
+
+python并没有真正的私有，变量改名 _classname__val来绕过
+
+```
+class A:
+    def __init__(self, x):
+        self.__val = x
+
+    def __add(self, i):
+        self.__val += i
+
+    def get_val(self):
+        return self.__val
+
+    def increase(self):
+        self.__add(1)
+
+a = A(5)
+print(a.get_val())
+
+a.increase()
+print(a.get_val())
+
+print(dir(a))
+print(a._A__val)
+>>>
+5
+6
+['_A__add', '_A__val', '__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'get_val', 'increase']
+6
+```
+
+
+
+
+
 ## 构造方法
 
 ```python
@@ -204,11 +318,31 @@ MyString
 
 
 
+构造方法无参数，可以省略构造方法
+
+```
+class A:
+    __val = 3
+
+    def get_val(self):
+        return self.__val
+
+a = A()
+print(a.get_val())
+a.__val
+>>>
+Traceback (most recent call last):
+  File "/Users/xhxu/python/python3/test/9.py", line 9, in <module>
+    a.__val
+AttributeError: 'A' object has no attribute '__val'
+3
+```
+
 
 
 ## 实例化
 
-init 只是初始化类变量的作用
+`__init__` 只是初始化类变量的作用
 
 ```python
 class A:
@@ -225,6 +359,80 @@ print(a.x)
 ```
 
 
+
+### 类的新的属性
+
+```
+class A:
+
+    def __init__(self, x):
+        self.x = x
+
+a = A(5)
+a.name = True
+print(a.name)
+>>>
+True
+```
+
+
+
+### 实例化类原理
+
+```
+class A:
+    def __new__(cls, *args, **kwargs):
+        print("call __new__")
+        print("type cls", type(cls))
+        return object.__new__(cls)
+
+    def __init__(self, x):
+        print("call __init__")
+        print("type self", type(self))
+        s1 = set (dir(self))
+        self.x = x
+        s2 = set(dir(self))
+        print(s2 - s1)
+
+
+a = A(5)
+>>>
+call __new__
+type cls <class 'type'>
+call __init__
+type self <class '__main__.A'>
+{'x'}
+```
+
+> cls 代表class A这个对象
+>
+> dir 会返回所有属性
+
+
+
+若new方法不返回，init方法不执行
+
+```
+class A:
+    def __new__(cls, *args, **kwargs):
+        print("call __new__")
+        print("type cls", type(cls))
+        # return object.__new__(cls)
+
+    def __init__(self, x):
+        print("call __init__")
+        print("type self", type(self))
+        s1 = set (dir(self))
+        self.x = x
+        s2 = set(dir(self))
+        print(s2 - s1)
+
+
+a = A(5)
+>>>
+call __new__
+type cls <class 'type'>
+```
 
 
 
@@ -346,9 +554,66 @@ Passwd:123456
 
 
 
+## 实例变量
+
+实例变量的作用域，就是实例本身
+
+实例变量，也称静态属性
+
+```
+class Door:
+
+    def __init__(self, number, status):
+        self.number = number
+        self.status = status
+
+    def open(self):
+        self.status = "opening"
+
+    def close(self):
+        self.status = "closed"
+
+
+door1 = Door(1, 'closed')
+```
+
+> 这里是self.number 就是实例变量
+
+
+
+
+
+### 实例方法
+
+也称为类方法，动态属性
+
+```
+class Door:
+
+    def __init__(self, number, status):
+        self.number = number
+        self.status = status
+
+    def open(self):
+        self.status = "opening"
+
+    def close(self):
+        self.status = "closed"
+
+door1 = Door(1, 'closed')
+```
+
+> open和close均为类方法
+
+
+
 ## 类变量
 
 类变量对所有的实例都是可见的，可以共享，且初值都是一样的
+
+定义在方法体之外，可以通过类名访问，对所有方法共享
+
+实例变量没有，会找类变量调用
 
 ```python
 class A:
@@ -371,6 +636,34 @@ print(a1.val)
 ```
 
 
+
+对不可变对象赋值，就会变成新的变量
+
+```
+class A:
+    val = [1, 2, 3]
+    val_s = 'a'
+
+    def __init__(self):
+        pass
+
+a1 = A()
+a2 = A()
+a1.val.append(4)
+print(a1.val, id(a1.val))
+print(a2.val, id(a2.val))
+
+a3 = A()
+a4 = A()
+a3.val_s = 's'
+print(a3.val_s, id(a3.val_s))
+print(a4.val_s, id(a4.val_s))
+>>>
+[1, 2, 3, 4] 4442997640
+[1, 2, 3, 4] 4442997640
+s 4437293632
+a 4437455120
+```
 
 
 
@@ -465,30 +758,63 @@ Class: <class '__main__.MyClass'>,val1: String1, Cannot access value 2
 
 
 
+类方法不能访问实例变量, 但可以访问类变量
+
+```
+class A:
+    __val = 3
+
+    def __init__(self, x):
+        self.x = x
+
+    @classmethod
+    def get_val(cls):
+        print(cls.x)
+        return cls.__val
+
+a = A(5)
+print(A.get_val())
+>>>
+Traceback (most recent call last):
+  File "/Users/xhxu/python/python3/test/9.py", line 12, in <module>
+    print(A.get_val())
+  File "/Users/xhxu/python/python3/test/9.py", line 9, in get_val
+    print(cls.x)
+AttributeError: type object 'A' has no attribute 'x'
+```
+
+
+
+
+
+
+
 ### 静态方法
 
-不可以访问私有变量
+静态方法并不能访问私有变量，只是给类方法加了类的属性
 
-```python
+```
 class A:
-    __value = 3
+    __val = 3
 
     @staticmethod
-    def print_value():
-        print(__value)
+    def print_val():
+        print(__val)
 
 a = A()
 
-print(a.print_value())
-print(A.print_value())
+a.print_val()
+A.print_val()
 >>>
 Traceback (most recent call last):
-  File "/Users/xhxu/python/python3/test/3.py", line 10, in <module>
-    print(a.print_value())
-  File "/Users/xhxu/python/python3/test/3.py", line 6, in print_value
-    print(__value)
-NameError: name '_A__value' is not defined
+  File "/Users/xhxu/python/python3/test/9.py", line 10, in <module>
+    a.print_val()
+  File "/Users/xhxu/python/python3/test/9.py", line 6, in print_val
+    print(__val)
+NameError: name '_A__val' is not defined
 ```
+
+
 
 
 
@@ -517,7 +843,13 @@ I am static method
 
 
 
-### 属性设置
+### property属性
+
+加上property 装饰器，在函数调用的时候，就不需要加上小括号
+
+property调用的时候，只能调用self参数
+
+常用于设定只读的属性
 
 ```python
 class A:
@@ -549,9 +881,176 @@ print(a.value)
 
 
 
+同一个对象的不同属性之间可能存在依赖关系。当某个属性被修改时，依赖于该属性的其他属性也会同时变化。
+
+```
+class bird(object):
+    feather = True
+
+class chicken(bird):
+    fly = False
+    def __init__(self, age):
+        self.age = age
+
+    def getAdult(self):
+        if self.age > 1.0:
+            return True
+        else:
+            return False
+    adult = property(getAdult)
+
+summer = chicken(2)
+
+print(summer.adult)
+summer.age = 0.5
+print(summer.adult)
+>>>
+True
+False
+```
+
+
+
+#### property参数
+
+property()最多可以加载四个参数。前三个参数为函数，分别用于处理查询特性，修改特性，删除特性。最后一个参数为特性文档，可以为一个字符串，用于说明。 
+
+negative 为一个特性，用于表示数字的负数。property() 最后一个参数('I am negative one') 表示特性negative的说明文档
+
+```
+class num(object):
+    def __init__(self, value):
+        self.value = value
+    def getNeg(self):
+        return -self.value
+    def setNeg(self, value):
+        self.value = -value
+    def delNeg(self):
+        print('Value have been deleted')
+        del self.value
+    negative = property(getNeg, setNeg, delNeg, 'I am negative one')
+
+x = num(1.1)
+print(x.negative)
+
+x.negative = -22
+print(x.value)
+print(num.negative.__doc__)
+del x.negative
+>>>
+-1.1
+22
+I am negative one
+Value have been deleted
+```
+
+
+
+#### property 实现的原理
+
+```
+class A:
+
+    def __init__(self):
+        self.__val = 0
+
+    def get_val(self):
+        return self.__val
+
+    def set_val(self, value):
+        self.__val = value
+
+    val = property(get_val, set_val)
+
+print(type(A.val))
+a = A()
+
+a.val = 3
+print(a.val)
+>>>
+<class 'property'>
+3
+```
+
+
+
+### set属性
+
+```
+class A:
+
+    def __init__(self):
+        self.__val = 0
+
+    @property
+    def val(self):
+        if self.__val < 0:
+            return 0
+        return self.__val
+
+    @val.setter
+    def val(self, value):
+        if isinstance(value, (int, float)) and value >= 0:
+            self.__val = value
+        else:
+            self.__val = 0
+
+
+a = A()
+print(a.val)
+a.val = 3
+print(a.val)
+>>>
+0
+3
+```
+
+
+
+### 属性的__dict__系统
+
+对象的属性可能来自与其类定义，叫做类属性(class attribute)。 
+
+类属性可能来自类定义自身，也可能根据类定义继承来的。一个对象的属性还可能是该对象实例定义的，叫做对象属性(object attribute)
+
+对象的属性存储在对象的__dict__属性中，__dict__为一个词典，键为属性名，对应的值为属性本身。
+
+```
+class bird(object):
+    feather = True
+
+class chicken(bird):
+    fly = False
+    def __init__(self, age):
+        self.age = age
+
+summer = chicken(2)
+
+print(bird.__dict__)
+print(chicken.__dict__)
+print(summer.__dict__)
+
+# 利用__class__属性找到对象的类，然后调用类的__base__属性来查询父类
+summer.__dict__['age'] = 3
+print(summer.__dict__['age'])
+
+summer.age = 5
+print(summer.age)
+>>>
+{'__weakref__': <attribute '__weakref__' of 'bird' objects>, '__doc__': None, '__module__': '__main__', 'feather': True, '__dict__': <attribute '__dict__' of 'bird' objects>}
+{'__doc__': None, '__init__': <function chicken.__init__ at 0x10f1c6488>, '__module__': '__main__', 'fly': False}
+{'age': 2}
+3
+5
+```
+
 
 
 ## 析构函数
+
+实例释放，销毁的时候执行
+
+通常用于收尾工作，如数据库链接打开的临时文件
 
 ```python
 class MyString:
@@ -573,16 +1072,6 @@ Bye
 ```
 
 
-
-
-
-## 实例变量
-
-实例变量的作用域，就是实例本身
-
-
-
-## 实例方法
 
 
 

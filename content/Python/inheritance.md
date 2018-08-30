@@ -1,5 +1,5 @@
 ---
-title: "inheriting 继承"
+title: "inheritance 继承"
 date: 2018-08-28 14:27
 collection: 面向对象
 ---
@@ -64,10 +64,10 @@ MyUser2.DisplayLoginTime()
 MyUser3.DisplayUsername()
 MyUser3.DisplayLoginTime()
 
->
+>>>
 (Construct fucntion:Rick)
-(Construct fucntion:Leo)
-(Construct fucntion:Josh)
+(Construct fucntion:Michelle)
+(Construct fucntion:Sam)
 Rick
 Login time: 2016-09-10 16:20:45
 Michelle
@@ -85,6 +85,8 @@ Login time: 2016-09-10 16:20:45
 私有的方法，变量，包括类和实例是不可继承的
 公有的方法，变量，包括类和实例是可以继承的
 父类公有的方法，包括类和实例，是可以访问父类的私有变量的
+
+父类的私有方法不能被子类覆盖
 
 ```python
 class A:
@@ -162,6 +164,48 @@ class public var
 
 
 
+#### 自定义特殊方法 (继承list类)
+
+```
+In [57]: L = [1, 2, 3]
+In [57]: L = [1, 2, 3]
+
+In [59]: print(dir(L))
+['__add__', '__class__', '__contains__', '__delattr__', '__delitem__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__iadd__', '__imul__', '__init__', '__init_subclass__', '__iter__', '__le__', '__len__', '__lt__', '__mul__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__reversed__', '__rmul__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', 'append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort']
+```
+
+其中的`__add__`是一个特殊方法, 可以实现两个list 相加
+
+```
+In [60]: [1, 2, 3] + [4, 5, 6]
+Out[60]: [1, 2, 3, 4, 5, 6]
+```
+
+
+
+
+
+
+
+继承list类，添加对 - 的定义
+```
+class super_list(list):
+    def __sub__(self, b): #内置函数__sub__()定义了-的操作
+        a = self[:] #这里, self是super_list的对象。由于super_list继承于list, 利用和list[:]相同的引用方法来表示整个对象
+        b = b[:]
+        while len(b) > 0:
+            element_b = b.pop()
+            if element_b in a:
+                a.remove(element_b)
+        return a
+
+print(super_list([1, 2, 3]) - super_list([3, 4]))
+>>>
+[1, 2]
+```
+
+
+
 ### 子类私有方法
 
 子类可以重定义父类的私有方法，子类里面不可见
@@ -216,9 +260,13 @@ AttributeError: 'super' object has no attribute '_B__method'
 
 
 
-### 强行继承
 
-强行继承父类的私有变量
+
+### 强行继承 (私有变量重写)
+
+强行继承父类的私有变量, 私有变量是可以被重写的
+
+不建议使用
 
 ```python
 class A:
@@ -297,9 +345,9 @@ Method of A
 
 
 
-## 多态
+## 多态 Polymorphism 
 
-抽象类中定义的一个方法，可以在其子类中重新实现，不同子类中实现的方法也不相同
+多态是面向对象的重要特性,简单点说:“一个接口，多种实现”，指一个基类中派生出了不同的子类，且每个子类在继承了同样的方法名的同时又对父类的方法做了不同的实现，这就是同一种事物表现出的多种形态。
 
 ```
 from abc import ABCMeta, abstractclassmethod

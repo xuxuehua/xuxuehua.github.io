@@ -188,3 +188,47 @@ inside end with deco params
 ret value (1, 2, 3)
 ```
 
+
+
+## 装饰类
+
+一个装饰器可以接收一个类，并返回一个类，起到加工的作用。
+
+```python
+def deco(aClass):
+    class newClass:
+        def __init__(self, age):
+            self.total_display = 0
+            self.wrapper = aClass(age)
+
+        def display(self):
+            self.total_display += 1
+            print('total display', self.total_display)
+            self.wrapper.display()
+
+    return newClass
+
+
+@deco
+class Bird:
+    def __init__(self, age):
+        self.age = age
+
+    def display(self):
+        print('My age: ', self.age)
+
+
+eagleLord = Bird(5)
+
+for i in range(3):
+    eagleLord.display()
+
+>>>
+total display 1
+My age:  5
+total display 2
+My age:  5
+total display 3
+My age:  5
+```
+

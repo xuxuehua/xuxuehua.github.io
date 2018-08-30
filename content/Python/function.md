@@ -72,8 +72,8 @@ son 3
 
 ## 函数参数
 
-> 非默认非可变参数，可变位置参数，可变关键字参数
-> 默认参数不要和可变参数放在一起
+非默认非可变参数，可变位置参数，可变关键字参数
+默认参数不要和可变参数放在一起
 
 
 ```python
@@ -85,7 +85,7 @@ print(add(3, 4))
 7
 ```
 
-* 参数引用 (在函数体内赋值，不会影响外部变量)
+参数引用 (在函数体内赋值，不会影响外部变量)
 
 ```python
 x = 1
@@ -100,7 +100,7 @@ print(x, y)
 1 2
 ```
 
-* 直传递
+直传递
 
 ```python
 L = [1, 2, 3]
@@ -116,7 +116,7 @@ print(L)
 
 ### 位置参数 
 
-> 位置参数，通过参数传递的位置来决定
+位置参数，通过参数传递的位置来决定
 
 ```python
 def add(x, y):
@@ -133,7 +133,7 @@ y = 2
 
 ### 关键字参数
 
-> 关键字参数，通过参数名称来决定
+关键字参数，通过参数名称来决定
 
 ```python
 def add(x, y):
@@ -150,7 +150,7 @@ y = 2
 
 ### 位置，关键字参数混合使用
 
-* 位置参数和关键字参数是在调用的时候决定的
+位置参数和关键字参数是在调用的时候决定的
 
 ```python
 def add(x, y):
@@ -165,7 +165,7 @@ y = 2
 3
 ```
 
-* 关键字参数必须在位置参数之后
+关键字参数必须在位置参数之后
 
 ```python
 def add(x, y):
@@ -183,7 +183,7 @@ SyntaxError: positional argument follows keyword argument
 
 ### 默认参数
 
-* 默认的参数可以被覆盖掉
+如果参数赋予了默认值，且该参数最终没有被传递，将使用该默认值
 
 ```python
 def inc(x, i=1):
@@ -196,12 +196,14 @@ print(inc(5, 2))
 7
 ```
 
+
+
 ### 可变参数 (可变位置参数)
 
-> 函数定义时，参数名前加\*代表次参数是可变的位置参数
-> 函数调用是，参数列表封装成一个元组传递给args
+函数定义时，参数名前加\*代表次参数是可变的位置参数
+函数调用是，参数列表封装成一个元组传递给args
 
-* 使用列表的调用方法
+使用列表的调用方法
 
 ```python
 def sum(L):
@@ -215,7 +217,7 @@ print(sum([1, 2, 3, 4, 5]))
 15
 ```
 
-* 使用可变参数的调用方法 (调用参数的时候，自动组装成元组)
+使用可变参数的调用方法 (调用参数的时候，自动组装成元组)
 
 ```python
 def sum(*args):
@@ -229,9 +231,13 @@ print(sum(1, 2, 3, 4, 5))
 16
 ```
 
+
+
+
+
 ### 关键字参数 (可变关键字参数)
 
-* 使用可变关键字参数  (调用参数的时候，自动组装成字典)
+使用可变关键字参数  (调用参数的时候，自动组装成字典)
 
 ```python
 def print_info(**kwargs):
@@ -244,7 +250,7 @@ b -> 2
 a -> 1
 ```
 
-* 调用的时候, 会决定参数是位置参数还是关键字参数
+调用的时候, 会决定参数是位置参数还是关键字参数
 
 ```python
 def print_info(**kwargs):
@@ -299,9 +305,70 @@ b -> 8
 a -> 7
 ```
 
+
+
+### 闭包
+
+所谓的闭包就是一个包含有环境变量取值的函数对象。环境变量取值被保存在函数对象的`__closure__`属性中
+
+函数是一个对象，所以可以作为某个函数的返回结果
+
+```
+def line_conf():
+    def line(x):
+        return 2*x+1
+    return line   # Return a function object
+
+my_line = line_conf()
+print(my_line(5))
+>>>
+11
+```
+
+
+
+`__closure__`包含一个元组，而第一个cell包含的就是闭包的环境变量b的取值
+
+```
+def line_conf():
+    b = 15
+    def line(x):
+        return 2*x+b
+    return line
+
+b = 5
+my_line = line_conf()
+print(my_line.__closure__)
+print(my_line.__closure__[0].cell_contents)
+>>>
+(<cell at 0x10dfd2fd8: int object at 0x10dce7830>,)
+15
+```
+
+
+
+函数line 与环境变量a, b 构成闭包
+
+```
+def line_conf(a, b):
+    def line(x):
+        return a*x+ b
+    return line
+
+line1 = line_conf(1, 1)
+line2 = line_conf(4, 5)
+print(line1(5), line2(5))
+>>>
+6 25
+```
+
+
+
+
+
 ### 参数解包
 
-### 位置参数解包
+#### 位置参数解包
 
 ```python
 def add(x, y):
@@ -317,7 +384,11 @@ y = 2
 3
 ```
 
-### 关键字参数解包
+
+
+
+
+#### 关键字参数解包
 
 ```python
 def add(x, y):
@@ -351,12 +422,16 @@ def square_sum(a,b):
 * 在Python中，当程序执行到return的时候，程序将停止执行函数内余下的语句。return并不是必须的，当没有return, 或者return后面没有返回值时，函数将自动返回None。None是Python中的一个特别的数据类型，用来表示什么都没有，相当于C中的NULL。None多用于关键字参数传递的默认值
 
 
+
+
+
 ## 函数调用和参数传递
 
 
 ### 函数调用
-* 整数变量传递给函数
-  对于基本数据类型的变量，变量传递给函数后，函数会在内存中复制一个新的变量，从而不影响原来的变量。（我们称此为值传递）
+整数变量传递给函数
+对于基本数据类型的变量，变量传递给函数后，函数会在内存中复制一个新的变量，从而不影响原来的变量。（我们称此为值传递）
+
 ```
 a = 1
 def change_integer(a):
@@ -371,8 +446,12 @@ print(a)
 ```
 
 
-* 表传递给函数
-  对于表来说，表传递给函数的是一个指针，指针指向序列在内存中的位置，在函数中对表的操作将在原有内存中进行，从而影响原有变量。 （我们称此为指针传递）
+
+### 参数传递
+
+表传递给函数
+对于表来说，表传递给函数的是一个指针，指针指向序列在内存中的位置，在函数中对表的操作将在原有内存中进行，从而影响原有变量。 （我们称此为指针传递）
+
 ```
 b = [1, 2, 3]
 def change_list(b):
@@ -385,6 +464,39 @@ print(b)
 [2, 2, 3]
 [2, 2, 3]
 ```
+
+
+
+函数的参数传递，本质上传递的就是引用
+
+```
+def f(x):
+    x = 100
+    print(x)
+
+a = 1
+f(a)
+print(a)
+>>>
+100
+1
+```
+
+如果传递的是可变(mutable)对象，那么改变函数参数，有可能改变原对象
+```
+def f(x):
+    x[0] = 100
+    print(x)
+
+a = [1, 2, 3]
+f(a)
+print(a)
+>>>
+[100, 2, 3]
+[100, 2, 3]
+```
+
+
 
 
 
@@ -504,183 +616,6 @@ calc(10)
 
 ```
 var result = subtract(multiply(add(1, 2), 3), 4)
-```
-
-
-
-
-
-## Python 内置函数
-
-### abs()
-
-```python
-print(abs(-1))
->
-1
-```
-
-### pow() 
-
-pow(x, y) 返回x的y次幂
-
-```python
-print(pow(2, 3))
-> 
-8
-```
-
-### Round()  
-
-round(x[, n]) 返回浮点数x的四舍五入值
-
-```python
-print(round(80.2345, 2))
->
-80.23
-```
-
-### divmod()   
-
-divmod(a, b) 返回a除以b的商和余数，返回一个元组
-
-```python
-print(divmod(8, 3))
->
-(2, 2)
-```
-
-### lower(), upper(), swapcase(), capitalize(), title()
-
-```python
-str = 'Hello World'
-print(str.lower())
-print(str.upper())
-print(str.swapcase())
-print(str.capitalize())
-print(str.title())
-> 
-hello world
-HELLO WORLD
-hELLO wORLD
-Hello world
-Hello World
-```
-### ljust(), rjust(), center(), zfil()
-
-```python
-str = 'Hello World'
-print(str.ljust(20, '*'))
-print(str.rjust(20, '*'))
-print(str.center(20, '*'))
-print(str.zfill(20))
-> 
-Hello World*********
-*********Hello World
-****Hello World*****
-000000000Hello World
-```
-### find(), index(), rfind(), rindex(), count(), replace(), strip(), lstrip(), rstrip(), expandtabs()
-
-```python
-str = 'Hello World'
-print(str.find('l'))
-print(str.index('l'))
-print(str.rfind('l'))
-print(str.rindex('l'))
-print(str.count('l'))
-print(str.replace(' ', '*'))
-print(str.strip())
-print(str.lstrip())
-print(str.rstrip())
-print(str.expandtabs())
->
-2
-2
-9
-9
-3
-Hello*World
-Hello World
-Hello World
-Hello World
-Hello World
-```
-### split()
-
-```python
-str = 'Hello World'
-print(str.split(' '))
->
-['Hello', 'World']
-```
-### splitlines()
-
-```python
-str = 'Hello World'
-print(str.splitlines())
->
-['Hello World']
-```
-### join()
-
-```python
-list = ['Hello', 'World']
-str = '#'
-print(str.join(list))
->
-Hello#World
-```
-### startswith(), endswith(), isalnum(), isalpha(), isdigit(), islower(), isupper()
-
-```python
-str = 'Python String Function'
-print(str.startswith('P'))
-print(str.endswith('P'))
-print(str.isalnum())
-print(str.isalpha())
-print(str.isdigit())
-print(str.islower())
-print(str.isupper())
->
-True
-False
-False
-False
-False
-False
-False
-```
-### help()
-
-```python
-help('print')
-> 
-Help on built-in function print in module builtins:
-
-print(...)
-    print(value, ..., sep=' ', end='\n', file=sys.stdout, flush=False)
-    
-    Prints the values to a stream, or to sys.stdout by default.
-    Optional keyword arguments:
-    file:  a file-like object (stream); defaults to the current sys.stdout.
-    sep:   string inserted between values, default a space.
-    end:   string appended after the last value, default a newline.
-    flush: whether to forcibly flush the stream.
-```
-### type() 
-
-```python
-str = 'Hello'
-print(type(str))
-num = 8
-print(type(num))
-list = [1, 2, 3]
-print(type(list))
->
-<class 'str'>
-<class 'int'>
-<class 'list'>
 ```
 
 
