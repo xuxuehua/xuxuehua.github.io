@@ -117,6 +117,9 @@ Out[12]: 'I love python'
 | %a   | 字符串，使用ascii函数转换         |
 | %r   | 字符串，使用repr函数转换          |
 | %s   | 字符串，使用str函数转换           |
+| ％s  | 字符 %                            |
+
+
 
 
 * %d
@@ -199,6 +202,8 @@ Out[5]: 'Rick Xu 29 years old'
 ## 字符串连接 
 
 ### join
+
+将s中的元素，以str为分割符，合并成为一个字符串
 
 ```python
 In [26]: L
@@ -522,7 +527,7 @@ Out[132]: 2
 
 ### index 
 
-不存在会报异常
+从左开始，查找sub在str中第一次出现的位置。如果str中不包含sub，举出错
 
 ```python
 In [135]: s
@@ -542,6 +547,8 @@ ValueError: substring not found
 
 ### rindex
 
+从右开始，查找sub在str中第一次出现的位置。如果str中不包含sub，返回 -1
+
 ```python
 In [137]: s
 Out[137]: 'I love Python'
@@ -554,7 +561,7 @@ Out[138]: 11
 
 ### find  
 
-不存在返回-1
+从左开始，查找sub在str中第一次出现的位置。如果str中不包含sub，返回-1
 
 ```python
 In [139]: s
@@ -572,6 +579,32 @@ Out[142]: 7
 In [143]: s.find('xuxu')
 Out[143]: -1
 ```
+
+
+
+### rfind
+
+从右开始，查找sub在str中第一次出现的位置。如果str中不包含sub，返回 -1
+
+```
+In [2]: s = 'I love Python'
+
+In [3]: s.rfind('I')
+Out[3]: 0
+
+In [4]: s.rfind('o')
+Out[4]: 11
+
+In [5]: s.rfind('xxh')
+Out[5]: -1
+
+```
+
+
+
+
+
+
 
 ### replace 
 
@@ -595,12 +628,16 @@ Out[149]: 'I lxve Pythxn'
 
 ### isalnum
 
+如果所有的字符都是字母或数字
+
 ```
 In [6]: 'ab23'.isalnum()
 Out[6]: True
 ```
 
 ### isalpha
+
+如果所有的字符都是字母
 
 ```
 In [7]: 'abA'.isalpha()
@@ -615,6 +652,8 @@ Out[8]: False
 ```
 
 ### isdigit
+
+如果所有的字符都是数字
 
 ```
 In [9]: '1A'.isdigit()
@@ -640,6 +679,8 @@ Out[12]: False
 
 ### istitle
 
+如果所有的词的首字母都是大写
+
 ```
 In [13]: 'My name'.istitle()
 Out[13]: False
@@ -648,11 +689,41 @@ In [14]: 'My Name'.istitle()
 Out[14]: True
 ```
 
+
+
 ### isupper
+
+如果所有的字符都是大写字母
 
 ```
 In [15]: 'aA'.isupper()
 Out[15]: False
+```
+
+
+
+### islower
+
+如果所有的字符都是小写字母
+
+```
+In [8]: s = 'abc'
+
+In [9]: s.islower()
+Out[9]: True
+```
+
+
+
+### isspace
+
+如果所有的字符都是空格
+
+```
+In [6]: s = " " 
+
+In [7]: s.isspace()
+Out[7]: True
 ```
 
 

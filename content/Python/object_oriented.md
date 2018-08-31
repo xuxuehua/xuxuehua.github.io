@@ -974,6 +974,36 @@ print(a.val)
 
 
 
+##属性
+
+### 查询对象的属性
+
+除了使用dir()来查询对象属性，还可以使用built-in函数来确认
+
+```
+# attr_name是一个字符串
+hasattr(obj, attr_name) 
+
+In [10]: a = [1, 2, 3]
+
+In [11]: print(hasattr(a, 'append'))
+True
+```
+
+
+
+### 查询对象所属的类和类名称
+
+```
+In [12]: a = [1, 2, 3]
+
+In [13]: print(a.__class__)
+<class 'list'>
+
+In [15]: print(a.__class__.__name__)
+list
+```
+
 ### set属性
 
 ```

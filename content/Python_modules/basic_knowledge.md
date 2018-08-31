@@ -97,3 +97,25 @@ from modules import logger as my_logger
 from module_name import my_function
 ```
 
+
+
+## 使用`__name__`
+
+当整个程序作为库被import的时候，我们并不需要测试语句。可以使用__name__跳过
+
+```python
+def lib_func(a):
+    return a + 10
+
+def lib_func_another(b):
+    return b + 20
+
+if __name__ == '__main__':
+    test = 101
+    print(lib_func(test))
+
+print('__name__:', __name__)
+>>>
+111
+__name__: __main__
+```
