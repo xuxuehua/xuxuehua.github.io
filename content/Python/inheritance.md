@@ -29,6 +29,60 @@ super对象使用super方法生成
 
 类可以继承其他类的内容，包括成员变量和成员函数
 
+```
+class People(object):
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def eat(self):
+        print('%s is eating...' % self.name)
+
+    def sleep(self):
+        print('%s is sleeping...' % self.name)
+
+    def talk(self):
+        print('%s is talking...' % self.name)
+
+
+class Man(People):
+    def __init__(self, name, age, money):
+        # People.__init__(self, name, age)  等同于下面
+        super(Man, self).__init__(name, age)  # 新式写法
+        self.money = money
+        print('%s has %s dollar' % (self.name, self.money))
+
+    def play(self):
+        print('%s is playing...' % self.name)
+
+    def sleep(self):
+        People.sleep(self)
+        print('man is sleeping...')
+
+
+class Woman(People):
+
+    def purchase(self):
+        print('%s is purchasing...' % self.name)
+
+
+m1 = Man('Rick', 18, 100000000)
+m1.eat()
+m1.play()
+m1.sleep()
+
+w1 = Woman('Michelle', 18)
+w1.purchase()
+>>>
+Rick has 100000000 dollar
+Rick is eating...
+Rick is playing...
+Rick is sleeping...
+man is sleeping...
+Michelle is purchasing...
+```
+
 ```python
 import time
 
@@ -293,7 +347,7 @@ method of B
 
 
 
-### 多继承
+## 多继承
 
 多继承是毒药，不到万不得已不要使用
 
@@ -320,9 +374,11 @@ Method of B
 
 
 
-#### 多继承特点
+### 多继承顺序
 
 多继承，总是先调用前面的
+
+统一按照广度优先来继承
 
 ```python
 class A:
@@ -345,6 +401,34 @@ Method of A
 
 
 
+```
+class A:
+    def __init__(self):
+        print('A')
+        
+
+class B(A):
+    print('B')
+    
+
+class C(A):
+    print('C')
+    
+
+class D(B, C):
+    print('D')
+    
+
+obj = D()
+>>>
+B
+C
+D
+A
+```
+
+
+
 ## 查询父类
 
 使用__base__属性来查询某个类的父类
@@ -360,6 +444,39 @@ print(list.__base__)
 ## 多态 Polymorphism 
 
 多态是面向对象的重要特性,简单点说:“一个接口，多种实现”，指一个基类中派生出了不同的子类，且每个子类在继承了同样的方法名的同时又对父类的方法做了不同的实现，这就是同一种事物表现出的多种形态。
+
+```
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def bark(self):
+        pass
+
+    @staticmethod
+    def animal_bark(obj):	#这里的方法可以放到类外面形成函数
+        obj.bark()
+
+
+class Cat(Animal):
+    def bark(self):
+        print('Meow!')
+
+
+class Dog(Animal):
+    def bark(self):
+        print('Woof!')
+
+
+d = Dog('Mydog')
+c = Cat('Mycat')
+
+Animal.animal_bark(c)
+Animal.animal_bark(d)
+>>>
+Meow!
+Woof!
+```
 
 ```
 from abc import ABCMeta, abstractclassmethod

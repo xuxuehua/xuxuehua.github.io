@@ -145,6 +145,47 @@ PyCodeObject和pyc文件。
 
 
 
+## 安装
+
+
+
+### centos 
+
+#### Python 3
+
+```
+$ sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+$ sudo yum update
+```
+
+Python 34
+
+```
+$ sudo yum install -y python34u python34u-libs python34u-devel python34u-pip
+$ which -a python3.4
+/bin/python3.4
+/usr/bin/python3.4
+```
+
+Python 35
+
+```
+$ sudo yum install -y python35u python35u-libs python35u-devel python35u-pip
+$ which -a python3.5
+/bin/python3.5
+/usr/bin/python3.5
+```
+
+
+
+
+
+
+
+
+
+
+
 ## 注释
 
 单行注视：# 被注释内容
@@ -364,3 +405,12 @@ In [43]: del b
 ```
 $ python -i script.py
 ```
+
+
+
+## 测试Python性能
+
+```
+python -m cProfile -s time PYTHON_SCRIPT
+```
+
