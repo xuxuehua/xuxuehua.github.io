@@ -11,7 +11,9 @@ date: 2018-07-16 21:05
 
 
 
-<https://oload.download/embed/Xu5JXCuJGuw >-f
+## -f
+
+
 
 ```
 ADS_NYC=$(seq -f SDNYads%03g 101 200)

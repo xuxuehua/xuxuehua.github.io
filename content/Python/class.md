@@ -157,80 +157,13 @@ print(a._A__val)
 
 
 
-### 构造方法
-
-```python
-class ClassName:
-    def __init__(self):
-        pass
-```
-
-```python
-class MyString:
-    def __init__(self):      # __init__构造函数, 通过构造函数对类进行初始化操作
-        self.str = "MyString"
-
-    def output(self):
-        print(self.str)
-
-s = MyString()
-s.output()
->>>
-MyString
-```
 
 
 
-构造方法无参数，可以省略构造方法
 
-```
-class A:
-    __val = 3
+### 类方法
 
-    def get_val(self):
-        return self.__val
-
-a = A()
-print(a.get_val())
-a.__val
->>>
-Traceback (most recent call last):
-  File "/Users/xhxu/python/python3/test/9.py", line 9, in <module>
-    a.__val
-AttributeError: 'A' object has no attribute '__val'
-3
-```
-
-
-
-### 析构函数
-
-实例释放，销毁的时候执行
-
-通常用于收尾工作，如数据库链接打开的临时文件
-
-```python
-class MyString:
-    def __init__(self):  #构造函数
-        self.str = "MyString"
-    def __del__(self):   #析构函数
-        print("Bye")
-
-    def output(self):
-        print(self.str)
-
-s = MyString()
-
-s.output()
-del s   # 删除对象
->>>
-MyString
-Bye
-```
-
-
-
-## 类方法
+至少一个cls参数；执行类方法时，自动将调用该方法的类复制给cls
 
 类方法传递类本身， 可以访问私有的类变量
 
@@ -332,10 +265,6 @@ Traceback (most recent call last):
 NameError: name '_A__val' is not defined
 ```
 
-
-
-
-
 静态方法只属于定义他的类，而不属于任何一个具体的对象
 
 静态方法无需传入self参数，因此在静态方法中无法访问实例变量
@@ -361,142 +290,13 @@ I am static method
 
 
 
-### property属性
-
-加上property 装饰器，在函数调用的时候，就不需要加上小括号
-
-property调用的时候，只能调用self参数
-
-常用于设定只读的属性
-
-```python
-class A:
-    def __init__(self):
-        self.__value = 0
-
-    @property # property 可以访问私有的变量
-    def value(self):
-        if self.__value < 0:
-            return 0
-        return self.__value
-
-    @value.setter # 加了这个装饰器，才会被认为是属性
-    def value(self, val):
-        if isinstance(val, (int, float)) and val >= 0:
-            self.__value = val
-        else:
-            self.__value = 0
-
-a = A()
-a.value = -1
-print(a.value)
-a.value = 3
-print(a.value)
->>>
-0
-3
-```
-
-
-
-同一个对象的不同属性之间可能存在依赖关系。当某个属性被修改时，依赖于该属性的其他属性也会同时变化。
-
-```
-class bird(object):
-    feather = True
-
-class chicken(bird):
-    fly = False
-    def __init__(self, age):
-        self.age = age
-
-    def getAdult(self):
-        if self.age > 1.0:
-            return True
-        else:
-            return False
-    adult = property(getAdult)
-
-summer = chicken(2)
-
-print(summer.adult)
-summer.age = 0.5
-print(summer.adult)
->>>
-True
-False
-```
-
-
-
-#### property参数
-
-property()最多可以加载四个参数。前三个参数为函数，分别用于处理查询特性，修改特性，删除特性。最后一个参数为特性文档，可以为一个字符串，用于说明。 
-
-negative 为一个特性，用于表示数字的负数。property() 最后一个参数('I am negative one') 表示特性negative的说明文档
-
-```
-class num(object):
-    def __init__(self, value):
-        self.value = value
-    def getNeg(self):
-        return -self.value
-    def setNeg(self, value):
-        self.value = -value
-    def delNeg(self):
-        print('Value have been deleted')
-        del self.value
-    negative = property(getNeg, setNeg, delNeg, 'I am negative one')
-
-x = num(1.1)
-print(x.negative)
-
-x.negative = -22
-print(x.value)
-print(num.negative.__doc__)
-del x.negative
->>>
--1.1
-22
-I am negative one
-Value have been deleted
-```
-
-
-
-#### property 实现的原理
-
-```
-class A:
-
-    def __init__(self):
-        self.__val = 0
-
-    def get_val(self):
-        return self.__val
-
-    def set_val(self, value):
-        self.__val = value
-
-    val = property(get_val, set_val)
-
-print(type(A.val))
-a = A()
-
-a.val = 3
-print(a.val)
->>>
-<class 'property'>
-3
-```
-
 
 
 
 
 ## 属性 
 
-### 实例变量
+### 公有变量 (实例变量)
 
 定义在方法中的变量，只作用于当前实例的类。
 
@@ -504,24 +304,66 @@ print(a.val)
 
 实例变量，也称静态属性
 
+类可以访问；类内部可以访问；派生类中可以访问
+
 ```
-class Door:
+class C:
 
-    def __init__(self, number, status):
-        self.number = number
-        self.status = status
+    def __init__(self):
+        self.var = 'public var'
 
-    def open(self):
-        self.status = "opening"
-
-    def close(self):
-        self.status = "closed"
+    def func(self):
+        print(self.var)
 
 
-door1 = Door(1, 'closed')
+class D(C):
+
+    def show(self):
+        print(self.var)
+
+obj = C()
+obj.var
+obj.func()
+
+obj_son = D()
+obj_son.show()
+>>>
+public var
+public var
 ```
 
-> 这里是self.number 就是实例变量
+
+
+
+
+### 私有变量
+
+仅类内部可以访问
+
+```
+class C:
+
+    def __init__(self):
+        self.__var = 'private var'
+
+    def func(self):
+        print(self.__var)
+
+
+class D(C):
+
+    def show(self):
+        print(self.__var)
+
+obj = C()
+obj.__var # 通过对象访问    ==> 错误
+obj.func() # 类内部访问        ==> 正确
+
+obj_son = D()
+obj_son.show() # 派生类中访问  ==> 错误
+```
+
+
 
 
 
@@ -594,21 +436,24 @@ a 4437455120
 `__private_attrs`：两个下划线开头，声明该属性为私有，不能在类的外部被使用或直接访问。在类内部的方法中使用时 `self.__private_attrs`。
 
 ```python
-class A:
-    __value = 3
-    def get_value(self):
-        return self.__value
+class C:
+    __name = 'private var'
 
-a = A()
-print(a.get_value())
-print(a.__value)
->>>
-3
+    def func(self):
+        print('func in C', C.__name)
 
-Traceback (most recent call last):
-  File "/Users/xhxu/python/python3/test/3.py", line 8, in <module>
-    print(a.__value)
-AttributeError: 'A' object has no attribute '__value'
+
+class D(C):
+
+    def show(self):
+        print('show in D', C.__name)
+
+C.__name # 类访问 错误
+obj = C()
+obj.func() # 类内部可以访问
+
+obj_son = D()
+obj_son.show() # 派生类中访问错误
 ```
 
 
@@ -628,15 +473,209 @@ class Users(object):
 a = Users()  #创建Users对象
 a.online_count += 1
 print(Users.online_count)
->
+>>>
 1
 ```
 
 
 
-### 内置属性
+### property属性
+
+加上property 装饰器，在函数调用的时候，就不需要加上小括号
+
+property调用的时候，只能调用self参数
+
+常用于设定只读的属性
+
+```python
+class A:
+    def __init__(self):
+        self.__value = 0
+
+    @property # property 可以访问私有的变量
+    def value(self):
+        if self.__value < 0:
+            return 0
+        return self.__value
+
+    @value.setter # 加了这个装饰器，才会被认为是属性
+    def value(self, val):
+        if isinstance(val, (int, float)) and val >= 0:
+            self.__value = val
+        else:
+            self.__value = 0
+
+a = A()
+a.value = -1
+print(a.value)
+a.value = 3
+print(a.value)
+>>>
+0
+3
+```
+
+
+
+同一个对象的不同属性之间可能存在依赖关系。当某个属性被修改时，依赖于该属性的其他属性也会同时变化。
+
+```
+class bird(object):
+    feather = True
+
+class chicken(bird):
+    fly = False
+    def __init__(self, age):
+        self.age = age
+
+    def getAdult(self):
+        if self.age > 1.0:
+            return True
+        else:
+            return False
+    adult = property(getAdult)
+
+summer = chicken(2)
+
+print(summer.adult)
+summer.age = 0.5
+print(summer.adult)
+>>>
+True
+False
+```
+
+
+
+#### property 参数
+
+property()最多可以加载四个参数。
+
+第一个参数是方法名，调用 对象.属性 时自动触发执行方法
+
+第二个参数是方法名，调用 对象.属性 ＝ XXX 时自动触发执行方法
+
+第三个参数是方法名，调用 del 对象.属性 时自动触发执行方法
+
+第四个参数是字符串，调用 对象.属性.`__doc__` ，此参数是该属性的描述信息
+
+negative 为一个特性，用于表示数字的负数。property() 最后一个参数('I am negative one') 表示特性negative的说明文档
+
+```
+class Goods(object):
+
+    def __init__(self):
+        self.original_price = 100
+        self.discount = 0.8
+
+    def get_price(self):
+        new_price = self.original_price * self.discount
+        return new_price
+
+    def set_price(self, value):
+        self.original_price = value
+
+    def del_price(self):
+        del self.original_price
+
+    PRICE = property(get_price, set_price, del_price, 'Price description')
+
+
+obj = Goods()
+print(obj.PRICE)
+obj.PRICE = 200
+print(obj.PRICE)
+del obj.PRICE
+>>>
+80.0
+160.0
+```
+
+
+
+#### property 实现的原理
+
+```
+class A:
+
+    def __init__(self):
+        self.__val = 0
+
+    def get_val(self):
+        return self.__val
+
+    def set_val(self, value):
+        self.__val = value
+
+    val = property(get_val, set_val)
+
+print(type(A.val))
+a = A()
+
+a.val = 3
+print(a.val)
+>>>
+<class 'property'>
+3
+```
+
+
+
+### 内置特殊属性
+
+#### `__init__`
+
+构造方法, 通过类创建对象时，自动触发执行
+
+```python
+class ClassName:
+    def __init__(self):
+        pass
+```
+
+```python
+class MyString:
+    def __init__(self):      # __init__构造函数, 通过构造函数对类进行初始化操作
+        self.str = "MyString"
+
+    def output(self):
+        print(self.str)
+
+s = MyString()
+s.output()
+>>>
+MyString
+```
+
+
+
+构造方法无参数，可以省略构造方法
+
+```
+class A:
+    __val = 3
+
+    def get_val(self):
+        return self.__val
+
+a = A()
+print(a.get_val())
+a.__val
+>>>
+Traceback (most recent call last):
+  File "/Users/xhxu/python/python3/test/9.py", line 9, in <module>
+    a.__val
+AttributeError: 'A' object has no attribute '__val'
+3
+```
+
+## 
+
+
 
 #### `__dict__`
+
+类或对象中的所有成员
 
 对象的属性可能来自与其类定义，叫做类属性(class attribute)。 
 
@@ -732,7 +771,7 @@ list
 
 #### `__module__`
 
-`__module__`:   类定义所在的模块（类的全名是'__main__.className'，如果类位于一个导入模块mymod中，那么className.__module__ 等于 mymod）
+`__module__`:   类定义所在的模块（类的全名是'`__main__`.className'，如果类位于一个导入模块mymod中，那么className.`__module__` 等于 mymod）
 
 ```
 class Exam:
@@ -769,6 +808,151 @@ print(Exam.__bases__)
 ```
 
 
+
+#### `__class__`
+
+表示当前操作的对象的类是什么
+
+```
+class A:
+
+    def __init__(self):
+        self.name = 'Rick'
+
+
+obj = A()
+print(obj.__class__)
+>>>
+<class '__main__.A'>
+```
+
+
+
+
+
+#### `__del__`
+
+析构方法，当对象在内存中被释放时，自动触发执行。
+
+通常用于收尾工作，如数据库链接打开的临时文件
+
+```python
+class MyString:
+    def __init__(self):  #构造函数
+        self.str = "MyString"
+    def __del__(self):   #析构函数
+        print("Bye")
+
+    def output(self):
+        print(self.str)
+
+s = MyString()
+
+s.output()
+del s   # 删除对象
+>>>
+MyString
+Bye
+```
+
+> 此方法一般无须定义，因为Python是一门高级语言，程序员在使用时无需关心内存的分配和释放，因为此工作都是交给Python解释器来执行，所以，析构函数的调用是由解释器在进行垃圾回收时自动触发执行的。
+
+
+
+#### `__call__`
+
+对象后面加括号，触发执行。
+
+```
+class A:
+
+    def __init__(self):
+        pass
+
+    def __call__(self, *args, **kwargs):
+        print('__call__')
+
+obj = A()
+obj()
+>>>
+__call__
+```
+
+构造方法的执行是由创建对象触发的，即：对象 = 类名() ；而对于 `__call__` 方法的执行是由对象后加括号触发的，即：对象() 或者 类()()
+
+
+
+#### `__str__`
+
+如果一个类中定义了`__str__`方法，那么在打印 对象 时，默认输出该方法的返回值。
+
+```
+class A:
+
+    def __str__(self):
+        return 'Rick'
+
+obj = A()
+print(obj)
+>>>
+Rick
+```
+
+
+
+#### `__getitem__、__setitem__、__delitem__`
+
+用于索引操作，如字典。以上分别表示获取、设置、删除数据
+
+```
+class A:
+
+    def __getitem__(self, item):
+        print(item)
+
+    def __setitem__(self, key, value):
+        print(key, value)
+
+    def __delitem__(self, key):
+        print(key)
+
+obj = A()
+
+ret = obj['key1'] # 自动触发执行 __getitem__
+obj['key2'] = 'Value2' # 自动触发执行 __getitem__
+del obj['key1'] # 自动触发执行 __getitem__
+>>>
+key1
+key2 Value2
+key1
+```
+
+
+
+#### `__iter__`
+
+用于迭代器，之所以列表、字典、元组可以进行for循环，是因为类型内部定义了 `__iter__`
+
+```
+class A:
+
+    def __init__(self, sq):
+        self.sq = sq
+
+    def __iter__(self):
+        return iter(self.sq)
+
+obj = A([1, 2, 3, 4])
+
+for i in obj:
+    print(i)
+    
+>>>
+1
+2
+3
+4
+```
 
 
 
@@ -926,274 +1110,7 @@ type cls <class 'type'>
 
 
 
-## 类方法
 
-类方法传递类本身， 可以访问私有的类变量
-
-```python
-class A:
-    __val = 3
-
-    @classmethod
-    def get_val(cls):
-        return cls.__val
-
-a = A()
-
-print(a.get_val())
-print(A.get_val())
->>>
-3
-3
-```
-
-与静态方法一样，类方法可以使用类名调用类方法
-
-与静态方法一样，类成员方法也无法访问实例变量，但可以访问类的静态变量
-
-类方法需传入代表类的cls参数
-
-```python
-class MyClass:
-    val1 = "String1"  #静态变量
-    def __init__(self):
-        self.val2 = "Value 2"
-    @classmethod      #类方法
-    def classmd(cls):
-        print('Class: ' + str(cls) + ',val1: ' + cls.val1 + ', Cannot access value 2')
-
-MyClass.classmd()
-c = MyClass()
-c.classmd()
->>> 
-Class: <class '__main__.MyClass'>,val1: String1, Cannot access value 2
-Class: <class '__main__.MyClass'>,val1: String1, Cannot access value 2
-```
-
-
-
-类方法不能访问实例变量, 但可以访问类变量
-
-```
-class A:
-    __val = 3
-
-    def __init__(self, x):
-        self.x = x
-
-    @classmethod
-    def get_val(cls):
-        print(cls.x)
-        return cls.__val
-
-a = A(5)
-print(A.get_val())
->>>
-Traceback (most recent call last):
-  File "/Users/xhxu/python/python3/test/9.py", line 12, in <module>
-    print(A.get_val())
-  File "/Users/xhxu/python/python3/test/9.py", line 9, in get_val
-    print(cls.x)
-AttributeError: type object 'A' has no attribute 'x'
-
-```
-
-
-
-
-
-
-
-### 静态方法
-
-静态方法并不能访问私有变量，只是给类方法加了类的属性
-
-```
-class A:
-    __val = 3
-
-    @staticmethod
-    def print_val():
-        print(__val)
-
-a = A()
-
-a.print_val()
-A.print_val()
->>>
-Traceback (most recent call last):
-  File "/Users/xhxu/python/python3/test/9.py", line 10, in <module>
-    a.print_val()
-  File "/Users/xhxu/python/python3/test/9.py", line 6, in print_val
-    print(__val)
-NameError: name '_A__val' is not defined
-
-```
-
-
-
-
-
-静态方法只属于定义他的类，而不属于任何一个具体的对象
-
-静态方法无需传入self参数，因此在静态方法中无法访问实例变量
-
-静态方法不能直接访问类的静态变量，但可以通过类名引用静态变量
-
-```python
-class MyClass:
-    var1 = "String1"
-    @staticmethod   #静态方法
-    def staticmd():
-        print('I am static method')
-
-MyClass.staticmd()  #调用了静态方法
-c = MyClass()
-c.staticmd()
->>>
-I am static method
-I am static method
-```
-
-
-
-
-
-### property属性
-
-加上property 装饰器，在函数调用的时候，就不需要加上小括号
-
-property调用的时候，只能调用self参数
-
-常用于设定只读的属性
-
-```python
-class A:
-    def __init__(self):
-        self.__value = 0
-
-    @property # property 可以访问私有的变量
-    def value(self):
-        if self.__value < 0:
-            return 0
-        return self.__value
-
-    @value.setter # 加了这个装饰器，才会被认为是属性
-    def value(self, val):
-        if isinstance(val, (int, float)) and val >= 0:
-            self.__value = val
-        else:
-            self.__value = 0
-
-a = A()
-a.value = -1
-print(a.value)
-a.value = 3
-print(a.value)
->>>
-0
-3
-```
-
-
-
-同一个对象的不同属性之间可能存在依赖关系。当某个属性被修改时，依赖于该属性的其他属性也会同时变化。
-
-```
-class bird(object):
-    feather = True
-
-class chicken(bird):
-    fly = False
-    def __init__(self, age):
-        self.age = age
-
-    def getAdult(self):
-        if self.age > 1.0:
-            return True
-        else:
-            return False
-    adult = property(getAdult)
-
-summer = chicken(2)
-
-print(summer.adult)
-summer.age = 0.5
-print(summer.adult)
->>>
-True
-False
-
-```
-
-
-
-#### property参数
-
-property()最多可以加载四个参数。前三个参数为函数，分别用于处理查询特性，修改特性，删除特性。最后一个参数为特性文档，可以为一个字符串，用于说明。 
-
-negative 为一个特性，用于表示数字的负数。property() 最后一个参数('I am negative one') 表示特性negative的说明文档
-
-```
-class num(object):
-    def __init__(self, value):
-        self.value = value
-    def getNeg(self):
-        return -self.value
-    def setNeg(self, value):
-        self.value = -value
-    def delNeg(self):
-        print('Value have been deleted')
-        del self.value
-    negative = property(getNeg, setNeg, delNeg, 'I am negative one')
-
-x = num(1.1)
-print(x.negative)
-
-x.negative = -22
-print(x.value)
-print(num.negative.__doc__)
-del x.negative
->>>
--1.1
-22
-I am negative one
-Value have been deleted
-
-```
-
-
-
-#### property 实现的原理
-
-```
-class A:
-
-    def __init__(self):
-        self.__val = 0
-
-    def get_val(self):
-        return self.__val
-
-    def set_val(self, value):
-        self.__val = value
-
-    val = property(get_val, set_val)
-
-print(type(A.val))
-a = A()
-
-a.val = 3
-print(a.val)
->>>
-<class 'property'>
-3
-
-```
-
-
-
-`
 
 ## 封装
 

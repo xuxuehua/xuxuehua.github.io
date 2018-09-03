@@ -20,11 +20,19 @@ python是一种多范式到语言，但对OOP支持最好
 
 
 
+## 函数式编程
+
+将某功能代码封装到函数中，日后便无需重复编写，仅调用函数即可
+
+
+
 ## 面向过程编程(Procedural Programming)
 
 Procedural programming uses a list of instructions to tell the computer what to do step-by-step. 
 
 面向过程又被称为top-down languages， 就是程序从上到下一步步执行，一步步从上到下，从头到尾的解决问题 。
+
+根据业务逻辑从上到下写垒代码
 
 
 
@@ -75,6 +83,66 @@ OOP编程是利用“类”和“对象”来创建各种模型来实现对真�
 封装，也就是把客观事物封装成抽象的类，并且类可以把自己的数据和方法只让可信的类或者对象操作，对不可信的进行信息隐藏。
 
 将数据和操作捆绑在一起，定义一个新类的过程就是封装
+
+```
+class Exam:
+
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+
+
+obj1 = Exam('Rick', '90')
+```
+
+> 将Rick和90封装刀obj1里面的name 和score
+
+
+
+#### 直接调用
+
+```
+class Exam:
+
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+
+
+obj1 = Exam('Rick', '90')
+
+print(obj1.name)
+>>>
+Rick
+```
+
+
+
+
+
+#### 间接调用
+
+```
+class Exam:
+
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+
+    def detail_name(self):
+        print(self.name)
+
+
+obj1 = Exam('Rick', '90')
+
+obj1.detail_name()
+>>>
+Rick
+```
+
+
+
+
 
 ### **Inheritance 继承**
 
@@ -138,10 +206,6 @@ OOP编程是利用“类”和“对象”来创建各种模型来实现对真�
 刚才定义的这个类体现了面向对象的第一个基本特性，封装，**其实就是使用构造方法将内容封装到某个具体对象中，然后通过对象直接或者self间接获取被封装的内容**
 
  
-
-### 析构函数
-
-析构函数与构造函数相反，当对象脱离作用域时（例如对象所在的函数已调用完毕），系统自动执行析构函数。
 
 
 
