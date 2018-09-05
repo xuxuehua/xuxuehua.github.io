@@ -263,11 +263,11 @@ Foo/
 |
 |-- docs/
 |   |-- conf.py
-|   |-- abc.rst
+|   |-- docs.md
 |
 |-- setup.py
 |-- requirements.txt
-|-- README
+|-- README.md
 ```
 
 > `bin/`: 存放项目的一些可执行文件，当然你可以起名`script/`之类的也行。

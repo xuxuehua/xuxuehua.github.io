@@ -322,7 +322,7 @@ class D(C):
         print(self.var)
 
 obj = C()
-obj.var
+obj.var   # 对象的属性引用
 obj.func()
 
 obj_son = D()

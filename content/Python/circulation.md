@@ -170,9 +170,32 @@ Yes
 
 结束整个循环
 
+```
+for i in range(5):
+    if i == 2:
+        break
+    print(i)
+>>>
+0
+1
+```
+
+
+
 
 
 ## continue
 
 跳出本次循环，进入下一次循环
 
+```
+for i in range(5):
+    if i == 2:
+        continue
+    print(i)
+>>>
+0
+1
+3
+4
+```
