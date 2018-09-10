@@ -42,7 +42,13 @@ hahaha
 
 
 
-## 处理顺序
+## 异常类型
+
+Exception 能抓住所有错误，不建议使用
+
+
+
+## 异常处理顺序
 
 无法将异常交给合适的对象，异常将继续向上层抛出，直到捕捉或者造成主程序出错
 
@@ -86,3 +92,20 @@ Traceback (most recent call last):
 StopIteration
 test
 ```
+
+
+
+## 自定义异常
+
+```
+class MyError(Exception):
+    
+    def __init__(self, msg):
+        self.message = msg
+        
+try:
+    raise MyError('This is my error.')
+except MyError as e:
+    print(e)
+```
+

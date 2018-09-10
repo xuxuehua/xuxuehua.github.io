@@ -174,54 +174,6 @@ False
 
 
 
-
-
-##比较运算符重载
-
-```python
-class Person:
-    def __init__(self, age):
-        self.age = age
-
-    def __lt__(self, other):
-        print('lt')
-        return self.age < other.age
-
-    def __le__(self, other):
-        print('le')
-        return self.age <= other.age
-
-    def __eq__(self, other):
-        print('eq')
-        return self.age == other.age
-
-    def __ne__(self, other):
-        print('ne')
-        return self.age != other.age
-
-    def __gt__(self, other):
-        print('gt')
-        return self.age > other.age
-
-    def __ge__(self, other):
-        print('ge')
-        return self.age >= other
-
-p1 = Person(18)
-
-p2 = Person(13)
-
-print(p1 > p2)
-print(p1 < p2)
->>>
-gt
-True
-lt
-False
-```
-
-
-
 ### bool 函数
 
 ```python
@@ -309,54 +261,128 @@ Rick
 
 
 
-### 反射
+## 运算符重载
 
+
+
+###比较运算符重载
 
 ```python
-class Grok:
-    X = 1
-    Y = 2
-    Z = 3
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
+class Person:
+    def __init__(self, age):
+        self.age = age
 
-    def method(self):
-        pass
+    def __lt__(self, other):
+        print('lt')
+        return self.age < other.age
 
-grok = Grok(1, 2, 3)
+    def __le__(self, other):
+        print('le')
+        return self.age <= other.age
 
-print(grok.__dict__)
+    def __eq__(self, other):
+        print('eq')
+        return self.age == other.age
+
+    def __ne__(self, other):
+        print('ne')
+        return self.age != other.age
+
+    def __gt__(self, other):
+        print('gt')
+        return self.age > other.age
+
+    def __ge__(self, other):
+        print('ge')
+        return self.age >= other
+
+p1 = Person(18)
+
+p2 = Person(13)
+
+print(p1 > p2)
+print(p1 < p2)
 >>>
-{'z': 3, 'x': 1, 'y': 2}
+gt
+True
+lt
+False
 ```
 
 
-```python
-class Grok:
-    def __init__(self):
-        self.__dict = {'x': 1, 'y': 2}
-        self.a = 3
-        #self.x = 5
 
-    def __getattr__(self, name):
-        print('get {0}'.format(name))
-        return self.__dict.get(name)
 
-grok = Grok()
 
-print(grok.x)
-print(grok.a)
+### 算数运算符重载
+
+在Python中，运算符也是通过相应函数实现的
+
+运算符对应的其实就是类中的一些魔术方法（专有方法）。比如加、减、乘、除对应的就是`__add__`、`__sub__`、`__mul__`、`__div__`
+
+```
+class Mylist(object):
+
+    def __init__(self, *args):
+        self.__mylist= []
+        for arg in args:
+            self.__mylist.append(arg)
+
+    def __add__(self, other):
+        for i in range(len(self.__mylist)):
+            self.__mylist[i] = self.__mylist[i] + other
+
+    def show(self):
+        print(self.__mylist)
+
+
+l = Mylist(1, 2, 3, 4)
+l.show()
+l + 10
+l.show()
 >>>
-get x
-1
-3
+[1, 2, 3, 4]
+[11, 12, 13, 14]
 ```
 
 
 
-### with 语句实现的方法
+
+
+## 反射
+
+过字符串映射或修改程序运行时的状态、属性、方法,
+
+
+
+### getattr
+
+getattr(object, name, default=None)
+
+
+
+### hasattr
+
+hasattr(object,name)
+
+
+
+### setattr
+
+setattr(x, y, v)
+
+
+
+### delattr
+
+delattr(x, y)
+
+
+
+
+
+
+
+## with 语句实现的方法
 
 with 语句可以自动关闭资源
 

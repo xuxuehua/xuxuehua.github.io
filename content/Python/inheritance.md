@@ -382,7 +382,7 @@ Method of B
 
 ![img](https://cdn.pbrd.co/images/HC9883i.png)
 
-![img](/var/folders/rz/7zd4wvf90070rc96bxfc_xf13wzxml/T/abnerworks.Typora/image-20180903160749424.png)
+![img](https://cdn.pbrd.co/images/HCAU2kb.png)
 
 
 

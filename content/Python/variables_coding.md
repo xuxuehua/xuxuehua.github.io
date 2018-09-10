@@ -114,7 +114,7 @@ UTF-8 的编码规则很简单，只有二条：
 
 如果.py文件中包含中文字符（严格的说是含有非anscii字符），则需要在第一行或第二行指定编码声明：
 
-`#-*- coding=utf-8 -*-` 或者 `#coding=utf-8`
+`#-*- coding=utf-8 -*-` 或者 `# encoding=utf-8`
 
 即文件编码为utf-8, 但py文件内的变量是Unicode
 
