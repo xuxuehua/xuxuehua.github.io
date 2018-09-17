@@ -1,5 +1,5 @@
 ---
-title: "shi_shuo 师说"
+title: "shi_shuo 《师说》"
 date: 2018-09-03 01:22
 ---
 

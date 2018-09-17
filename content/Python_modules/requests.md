@@ -132,6 +132,15 @@ pip install .
 
 ### get
 
+无参数的调用
+
+```
+import requests
+
+response = requests.get('http://www.xuxuehua.com')
+print(response)
+```
+
 在Requests里，我们一般使用`params`关键字参数的方式，传入dict来传递url参数。比如，假设我们想传递`key1=value1`和`key2=value2`这2个参数，我们可以用下面的代码
 
 ```
@@ -154,6 +163,19 @@ http://httpbin.org/get?key2=value2&key1=value1
 >>> r = requests.get('http://httpbin.org/get', params=payload)
 >>> print(r.url)
 http://httpbin.org/get?key1=value1&key2=value2&key2=value3
+```
+
+#### 返回值
+
+```
+import requests
+
+response = requests.get('http://www.xuxuehua.com')
+print(response.text) # 返回unicode格式数据
+print(response.content) # 返回字节流数据
+print(response.url) # 返回完整url
+print(response.encoding) # 返回响应头部字节编码
+print(response.status_code) # 返回响应码
 ```
 
 

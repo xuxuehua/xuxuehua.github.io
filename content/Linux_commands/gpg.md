@@ -108,7 +108,7 @@ gpg --list-keys
 ### 验证文件的可靠性/完整性
 
 ```
-gpg --verify SOME_FILE_VALUE
+gpg --verify FILE_KEY FILE_NAME
 ```
 
 > 如果命令的输出包含了 “Good signature from <文件所属者>”，那么下载的 sha256 文件就被成功地认证和核实了。如果下载的文件的任何地方在签名后被篡改了，那么验证就会失败。
@@ -119,5 +119,15 @@ gpg --verify SOME_FILE_VALUE
 
 ```
 gpg --verify file.ext.asc file.ext
+```
+
+
+
+
+
+### 导入本地密钥
+
+```
+gpg --sign-key KEY_ID
 ```
 

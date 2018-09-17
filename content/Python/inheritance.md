@@ -16,6 +16,14 @@ collection: 面向对象
 
 
 
+## 继承用途
+
+继承基类的方法，并且做出自己的改变或者扩展（代码重用）；
+
+声明某个子类兼容于某基类，定义一个接口类Interface，接口类中定义了一些接口名（就是函数名）且并未实现接口的功能，子类继承接口类，并且实现接口中的功能；
+
+
+
 ## super 方法
 
 父类，也可以称为超类，基类
@@ -314,6 +322,12 @@ AttributeError: 'super' object has no attribute '_B__method'
 
 
 
+#### 接口
+
+接口就是一些方法特征的集合------接口是对抽象的抽象。
+
+接口提取了一群类共同的函数，可以把接口当做一个函数的集合，然后让子类去实现接口中的函数。
+
 
 
 ### 强行继承 (私有变量重写)
@@ -476,6 +490,52 @@ A
 
 
 
+```
+class A(object):
+    def test(self):
+        print('from A')
+
+class B(A):
+    def test(self):
+        print('from B')
+
+class C(A):
+    def test(self):
+        print('from C')
+
+class D(B):
+    def test(self):
+        print('from D')
+
+class E(C):
+    def test(self):
+        print('from E')
+
+class F(D,E):
+    # def test(self):
+    #     print('from F')
+    pass
+f1=F()
+f1.test()
+print(F.__mro__) #只有新式才有这个属性可以查看线性列表，经典类没有这个属性
+
+#新式类继承顺序:F->D->B->E->C->A
+#经典类继承顺序:F->D->B->A->E->C
+#python3中统一都是新式类
+#pyhon2中才分新式类与经典类
+
+>>>
+from D
+(<class '__main__.F'>, <class '__main__.D'>, <class '__main__.B'>, <class '__main__.E'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>)
+
+>>> F.mro() #等同于F.__mro__
+[<class '__main__.F'>, <class '__main__.D'>, <class '__main__.B'>, <class '__main__.E'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>]
+```
+
+
+
+
+
 ## 查询父类
 
 使用__base__属性来查询某个类的父类
@@ -485,6 +545,57 @@ cls.__base__
 
 print(list.__base__)
 ```
+
+
+
+
+
+## 组合调用
+
+```
+class BirthDate:
+    def __init__(self, year, month, day):
+        self.year = year
+        self.month = month
+        self.day = day
+
+
+class Course:
+    def __init__(self, name, price, period):
+        self.name = name
+        self.price = price
+        self.period = period
+
+
+class Teacher:
+    def __init__(self, name, gender):
+        self.name = name
+        self.gender = gender
+
+    def teaching(self):
+        print('teaching')
+
+
+class Professor(Teacher):
+    def __init__(self, name, gender, birth, course):
+        super(Professor, self).__init__(name, gender)
+        self.birth = birth
+        self.course = course
+
+
+p1 = Professor('Rick', 'male',
+               BirthDate('1999', '1', '1'),
+               Course('Python', '20000', '4 months'))
+
+print(p1.birth.year, p1.birth.month, p1.birth.day)
+print(p1.course.name, p1.course.price, p1.course.period)
+
+>>>
+1999 1 1
+Python 20000 4 months
+```
+
+
 
 
 

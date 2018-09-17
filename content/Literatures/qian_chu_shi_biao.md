@@ -1,5 +1,5 @@
 ---
-title: "qian_chu_shi_biao 前出师表"
+title: "qian_chu_shi_biao 《前出师表》"
 date: 2018-09-03 00:59
 ---
 

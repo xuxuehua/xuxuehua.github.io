@@ -26,3 +26,31 @@ LimitCORE=infinity
 WantedBy=multi-user.target
 ```
 
+
+
+## rpcbind
+
+```
+!1004 $ cat /etc/sysconfig/rpcbind
+#
+# Optional arguments passed to rpcbind. See rpcbind(8)
+RPCBIND_ARGS=""
+```
+
+
+
+```
+[Unit]
+Description=RPC bind service
+Requires=rpcbind.socket
+After=systemd-tmpfiles-setup.service
+
+[Service]
+Type=forking
+EnvironmentFile=/etc/sysconfig/rpcbind
+ExecStart=/sbin/rpcbind -w $RPCBIND_ARGS
+
+[Install]
+Also=rpcbind.socket
+```
+

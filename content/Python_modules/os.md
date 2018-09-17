@@ -48,6 +48,15 @@ Out[45]: environ({'TERM_PROGRAM': 'iTerm.app', 'PYENV_ROOT': '/Users/xhxu/.pyenv
 
 
 
+* 获取当前用户的主目录路径（家目录）
+
+```
+In [8]: os.environ['HOME']
+Out[8]: '/Users/xhxu'
+```
+
+
+
 
 
 ### os.getcwd
@@ -58,7 +67,6 @@ Out[45]: environ({'TERM_PROGRAM': 'iTerm.app', 'PYENV_ROOT': '/Users/xhxu/.pyenv
 
 分别用来读取和设置环境变量
 
-## 
 
 ### os.getatime(path)
 
@@ -142,9 +150,38 @@ os.path.abspath(__file__)
 
 返回文件名
 
+```
+In [2]: os.path.basename('_config.yml')
+Out[2]: '_config.yml'
+```
+
+
+
 ### os.path.exists(name)
 
 判断是否存在文件或目录name
+
+
+
+### os.path.expandvars()
+
+获取当前用户的主目录路径（家目录）
+
+```
+In [10]: os.path.expandvars('$HOME')
+Out[10]: '/Users/xhxu'
+```
+
+
+
+### os.path.expanduser()
+
+获取当前用户的主目录路径（家目录）
+
+```
+In [11]: os.path.expanduser('~')
+Out[11]: '/Users/xhxu'
+```
 
 
 
@@ -290,13 +327,90 @@ print(os.system('ls'))
 
 
 
+### os.symlink(source, link_name)
+
+为源文件source创建一个符号链接link_name。
+
+ 
+
+### os.unlink(path)
+
+删除一个path指定的文件，和os.remove()的工作机制一样。
+
+ 
+
+### os.utime(path, times)
+
+修改文件的访问时间和修改时间。如果times参数为**None**，则设置文件的访问时间和修改时间为当前的时间。否则，如果times参数不为空，则times参数是一个二元组(atime, mtime)，用于设置文件的访问时间和修改时间。
+
+ 
+
+### os.tempnam([dir[, prefix]])
+
+返回一个独一无二的路径名作为临时文件的文件名。返回的路径名是一个绝对路径，该临时文件名的入口由dir参数指定，如果dir参数没有指定或者为**None**，则用通用的临时文件目录作为临时文件的目录。如果dir被指定，并且不是**None**，则prefix参数被用来作为创建的临时文件名的前缀。
+
+ 
+
+### os.tmpnam()
+
+返回一个独一无二的路径名作为临时文件的文件名，该文件名被创建者通用的临时文件目录下。
+
+>  os.tmpnam()和os.tempnam()只是负责生产一个临时文件的路径名，而不负责文件的创建和删除。
+
+ 
+
+### os.walk()
+
+os.walk(top, topdown = True, onerror = None, followlinks = False)
+
+以自顶向下遍历目录树或者以自底向上遍历目录树，对每一个目录都返回一个三元组(dirpath, dirnames, filenames)。
+
+三元组(dirpath，dirnames，filenames)：
+
+dirpath - 遍历所在目录树的位置，是一个字符串对象
+
+dirnames - 目录树中的子目录组成的列表，不包括("."和"..")
+
+filenames - 目录树中的文件组成的列表
+
+如果可选参数topdown = True或者没有指定，则其实目录的三元组先于其子目录的三元组生成(自顶向下生成三元组)，如果topdown = False，则起始目录的三元组在其子目录的三元组生成后才生成(自底向上生成三元组)。
+
+当topdown = True，os.walk()函数会就地修改三元组中的*dirnames*列表(可能是使用del或者进行切片），然后再使用os.walk()递归地处理剩余在*dirnames*列表中的目录。这种方式有助于加快搜索效率，可以指定特殊的遍历顺序。当topdown = False的时候修改*dirnames*是无效的，因为在使用自底向上进行遍历的时候子目录的三元组是先于上一级目录的三元组创建的。
+
+默认情况下，调用listdir()返回的错误会被忽略，如果可选参数oneerror被指定，则oneerror必须是一个函数，该函数有一个OSError实例的参数，这样可以允许在运行的时候即使出现错误的时候不会打断os.walk()的执行，或者抛出一个异常并终止os.walk()的运行。
+默认情况下，os.walk()遍历的时候不会进入符号链接，如果设置了可选参数followlinks = True，则可以进入符号链接。
+
+注意：当设置followlinks = True时，可能会出现循环遍历，因为符号链接可能会出现自己链接自己的情况，而os.walk()不会意识到这一点。
+
+注意：如果传递过去的路径名是一个相对路径，则不会修改当前的工作路径。
+
+使用os.walk遍历目录真的很方便：
+
+```
+#-*- coding:utf-8 -*-
+
+import os
+
+if __name__ == '__main__':
+    try:
+    '''traval and list all files and all dirs''' 
+    for root, dirs, files in os.walk('D:' + os.sep + 'Python27'):
+        print '-------------------directory < ' + root + ' > --------------------------'
+
+        for d in dirs:
+        print d
+        for f in files:
+        print f
+    except OSError, e:
+    print os.strerror(e.errno)
+```
+
 
 
 
 
 ## 文件操作
 
-`os.mknod("text.txt")`：创建空文件
 `fp = open("text.txt",w)`:直接打开一个文件，如果文件不存在就创建文件
 
 
@@ -333,8 +447,12 @@ size为读取的长度，以byte为单位
 #### fp.write(str)                      
 把str写到文件中，write()并不会在str后加上一个换行符
 
+
+
 #### fp.writelines(seq)                  
 把seq的内容全部写到文件中(多行一次性写入)。这个函数也只是忠实地写入，不会在每行后面加上任何东西。
+
+
 
 #### fp.close()                        
 关闭文件。python会在一个文件不用后自动关闭文件，不过这一功能没有保证，最好还是养成自己关闭的习惯。 如果一个文件在关闭后还对其进行操作会产生ValueError
@@ -369,23 +487,29 @@ size为读取的长度，以byte为单位
 
 ### 复制文件
 
-shutil.copyfile("oldfile","newfile")       
+shutil.copyfile("oldfile","newfile")      
+
 oldfile和newfile都只能是文件
 
 shutil.copy("oldfile","newfile")            
+
 oldfile只能是文件夹，newfile可以是文件，也可以是目标目录
 
-shutil.copytree("olddir","newdir")        
+shutil.copytree("olddir","newdir")       
+
 复制文件夹.olddir和newdir都只能是目录，且newdir必须不存在
 
 os.rename("oldname","newname")       
+
 重命名文件（目录）.文件或目录都是使用这条命令
 
 shutil.move("oldpos","newpos")   
+
 移动文件（目录）
 
 os.rmdir("dir")
 只能删除空目录
 
 shutil.rmtree("dir")    
+
 空目录、有内容的目录都可以删
