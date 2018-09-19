@@ -62,7 +62,11 @@ driver.quit()
 
 为了看清脚本的执行过程，下面每操作一步都通过print()来打印当前的URL地址。
 
-### 刷新页面
+
+
+### 页面操作
+
+#### 页面刷新
 
 有时候需要手动刷新（F5） 页面。
 
@@ -74,9 +78,9 @@ driver.refresh() #刷新当前页面
 
 
 
-### 页面等待
+#### 页面等待
 
-#### wait
+##### wait
 
 wait( condition, opt_timeout, opt_message )
 
@@ -104,7 +108,7 @@ driver.wait(started, 5 * 1000, 'Server should start within 5 seconds');
 driver.get(getServerUrl());
 ```
 
-#### sleep
+##### sleep
 
 sleep可以不管任何情况直接将执行中的脚本直接暂停一段时间。
 
@@ -120,7 +124,7 @@ sleep在某些时候非常好用，但是希望大家不要乱用，因为这会
 
 
 
-#### until
+##### until
 
 until一般跟wait一起用，用于等待页面上的一些条件被满足
 
@@ -163,6 +167,16 @@ driver.wait(function() {
 
 
 
+#### 页面保存
+
+```
+contents = brower.page_source
+```
+
+
+
+
+
 ### 关闭浏览器
 
 发布时间 2017年6月12日 
@@ -172,7 +186,6 @@ driver.wait(function() {
 - close() 关闭单个窗口
 - quit() 关闭所有窗口
 
-  
 
 ## WebDriver 操作
 

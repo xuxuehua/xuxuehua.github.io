@@ -31,7 +31,7 @@ pip install .
 
 
 
-## 请求
+## 请求 requests
 
 ### post
 
@@ -89,6 +89,34 @@ pip install .
 
 >>> r = requests.post(url, json=payload)
 ```
+
+
+
+#### Ajax.json 
+
+```
+import requests
+
+data = {
+    'first': 'true',
+    'pn': '1',
+    'kd': 'python'
+}
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Iridium/2017.11 Safari/537.36 Chrome/62.0.3202.94',
+    'Referer': 'https://www.lagou.com/jobs/list_python?labelWords=&fromSearch=true&suginput='
+}
+
+url = 'https://www.lagou.com/jobs/positionAjax.json?city=%E5%8C%97%E4%BA%AC&needAddtionalResult=false'
+
+response = requests.post(url, headers=headers, data=data)
+print(response.json())
+```
+
+> headers 里面的Referer 是必须的
+>
+> url是Ajax.json 生成的
 
 
 
@@ -171,8 +199,8 @@ http://httpbin.org/get?key1=value1&key2=value2&key2=value3
 import requests
 
 response = requests.get('http://www.xuxuehua.com')
-print(response.text) # 返回unicode格式数据
-print(response.content) # 返回字节流数据
+print(response.text) # 返回unicode格式数据, 可以指定解码方式
+print(response.content) # 返回字节流数据， 没有经过任何解码，bytes类型
 print(response.url) # 返回完整url
 print(response.encoding) # 返回响应头部字节编码
 print(response.status_code) # 返回响应码
@@ -194,6 +222,38 @@ def download_file(url):
                 f.flush()
     return local_filename
 ```
+
+
+
+#### proxy 处理
+
+```
+import requests
+
+proxy = {
+    'http': '210.73.202.121:53281'
+}
+
+url = 'http://httpbin.org/ip'
+
+response = requests.get(url, proxies=proxy)
+print(response.text)
+
+>>>
+{
+  "origin": "210.73.202.121"
+}
+```
+
+
+
+#### 不信任的SSL证书
+
+```
+resp = requests.get(url, verify=False)
+```
+
+
 
 
 
@@ -240,6 +300,10 @@ def download_file(url):
 
 
 
+
+
+
+
 ### 自定义请求的headers
 
 有时候我们需要自定义一些请求的headers，比如我们可能需要将jwt的token放到headers里以完成鉴权。
@@ -265,6 +329,18 @@ requests.exceptions.Timeout: HTTPConnectionPool(host='github.com', port=80): Req
 ```
 
 timeout 仅对连接过程有效，与响应体的下载无关。 timeout 并不是整个下载响应的时间限制，而是如果服务器在 timeout 秒内没有应答，将会引发一个异常（更精确地说，是在 timeout 秒内没有从基础套接字上接收到任何字节的数据时)。
+
+
+
+## headers
+
+```
+headers = {
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Iridium/2017.11 Safari/537.36 Chrome/62.0.3202.94"
+}
+```
+
+
 
 
 
@@ -462,7 +538,50 @@ Cookie 的返回对象为 [RequestsCookieJar](http://docs.python-requests.org/zh
 '{"cookies": {"tasty_cookie": "yum"}}'
 ```
 
+
+
+#### 获取cookie value
+
+```
+import requests
+
+url = 'http://www.baidu.com/'
+
+response = requests.get(url)
+print(response.cookies.get_dict())
+```
+
  
+
+#### session
+
+共享cookie免登录
+
+```
+import requests
+
+url = 'https://www.shanbay.com/api/v1/account/login/web/'
+zone_url = 'https://www.shanbay.com/checkin/user/xxxxx/'
+
+headers = {
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Iridium/2017.11 Safari/537.36 Chrome/62.0.3202.94'
+}
+
+data = {"username":"xxx","password":"xxx"}
+
+session = requests.Session()
+session.put(url, headers=headers, data=data)
+
+response = session.get(zone_url)
+
+with open('shanbay.html', 'w', encoding='utf-8') as f:
+    f.write(response.text)
+
+```
+
+
+
+
 
 ## Cookie 模拟登录
 
