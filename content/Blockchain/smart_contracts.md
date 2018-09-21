@@ -42,7 +42,6 @@ contract SimpleStorage {       // 合约声明
 
 * 最新版本变成view 方法
 
-  
 
 ### pure
 
@@ -260,7 +259,6 @@ struct Employee {
 
 * calldata 类似memory
 
-  
 
 #### 强制
 
