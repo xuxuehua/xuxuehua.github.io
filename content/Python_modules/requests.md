@@ -199,8 +199,8 @@ http://httpbin.org/get?key1=value1&key2=value2&key2=value3
 import requests
 
 response = requests.get('http://www.xuxuehua.com')
-print(response.text) # 返回unicode格式数据, 可以指定解码方式
-print(response.content) # 返回字节流数据， 没有经过任何解码，bytes类型
+print(response.text) # 返回unicode格式数据,是str类型, 可以指定解码方式
+print(response.content) # 返回字节流数据，即原生字符串，就是从网页直接抓下来的，没有经过任何解码，bytes类型
 print(response.url) # 返回完整url
 print(response.encoding) # 返回响应头部字节编码
 print(response.status_code) # 返回响应码
@@ -833,3 +833,8 @@ print r.status_code
 
 print r.text
 ```
+
+
+
+
+

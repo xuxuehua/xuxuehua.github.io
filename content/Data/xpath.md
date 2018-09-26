@@ -83,6 +83,139 @@ Firefox -> XPath Checker
 
 
 
+### 过滤数据
+
+取职位信息（第一行数据不需要)
+
+```
+<tbody><tr class="h">
+		    		<td class="l" width="374">职位名称</td>
+		    		<td>职位类别</td>
+		    		<td>人数</td>
+		    		<td>地点</td>
+		    		<td>发布时间</td>
+		    	</tr>
+		    			    	<tr class="even">
+		    		<td class="l square"><a target="_blank" href="position_detail.php?id=44425&amp;keywords=&amp;tid=87&amp;lid=2156">23675-推荐后台高级工程师（北京）</a><span class="hot">&nbsp;</span></td>
+					<td>技术类</td>
+					<td>1</td>
+					<td>北京</td>
+					<td>2018-09-23</td>
+		    	</tr>
+		    			    	<tr class="odd">
+		    		<td class="l square"><a target="_blank" href="position_detail.php?id=44413&amp;keywords=&amp;tid=87&amp;lid=2156">23674-新闻内容理解高级工程师</a></td>
+					<td>技术类</td>
+					<td>2</td>
+					<td>北京</td>
+					<td>2018-09-23</td>
+		    	</tr>
+		    			    	<tr class="even">
+		    		<td class="l square"><a target="_blank" href="position_detail.php?id=44415&amp;keywords=&amp;tid=87&amp;lid=2156">23486-自选股IOS客户端开发工程师（北京）</a></td>
+					<td>技术类</td>
+					<td>1</td>
+					<td>北京</td>
+					<td>2018-09-23</td>
+		    	</tr>
+		    			    	<tr class="odd">
+		    		<td class="l square"><a target="_blank" href="position_detail.php?id=44382&amp;keywords=&amp;tid=87&amp;lid=2156">OMG097-视频安全后台开发（北京）</a><span class="hot">&nbsp;</span></td>
+					<td>技术类</td>
+					<td>3</td>
+					<td>北京</td>
+					<td>2018-09-23</td>
+		    	</tr>
+		    			    	<tr class="even">
+		    		<td class="l square"><a target="_blank" href="position_detail.php?id=44383&amp;keywords=&amp;tid=87&amp;lid=2156">OMG097-互动安全后台开发</a><span class="hot">&nbsp;</span></td>
+					<td>技术类</td>
+					<td>3</td>
+					<td>北京</td>
+					<td>2018-09-23</td>
+		    	</tr>
+		    			    	<tr class="odd">
+		    		<td class="l square"><a target="_blank" href="position_detail.php?id=44384&amp;keywords=&amp;tid=87&amp;lid=2156">OMG097-运营后台开发</a><span class="hot">&nbsp;</span></td>
+					<td>技术类</td>
+					<td>2</td>
+					<td>北京</td>
+					<td>2018-09-23</td>
+		    	</tr>
+		    			    	<tr class="even">
+		    		<td class="l square"><a target="_blank" href="position_detail.php?id=44369&amp;keywords=&amp;tid=87&amp;lid=2156">SA-腾讯社交广告联盟广告应用开发高级工程师（北京）</a><span class="hot">&nbsp;</span></td>
+					<td>技术类</td>
+					<td>1</td>
+					<td>北京</td>
+					<td>2018-09-23</td>
+		    	</tr>
+		    			    	<tr class="odd">
+		    		<td class="l square"><a target="_blank" href="position_detail.php?id=44351&amp;keywords=&amp;tid=87&amp;lid=2156">WXG02-116  微信搜索和信息流系统测试工程师（深圳）</a></td>
+					<td>技术类</td>
+					<td>1</td>
+					<td>北京</td>
+					<td>2018-09-23</td>
+		    	</tr>
+		    			    	<tr class="even">
+		    		<td class="l square"><a target="_blank" href="position_detail.php?id=44347&amp;keywords=&amp;tid=87&amp;lid=2156">OMG097-web前端开发（北京）</a><span class="hot">&nbsp;</span></td>
+					<td>技术类</td>
+					<td>3</td>
+					<td>北京</td>
+					<td>2018-09-23</td>
+		    	</tr>
+		    			    	<tr class="odd">
+		    		<td class="l square"><a target="_blank" href="position_detail.php?id=44303&amp;keywords=&amp;tid=87&amp;lid=2156">MIG09-QQ浏览器前端开发工程师</a></td>
+					<td>技术类</td>
+					<td>1</td>
+					<td>北京</td>
+					<td>2018-09-23</td>
+		    	</tr>
+		    			    	<tr class="f">
+		    		<td colspan="5">
+		    			<div class="left">共<span class="lightblue total">217</span>个职位</div>
+		    			<div class="right"><div class="pagenav"><a href="javascript:;" class="noactive" id="prev">上一页</a><a class="active" href="javascript:;">1</a><a href="position.php?keywords=&amp;lid=2156&amp;tid=87&amp;start=10#a">2</a><a href="position.php?keywords=&amp;lid=2156&amp;tid=87&amp;start=20#a">3</a><a href="position.php?keywords=&amp;lid=2156&amp;tid=87&amp;start=30#a">4</a><a href="position.php?keywords=&amp;lid=2156&amp;tid=87&amp;start=40#a">5</a><a href="position.php?keywords=&amp;lid=2156&amp;tid=87&amp;start=50#a">6</a><a href="position.php?keywords=&amp;lid=2156&amp;tid=87&amp;start=60#a">7</a><a href="position.php?keywords=&amp;lid=2156&amp;tid=87&amp;start=70#a">...</a><a href="position.php?keywords=&amp;lid=2156&amp;tid=87&amp;start=210#a">22</a><a href="position.php?keywords=&amp;lid=2156&amp;tid=87&amp;start=10#a" id="next">下一页</a><div class="clr"></div></div></div>
+		    			<div class="clr"></div>
+		    		</td>
+		    	</tr>
+		    </tbody>
+```
+
+
+
+```
+from lxml import etree
+
+parser = etree.HTMLParser(encoding='utf-8')
+html = etree.parse('tencent.html', parser=parser)
+
+trs = html.xpath("//tr[position()>1]")
+
+positions = []
+
+for tr in trs:
+    href = tr.xpath(".//a/@href")[0]  # 某个标签下，获取这个标签下的子元素
+    full_url = 'https://hr.tencent.com/' + href
+    title = tr.xpath('./td[1]//text()')[0]
+    category = tr.xpath("./td[2]/text()")
+    nums = tr.xpath("./td[3]/text()")
+    address = tr.xpath("./td[4]/text()")
+    pub_time = tr.xpath("./td[5]/text()")
+
+    position = {
+        'url': full_url,
+        'title': title,
+        'category': category,
+        'nums': nums,
+        'address': address,
+        'pub_time': pub_time
+    }
+    positions.append(position)
+
+print(positions)
+
+```
+
+
+
+
+
+
+
 
 
 ## 通配符

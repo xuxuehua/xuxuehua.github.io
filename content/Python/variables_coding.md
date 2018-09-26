@@ -80,8 +80,6 @@ Unicode（统一码、万国码、单一码）是一种在计算机上使用的�
 
 
 
-
-
 ### Unicode 的问题
 
 需要注意的是，Unicode 只是一个符号集，它只规定了符号的二进制代码，却没有规定这个二进制代码应该如何存储。 
@@ -99,6 +97,8 @@ Unicode（统一码、万国码、单一码）是一种在计算机上使用的�
 UTF-8 就是在互联网上使用最广的一种 Unicode 的实现方式。
 
 其他实现方式还包括 UTF-16（字符用两个字节或四个字节表示）和 UTF-32（字符用四个字节表示），不过在互联网上基本不用。
+
+UTF-8（8-bit Unicode Transformation Format）是一种针对Unicode的可变长度字符编码，它可以使用1~4个字节表示一个符号，根据不同的符号而变化字节长度，当字符在ASCII码的范围时，就用一个字节表示，所以是兼容ASCII编码的。
 
 
 
@@ -192,10 +192,6 @@ u'\u6d63\u72b2\u30bd'
 
 - 默认编码集为ascii
 
-```
-
-```
-
 
 
 Python 2
@@ -223,28 +219,6 @@ print(gbk_to_utf8)
 你好
 ���
 你好
-```
-
-
-
-Python 3 
-
-```
-#-*- coding:utf-8 -*-
-
-import sys
-print('system default encoding: ', sys.getdefaultencoding())
-
-s = "你好"
-s_to_unicode = s.decode('utf-8')
-print('s_to_unicode', type(s_to_unicode))
-print(s_to_unicode)
->>>
-system default encoding:  utf-8
-Traceback (most recent call last):
-  File "encode_testing.py", line 7, in <module>
-    s_to_unicode = s.decode('utf-8')
-AttributeError: 'str' object has no attribute 'decode'
 ```
 
 
@@ -378,4 +352,18 @@ Out[49]: '中国'
 ```
 
 
+
+#### Unicode码对应的中文
+
+如果type(text) is bytes，那么
+
+```text
+text.decode('unicode_escape')
+```
+
+如果type(text) is str，那么
+
+```text
+text.encode('latin-1').decode('unicode_escape')
+```
 

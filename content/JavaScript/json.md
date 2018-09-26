@@ -8,7 +8,9 @@ collection: Standard Object 标准对象
 
 # JSON
 
-* JSON是JavaScript Object Notation的缩写，它是一种数据交换格式。
+JSON是JavaScript Object Notation的缩写，它是一种轻量级数据交换格式。
+
+ECMAScript的一个子集
 
 
 
@@ -35,7 +37,7 @@ collection: Standard Object 标准对象
 
 
 
-* 把小明这个对象序列化成JSON格式的字符串：
+把小明这个对象序列化成JSON格式的字符串：
 
 ```
 'use strict';
