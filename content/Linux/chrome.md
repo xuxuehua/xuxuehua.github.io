@@ -11,7 +11,7 @@ date: 2018-07-26 18:34
 
 
 
-## 安装
+## Debian 安装
 
 
 
@@ -55,9 +55,9 @@ apt-get -y install google-chrome-beta
 
 
 
-## 访问
+### 访问
 
-### Command Line
+#### Command Line
 
 ```
 google-chrome
@@ -75,3 +75,39 @@ google-chrome-stable
 google-chrome-beta
 ```
 
+
+
+
+
+## Ubuntu 
+
+```
+sudo vim /etc/apt/sources.list
+deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+```
+
+```
+wget https://dl.google.com/linux/linux_signing_key.pub
+```
+
+Then use **apt-key** to add it to your keyring so the package manager can verify the integrity of Google Chrome package.
+
+```
+sudo apt-key add linux_signing_key.pub
+```
+
+Now update package list and install the stable version of Google Chrome.
+
+```
+sudo apt update
+
+sudo apt install google-chrome-stable
+```
+
+If you want to install the beta or unstable version of Google Chrome, use the following commands:
+
+```
+sudo apt install google-chrome-beta
+
+sudo apt install google-chrome-unstable
+```

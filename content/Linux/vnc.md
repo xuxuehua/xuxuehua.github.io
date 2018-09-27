@@ -1,119 +1,112 @@
 ---
 title: "vnc"
-date: 2018-07-26 18:52
+date: 2018-09-27 15:05
 ---
+
 
 [TOC]
 
 
+# vnc
 
-# VNC Xfce desktop
+## 部署
 
-
-
-##Install
-
-Update your server's package lists:
+### CentOS
 
 ```
-apt-get update
-```
+sudo yum groupinstall -y "GNOME Desktop"
+sudo yum install -y tigervnc-server
+sudo cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
 
-Upgrade the packages themselves:
-
-```
-apt-get -y upgrade
-```
-
-Then, we will install `tightvncserver` and XFCE4 with some useful add-ons, and an icon theme:
-
-```
-apt-get install xfce4 xfce4-goodies gnome-icon-theme tightvncserver
-```
-
-By default there is no browser installed. You can install `iceweasel` (which is a rebranded version of Mozilla Firefox for Debian) if you want to access the web from your VNC connection:
-
-```
-apt-get install iceweasel
-```
+vim /etc/systemd/system/vncserver@:1.service
 
 
+ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
+ExecStart=/sbin/runuser -l rick -c "/usr/bin/vncserver %i -geometry 1280x1024" 
+PIDFile=/home/rick/.vnc/%H%i.pid
+ExecStop=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
 
-## Create VNC user
 
-add a user named **vnc** to your Debian Droplet by using this command:
-
-```
-adduser vnc
-```
-
-Give a password to your new user. You can skip all other questions by simply pressing `ENTER`.
-
-Install `sudo` by executing this command:
-
-```
-apt-get install sudo
-```
-
-Add your new **vnc** user to the **sudo** group, which will give permissions to that user to execute root commands.
-
-```
-gpasswd -a vnc sudo
-```
-
-Let's switch to the **vnc** user:
-
-```
-su - vnc
-```
-
- 
-
-## Start VNC server
-
-Start VNC Server:
-
-```
+su - rick
 vncserver
 ```
 
 
 
-## Kill VNC server
-
-Use this command to stop your VNC server on `Display 1` (and port `5901`):
+### Ubuntu
 
 ```
+sudo apt-get update
+sudo apt install xfce4 xfce4-goodies tightvncserver
+
+vncserver
 vncserver -kill :1
 ```
 
 
 
-## Connecting from a VNC Client
+#### VNC Service File
 
-You can now connect to your VNC server. Open your local VNC client, which will vary depending on your operating system.
+```
+/etc/systemd/system/vncserver@.service 
+[Unit]
+Description=Start TightVNC server at startup
+After=syslog.target network.target
 
-On Windows, you can use UltraVNC [here](http://www.uvnc.com/downloads/ultravnc.html).
+[Service]
+Type=forking
+User=sammy
+PAMName=login
+PIDFile=/home/sammy/.vnc/%H:%i.pid
+ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
+ExecStart=/usr/bin/vncserver -depth 24 -geometry 1280x800 :%i
+ExecStop=/usr/bin/vncserver -kill :%i
 
-On OS X, you can use the built-in Screen Sharing app or access this app through Safari. In Safari, you can enter **vnc://yourserverip:5901**
+[Install]
+WantedBy=multi-user.target
+```
 
-For your VNC Server address, enter **yourserverip:5901** and use the password you just set for your VNC connection.
+```
+sudo systemctl daemon-reload
+sudo systemctl enable vncserver@1.service
+```
 
 
 
-## Creating a systemd Service to Start VNC Server 
+### Debian
 
-In this section we'll add VNC Server to [systemd](https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files). Using a service can be useful to start and stop your VNC server, and also to start it automatically when your Droplet is rebooted.
+```
+apt-get update
+apt-get -y upgrade
+apt-get install xfce4 xfce4-goodies gnome-icon-theme tightvncserver
+apt-get install iceweasel
+```
 
-First, let's kill the current instance:
+
+
+```
+adduser vnc
+```
+
+```
+apt-get install sudo
+```
+
+```
+gpasswd -a vnc sudo
+```
+
+```
+su - vnc
+```
+
+```
+vncserver
+```
 
 ```
 vncserver -kill :1
 ```
-
-
-
-As the **vnc** or other sudo user, create a script file by using your favorite text editor.
 
 ```
 sudo nano /usr/local/bin/myvncserver
@@ -196,7 +189,7 @@ sudo systemctl restart myvncserver.service
 
 
 
-## Securing Your VNC Server with SSH Tunneling
+#### Securing Your VNC Server with SSH Tunneling
 
 First, stop the VNC server:
 
@@ -240,7 +233,7 @@ Restart the VNC server:
 sudo systemctl start myvncserver.service
 ```
 
-### **Windows:**
+##### **Windows:**
 
 We will use PuTTY to create an SSH Tunnel and then connect through the tunnel we have created.
 
@@ -274,10 +267,11 @@ Now you can use your VNC viewer as usual. Just enter **localhost::5901** as the 
 
 ### **OS X:**
 
-To establish an SSH tunnel, use the following line in Terminal:
+##### To establish an SSH tunnel, use the following line in Terminal:
 
 ```
 ssh vnc@your_server_ip -L 5901:localhost:5901
 ```
 
 Authenticate as normal for the **vnc** user for SSH. Then, in the Screen Sharing app, use **localhost:5901**.
+
