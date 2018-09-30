@@ -167,7 +167,7 @@ driver.wait(function() {
 
 
 
-#### 页面保存
+#### 页面源码 page_source
 
 ```
 contents = brower.page_source
@@ -179,12 +179,9 @@ contents = brower.page_source
 
 ### 关闭浏览器
 
-发布时间 2017年6月12日 
+close() 关闭单个窗口
 
-在前面的例子中我们一直使用quit()方法，其含义为退出相关的驱动程序和关闭所有窗口。除此之外，WebDriver还提供了close()方法，用来关闭当前窗口。例多窗口的处理，在用例执行的过程中打开了多个窗口，我们想要关闭其中的某个窗口，这时就要用到close()方法进行关闭了。
-
-- close() 关闭单个窗口
-- quit() 关闭所有窗口
+quit() 关闭所有窗口
 
 
 ## WebDriver 操作
@@ -590,8 +587,6 @@ AssertionError: 测试教程网 · 测试教程网.indexOf(测试教程网12443)
 
 
 ### 多表单切换(Python)
-发布时间 2017年6月20日 
-
 在Web应用中经常会遇到frame/iframe表单嵌套页面的应用，WebDriver只能在一个页面上对元素识别与定位，对于frame/iframe表单内嵌页面上的元素无法直接定位。这时就需要通过switch_to.frame()方法将当前定位的主体切换为frame/iframe表单的内嵌页面中。
 
 ```
@@ -684,8 +679,6 @@ dr.switchTo().defaultContent();
 
 ### 多窗口切换(Python)
 
-发布时间 2017年6月19日 
-
 在页面操作过程中有时候点击某个链接会弹出新的窗口，这时就需要主机切换到新打开的窗口上进行操作。WebDriver提供了switch_to.window()方法，可以实现在不同的窗口之间切换。 以百度首页和百度注册页为例，在两个窗口之间的切换如下图。![img](http://orru5lls3.bkt.clouddn.com/more_windows_n.png)
 
 ```
@@ -763,8 +756,6 @@ dr.getAllWindowHandles().then(function(handles) }{
 
 ### 警告框处理
 
-发布时间 2017年6月18日 [虫师](http://www.cnblogs.com/fnng/)
-
 在WebDriver中处理JavaScript所生成的alert、confirm以及prompt十分简单，具体做法是使用 switch_to.alert 方法定位到 alert/confirm/prompt，然后使用text/accept/dismiss/ send_keys等方法进行操作。
 
 - text：返回 alert/confirm/prompt 中的文字信息。
@@ -806,13 +797,12 @@ driver.quit()
 
 ### 下拉框选择(Python)
 
-发布时间 2017年6月17日 
-
 有时我们会碰到下拉框，WebDriver提供了Select类来处理下拉框。 如百度搜索设置的下拉框，如下图：![img](http://orru5lls3.bkt.clouddn.com/select.png)
 
 ```
 from selenium import webdriver
 from selenium.webdriver.support.select import Select
+# 可能是另一种导入方式 from selenium.webdriver.support.ui import Select
 from time import sleep
 
 driver = webdriver.Chrome()
@@ -834,7 +824,13 @@ Select(sel).select_by_value('50')  # 显示50条
 driver.quit()
 ```
 
-Select类用于定位select标签。 select_by_value() 方法用于定位下接选项中的value值。
+>  Select类用于定位select标签。 select_by_value() 方法用于定位下接选项中的value值。
+>
+> select_by_index()
+>
+> select_by_visible_text()
+>
+> deselect_all()
 
 
 
@@ -884,8 +880,6 @@ dr.findElement(By.id('select')).then(function(select) {
 
 ### 文件上传
 
-发布时间 2017年6月16日 
-
 对于通过input标签实现的上传功能，可以将其看作是一个输入框，即通过send_keys()指定本地文件路径的方式实现文件上传。
 
 创建upfile.html文件，代码如下：
@@ -930,8 +924,6 @@ driver.quit()
 
 
 ### cookie操作
-
-发布时间 2017年6月15日 
 
 有时候我们需要验证浏览器中cookie是否正确，因为基于真实cookie的测试是无法通过白盒和集成测试进行的。WebDriver提供了操作Cookie的相关方法，可以读取、添加和删除cookie信息。
 
@@ -992,8 +984,6 @@ key-aaaaaaa -> value-bbbbbb
 
 ### 调用JavaScript代码
 
-发布时间 2017年6月14日 
-
 虽然WebDriver提供了操作浏览器的前进和后退方法，但对于浏览器滚动条并没有提供相应的操作方法。在这种情况下，就可以借助JavaScript来控制浏览器的滚动条。WebDriver提供了execute_script()方法来执行JavaScript代码。
 
 用于调整浏览器滚动条位置的JavaScript代码如下：
@@ -1040,8 +1030,6 @@ driver.quit()
 ## 截图
 
 ### 窗口截图(Python)
-
-发布时间 2017年6月13日 
 
 自动化用例是由程序去执行的，因此有时候打印的错误信息并不十分明确。如果在脚本执行出错的时候能对当前窗口截图保存，那么通过图片就可以非常直观地看出出错的原因。WebDriver提供了截图函数get_screenshot_as_file()来截取当前窗口。
 

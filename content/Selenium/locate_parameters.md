@@ -52,30 +52,35 @@ Selenium提供了8种定位方式。
 #### 通过id定位:
 
   ```
-  dr.find_element_by_id("kw")
+dr.find_element_by_id("kw")
+dr.find_element(BY.ID, "kw") 
   ```
 
 #### 通过name定位:
 
 ```
 dr.find_element_by_name("wd")
+dr.find_element(By.NAME, "wd")
 ```
 #### 通过class name定位:
 
   ```
-  dr.find_element_by_class_name("s_ipt")
+dr.find_element_by_class_name("s_ipt")
+dr.find_element(By.CLASS_NAME, "s_ipt")
   ```
 
 #### 通过tag name定位:
 
   ```
   dr.find_element_by_tag_name("input")
+  dr.find_element(By.TAG_NAME, "input")
   ```
 
 #### 通过xpath定位
 
   ```
   dr.find_element_by_xpath("//*[@id='kw']")
+  dr.find_element(By.XPATH, "//*[@id='kw']")
   dr.find_element_by_xpath("//*[@name='wd']")
   dr.find_element_by_xpath("//input[@class='s_ipt']")
   dr.find_element_by_xpath("/html/body/form/span/input")
@@ -87,6 +92,8 @@ dr.find_element_by_name("wd")
 #### 通过css定位
 
   ```
+  from selenium.webdriver.common.by import By
+  dr.find_element(By.CSS_SELECTOR, "#kw")
   dr.find_element_by_css_selector("#kw")
   dr.find_element_by_css_selector("[name=wd]")
   dr.find_element_by_css_selector(".s_ipt")
@@ -105,11 +112,13 @@ dr.find_element_by_name("wd")
 #### 通过link text定位:
 
   ```
-  dr.find_element_by_link_text("新闻")
-  dr.find_element_by_link_text("hao123")
-  dr.find_element_by_partial_link_text("新")
-  dr.find_element_by_partial_link_text("hao")
-  dr.find_element_by_partial_link_text("123")
+from selenium.webdriver.common.by import By
+dr.find_element(By.LINK_TEXT, "hao123")
+dr.find_element_by_link_text("新闻")
+dr.find_element_by_link_text("hao123")
+dr.find_element_by_partial_link_text("新")
+dr.find_element_by_partial_link_text("hao")
+dr.find_element_by_partial_link_text("123")
   ```
 
 关于xpaht和css的定位比较复杂，请参考： [xpath语法](http://www.w3school.com.cn/xpath/xpath_syntax.asp)、 [css选择器](http://www.w3school.com.cn/cssref/css_selectors.asp)
@@ -117,8 +126,6 @@ dr.find_element_by_name("wd")
 
 
 #### 定位一组元素
-
-发布时间 2017年6月21日 
 
 WebDriver还提供了8种用于定位一组元素的方法。
 

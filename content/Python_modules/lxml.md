@@ -286,3 +286,86 @@ def spider():
 if __name__ == '__main__':
     spider()
 ```
+
+
+
+### doutula.com (多线程处理)
+
+```
+import requests
+from lxml import etree
+from urllib import request
+import os
+import re
+from queue import Queue
+import threading
+
+
+class Producer(threading.Thread):
+
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Iridium/2017.11 Safari/537.36 Chrome/62.0.3202.94'
+    }
+
+    def __init__(self, page_queue, img_queue, *args, **kwargs):
+        super(Producer, self).__init__(*args, **kwargs)
+        self.page_queue = page_queue
+        self.img_queue = img_queue
+
+    def run(self):
+        while True:
+            if self.page_queue.empty():
+                break
+            url = self.page_queue.get()
+            self.parse_page(url)
+
+    def parse_page(self, url):
+        response = requests.get(url, headers=self.headers)
+        text = response.text
+        html = etree.HTML(text)
+        imgs = html.xpath("//div[@class='page-content text-center']//img[@class!='gif']")
+        for img in imgs:
+            img_url = img.get('data-original')
+            alt = img.get('alt')
+            alt = re.sub(r'[\?？\.。,，!！*]', '', alt) # 替换不可能用作命名的特殊字符
+            suffix = os.path.splitext(img_url)[1]
+            filename = alt + suffix
+            self.img_queue.put((img_url, filename))
+
+
+class Consumer(threading.Thread):
+
+    def __init__(self, page_queue, img_queue, *args, **kwargs):
+        super(Consumer, self).__init__(*args, **kwargs)
+        self.page_queue = page_queue
+        self.img_queue = img_queue
+
+    def run(self):
+        while True:
+            if self.img_queue.empty() and self.page_queue.empty():
+                break
+            img_url, filename = self.img_queue.get()
+            request.urlretrieve(img_url, 'images/' + filename)
+            print(filename + ' has downloaded.')
+
+
+def main():
+    page_queue = Queue(100)
+    img_queue = Queue(500)
+
+    for i in range(1, 101):
+        url = 'http://www.doutula.com/photo/list/?page=%d' % i
+        page_queue.put(url)
+
+    for i in range(5):
+        t = Producer(page_queue, img_queue)
+        t.start()
+
+    for i in range(5):
+        t = Consumer(page_queue, img_queue)
+        t.start()
+
+
+if __name__ == '__main__':
+    main()
+```
