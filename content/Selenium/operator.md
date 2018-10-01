@@ -86,14 +86,6 @@ wait( condition, opt_timeout, opt_message )
 
 wait方法一般用来等待页面上某些条件得到满足后才继续执行脚本。比如等待页面上某个弹出框出现，等某个元素可以被定位到之类。
 
-wait方法中可以传入[Condition](http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_Condition.html)表示一般性条件和[WebElementCondition](http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElementCondition.html)。
-
-如果传入的元素级条件被满足，那么wait方法会返回[ WebElementPromise](http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElementPromise.html)，也就是说可以直接返回满足条件的元素。
-
-如果在规定的时间内(也就是第2个参数)没有等到条件被满足，那么该方法会抛出异常。
-
-一般性用法示例：
-
 ```
 // 在10s内id是foo的元素被定位到，然后点击之
 var button = driver.wait(until.elementLocated(By.id('foo')), 10000);
@@ -107,6 +99,43 @@ var started = startTestServer();
 driver.wait(started, 5 * 1000, 'Server should start within 5 seconds');
 driver.get(getServerUrl());
 ```
+
+
+
+* 隐式等待， 调用driver.implicitly_wait 在获取不可用的元素之前，会等待10s时间
+
+```
+driver = webdriver.Chrome(executable_path=driver_path)
+driver.implicitly_wait(10)
+driver.get('https://www.xuxuehua.com')
+```
+
+
+
+* 显式等待，表明某个条件成立后才执行获取元素的操作，可以在等待的时候，指定一个最大时间，超过时间那么就抛出异常。
+* 显式等待使用 selenium.webdriver.support.excepted_conditions & selenium.webdriver.support.ui.WebDriverWait 来配合完成
+
+```
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get('https://www.baidu.com')
+
+try:
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, 'form_email'))
+    )
+    print(element)
+except BaseException as f:
+    print(f)
+finally:
+    driver.quit()
+```
+
+
 
 ##### sleep
 
@@ -167,6 +196,23 @@ driver.wait(function() {
 
 
 
+#### 页面切换
+
+switch_to_window 进行切换，具体切换到哪个页面从driver.windows_handles 中找到
+
+```
+from selenium import webdriver
+
+driver = webdriver.Chrome()
+driver.get('https://www.baidu.com')
+driver.execute_script("window.open('http://xuxuehua.com')")
+print(driver.window_handles)
+driver.switch_to_window(driver.window_handles[1])
+print(driver.current_url)
+```
+
+
+
 #### 页面源码 page_source
 
 ```
@@ -182,6 +228,26 @@ contents = brower.page_source
 close() 关闭单个窗口
 
 quit() 关闭所有窗口
+
+
+
+### 代理IP设置
+
+```
+from selenium import webdriver
+
+options = webdriver.ChromeOptions()
+options.add_argument("--proxy-server=http://112.115.163.76:53281")
+driver = webdriver.Chrome(chrome_options=options)
+driver.get('http://httpbin.org/ip')
+
+print(driver.page_source)
+driver.quit()
+```
+
+
+
+
 
 
 ## WebDriver 操作
@@ -281,7 +347,7 @@ True
 
 
 
-## 鼠标事件
+## 鼠标事件 行为链
 
 在 WebDriver 中， 将这些关于鼠标操作的方法封装在 ActionChains 类提供。
 
@@ -313,21 +379,33 @@ ActionChains(driver).move_to_element(above).perform()
 ……
 ```
 
-- from selenium.webdriver import ActionChains
 
-导入提供鼠标操作的 ActionChains 类。
 
-- ActionChains(driver)
+```
+from selenium import webdriver
 
-调用 ActionChains()类， 将浏览器驱动 driver 作为参数传入。
+driver = webdriver.Chrome()
 
-- move_to_element(above)
+inputTag = driver.find_element_by_id('kw')
+submitTag = driver.find_element_by_id('su')
 
-context_click()方法用于模拟鼠标右键操作， 在调用时需要指定元素定位。
+actions = ActionChains(driver)
+actions.move_to_element(inputTag)
+actions.send_keys_to_element(inputTag, 'python')
+actions.move_to_element(submitTag)
+actions.click(submitTag)
+actions.perform()
+```
 
-- perform()
+>  click_and_hold(element) 点击但不松开鼠标
+>
+> move_to_element(above)
+>
+> context_click() 方法用于模拟鼠标右键操作， 在调用时需要指定元素定位。
+>
+> perform() 执行所有 ActionChains 中存储的行为， 可以理解成是对整个操作的提交动作。
 
-执行所有 ActionChains 中存储的行为， 可以理解成是对整个操作的提交动作。
+
 
 
 
@@ -1086,6 +1164,10 @@ code = self.driver.find_element_by_xpath("//img[@alt='CAPTCHA']")
             f.write(img)
         rec_code = self.code_recog(img_name)
 ```
+
+
+
+
 
 
 
