@@ -1,5 +1,5 @@
 ---
-title: "operator 操作"
+ title: "operator 操作"
 date: 2018-07-19 18:21
 ---
 
@@ -1107,6 +1107,16 @@ driver.quit()
 
 ## 截图
 
+
+
+### 全屏截图(Python
+
+```
+driver.save_screenshot('screen.png')
+```
+
+
+
 ### 窗口截图(Python)
 
 自动化用例是由程序去执行的，因此有时候打印的错误信息并不十分明确。如果在脚本执行出错的时候能对当前窗口截图保存，那么通过图片就可以非常直观地看出出错的原因。WebDriver提供了截图函数get_screenshot_as_file()来截取当前窗口。
@@ -1262,3 +1272,98 @@ driver.executeScript(banAlert);
 
 
 
+
+
+
+
+# Example
+
+
+
+## lagou.com
+
+```
+from selenium import webdriver
+from lxml import etree
+import re
+import requests
+import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+
+class LagouSpider(object):
+
+    def __init__(self):
+        self.driver = webdriver.Chrome()
+        self.url = 'https://www.lagou.com/jobs/list_python?city=%E5%8C%97%E4%BA%AC&cl=false&fromSearch=true&labelWords=&suginput='
+        self.positions = []
+
+    def run(self):
+        self.driver.get(self.url)
+        while True:
+            source = self.driver.page_source
+            WebDriverWait(driver=self.driver, timeout=10).until(
+                EC.presence_of_element_located((By.XPATH, "//div[@class='pager_container']/span[last()]"))
+            )
+            self.parse_list_page(source)
+            time.sleep(2)
+            try:
+                next_button = self.driver.find_element_by_xpath("//div[@class='pager_container']/span[last()]")
+                if 'pager_next_disabled' in next_button.get_attribute("class"):  # 最后一页就点不了了
+                    break
+                else:
+                    next_button.click()
+            except:
+                print(source)
+            time.sleep(1)
+
+    def parse_list_page(self, source):
+        html = etree.HTML(source)
+        links = html.xpath("//a[@class='position_link']/@href")
+        for link in links:
+            self.request_detail_page(link)
+            time.sleep(1)
+
+    def request_detail_page(self, url):
+        self.driver.execute_script("window.open('%s')" % url)
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        WebDriverWait(self.driver, timeout=10).until(
+            EC.presence_of_element_located((By.XPATH, "//span[@class='name']"))
+        )
+        source = self.driver.page_source
+        self.parse_detail_page(source)
+        self.driver.close()  # 关闭当前页面
+        self.driver.switch_to.window(self.driver.window_handles[0])
+
+    def parse_detail_page(self, source):
+        html = etree.HTML(source)
+        position_name = html.xpath("//span[@class='name']/text()")[0]
+        job_request_spans = html.xpath("//dd[@class='job_request']//span")
+        salary = job_request_spans[0].xpath('.//text()')[0].strip()
+        city = job_request_spans[1].xpath('./text()')[0].strip()
+        city = re.sub(r'[\s/]', '', city)  # 替换斜杠
+        work_years = job_request_spans[2].xpath('.//text()')[0].strip()
+        work_years = re.sub(r'[\s/]', '', work_years)
+        education = job_request_spans[3].xpath('.//text()')[0].strip()
+        education = re.sub(r'[\s/]', '', education)
+        job_desc = ''.join(html.xpath("//dd[@class='job_bt']//text()")).strip()
+        company_name = html.xpath("//h2[@class='fl']/text()")[0].strip()
+        position = {
+            'name': position_name,
+            'company_name': company_name,
+            'salary': salary,
+            'work_years': work_years,
+            'education': education,
+            'job_desc': job_desc
+        }
+        self.positions.append(position)
+        print(self.positions)
+        print('='*66)
+
+
+if __name__ == '__main__':
+    spider = LagouSpider()
+    spider.run()
+```

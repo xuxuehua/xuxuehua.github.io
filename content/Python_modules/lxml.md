@@ -369,3 +369,67 @@ def main():
 if __name__ == '__main__':
     main()
 ```
+
+
+
+### lagou.com (Deprecated)
+
+```
+import requests
+from lxml import etree
+import time
+import re
+
+
+headers = {
+    "Referer": "https://www.lagou.com/jobs/list_python?labelWords=&fromSearch=true&suginput=",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Iridium/2017.11 Safari/537.36 Chrome/62.0.3202.94"
+}
+
+
+def request_list_page():
+    url = 'https://www.lagou.com/jobs/positionAjax.json?city=%E5%8C%97%E4%BA%AC&needAddtionalResult=false'
+    data = {
+        "first": "true",
+        "pn": 1,
+        "kd": "python"
+    }
+
+    for x in range(1, 10):
+        data['pn'] = x
+        response = requests.post(url, headers=headers, data=data)
+        result = response.json()
+        positions = result['content']['positionResult']['result']
+        for position in positions:
+            positionId = position['positionId']
+            position_url = 'https://www.lagou.com/jobs/%s.html' % positionId
+            parse_position_detail(position_url)
+            break
+        break
+
+
+def parse_position_detail(url):
+    response = requests.get(url, headers=headers)
+    text = response.text
+    html = etree.HTML(text)
+    position_name = html.xpath("//span[@class='name']/text()")[0]
+    job_request_spans = html.xpath("//dd[@class='job_request']//span")
+    salary = job_request_spans[0].xpath('.//text()')[0].strip()
+    city = job_request_spans[1].xpath('./text()')[0].strip()
+    city = re.sub(r'[\s/]', '', city) # 替换斜杠
+    work_years = job_request_spans[2].xpath('.//text()')[0].strip()
+    work_years = re.sub(r'[\s/]', '', work_years)
+    education = job_request_spans[3].xpath('.//text()')[0].strip()
+    education = re.sub(r'[\s/]', '', education)
+
+    job_desc = ''.join(html.xpath("//dd[@class='job_bt']//text()")).strip()
+
+
+def main():
+    request_list_page()
+
+
+if __name__ == '__main__':
+    main()
+```
+
