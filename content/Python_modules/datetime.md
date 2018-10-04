@@ -11,6 +11,14 @@ date: 2018-07-25 15:18
 
 # datetime
 
+datetime包是基于time包的一个高级包。
+
+datetime 可以理解为date和time 两个组成部分
+
+可以分开管理datetime.date类和datetime.time类
+
+也可以合在一起datetime.datetime类
+
 datetime模块定义了5个类
 
 ## .date 日期
@@ -214,10 +222,17 @@ datetime.datetime.now().strftime('%b-%d-%Y %H:%M:%S')
 
 datetime.datetime.strptime():由字符串格式转化为日期格式
 
-datetime.datetime.strptime('Apr-16-2017 21:01:35', '%b-%d-%Y %H:%M:%S')
-2017-04-16 21:01:35
+```
+from datetime import datetime
 
+format = "output-%Y-%m-%d-%H%M%S.txt"
+str = "output-1990-3-14-001000.txt"
 
+t = datetime.strptime(str, format)
+print(t)
+>>>
+1990-03-14 00:10:00
+```
 
 ## .time 具体时间精确到秒
 
@@ -253,7 +268,20 @@ datetime.time.utcoffset()：返回时区的时间偏移量
 
 datetime.datetime.timedelta用于计算两个日期之间的差值
 
-
+```
+import datetime
+t = datetime.datetime(2016, 12, 11, 20, 30)
+t_next = datetime.datetime(2016, 12, 11, 21, 00)
+delta1 = datetime.timedelta(seconds=600)
+delta2 = datetime.timedelta(weeks = 3)
+print(t + delta1)
+print(t + delta2)
+print(t_next - t)
+>>>
+2016-12-11 20:40:00
+2017-01-01 20:30:00
+0:30:00
+```
 
 
 

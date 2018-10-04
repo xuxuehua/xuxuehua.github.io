@@ -13,12 +13,15 @@ date: 2018-08-25 22:49
 
 ## random()
 
+随机生成下一个实数，在[0, 1]范围内
+
 ```
 In [5]: random.random()
 Out[5]: 0.5265427803029777
 ```
 
-
+随机生成下一个实数，在[a, b]范围内
+random.random(a, b)
 
 
 
@@ -67,6 +70,10 @@ Out[21]: 1
 
 ## choice()
 
+random.choice(seq)
+
+从序列的元素中随机挑选一个元素
+
 ```
 In [22]: random.choice('hello')
 Out[22]: 'e'
@@ -87,6 +94,10 @@ Out[26]: 1
 
 
 ## sample()
+
+random.sample(seq, k)
+
+从序列中随机挑选k个元素
 
 ```
 In [27]: random.sample('hello', 2)
@@ -119,7 +130,10 @@ Out[33]: 1.0705082811151863
 
 
 
-## shuffle
+## shuffle()
+
+将序列的所有元素随机排序
+random.shuffle(seq)
 
 洗牌功能
 
@@ -152,3 +166,22 @@ for i in range(4):
 print(checkcode)
 ```
 
+
+
+## seed()
+
+random.seed(x) 通过改变随机数生成器的种子.
+
+
+
+## gauss()
+
+随机生成符合高斯分布的随机数，mu， sigma为高斯分布的两个参数
+random.gauss(mu, sigma)
+
+
+
+## expovariate(lambd)
+
+随机生成符合指数分布的随机数，lambd为指数分布的参数
+random.expovariate(lambd)

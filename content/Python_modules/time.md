@@ -11,6 +11,10 @@ date: 2018-07-25 13:52
 
 # time 模块
 
+实际上，计算机只会维护一个挂钟时间(wall clock time), 这个时间是从某个固定时间起点到现在的时间间隔。
+
+时间起点的选择和计算机相关，但一台计算机的花，这一时间是固定的。
+
 
 
 ## 相关定义
@@ -47,6 +51,22 @@ time.time()
 
 
 
+### CPU时间
+
+计算机还可以测量cpu实际运行的时间。也就是处理时间(processor clock time)
+
+```
+import time
+# Wall clock time, unit second
+print(time.time())
+
+# Processor clock time, unit second
+print(time.clock())
+>>>
+1481450359.512928
+0.062346
+```
+
 
 
 ### 时间戳 -> 元组
@@ -72,6 +92,19 @@ Out[3]: time.struct_time(tm_year=2018, tm_mon=7, tm_mday=25, tm_hour=13, tm_min=
 In [4]: time.gmtime()
 Out[4]: time.struct_time(tm_year=2018, tm_mon=7, tm_mday=25, tm_hour=5, tm_min=58, tm_sec=22, tm_wday=2, tm_yday=206, tm_isdst=0)
 ```
+
+
+
+#### localtime()
+
+返回struct_time 格式的当地时间,当地时区根据系统环境决定
+
+```
+In [15]: time.localtime()
+Out[15]: time.struct_time(tm_year=2018, tm_mon=10, tm_mday=5, tm_hour=2, tm_min=29, tm_sec=2, tm_wday=4, tm_yday=278, tm_isdst=0)
+```
+
+
 
 
 
