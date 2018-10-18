@@ -252,3 +252,9 @@ while True:
     s.sendto(cmd.encode('utf-8'), (HOST, PORT))
     print(s.recv(1024).decode('utf-8'))
 ```
+
+
+
+# socketserver
+
+先设置socket类型，然后依次调用bind(), listen(), accept()， 最后用while循环让服务器不断接收请求

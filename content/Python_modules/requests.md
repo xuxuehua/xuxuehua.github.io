@@ -758,7 +758,6 @@ print r.text
 r = requests.post(url, data=body, headers=header, allow_redirects=False)  
 
 
-
 # 设置 allow_redirects=False 使得禁止重定向
 
 

@@ -80,6 +80,12 @@ scp -r local_folder remote_username@remote_ip:remote_folder
 
 从指定文件中读取传输时使用的密钥文件，此参数直接传递给ssh。
 
+```
+scp -i /var/spool/nagios/.ssh/id_rsa  ./retention.dat  monitor@nagios01.stg.xxxx.net:/tmp/ret.dat
+```
+
+
+
 ## -l 限速
 
 限定用户所能使用的带宽，以Kbit/s为单位。

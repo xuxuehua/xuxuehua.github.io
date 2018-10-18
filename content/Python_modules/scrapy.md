@@ -297,6 +297,8 @@ cmdline.execute(['scrapy', 'crawl', 'qsbk_spider'])
 
 继承自Spider，可有指定规则，满足一定的URL就可以进行爬取， 无需手动 yield Request
 
+LinkExtractor 和 Rule 决定爬虫的具体走向
+
 
 
 ### 创建爬虫
@@ -436,3 +438,866 @@ from scrapy import cmdline
 
 cmdline.execute("scrapy crawl wxapp_spider".split())
 ```
+
+
+
+
+
+
+
+## Scrape Shell
+
+用于测试规则是否正确
+
+需要在scrapy所在环境中执行
+
+
+
+```
+$ scrapy shell http://www.wxapp-union.com/article-4525-1.html
+
+
+[s] Available Scrapy objects:
+[s]   scrapy     scrapy module (contains scrapy.Request, scrapy.Selector, etc)
+[s]   crawler    <scrapy.crawler.Crawler object at 0x1038dd048>
+[s]   item       {}
+[s]   request    <GET http://www.wxapp-union.com/article-4525-1.html>
+[s]   response   <200 http://www.wxapp-union.com/article-4525-1.html>
+[s]   settings   <scrapy.settings.Settings object at 0x105f4ae10>
+[s]   spider     <WxappSpiderSpider 'wxapp_spider' at 0x107204cc0>
+[s] Useful shortcuts:
+[s]   fetch(url[, redirect=True]) Fetch URL and update local objects (by default, redirects are followed)
+[s]   fetch(req)                  Fetch a scrapy.Request and update local objects
+[s]   shelp()           Shell help (print this help)
+[s]   view(response)    View response in a browser
+In [1]: response.xpath("//h1[@class='ph']/text()").get()
+Out[1]: '小程序挖坑之路 '
+
+In [5]: from bs4 import BeautifulSoup
+
+In [6]: soup = BeautifulSoup(response.text, 'lxml')
+
+In [7]: soup.find('h1', attrs={"class": 'ph'})
+Out[7]: <h1 class="ph">小程序挖坑之路 </h1>
+
+
+```
+
+
+
+
+
+## Request
+
+### scrapy.FormRequest 
+
+可发送post请求，指定表单数据
+
+
+
+### Start_requests
+
+如需要在爬虫开始时发送post 请求，应该重写'start_requests'方法，在这个方法中，发送post请求
+
+
+
+### example
+
+#### renren.com (login page)
+
+cmd
+
+```
+$ scrapy startproject renren_login
+$ cd renren_login/
+$ scrapy genspider renren 'renren.com'
+```
+
+
+
+renren.py
+
+```
+# -*- coding: utf-8 -*-
+import scrapy
+
+
+class RenrenSpider(scrapy.Spider):
+    name = 'renren'
+    allowed_domains = ['renren.com']
+    start_urls = ['http://renren.com/']
+
+    def start_requests(self):
+        """模拟登录"""
+        url = 'http://www.renren.com/PLogin.do'
+        data = {'email': '970138074@qq.com', 'password': 'pythonspider'}
+        request = scrapy.FormRequest(url, formdata=data, callback=self.parse_page)
+        yield request
+
+    def parse_page(self, response):
+        '''查看登录后，某人的主页'''
+        request = scrapy.Request(url='http://www.renren.com/880151247/profile', callback=self.parse_profile)
+        yield request
+
+    def parse_profile(self, response):
+        """获取个人主页内容"""
+        with open('dp.html', 'w', encoding='utf-8') as fp:
+            fp.write(response.text)
+```
+
+
+
+start.py
+
+```
+#encoding: utf-8
+
+from scrapy import cmdline
+
+cmdline.execute("scrapy crawl renren".split())
+```
+
+
+
+setting.py
+
+```
+ROBOTSTXT_OBEY = False
+DOWNLOAD_DELAY = 1
+DEFAULT_REQUEST_HEADERS = {
+    'accept': '*/*',
+    'accept-encoding': 'gzip, deflate, br',
+    'accept-language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'
+}
+```
+
+
+
+
+
+#### douban.com 
+
+cmd
+
+```
+$ scrapy startproject douban_login
+$ cd douban_login/
+$ scrapy genspider douban 'douban.com'
+```
+
+
+
+douban.py
+
+```
+# -*- coding: utf-8 -*-
+import scrapy
+from urllib import request
+from PIL import Image
+
+
+class DoubanSpider(scrapy.Spider):
+    name = 'douban'
+    allowed_domains = ['douban.com']
+    start_urls = ['https://accounts.douban.com/login']
+    login_url = 'https://accounts.douban.com/login'
+    profile_url = 'https://www.douban.com/people/50290734/'
+    editsignature_url = 'https://www.douban.com/j/people/50290734/edit_signature'
+
+    def parse(self, response):
+        formdata = {
+            'source': 'None',
+            'redir': 'https://www.douban.com',
+            'form_email': ' ',
+            'form_password': ' ',
+            'remember': 'on',
+            'login': '登录'
+        }
+        captcha_url = response.css('img#captcha_image::attr(src)').get()
+        if captcha_url:
+            captcha = self.recognize_captcha(captcha_url)
+            formdata['captcha-solution'] = captcha
+            captcha_id = response.xpath("//input[@name='captcha-id']/@value").get()
+            formdata['captcha-id'] = captcha_id
+
+        yield scrapy.FormRequest(url=self.login_url, formdata=formdata, callback=self.parse_after_login)
+
+    def parse_after_login(self, response):
+        if response.url == 'https://www.douban.com':
+            yield scrapy.Request(self.profile_url, callback=self.parse_profile)
+            print('Login successful')
+        else:
+            print("Login Failed")
+
+    def parse_profile(self, response):
+        if response.url == self.profile_url:
+            ck = response.xpath("//input[@name='ck']/@value").get()
+            formdata = {
+                'ck': ck,
+                'signature': 'This is python signature.'
+            }
+            yield scrapy.FormRequest(self.editsignature_url, formdata=formdata, callback=self.parse_none)
+        else:
+            print('Profile signature unsuccessful')
+
+    def parse_none(self, response):
+        """默认没有callback会再次调用parse方法"""
+        pass
+
+    def recognize_captcha(self, image_url):
+        request.urlretrieve(image_url, 'captcha.png')
+        image = Image.open('captcha.png')
+        image.show()
+        captcha = input('Input captcha: ')
+        return captcha
+```
+
+
+
+start.py
+
+```
+#encoding: utf-8
+
+from scrapy import cmdline
+
+cmdline.execute("scrapy crawl douban".split())
+```
+
+
+
+setting.py
+
+```
+ROBOTSTXT_OBEY = False
+DOWNLOAD_DELAY = 1
+DEFAULT_REQUEST_HEADERS = {
+    'accept': '*/*',
+    'accept-encoding': 'gzip, deflate, br',
+    'accept-language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'
+}
+```
+
+
+
+## Pipeline
+
+### media pipeline
+
+包括Files Pipeline 或者Images Pipeline
+
+可以避免下载重复的文件
+
+生成的图片时通用格式，方便检测图片信息
+
+异步下载效率非常高
+
+
+
+#### Files Pipeline
+
+1. 定义一个item，然后再item中定义file_urls & files, file_urls是用来存储需要下载的链接，需要一个列表
+2. 文件下载完成后，会讲相关信息存储到item中files属性中，比如下载路径，文件校验码
+3. settings.py中FILES_STORE 时配置文件到下载路径
+4. 需要在ITEM_PIPELINES中设置scrapy.pipelines.files.FilesPipeline:1
+
+
+
+#### Images Pipeline
+
+1. 定义一个item，然后再item中定义image_urls & images, image_urls是用来存储需要下载的链接，需要一个列表
+2. 文件下载完成后，会讲相关信息存储到item中files属性中，比如下载路径，文件校验码
+3. settings.py中IMAGES_STORE 时配置图片到下载路径
+4. 需要在ITEM_PIPELINES中设置scrapy.pipelines.images.ImagesPipeline:1
+5. 下载到指定文件夹，需要重写pipeline
+
+
+
+### example
+
+#### autohome.com.cn
+
+CMD
+
+```
+$ scrapy startproject bmw
+$ cd bmw/
+$ scrapy genspider bmw5 'car.autohome.com.cn'
+```
+
+
+
+settings.py
+
+```
+import os
+BOT_NAME = 'bmw'
+SPIDER_MODULES = ['bmw.spiders']
+NEWSPIDER_MODULE = 'bmw.spiders'
+ROBOTSTXT_OBEY = False
+DOWNLOAD_DELAY = 1
+DEFAULT_REQUEST_HEADERS = {
+    'accept': '*/*',
+    'accept-encoding': 'gzip, deflate, br',
+    'accept-language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'
+}
+ITEM_PIPELINES = {
+   # 'bmw.pipelines.BmwPipeline': 300,
+   # 'scrapy.pipelines.images.ImagesPipeline': 1  # 默认的下载方法
+    'bmw.pipelines.BMWImagesPipeline': 1
+}
+IMAGES_STORE = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'images')
+```
+
+
+
+items.py
+
+```
+# -*- coding: utf-8 -*-
+
+# Define here the models for your scraped items
+#
+# See documentation in:
+# https://doc.scrapy.org/en/latest/topics/items.html
+
+import scrapy
+
+
+class BmwItem(scrapy.Item):
+    category = scrapy.Field()
+    image_urls = scrapy.Field()
+    images = scrapy.Field()
+```
+
+
+
+bmw5.py
+
+```
+# -*- coding: utf-8 -*-
+import scrapy
+from bmw.items import BmwItem
+
+
+class Bmw5Spider(scrapy.Spider):
+    name = 'bmw5'
+    allowed_domains = ['car.autohome.com.cn']
+    start_urls = ['https://car.autohome.com.cn/pic/series/65.html']
+
+    def parse(self, response):
+        uiboxs = response.xpath("//div[@class='uibox']")[1:]
+        for uibox in uiboxs:
+            category = uibox.xpath("./div[@class='uibox-title']/a/text()").get()
+            urls = uibox.xpath(".//ul/li/a/img/@src").getall()
+            urls = list(map(lambda url: response.urljoin(url), urls))
+            item = BmwItem(category=category, image_urls=urls)
+            yield item
+```
+
+
+
+pipelines.py
+
+```
+# -*- coding: utf-8 -*-
+
+# Define your item pipelines here
+#
+# Don't forget to add your pipeline to the ITEM_PIPELINES setting
+# See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+
+import os
+from urllib import request
+from scrapy.pipelines.images import ImagesPipeline
+from bmw import settings
+
+
+class BmwPipeline(object):
+    """需要打开settings里面的ITEM_PIPELINES"""
+
+    def __init__(self):
+        self.path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'images')
+        if not os.path.exists(self.path):
+            os.mkdir(self.path)
+
+    def process_item(self, item, spider):
+        category = item['category']
+        urls = item['urls']
+
+        category_path = os.path.join(self.path, category)
+        if not os.path.exists(category_path):
+            os.mkdir(category_path)
+
+        for url in urls:
+            image_name = url.split('_')[-1]
+            request.urlretrieve(url, os.path.join(category_path, image_name))
+
+        return item
+
+
+class BMWImagesPipeline(ImagesPipeline):
+
+    def get_media_requests(self, item, info):
+        """在发送下载请求前调用， 其本身就是去发送下载请求"""
+        request_objs = super(BMWImagesPipeline, self).get_media_requests(item, info)
+        for request_obj in request_objs:
+            request_obj.item = item
+        return request_objs
+
+    def file_path(self, request, response=None, info=None):
+        """重写这个方法，图片将要被存储的时候调用，来获取这个图片存储的路径"""
+        path = super(BMWImagesPipeline, self).file_path(request, response, info)
+        category = request.item.get('category')
+        images_store = settings.IMAGES_STORE
+        category_path = os.path.join(images_store, category)
+        if not os.path.exists(category_path):
+            os.mkdir(category_path)
+        image_name = path.replace("full/", "")
+        image_path = os.path.join(category_path, image_name)
+        return image_path
+```
+
+
+
+
+
+## 下载器中间件 
+
+Downloader Middlewares
+
+中间件可以设置代理IP，随机请求头。
+
+下载器实现两个方法
+
+
+
+### process_request(self, request, spider)
+
+* 返回None，scrapy将继续处理该request，执行其他中间件中的相应方法，直到合适的下载器处理函数被调用
+
+* 返回Response对象， 将不会调用其他的process_request方法，将直接返回response对象。已经激活的process_response方法会在每个response返回时调用
+* 返回Request对象，不会使用之前的request对象去下载数据，而是根据现在返回的request对象返回数据
+* 抛出异常，调用process_exception
+
+
+
+### Process_response(self, request, response, spider)
+
+* 返回Response，将新的response传给其他中间件，最终传递给引擎爬虫
+* 返回Request，下载器链接切断，返回request会被重新被下载器调度
+* 抛出异常，调用errback
+
+
+
+### 随机请求头中间件
+
+### 网络上的请求头
+
+http://useragentstring.com/pages/useragentstring.php?typ=Browser
+
+
+
+### example
+
+#### httpbin.org
+
+CMD
+
+```
+$ scrapy startproject useragent_demo
+$ cd useragent_demo/
+$ scrapy genspider httpbin 'httpbin.org'
+```
+
+
+
+httpbin.py
+
+```
+# -*- coding: utf-8 -*-
+import scrapy
+import json
+
+
+class HttpbinSpider(scrapy.Spider):
+    name = 'httpbin'
+    allowed_domains = ['httpbin.org']
+    start_urls = ['http://httpbin.org/user-agent']
+
+    def parse(self, response):
+        user_agent = json.loads(response.text)['user-agent']
+        print('-'*88)
+        print(user_agent)
+        print('-'*88)
+        yield scrapy.Request(self.start_urls[0], dont_filter=True)  # 关闭去重功能
+```
+
+
+
+middlewares.py
+
+```
+# -*- coding: utf-8 -*-
+
+# Define here the models for your spider middleware
+#
+# See documentation in:
+# https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+
+from scrapy import signals
+import random
+
+
+
+class UserAgentDownloadMiddleware(object):
+    USER_AGENTS = [
+        'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2226.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 6.4; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2225.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2225.0 Safari/537.36'
+    ]
+
+    def process_request(self, request, spider):
+        user_agent = random.choice(self.USER_AGENTS)
+        request.headers['User-Agent'] = user_agent
+```
+
+
+
+settings.py
+
+```
+BOT_NAME = 'useragent_demo'
+SPIDER_MODULES = ['useragent_demo.spiders']
+NEWSPIDER_MODULE = 'useragent_demo.spiders'
+ROBOTSTXT_OBEY = False
+DOWNLOAD_DELAY = 1
+DEFAULT_REQUEST_HEADERS = {
+    'accept': '*/*',
+    'accept-encoding': 'gzip, deflate, br',
+    'accept-language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'
+}
+DOWNLOADER_MIDDLEWARES = {
+   # 'useragent_demo.middlewares.UseragentDemoDownloaderMiddleware': 543,
+    'useragent_demo.middlewares.UserAgentDownloadMiddleware': 543,
+}
+```
+
+
+
+start.py
+
+```
+from scrapy import cmdline
+cmdline.execute('scrapy crawl httpbin'.split())
+```
+
+
+
+
+
+### 代理中间件
+
+cmd
+
+```
+$ scrapy genspider ipproxy 'httpbin.org'
+```
+
+
+
+ipproxy.py
+
+```
+# -*- coding: utf-8 -*-
+import scrapy
+import json
+
+
+class IpproxySpider(scrapy.Spider):
+    name = 'ipproxy'
+    allowed_domains = ['httpbin.org']
+    start_urls = ['https://httpbin.org/ip']
+    # start_urls = ['https://ip.cn']
+
+    def parse(self, response):
+        # value = response.xpath("//div[@class='well']/p/code/text()")[0]
+        user_agent = json.loads(response.text)['user-agent']
+        print('-' * 88)
+        print(user_agent)
+        print('-' * 88)
+        yield scrapy.Request(self.start_urls[0], dont_filter=True)  # 关闭去重功能
+```
+
+
+
+middlewares.py
+
+共享代理
+
+```
+class IPProxyDownloadMiddleware(object):
+    """kuaidaili.com"""
+    PROXIES = [
+        '60.208.32.201:80',
+        '117.30.196.140:58171',
+        '182.18.6.9:53281',
+        '121.232.199.76:9000',
+        '117.90.7.242:9000',
+        '114.234.81.212:9000',
+        '183.158.205.140:9000',
+        '118.24.185.22:80',
+        '180.118.86.82:9000',
+        '119.51.246.215:8060',
+        '180.118.73.110:9000',
+        '106.14.197.219:8118'
+    ]
+
+    def process_request(self, request, spider):
+        proxy = random.choice(self.PROXIES)
+        request.meta['proxy'] = proxy
+```
+
+独享代理
+
+```
+class IPProxyDownloadMiddleware(object):
+    def process_request(self, request, spider):
+        proxy = '121.191.6.124:16816'
+        user_password = 'username:password'
+        request.meta['proxy'] = proxy
+        b64_user_password = base64.b64encode(user_password.encode('utf-8'))
+        request.headers['Proxy-Authorization'] = 'Basic ' + b64_user_password.decode('utf-8')
+        
+```
+
+
+
+
+
+settings.py
+
+```
+BOT_NAME = 'multiproxy'
+SPIDER_MODULES = ['multiproxy.spiders']
+NEWSPIDER_MODULE = 'multiproxy.spiders'
+ROBOTSTXT_OBEY = False
+DOWNLOAD_DELAY = 1
+DEFAULT_REQUEST_HEADERS = {
+    'accept': '*/*',
+    'accept-encoding': 'gzip, deflate, br',
+    'accept-language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'
+}
+DOWNLOADER_MIDDLEWARES = {
+   # 'multiproxy.middlewares.MultiproxyDownloaderMiddleware': 543,
+    'multiproxy.middlewares.IPProxyDownloadMiddleware': 100,
+}BOT_NAME = 'multiproxy'
+SPIDER_MODULES = ['multiproxy.spiders']
+NEWSPIDER_MODULE = 'multiproxy.spiders'
+ROBOTSTXT_OBEY = False
+DOWNLOAD_DELAY = 1
+DEFAULT_REQUEST_HEADERS = {
+    'accept': '*/*',
+    'accept-encoding': 'gzip, deflate, br',
+    'accept-language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'
+}
+DOWNLOADER_MIDDLEWARES = {
+   # 'multiproxy.middlewares.MultiproxyDownloaderMiddleware': 543,
+    'multiproxy.middlewares.IPProxyDownloadMiddleware': 100,
+}
+```
+
+
+
+start.py
+
+```
+from scrapy import cmdline
+
+cmdline.execute("scrapy crawl ipproxy".split())
+```
+
+
+
+#### example
+
+##### zhipin.com
+
+cmd
+
+```
+$ scrapy startproject boss
+$ cd boss
+$ scrapy genspider -t crawl zhipin 'zhipin.com'
+```
+
+
+
+middleware.py
+
+这里的代理中间件需要测试
+
+```
+# -*- coding: utf-8 -*-
+
+# Define here the models for your spider middleware
+#
+# See documentation in:
+# https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+import random
+import requests
+import json
+import datetime
+from lxml import etree
+
+
+class UserAgentDownloadMiddleware(object):
+    USER_AGENTS = [
+        'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2226.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 6.4; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2225.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2225.0 Safari/537.36'
+    ]
+
+    def process_request(self, request, spider):
+        user_agent = random.choice(self.USER_AGENTS)
+        request.headers['User-Agent'] = user_agent
+
+
+class IPProxyDownloadMiddleware(object):
+
+    def __init__(self):
+        self.proxy_url = None
+        self.current_date = None
+        self.proxy_list = None
+        self.formated_proxy_list = None
+        self.current_proxy = None
+        self.blacked = False
+
+    def process_request(self, request, spider):
+        print('-'*88)
+        print('request.meta', request.meta)
+        print('-'*88)
+        if 'proxy' not in request.meta:
+            request.meta['proxy'] = self.update_proxy()
+
+    def process_response(self, request, response, spider):
+        if response.status != 200:
+            if not self.current_proxy.blacked:
+                self.current_proxy.blacked = True
+            self.update_proxy()  # 执行到这里，代表请求被block了
+            print('%s proxy have been blacked' % self.current_proxy.ip)
+            return request
+        return response  # 正常请求到，需要返回response
+
+    def update_proxy(self):
+        if not self.current_proxy or self.current_proxy.blacked:
+            temp = datetime.datetime.now()
+            self.current_date = temp.strftime('%Y/%m/%d/%H')
+            self.proxy_url = 'https://ip.ihuan.me/today/{}.html'.format(self.current_date)
+            response = requests.get(self.proxy_url)
+            text = response.text
+            html = etree.HTML(text)
+            self.proxy_list = html.xpath("//p[@class='text-left']/text()")
+            self.formated_proxy_list = []
+            for i in range(len(self.proxy_list)):
+                self.formated_proxy_list.append('http://' + self.proxy_list[i].split('@')[0].strip())
+            self.current_proxy = random.choice(self.formated_proxy_list)
+            return self.current_proxy
+```
+
+
+
+zhipin.py
+
+```
+# -*- coding: utf-8 -*-
+import scrapy
+from scrapy.linkextractors import LinkExtractor
+from scrapy.spiders import CrawlSpider, Rule
+from boss.items import BossItem
+
+
+class ZhipinSpider(CrawlSpider):
+    name = 'zhipin'
+    allowed_domains = ['zhipin.com']
+    start_urls = ['https://www.zhipin.com/c101010100/h_100010000/?query=python&page=1']
+
+    rules = (
+        # list info
+        Rule(LinkExtractor(allow=r'.+\?query=python&page=\d'), follow=True),
+        # detail info
+        Rule(LinkExtractor(allow=r'.+job_detail/.+.html'), callback="parse_job", follow=False),
+    )
+
+    def parse_job(self, response):
+        title = response.xpath("//div[@class='name']/h1/text()").get()
+        salary = response.xpath("//span[@class='badge']/text()").get().strip()
+        job_info = response.xpath("//div[@class='job-primary detail-box']/div[@class='info-primary']/p/text()").getall()
+        city = job_info[0]
+        work_years = job_info[1]
+        education = job_info[2]
+        company = response.xpath("//div[@class='info-company']//a/text()").get()
+
+        item = BossItem(title=title, salary=salary, city=city, work_years=work_years, education=education, company=company)
+        yield item
+```
+
+
+
+items.py
+
+```
+import scrapy
+
+
+class BossItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    title = scrapy.Field()
+    salary = scrapy.Field()
+    city = scrapy.Field()
+    work_years = scrapy.Field()
+    education = scrapy.Field()
+    company = scrapy.Field()
+```
+
+
+
+settings.py
+
+```
+BOT_NAME = 'boss'
+SPIDER_MODULES = ['boss.spiders']
+NEWSPIDER_MODULE = 'boss.spiders'
+ROBOTSTXT_OBEY = False
+DOWNLOAD_DELAY = 1
+DEFAULT_REQUEST_HEADERS = {
+    'accept': '*/*',
+    'accept-encoding': 'gzip, deflate, br',
+    'accept-language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'
+}
+DOWNLOADER_MIDDLEWARES = {
+   # 'boss.middlewares.BossDownloaderMiddleware': 543,
+    'boss.middlewares.UserAgentDownloadMiddleware': 100,
+    # 'boss.middlewares.IPProxyDownloadMiddleware': 200,
+}
+ITEM_PIPELINES = {
+   'boss.pipelines.BossPipeline': 300,
+}
+```
+

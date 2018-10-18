@@ -71,6 +71,13 @@ sys.path.append(BASE_DIR)
 
 返回操作系统平台名称
 
+```
+In [13]: sys.platform
+Out[13]: 'darwin'
+```
+
+
+
 
 
 ## maxint         

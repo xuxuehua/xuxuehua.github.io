@@ -79,6 +79,19 @@ print(list(re))
 [4, 6, 8, 10]
 ```
 
+```
+from itertools import *
+
+result = map(pow, [1, 2, 3], [1, 2, 3])
+
+for num in result:
+    print(num)
+>>>
+1
+4
+27
+```
+
 
 
 ## filter() 函数
@@ -114,3 +127,55 @@ print(reduce((lambda x,y: x+y), [1, 2, 4, 6, 8]))
 >>>
 21
 ```
+
+
+
+## lamba()
+
+将lambda函数依次作用域每个元素，如果函数返回True，则手机原来的元素6，7
+
+```
+In [5]: filter(lambda x: x > 5, [2, 3, 5, 6, 7])
+Out[5]: <filter at 0x1032f5240>
+In [7]: list(filter(lambda x: x > 5, [2, 3, 5, 6, 7]))
+Out[7]: [6, 7]
+```
+
+
+
+类似上面的，但收集并返回Falsely元素 2，3， 5
+
+```
+In [8]: filterfalse(lambda x: x > 5, [2, 3, 5, 6, 7])
+Out[8]: <itertools.filterfalse at 0x1032f5438>
+
+In [9]: list(filterfalse(lambda x: x > 5, [2, 3, 5, 6, 7]))
+Out[9]: [2, 3, 5]
+```
+
+
+
+函数返回True，元素到循环器中，一旦函数返回False, 则停止
+
+```
+In [10]: takewhile(lambda x: x < 5, [1, 3, 6, 7, 1])
+Out[10]: <itertools.takewhile at 0x1032f3a48>
+
+In [11]: list(takewhile(lambda x: x < 5, [1, 3, 6, 7, 1]))
+Out[11]: [1, 3]
+```
+
+
+
+函数返回False， 跳过元素。一旦函数返回True，则开始收集剩下的元素到循环器中
+
+```
+In [12]: dropwhile(lambda x: x < 5, [1, 3, 6, 7, 1])
+Out[12]: <itertools.dropwhile at 0x1032f3c88>
+
+In [13]: list(dropwhile(lambda x: x < 5, [1, 3, 6, 7, 1]))
+Out[13]: [6, 7, 1]
+```
+
+
+

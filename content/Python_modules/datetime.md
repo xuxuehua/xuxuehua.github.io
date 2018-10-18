@@ -74,6 +74,15 @@ datetime.date.replace(year,month,day)：替换给定日期，但不改变原日�
 
 datetime.date.strftime(format):把日期时间按照给定的format进行格式化。
 
+```
+In [15]: x = datetime.datetime.now()
+
+In [16]: x.strftime('%Y/%m/%d')
+Out[16]: '2018/10/14'
+```
+
+
+
 #### 日期格式化符号
 
 ```
