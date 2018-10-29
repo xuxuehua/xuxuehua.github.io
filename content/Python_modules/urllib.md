@@ -288,8 +288,8 @@ def get_opener():
 
 def login_shanbay(opener):
     data = {
-        'username': '15910684354',
-        'password': '681076'
+        'username': '',
+        'password': ''
     }
 
     login_url = 'https://web.shanbay.com/web/account/login'

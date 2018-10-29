@@ -7,6 +7,8 @@ date: 2018-07-31 12:14
 
 # pipenv
 
+Pipenv是一款旨在将所有包管理工具（如bundler, composer, npm, cargo, yarn等）的优点集中应用于python领域中的工具。它对各个平台都有很好的支持。
+
 
 
 ## 特点
@@ -14,7 +16,9 @@ date: 2018-07-31 12:14
 - 不用再单独使用`pip`和`virtualenv`, 现在它们合并在一起了
 - 不用再维护`requirements.txt`, 使用`Pipfile`和`Pipfile.lock`来代替
 - 可以使用多个python版本(`python2`和`python3`)
+- 通过查找*Pipfile*，递归的自动查找你的项目
 - 在安装了`pyenv`的条件下，可以自动安装需要的Python版本
+- 如果 .env 文件存在，则自动载入
 
 
 
@@ -41,6 +45,24 @@ date: 2018-07-31 12:14
 #### curl 
 
 `curl https://raw.githubusercontent.com/kennethreitz/pipenv/master/get-pipenv.py | python`
+
+
+
+## 卸载
+
+卸载所有
+
+`pipenv uninstall --all`
+
+### 指定依赖
+
+```
+pipenv uninstall `pipenv graph --json |python3 depends.py requests`
+```
+
+> 其中depends.py脚本会解析依赖关系，排除其他包依赖的项目然后删除
+
+
 
 
 
@@ -175,93 +197,9 @@ plugins=(... virtualenv-autodetect)
 
 
 
-#### 通过环境变量配置pipenv
-
-pipenv内置了很多环境变量，可以通过设置这些环境变量来配置`pipenv`
-
-```
-$ pipenv --envs
-The following environment variables can be set, to do various things:
-
-  - PIPENV_MAX_DEPTH
-  - PIPENV_SHELL
-  - PIPENV_DOTENV_LOCATION
-  - PIPENV_HIDE_EMOJIS
-  - PIPENV_CACHE_DIR
-  - PIPENV_VIRTUALENV
-  - PIPENV_MAX_SUBPROCESS
-  - PIPENV_COLORBLIND
-  - PIPENV_VENV_IN_PROJECT # 在项目根路径下创建虚拟环境
-  - PIPENV_MAX_ROUNDS
-  - PIPENV_USE_SYSTEM
-  - PIPENV_SHELL_COMPAT
-  - PIPENV_USE_HASHES
-  - PIPENV_NOSPIN
-  - PIPENV_PIPFILE
-  - PIPENV_INSTALL_TIMEOUT
-  - PIPENV_YES
-  - PIPENV_SHELL_FANCY
-  - PIPENV_DONT_USE_PYENV
-  - PIPENV_DONT_LOAD_ENV
-  - PIPENV_DEFAULT_PYTHON_VERSION # 设置创建虚拟环境时默认的python版本信息，如: 3.6
-  - PIPENV_SKIP_VALIDATION
-  - PIPENV_TIMEOUT
-```
-
-需要修改某个默认配置时，只需要把它添加到`.bashrc`或`.bash_profile`文件里即可。
 
 
 
-#### 定位虚拟环境
-
-```
-$ pipenv --venv
-/Users/kennethreitz/.local/share/virtualenvs/test-Skyy4vr
-```
-
-
-
-####定位Python解释器：
-
-```
-$ pipenv --py
-/Users/kennethreitz/.local/share/virtualenvs/test-Skyy4vre/bin/python
-```
-
-
-
-#### 定位项目路径:
-
-```
-$ pipenv --where
-/Users/kennethreitz/Library/Mobile Documents/com~apple~CloudDocs/repos/kr/pipenv/test
-```
-
-
-
-### 指定Python版本 
-
-```
-xhxu-mac:test_pipenv2 xhxu$ pipenv --python 2.7.11
-```
-
-> `pipenv`会自动扫描系统寻找合适的版本信息，如果找不到的话，同时又安装了`pyenv`, 它会自动调用`pyenv`下载对应的版本的python
-
-
-
-
-
-
-
-
-
-### 安装第三方包
-
-`pipenv install PACKAGE_NAME`
-
-```
-xhxu-mac:test_pipenv xhxu$ pipenv install elasticsearch-dsl requests
-```
 
 
 
@@ -298,26 +236,6 @@ records = "*"
 
 
 
-### 依赖关系
-
-`pipenv graph`
-
-```
-xhxu-mac:test_pipenv xhxu$ pipenv graph
-elasticsearch-dsl==6.2.1
-  - elasticsearch [required: >=6.0.0,<7.0.0, installed: 6.3.0]
-    - urllib3 [required: >=1.21.1, installed: 1.23]
-  - ipaddress [required: Any, installed: 1.0.22]
-  - python-dateutil [required: Any, installed: 2.7.3]
-    - six [required: >=1.5, installed: 1.11.0]
-  - six [required: Any, installed: 1.11.0]
-requests==2.19.1
-  - certifi [required: >=2017.4.17, installed: 2018.4.16]
-  - chardet [required: >=3.0.2,<3.1.0, installed: 3.0.4]
-  - idna [required: >=2.5,<2.8, installed: 2.7]
-  - urllib3 [required: >=1.21.1,<1.24, installed: 1.23]
-```
-
 
 
 #### --json
@@ -326,7 +244,9 @@ requests==2.19.1
 
 
 
-### 虚拟环境运行 run
+## pipenv 命令参数
+
+### run 虚拟环境运行 
 
 `pipenv run which python `
 
@@ -345,7 +265,7 @@ alias prp="pipenv run python"
 
 
 
-### 安全性检查
+### check 安全性检查
 
 `pipenv check`
 
@@ -359,7 +279,41 @@ All good!
 
 
 
-### 添加shell补齐
+### graph 图形化依赖
+
+将输出一个包含当前所有已安装依赖的漂亮图形
+
+```
+$ pipenv graph
+elasticsearch-dsl==6.2.1
+  - elasticsearch [required: >=6.0.0,<7.0.0, installed: 6.3.0]
+    - urllib3 [required: >=1.21.1, installed: 1.23]
+  - ipaddress [required: Any, installed: 1.0.22]
+  - python-dateutil [required: Any, installed: 2.7.3]
+    - six [required: >=1.5, installed: 1.11.0]
+  - six [required: Any, installed: 1.11.0]
+requests==2.19.1
+  - certifi [required: >=2017.4.17, installed: 2018.4.16]
+  - chardet [required: >=3.0.2,<3.1.0, installed: 3.0.4]
+  - idna [required: >=2.5,<2.8, installed: 2.7]
+  - urllib3 [required: >=1.21.1,<1.24, installed: 1.23]
+```
+
+
+
+
+
+### install 安装包
+
+`pipenv install PACKAGE_NAME`
+
+```
+xhxu-mac:test_pipenv xhxu$ pipenv install elasticsearch-dsl requests
+```
+
+
+
+### shell 补全
 
 如果使用的是`bash`, 可添加下面语句到`.bashrc`或`.bash_profile`
 
@@ -367,14 +321,114 @@ All good!
 eval "$(pipenv --completion)"
 ```
 
+使用fish shell，将下列命令加入`~/.config/fish/completions/pipenv.fish`
+
+```
+eval (pipenv --completion)
+```
+
+
+
+### Lock 锁定
+
+```
+$ pipenv lock
+Locking [dev-packages] dependencies...
+Locking [packages] dependencies...
+Updated Pipfile.lock (55ac43)!
+```
 
 
 
 
-### requirements.txt 操作
+
+### --where 定位项目 
+
+```
+$ pipenv --where
+/Users/xhxu/test_pipenv
+```
 
 
-#### 导入`requirements.txt`
+
+### --venv 定位虚拟环境
+
+```
+$ pipenv --venv
+/Users/kennethreitz/.local/share/virtualenvs/test-Skyy4vr
+```
+
+
+
+### --envs 定义环境变量
+
+pipenv内置了很多环境变量，可以通过设置这些环境变量来配置`pipenv`
+
+```
+$ pipenv --envs
+The following environment variables can be set, to do various things:
+
+  - PIPENV_MAX_DEPTH
+  - PIPENV_SHELL
+  - PIPENV_DOTENV_LOCATION
+  - PIPENV_HIDE_EMOJIS
+  - PIPENV_CACHE_DIR
+  - PIPENV_VIRTUALENV
+  - PIPENV_MAX_SUBPROCESS
+  - PIPENV_COLORBLIND
+  - PIPENV_VENV_IN_PROJECT # 在项目根路径下创建虚拟环境
+  - PIPENV_MAX_ROUNDS
+  - PIPENV_USE_SYSTEM
+  - PIPENV_SHELL_COMPAT
+  - PIPENV_USE_HASHES
+  - PIPENV_NOSPIN
+  - PIPENV_PIPFILE
+  - PIPENV_INSTALL_TIMEOUT
+  - PIPENV_YES
+  - PIPENV_SHELL_FANCY
+  - PIPENV_DONT_USE_PYENV
+  - PIPENV_DONT_LOAD_ENV
+  - PIPENV_DEFAULT_PYTHON_VERSION # 设置创建虚拟环境时默认的python版本信息，如: 3.6
+  - PIPENV_SKIP_VALIDATION
+  - PIPENV_TIMEOUT
+```
+
+需要修改某个默认配置时，只需要把它添加到`.bashrc`或`.bash_profile`文件里即可。
+
+
+
+### --py 定位Python解释器
+
+```
+$ pipenv --py
+/Users/kennethreitz/.local/share/virtualenvs/test-Skyy4vre/bin/python
+```
+
+
+
+### --python 指定版本 
+
+```
+xhxu-mac:test_pipenv2 xhxu$ pipenv --python 2.7.11
+```
+
+> `pipenv`会自动扫描系统寻找合适的版本信息，如果找不到的话，同时又安装了`pyenv`, 它会自动调用`pyenv`下载对应的版本的python
+
+Create a new project using Python 3.6, specifically:
+`$ pipenv --python 3.6`
+
+
+
+### --man 帮助
+
+`pipenv --man`
+
+
+
+### 操作 requirements.txt 
+
+
+#### 导入
 
 当在执行`pipenv install`命令的时候，如果有一个`requirements.txt`文件，那么会自动从`requirements.txt`文件导入安装包信息并创建一个`Pipfile`文件。
 
@@ -384,7 +438,7 @@ eval "$(pipenv --completion)"
 
 
 
-#### 生成requirements.txt文件
+#### 生成
 
 我们也可以从`Pipfile`和`Pipfile.lock`文件来生成`requirements.txt`
 
@@ -437,26 +491,6 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 
 
-## 卸载
-
-
-
-### 卸载所有
-
-`pipenv uninstall --all`
-
-
-
-
-
-### 指定依赖
-
-```
-pipenv uninstall `pipenv graph --json |python3 depends.py requests`
-```
-
-> 其中depends.py脚本会解析依赖关系，排除其他包依赖的项目然后删除
-
 
 
 
@@ -472,8 +506,7 @@ $ pipenv open requests
 
 ## Commands
 
-Create a new project using Python 3.6, specifically:
-`$ pipenv --python 3.6`
+
 
 Install all dependencies for a project (including dev):
 `$ pipenv install --dev`
@@ -495,7 +528,5 @@ Use a lower-level pip command:
 
 
 
-## 帮助
 
-`pipenv --man`
 

@@ -20,3 +20,12 @@ sed [-nefri] 'command' 输入文本
 ```
 sed -i '6d' ~/.ssh/known_hosts
 ```
+
+
+
+### 替换
+
+```
+sed -i 'columns/.*/replacement-word/' file.txt
+```
+
