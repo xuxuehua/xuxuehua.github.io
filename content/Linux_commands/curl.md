@@ -27,27 +27,25 @@ curl [option] [url]
 
 
 
-### -a 附加到文件
+### -a/--append  附加到文件
 
 上传文件时，附加到目标文件 
 
-```
--a/--append 
-```
 
 
 
-### -A 代理设定
+
+### -A/--user-agent  代理设定
 
 设置用户代理发送给服务器
 
 ```
--A/--user-agent <string>              
+curl --user-agent "[User Agent]" [URL]
 ```
 
 
 
-### -b 使用cookie
+### -b/--cookie 使用cookie
 
 ```
 -b/--cookie <name=string/file>    
@@ -59,25 +57,20 @@ cookie字符串或文件读取位置
 
 ```
 curl -b ./cookie_c.txt  http://blog.51yip.com/wp-admin  
+curl --cookie "name=xxx" www.example.com
 ```
 
 
 
-### -B ASCII /文本传输
+### -B/--use-ascii  ASCII文本传输
 
 使用ASCII /文本传输
 
-```
--B/--use-ascii
-```
 
 
 
-### -c 保存cookie
 
-```
--c/--cookie-jar <file> 
-```
+### -c/--cookie-jar 保存cookie
 
 操作结束后把cookie写入到这个文件中 ， 这里与-D的cookie不一样
 
@@ -91,7 +84,7 @@ curl -c ./cookie_c.txt -F log=aaaa -F pwd=****** http://blog.51yip.com/wp-login.
 
 
 
-### -C 断点续转
+### -C/--continue-at 断点续转
 
 ```
 -C/--continue-at <offset>  
@@ -105,11 +98,7 @@ curl -C -O http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
 
 
 
-### -D 保存头信息
-
-```
--D/--dump-header <file> 
-```
+### -D/--dump-header 保存头信息
 
 把header信息写入到该文件中 ， 这里与-c的cookie不一样
 
@@ -125,7 +114,7 @@ curl -D ./cookie_D.txt -F log=aaaa -F pwd=****** http://blog.51yip.com/wp-login.
 
 
 
-### -d POST 数据
+### -d/--data POST 数据
 
 HTTP POST方式传送数据  
 
@@ -135,7 +124,7 @@ HTTP POST方式传送数据
 
 
 
-### -e 伪造来源地址
+### -e 告知来源地址
 
 ```
 -e/--referer 来源网址
@@ -146,6 +135,14 @@ HTTP POST方式传送数据
 ```
 curl -e http://localhost http://blog.51yip.com/wp-login.php  
 ```
+
+有时你需要在http request头信息中，提供一个referer字段，表示你是从哪里跳转过来的
+
+```
+curl --referer http://www.example.com http://www.example.com
+```
+
+
 
 
 
@@ -158,6 +155,18 @@ curl -e http://localhost http://blog.51yip.com/wp-login.php
 ```
 
 
+
+### -F 表单提交
+
+```
+-F/--form <name=content> 
+```
+
+模拟http表单提交数据  
+
+```
+curl --form upload=@localfilename --form press=OK [URL]
+```
 
 
 
@@ -198,6 +207,44 @@ curl: (22) The requested URL returned error: 404 Not Found
 -H/--header <line>
 ```
 
+有时需要在http request之中，自行增加一个头信息。`--header`参数就可以起到这个作用
+
+```
+curl --header "Content-Type:application/json" http://example.com
+```
+
+
+
+### -i 显示头信息 及页面
+
+```
+-i/--include 
+```
+
+可以显示http response的头信息，连同网页代码一起。
+
+```
+curl -i www.sina.com
+```
+
+
+
+
+
+### -I 只显示头信息 (大写) 
+
+```
+-I/--head  
+```
+
+只显示http response的头信息
+
+```
+curl -I www.sina.com
+```
+
+
+
 
 
 ### -k 忽略证书 (https)
@@ -209,6 +256,14 @@ curl: (22) The requested URL returned error: 404 Not Found
 ```
 
 
+
+### -L 自动跳转
+
+有的网址是自动跳转的。使用`-L`参数，curl就会跳转到新的网址。
+
+```
+curl -L www.sina.com
+```
 
 
 
@@ -314,7 +369,7 @@ curl -T test.sql ftp://用户名:密码@ip:port/demo/curtain/bbstudy_files/
 
 
 
-### -u 用户密码认证
+### -u/--user 用户密码认证
 
 ```
 -u/--user <user[:password]>设置服务器的用户和密码  
@@ -333,6 +388,22 @@ curl -u 用户名:密码 -O http://blog.51yip.com/demo/curtain/bbstudy_files/sty
 
 
 
+### -v verbose
+
+```
+-v/--verbose 
+```
+
+可以显示一次http通信的整个过程，包括端口连接和http request头信息
+
+```
+curl -v www.sina.com
+```
+
+
+
+
+
 ### -x http代理
 
 ```
@@ -348,6 +419,40 @@ curl -x 24.10.28.84:32779 -o home.html http://blog.51yip.com
 ```
 
 
+
+
+
+### -X 指定请求
+
+```
+-X/--request <command>
+```
+
+指定什么命令  
+
+
+
+#### POST
+
+* POST方法必须把数据和网址分开，curl就要用到--data参数。
+
+```
+curl -X POST --data "data=xxx" example.com/form.cgi
+```
+
+* 数据没有经过表单编码，还可以让curl为你编码，参数是`--data-urlencode`。
+
+```
+curl -X POST--data-urlencode "date=April 1" example.com/form.cgi
+```
+
+
+
+#### DELETE
+
+```
+curl -X DELETE www.example.com
+```
 
 
 
@@ -381,13 +486,49 @@ curl -x 24.10.28.84:32779 -o home.html http://blog.51yip.com
 
 
 
-### -X 指定请求(POST,GET,DELETE)
+### --trace 详细通信
 
 ```
--X/--request <command>
+--trace <file>  
 ```
 
-指定什么命令  
+对指定文件进行debug 
+
+```
+curl --trace output.txt www.sina.com
+```
+
+
+
+### --trace-ascii 详细信息保存到文件
+
+```
+--trace-ascii <file> 
+```
+
+跟踪但没有hex输出  
+
+```
+curl --trace-ascii output.txt www.sina.com
+```
+
+
+
+### --trace-time 详细信息带时间戳
+
+```
+--trace-time    
+```
+
+跟踪/详细输出时，添加时间戳  
+
+```
+curl --trace-time output.txt www.sina.com
+```
+
+
+
+
 
 
 
@@ -411,20 +552,14 @@ curl -# -O  http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
 ```
 -anyauth   可以使用“任何”身份验证方法  
 -basic 使用HTTP基本验证  
-  
-
-
 --data-ascii <data>  以ascii的方式post数据  
 --data-binary <data> 以二进制的方式post数据  
 --negotiate     使用HTTP身份验证  
 --digest        使用数字身份验证  
 --disable-eprt  禁止使用EPRT或LPRT  
 --disable-epsv  禁止使用EPSV  
- 
 --egd-file <file> 为随机数据(SSL)设置EGD socket路径  
 --tcp-nodelay   使用TCP_NODELAY选项  
-  
- 
 --cert-type <type> 证书文件类型 (DER/PEM/ENG) (SSL)  
 --key <key>     私钥文件名 (SSL)  
 --key-type <type> 私钥文件类型 (DER/PEM/ENG) (SSL)  
@@ -437,32 +572,27 @@ curl -# -O  http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
 --connect-timeout <seconds> 设置最大请求时间  
 --create-dirs   建立本地目录的目录层次结构  
 --crlf          上传是把LF转变成CRLF  
- 
 --ftp-create-dirs 如果远程目录不存在，创建远程目录  
 --ftp-method [multicwd/nocwd/singlecwd] 控制CWD的使用  
 --ftp-pasv      使用 PASV/EPSV 代替端口  
 --ftp-skip-pasv-ip 使用PASV的时候,忽略该IP地址  
 --ftp-ssl       尝试用 SSL/TLS 来进行ftp数据传输  
 --ftp-ssl-reqd  要求用 SSL/TLS 来进行ftp数据传输  
--F/--form <name=content> 模拟http表单提交数据  
+
 -form-string <name=string> 模拟http表单提交数据  
 -g/--globoff 禁用网址序列和范围使用{}和[]  
--G/--get 以get的方式来发送数据  
+-G/--get 以get的方式来发送数据    
+--ignore-content-length  忽略的HTTP头信息的长度  
  
   
---ignore-content-length  忽略的HTTP头信息的长度  
--i/--include 输出时包括protocol头信息  
--I/--head  只显示文档信息  
 从文件中读取-j/--junk-session-cookies忽略会话Cookie  
 -界面<interface>指定网络接口/地址使用  
 -krb4 <级别>启用与指定的安全级别krb4  
 -j/--junk-session-cookies 读取文件进忽略session cookie  
 --interface <interface> 使用指定网络接口/地址  
 --krb4 <level>  使用指定安全级别的krb4  
-  
 -K/--config  指定的配置文件读取  
 -l/--list-only 列出ftp目录下的文件名称  
-  
 --local-port<NUM> 强制使用本地端口号  
 -m/--max-time <seconds> 设置最大传输时间  
 --max-redirs <num> 设置最大读取的目录数  
@@ -472,7 +602,6 @@ curl -# -O  http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
 --netrc-optional 使用 .netrc 或者 URL来覆盖-n  
 --ntlm          使用 HTTP NTLM 身份验证  
 -N/--no-buffer 禁用缓冲输出  
- 
 -p/--proxytunnel   使用HTTP代理  
 --proxy-anyauth 选择任一代理身份验证方法  
 --proxy-basic   在代理上使用基本身份验证  
@@ -480,7 +609,6 @@ curl -# -O  http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
 --proxy-ntlm    在代理上使用ntlm身份验证  
 -P/--ftp-port <address> 使用端口地址，而不是使用PASV  
 -Q/--quote <cmd>文件传输前，发送命令到服务器  
- 
 --range-file 读取（SSL）的随机文件  
 -R/--remote-time   在本地生成文件时，保留远程文件时间  
 --retry <num>   传输出现问题时，重试的次数  
@@ -491,14 +619,11 @@ curl -# -O  http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
  
 --stderr <file>  
 -t/--telnet-option <OPT=val> Telnet选项设置  
---trace <file>  对指定文件进行debug  
---trace-ascii <file> Like --跟踪但没有hex输出  
---trace-time    跟踪/详细输出时，添加时间戳  
+
 
 --url <URL>     Spet URL to work with  
 
 -U/--proxy-user <user[:password]>设置代理用户名和密码  
--v/--verbose  
 -V/--version 显示版本信息  
 -w/--write-out [format]什么输出完成后  
  

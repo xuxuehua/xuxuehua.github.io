@@ -1,13 +1,13 @@
 ---
-title: "variables 变量"
-date: 2018-10-22 03:13
+title: "internal_variables 内部变量"
+date: 2018-11-08 13:07
 ---
 
 
 [TOC]
 
 
-# variables
+# internal_variables
 
 
 
@@ -26,16 +26,6 @@ date: 2018-10-22 03:13
 # echo $RANDOM | cksum | cut -c 1-8
 20613431
 ```
-
-
-
-
-
-
-
-
-
-
 
 
 
