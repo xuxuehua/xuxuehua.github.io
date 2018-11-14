@@ -33,13 +33,22 @@ p {color:red;}
 
 
 
+## 注释
+
+```
+/* .... */ 
+
+```
+
+
+
 ## 样式
 
 优先级自上往下
 
 
 
-### 内联样式
+### 内联样式 （优先级最高）
 
 ```
 <div style="color: red; font-size:24px;border: 1px solid black;">
@@ -49,7 +58,7 @@ p {color:red;}
 
 
 
-### 嵌入样式/页内样式
+### 嵌入样式/页内样式 （优先级其次）
 
 #### `<style>` 
 
@@ -63,7 +72,7 @@ p {color:red;}
 
 
 
-###  外部样式
+###  外部样式 （优先级最低）
 
 #### `<link>`
 
@@ -99,8 +108,8 @@ html默认的样式
 ## 简单属性
 
 ```
-width： 宽度
-height：高度
+width： 宽度 （限制块结构）
+height：高度 （限制块结构）
 color：前景色，文字颜色
 background-color： 背景色
 font-size：字体的大小
