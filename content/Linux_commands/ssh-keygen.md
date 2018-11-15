@@ -21,3 +21,12 @@ date: 2018-09-05 15:44
 
 bit 位长度
 
+
+
+## -y public key 
+
+`-y` outputs the public key:
+
+```
+ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
+```

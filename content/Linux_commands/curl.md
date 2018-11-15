@@ -43,6 +43,12 @@ curl [option] [url]
 curl --user-agent "[User Agent]" [URL]
 ```
 
+有些网站需要使用特定的浏览器去访问他们，有些还需要使用某些特定的版本。curl内置option:-A可以让我们指定浏览器去访问网站
+
+```
+curl -A "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.0)" http://www.linux.com
+```
+
 
 
 ### -b/--cookie 使用cookie
@@ -55,9 +61,10 @@ cookie字符串或文件读取位置
 
 
 
+很多网站都是通过监视你的cookie信息来判断你是否按规矩访问他们的网站的，因此我们需要使用保存的cookie信息。内置option: -b
+
 ```
-curl -b ./cookie_c.txt  http://blog.51yip.com/wp-admin  
-curl --cookie "name=xxx" www.example.com
+curl -b cookiec.txt http://www.linux.com
 ```
 
 
@@ -92,8 +99,10 @@ curl -c ./cookie_c.txt -F log=aaaa -F pwd=****** http://blog.51yip.com/wp-login.
 
 断点续转  
 
+如果在下载dodo1.JPG的过程中突然掉线了，可以使用以下的方式续传
+
 ```
-curl -C -O http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg  
+curl -C -O http://www.linux.com/dodo1.JPG
 ```
 
 
@@ -124,29 +133,20 @@ HTTP POST方式传送数据
 
 
 
-### -e 告知来源地址
+### -e/--referer 告知来源地址
+
+
+
+很多服务器会检查http访问的referer从而来控制访问。比如：你是先访问首页，然后再访问首页中的邮箱页面，这里访问邮箱的referer地址就是访问首页成功后的页面地址，如果服务器发现对邮箱页面访问的referer地址不是首页的地址，就断定那是个盗连了
+curl中内置option：-e可以让我们设定referer
 
 ```
--e/--referer 来源网址
-```
-
-
-
-```
-curl -e http://localhost http://blog.51yip.com/wp-login.php  
-```
-
-有时你需要在http request头信息中，提供一个referer字段，表示你是从哪里跳转过来的
-
-```
-curl --referer http://www.example.com http://www.example.com
+curl -e "www.linux.com" http://mail.linux.com
 ```
 
 
 
-
-
-### -E 客户端证书文件
+### -E/--cert 客户端证书文件
 
 客户端证书文件和密码 (SSL) 
 
@@ -156,7 +156,7 @@ curl --referer http://www.example.com http://www.example.com
 
 
 
-### -F 表单提交
+### -F/--form 表单提交
 
 ```
 -F/--form <name=content> 
@@ -170,13 +170,11 @@ curl --form upload=@localfilename --form press=OK [URL]
 
 
 
-### -f 忽略错误
+### -f/--fail 忽略错误
 
  连接失败时不显示http错误 
 
-```
--f/--fail      
-```
+​      
 
 
 
@@ -189,23 +187,17 @@ curl: (22) The requested URL returned error: 404 Not Found
 
 
 
-### -h 帮助
+### -h/--help 帮助
 
 帮助
 
-```
--h/--help  
-```
+  
 
 
 
-### -H 自定义头信息
+### -H/--header 自定义头信息
 
 自定义头信息传递给服务器
-
-```
--H/--header <line>
-```
 
 有时需要在http request之中，自行增加一个头信息。`--header`参数就可以起到这个作用
 
@@ -215,11 +207,9 @@ curl --header "Content-Type:application/json" http://example.com
 
 
 
-### -i 显示头信息 及页面
+### -i/--include  显示头信息 及页面
 
-```
--i/--include 
-```
+ 
 
 可以显示http response的头信息，连同网页代码一起。
 
@@ -231,11 +221,7 @@ curl -i www.sina.com
 
 
 
-### -I 只显示头信息 (大写) 
-
-```
--I/--head  
-```
+### -I/--head 只显示头信息 (大写) 
 
 只显示http response的头信息
 
@@ -267,15 +253,9 @@ curl -L www.sina.com
 
 
 
-### -o 写入文件
-
-```
--o/--output 
-```
+### -o/--output  保存页面
 
 把输出写到该文件中  
-
-
 
 * 抓取页面内容到一个文件中
 
@@ -285,11 +265,21 @@ curl -o home.html  http://blog.51yip.com
 
 
 
-### -O 保留文件名(大写)
+* 使用linux的重定向功能保存
 
 ```
--O/--remote-name 
+curl http://www.linux.com >> linux.html
 ```
+
+
+
+* 测试网页返回值
+
+```
+curl -o /dev/null -s -w %{http_code} www.linux.com
+```
+
+### -O/--remote-name 保留文件名(大写)
 
 把输出写到该文件中，保留远程文件的文件名 
 
@@ -302,52 +292,40 @@ curl -O http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
 curl -O http://blog.51yip.com/wp-content/uploads/2010/[0-9][0-9]/aaaaa.jpg 
 ```
 
-
-
-### -r 分段处理
+下载重命名
 
 ```
--r/--range <range>
+curl -O http://www.linux.com/{hello,bb}/dodo[1-5].JPG
 ```
+
+由于下载的hello与bb中的文件名都是dodo1，dodo2，dodo3，dodo4，dodo5。因此第二次下载的会把第一次下载的覆盖，这样就需要对文件进行重命名。
+
+```
+curl -o #1_#2.JPG http://www.linux.com/{hello,bb}/dodo[1-5].JPG
+```
+
+
+
+### -r/--range 分段处理
 
 检索来自HTTP/1.1或FTP服务器字节范围 
 
 
 
-```
-[root@krlcgcms01 mytest]# curl -r 0-100 -o img.part1 http://blog.51yip.com/wp-  
-  
-content/uploads/2010/09/compare_varnish.jpg  
- % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current  
- Dload  Upload   Total   Spent    Left  Speed  
-100   101  100   101    0     0    105      0 --:--:-- --:--:-- --:--:--     0  
-[root@krlcgcms01 mytest]# curl -r 100-200 -o img.part2 http://blog.51yip.com/wp-  
-  
-content/uploads/2010/09/compare_varnish.jpg  
- % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current  
- Dload  Upload   Total   Spent    Left  Speed  
-100   101  100   101    0     0     57      0  0:00:01  0:00:01 --:--:--     0  
-[root@krlcgcms01 mytest]# curl -r 200- -o img.part3 http://blog.51yip.com/wp-  
-  
-content/uploads/2010/09/compare_varnish.jpg  
- % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current  
- Dload  Upload   Total   Spent    Left  Speed  
-100  104k  100  104k    0     0  52793      0  0:00:02  0:00:02 --:--:-- 88961  
-[root@krlcgcms01 mytest]# ls |grep part | xargs du -sh  
-4.0K    one.part1  
-112K    three.part3  
-4.0K    two.part2  
+有时候下载的东西会比较大，这个时候我们可以分段下载。使用内置option：-r
 
-# cat img.part* >img.jpg
+```
+# curl -r 0-100 -o dodo1_part1.JPG http://www.linux.com/dodo1.JPG
+# curl -r 100-200 -o dodo1_part2.JPG http://www.linux.com/dodo1.JPG
+# curl -r 200- -o dodo1_part3.JPG http://www.linux.com/dodo1.JPG
+# cat dodo1_part* > dodo1.JPG
 ```
 
 
 
-### -s 不输出
+### -s/--silent 不显示下载进度
 
-```
--s/--silent静音模式。不输出任何东西 
-```
+
 
 ```
 curl -s -o aaa.jpg  http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg  
@@ -355,11 +333,7 @@ curl -s -o aaa.jpg  http://blog.51yip.com/wp-content/uploads/2010/09/compare_var
 
 
 
-### -T  上传
-
-```
--T/--upload-file <file> 
-```
+### -T/--upload-file  上传
 
 上传文件  
 
@@ -369,10 +343,23 @@ curl -T test.sql ftp://用户名:密码@ip:port/demo/curtain/bbstudy_files/
 
 
 
+curl不仅仅可以下载文件，还可以上传文件。通过内置option:-T来实现
+
+```
+curl -T dodo1.JPG -u 用户名:密码 ftp://www.linux.com/img/
+```
+
 ### -u/--user 用户密码认证
 
 ```
 -u/--user <user[:password]>设置服务器的用户和密码  
+```
+
+
+
+```
+curl -u user:pwd http://man.linuxde.net
+curl -u user http://man.linuxde.net
 ```
 
 
@@ -415,7 +402,7 @@ curl -v www.sina.com
 
 
 ```
-curl -x 24.10.28.84:32779 -o home.html http://blog.51yip.com  
+curl -x 192.168.100.100:1080 http://www.linux.com 
 ```
 
 
@@ -434,6 +421,12 @@ curl -x 24.10.28.84:32779 -o home.html http://blog.51yip.com
 
 #### POST
 
+form urlencoded: `-d "param1=value1&param2=value2"` or `-d @data.txt`
+
+json: `-d '{"key1":"value1", "key2":"value2"}'` or `-d @data.json`
+
+
+
 * POST方法必须把数据和网址分开，curl就要用到--data参数。
 
 ```
@@ -443,7 +436,41 @@ curl -X POST --data "data=xxx" example.com/form.cgi
 * 数据没有经过表单编码，还可以让curl为你编码，参数是`--data-urlencode`。
 
 ```
-curl -X POST--data-urlencode "date=April 1" example.com/form.cgi
+curl -X POST --data-urlencode "date=April 1" example.com/form.cgi
+```
+
+
+
+### POST application/x-www-form-urlencoded
+
+`application/x-www-form-urlencoded` is the default:
+
+```
+curl -d "param1=value1&param2=value2" -X POST http://localhost:3000/data
+```
+
+explicit:
+
+```
+curl -d "param1=value1&param2=value2" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://localhost:3000/data
+```
+
+with a data file
+
+```
+curl -d "@data.txt" -X POST http://localhost:3000/data
+```
+
+### POST application/json
+
+```
+curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/data
+```
+
+with a data file
+
+```
+curl -d "@data.json" -X POST http://localhost:3000/data
 ```
 
 
@@ -463,6 +490,20 @@ curl -X DELETE www.example.com
 ```
 
 设置传输速度
+
+```
+curl URL --limit-rate 50k
+```
+
+
+
+### --max-filesize 最大文件大小
+
+设置最大下载的文件总量 
+
+```
+curl URL --max-filesize bytes
+```
 
 
 
@@ -532,11 +573,9 @@ curl --trace-time output.txt www.sina.com
 
 
 
-### -# 进度条
+### -#/--progress 进度条
 
-```
--#/--progress-bar 
-```
+
 
 用进度条显示当前的传送状态  
 
@@ -596,7 +635,7 @@ curl -# -O  http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
 --local-port<NUM> 强制使用本地端口号  
 -m/--max-time <seconds> 设置最大传输时间  
 --max-redirs <num> 设置最大读取的目录数  
---max-filesize <bytes> 设置最大下载的文件总量  
+ 
 -M/--manual  显示全手动  
 -n/--netrc 从netrc文件中读取用户名和密码  
 --netrc-optional 使用 .netrc 或者 URL来覆盖-n  

@@ -194,8 +194,79 @@ p > strong {
 
 ## 伪类选择器
 
-a标签
+
+
+`:link`
+
+伪类讲应用于未被访问过的链接，解决此问题，请使用a标签
+
+`:hover`
+
+伪类讲应用于鼠标指针悬停于其上的元素
+
+`:active`
+
+伪类讲应用于被激活的元素，如被点击的链接，被按下的按钮，但是鼠标不放开的时候
+
+`:visited`
+
+伪类将应用于已经被访问过的链接
+
+`:focus`
+
+伪类将应用于拥有键盘输入焦点的元素， 获取到输入的焦点的时候	
+
+
+
+顺序遵循LVHA 原则
+
+```
+    <style>
+        a {
+            font-size: 300px;
+        }
+        a:link {
+            color: blue;
+        }
+        a:visited {
+            color: lawngreen;
+        }
+        a:hover {
+            color: darkgreen;
+            background-color: yellow;
+        }
+        a:active {
+            color: gold;
+        }
+        input:focus {
+            color: red;
+        }
+    </style>
+
+</head>
+<body>
+    <a href="#">test 1</a>
+    <a href="#">test 2</a>
+    <a href="/">test 3</a>
+    <input type="text" name="" id="">
+</body>
+```
 
 
 
 ## 伪元素选择器
+
+`:first-child` 伪类，选择属于第一个子元素的元素
+
+> `span:first-child{}` /* 选择属于第一个子元素的所有span标签 */
+
+
+
+伪元素是控制内容
+
+> `:first-line` 伪元素
+>
+> `:first-letter` 伪元素
+>
+> 上述只能用于块级元素
+
