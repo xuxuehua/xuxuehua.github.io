@@ -421,19 +421,30 @@ curl -x 192.168.100.100:1080 http://www.linux.com
 
 #### POST
 
-form urlencoded: `-d "param1=value1&param2=value2"` or `-d @data.txt`
+* POST application/x-www-form-urlencoded
 
-json: `-d '{"key1":"value1", "key2":"value2"}'` or `-d @data.json`
-
-
-
-* POST方法必须把数据和网址分开，curl就要用到--data参数。
+`application/x-www-form-urlencoded` is the default:
 
 ```
-curl -X POST --data "data=xxx" example.com/form.cgi
+curl -d "param1=value1&param2=value2" -X POST http://localhost:3000/data
+
 ```
 
-* 数据没有经过表单编码，还可以让curl为你编码，参数是`--data-urlencode`。
+explicit:
+
+```
+curl -d "param1=value1&param2=value2" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://localhost:3000/data
+
+```
+
+with a data file
+
+```
+curl -d "@data.txt" -X POST http://localhost:3000/data
+
+```
+
+- 数据没有经过表单编码，还可以让curl为你编码，参数是`--data-urlencode`。
 
 ```
 curl -X POST --data-urlencode "date=April 1" example.com/form.cgi
@@ -441,30 +452,17 @@ curl -X POST --data-urlencode "date=April 1" example.com/form.cgi
 
 
 
-### POST application/x-www-form-urlencoded
 
-`application/x-www-form-urlencoded` is the default:
 
-```
-curl -d "param1=value1&param2=value2" -X POST http://localhost:3000/data
-```
 
-explicit:
 
-```
-curl -d "param1=value1&param2=value2" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://localhost:3000/data
-```
+* json format 
 
-with a data file
-
-```
-curl -d "@data.txt" -X POST http://localhost:3000/data
-```
-
-### POST application/json
+ `-d '{"key1":"value1", "key2":"value2"}'` or `-d @data.json`
 
 ```
 curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/data
+
 ```
 
 with a data file
@@ -472,6 +470,16 @@ with a data file
 ```
 curl -d "@data.json" -X POST http://localhost:3000/data
 ```
+
+* POST方法必须把数据和网址分开，curl就要用到--data参数。
+
+```
+curl -X POST --data "data=xxx" example.com/form.cgi
+```
+
+
+
+
 
 
 
