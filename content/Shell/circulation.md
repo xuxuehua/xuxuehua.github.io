@@ -110,6 +110,34 @@ done
 
 
 
+```
+for i in {1..5}
+do 
+echo $i
+done
+
+>>>
+1
+2
+3
+4
+5
+```
+
+```
+for FILE in $HOME/.bash*
+do 
+echo $FILE
+done
+
+>>>
+/Users/xhxu/.bash_history
+/Users/xhxu/.bash_profile
+/Users/xhxu/.bash_sessions
+```
+
+
+
 ## while
 
 ```javascript
@@ -128,4 +156,24 @@ echo "Finished."
 ```javascript
 while commands; do commands; done
 ```
+
+
+
+## break 
+
+跳出所有循环
+
+
+
+### break n 
+
+跳出第n层循环
+
+
+
+## continue
+
+跳出当前循环
+
+
 

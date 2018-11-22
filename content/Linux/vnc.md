@@ -9,9 +9,9 @@ date: 2018-09-27 15:05
 
 # vnc
 
-## 部署
 
-### CentOS
+
+## CentOS
 
 ```
 sudo yum groupinstall -y "GNOME Desktop"
@@ -33,11 +33,26 @@ vncserver
 
 
 
-### Ubuntu
+## Ubuntu 
 
 ```
-sudo apt-get update
-sudo apt install xfce4 xfce4-goodies tightvncserver
+sudo apt-get update 
+
+sudo apt install  tightvncserver ubuntu-gnome-desktop lxde
+
+
+sudo apt install gnome-session gdm3
+sudo apt install tasksel
+sudo tasksel install ubuntu-desktop
+```
+
+```
+adduser vnc
+passwd vnc
+
+echo "%vnc     ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
+
+echo '/usr/bin/startlxde' >> ~/.vnc/xstartup
 
 vncserver
 vncserver -kill :1
@@ -45,7 +60,7 @@ vncserver -kill :1
 
 
 
-#### VNC Service File
+* VNC Service File
 
 ```
 /etc/systemd/system/vncserver@.service 
@@ -55,9 +70,9 @@ After=syslog.target network.target
 
 [Service]
 Type=forking
-User=sammy
+User=vnc
 PAMName=login
-PIDFile=/home/sammy/.vnc/%H:%i.pid
+PIDFile=/home/vnc/.vnc/%H:%i.pid
 ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
 ExecStart=/usr/bin/vncserver -depth 24 -geometry 1280x800 :%i
 ExecStop=/usr/bin/vncserver -kill :%i
@@ -69,46 +84,28 @@ WantedBy=multi-user.target
 ```
 sudo systemctl daemon-reload
 sudo systemctl enable vncserver@1.service
+sudo systemctl start vncserver@1.service
 ```
 
 
 
-### Debian
+## Debian 8
 
 ```
 apt-get update
 apt-get -y upgrade
-apt-get install xfce4 xfce4-goodies gnome-icon-theme tightvncserver
-apt-get install iceweasel
+apt-get install xfce4 xfce4-goodies gnome-icon-theme tightvncserver xfonts-base iceweasel
 ```
 
 
 
 ```
 adduser vnc
-```
-
-```
 apt-get install sudo
-```
-
-```
 gpasswd -a vnc sudo
-```
-
-```
 su - vnc
-```
-
-```
 vncserver
-```
-
-```
 vncserver -kill :1
-```
-
-```
 sudo nano /usr/local/bin/myvncserver
 ```
 
@@ -153,7 +150,7 @@ If you'd like, you can call the script manually to start/stop VNC Server on port
 
 
 
-Copy these commands to the service file. Our service will simply call the startup script above with the user **vnc**.
+Copy these commands to the service file. Our service will simply call the startup script above with the user vnc
 
 /lib/systemd/system/myvncserver.service
 
@@ -189,7 +186,7 @@ sudo systemctl restart myvncserver.service
 
 
 
-#### Securing Your VNC Server with SSH Tunneling
+* Securing Your VNC Server with SSH Tunneling
 
 First, stop the VNC server:
 
@@ -208,11 +205,7 @@ Change this line:
 /usr/local/bin/myvncserver
 
 ```
-. . .
-
 OPTIONS="-depth ${DEPTH} -geometry ${GEOMETRY} :${DISPLAY}"
-
-. . .
 ```
 
 Replace it with:
@@ -220,11 +213,7 @@ Replace it with:
 /usr/local/bin/myvncserver
 
 ```
-. . .
-
 OPTIONS="-depth ${DEPTH} -geometry ${GEOMETRY} :${DISPLAY} -localhost"
-
-. . .
 ```
 
 Restart the VNC server:
@@ -233,7 +222,9 @@ Restart the VNC server:
 sudo systemctl start myvncserver.service
 ```
 
-##### **Windows:**
+
+
+* Windows client
 
 We will use PuTTY to create an SSH Tunnel and then connect through the tunnel we have created.
 
@@ -265,9 +256,9 @@ Now you can use your VNC viewer as usual. Just enter **localhost::5901** as the 
 
  
 
-### **OS X:**
+## OS X
 
-##### To establish an SSH tunnel, use the following line in Terminal:
+* To establish an SSH tunnel, use the following line in Terminal
 
 ```
 ssh vnc@your_server_ip -L 5901:localhost:5901

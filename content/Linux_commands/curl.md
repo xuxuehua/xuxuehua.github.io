@@ -154,6 +154,10 @@ curl -e "www.linux.com" http://mail.linux.com
 -E/--cert <cert[:passwd]> 
 ```
 
+```
+curl -E mycert.pem https://url
+```
+
 
 
 ### -F/--form 表单提交

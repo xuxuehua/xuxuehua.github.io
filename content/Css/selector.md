@@ -6,8 +6,13 @@ date: 2018-11-13 14:31
 
 [TOC]
 
-
 # selector 选择器
+
+
+
+## 选择器优先级
+
+ID > 类（伪类）> 标签 > 继承 > 默认
 
 
 
@@ -260,13 +265,55 @@ p > strong {
 
 > `span:first-child{}` /* 选择属于第一个子元素的所有span标签 */
 
+```
+    <style>
+        span:first-child{
+            font-size: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <span>this is 1</span>
+        <span>this is 2</span>
+        <span>this is 3</span>
+    </div>
+    <p>
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+    </p>
+```
+
+> this is 1 和1会改变
 
 
-伪元素是控制内容
 
-> `:first-line` 伪元素
->
-> `:first-letter` 伪元素
->
-> 上述只能用于块级元素
+
+
+伪元素是控制内容V
+
+`:first-line` 伪元素 /* 文本的第一行 */
+`:first-letter` 伪元素 /* 文本的第一个字母 */
+上述只能用于块级元素
+
+
+
+
+
+指定标签的的前面和后面操作
+
+```
+::before 
+::after
+```
+
+```
+        p::before {
+            content: "---";
+        }
+        p::after {
+            content: "===";
+        }
+```
 

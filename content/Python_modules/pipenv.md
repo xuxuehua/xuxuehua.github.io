@@ -143,7 +143,7 @@ bash-3.2$  . /Users/xhxu/.local/share/virtualenvs/test_pipenv-v79hOH8k/bin/activ
 
 
 
-#### 退出 Virtualenv
+#### 退出 Virtualenv 
 
 `exit`
 

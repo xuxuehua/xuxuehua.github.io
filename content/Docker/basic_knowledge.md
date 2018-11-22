@@ -109,6 +109,12 @@ $ sudo useradd -g docker docker -s /sbin/nologin
 
 
 
+### docker.com
+
+```
+wget -qO- get.docker.com | bash 
+```
+
 
 
 ## 守护进程
@@ -182,7 +188,6 @@ ubuntu               16.04               f753707788c5        4 weeks ago        
 ubuntu               latest              f753707788c5        4 weeks ago         127 MB
 ubuntu               14.04               1e0c3dd64ccd        4 weeks ago         188 MB
 ```
-
 
 
 
