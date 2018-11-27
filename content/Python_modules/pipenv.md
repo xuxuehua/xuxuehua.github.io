@@ -78,7 +78,11 @@ cd test_pipenv
 pipenv install # 创建一个虚拟环境
 ```
 
-Pipfile和Pipfile.lock两个文件互相配合，完成虚拟环境的管理工作
+>  Pipfile和Pipfile.lock两个文件互相配合，完成虚拟环境的管理工作
+>
+> ```
+> pipenv install --three # 需要确保系统中存在python3版本
+> ```
 
 
 
@@ -119,6 +123,24 @@ Setting project for test_pipenv2-pBEJdovF to /Users/xhxu/test_pipenv2
 Virtualenv location: /Users/xhxu/.local/share/virtualenvs/test_pipenv2-pBEJdovF
 Creating a Pipfile for this project...
 ```
+
+
+
+#### Pipfile & Pipfile.lock
+
+Pipfile 存放着当前虚拟环境的配置信息，包含python版本，pypi源，以及项目安装的依赖库
+
+> `pipenv`根据这个来寻找项目的根目录。
+>
+> `Pipfile` 文件是 `TOML` 格式而不是 `requirements.txt` 那样的纯文本。[
+>
+> 一个项目对应一个 Pipfile，支持开发环境与正式环境区分。默认提供 `default` 和 `development` 区分
+
+
+
+Pipfile.lock 顾名思义，这个文件时对于`Pipfile`的一个锁定。支持锁定项目不同的版本所依赖的环境.
+
+
 
 
 
@@ -168,39 +190,6 @@ export WORKON_HOME=~/.venvs
 
 
 
-#### 自动激活虚拟环境
-
-配合[virtualenv-autodetect](https://github.com/RobertDeRose/virtualenv-autodetect)和设置`PIPENV_VENV_IN_PROJECT`环境变量可以自动激活虚拟环境。
-
-在`.bashrc`或`.bash_profile`中配置如下
-
-```
-export PIPENV_VENV_IN_PROJECT=1
-source /path/to/virtualenv-autodetect.sh
-```
-
-如果使用了`oh-my-zsh`, 可以直接使用它的插件形式
-
-```
-# 安装插件
-$ git@github.com:RobertDeRose/virtualenv-autodetect.git ~/.oh-my-zsh/custom/plugins
-```
-
-再修改`.zshrc`文件启动插件
-
-```
-# 找到启动plugins的行添加启用插件
-plugins=(... virtualenv-autodetect)
-```
-
-
-
-
-
-
-
-
-
 
 
 #### 指定安装包的版本
@@ -241,6 +230,31 @@ records = "*"
 #### --json
 
 以 json形式输出
+
+
+
+### autoenv 自动激活虚拟环境
+
+```
+pip install autoenv  # 安装 autoenv
+```
+
+`autoenv` 可以在进入项目之后自动检测项目目录的 `.env` 文件激活项目所需的虚拟环境
+
+
+
+```
+vim .env
+```
+
+```
+# bash 的话，执行这一条指令
+echo "source `which activate.sh`" >> ~/.bashrc
+# zsh 的话，执行这一条指令
+echo "source `which activate.sh`" >> ~/.zshrc
+```
+
+
 
 
 
@@ -504,9 +518,29 @@ $ pipenv open requests
 
 
 
+
+
+### 更新 pypi源来提高依赖库安装的速度
+
+在使用pipenv的时候，常常会在安装的时候，一直卡在了 `Locking` 这里，通过加上 `-v` 参数，可以看到安装过程中的步骤信息，卡在了下载那里，这时应该可以意识到是因为网络的原因，pipenv创建的 `Pipfile` 中默认的pypi源是python官方的 **https://pypi.python.org/simple**。我们国内用户访问下载的时候会很慢。
+
+所以，我一般会在创建好Pipfile以后，修改到文件中 `source` 块下的 `url` 字段，设置为国内的 pypi 源就好了，我推荐的是清华的pypi源，具体设置如下：
+
+*备注：我还没有找到如何修改能在创建时就设好的方法，应该修改源码是可以的，但这样不尊重源码，毕竟高墙是我们自己筑起的，如果有好的方法，您不妨在评论中告诉我一下*
+
+```
+[[source]]
+
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+verify_ssl = true
+name = "pypi"
+```
+
+
+
+
+
 ## Commands
-
-
 
 Install all dependencies for a project (including dev):
 `$ pipenv install --dev`

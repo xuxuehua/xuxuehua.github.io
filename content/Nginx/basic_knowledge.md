@@ -81,14 +81,24 @@ tar -xzf nginx-1.14.1.tar.gz
 
 
 
+#### 安装顺序
+
+```
+./configure # 配置
+make # 编译
+make install # 编译安装
+```
+
 
 
 #### 目录结构
 
+./configure 执行之前
+
 ```
 auto # 辅助conf 告诉nginx 支持哪些模块
 CHANGES  # 变更信息
-CHANGES.ru # 俄语变
+CHANGES.ru # 俄语变更
 conf # 事例文件
 configure # 编译前的配置 
 contrib # 将配置文件带上颜色， cp -r contrib/vim/* ~/.vim
@@ -97,5 +107,178 @@ LICENSE
 man # 帮助文件
 README
 src # 源码
+```
+
+
+
+./configure 执行之后
+
+```
+
+objs/  # 中间文件 
+├── autoconf.err
+├── Makefile
+├── ngx_auto_config.h
+├── ngx_auto_headers.h
+├── ngx_modules.c  #决定了变异后，哪些模块会编译进nginx
+└── src # 编译后的中间文件会放到这里
+    ├── core 
+    ├── event
+    │   └── modules
+    ├── http
+    │   ├── modules
+    │   │   └── perl
+    │   └── v2
+    ├── mail
+    ├── misc
+    ├── os
+    │   ├── unix
+    │   └── win32
+    └── stream
+```
+
+
+
+#### --prefix 
+
+指定安装目录
+
+```
+--prefix=/home/user/nginx
+```
+
+
+
+
+
+## 配置语法
+
+配置文件由指令与指令块构成
+
+每条指令以；分号结尾，指令与参数间以空格符号分隔
+
+指令块以｛｝大括号将多条指令组织在一起
+
+使用#符号添加注释，提高可读性
+
+include语句允许组合多个配置文件以提升可维护性
+
+使用$符号使用变量 （变量由nginx框架提供）
+
+部分指令的参数支持正则表达式
+
+
+
+## 配置参数
+
+### 时间的单位
+
+```
+ms -> milliseconds
+s -> seconds
+m -> minutes
+h -> hours
+d -> days
+M -> months, 30 days
+y -> years, 365 days
+```
+
+
+
+### 空间的单位
+
+```
+bytes -> bytes
+k/K -> kilobytes
+m/M -> megabytes
+g/G -> gigabytes
+```
+
+ 
+
+## 配置指令块  
+
+### http
+
+
+
+### server 域名
+
+
+
+### upstream 上游模块
+
+
+
+### location URL 路径
+
+
+
+
+
+## Nginx命令行
+
+### syntax
+
+```
+格式：nginx -s reload
+```
+
+
+
+帮助：-? -h
+使用指定的配置文件：-c
+指定配置指令：-g
+指定运行目录：-p
+发送信号：-s {stop立刻停止服务,quit优雅的停止服务,reload重载配置文件,reopen重新开始记录日志文件}
+测试配置文件是否有语法错误：-t -T
+打印nginx的版本信息、编译信息等：-v -V
+
+
+
+### 热部署版本升级
+
+```
+kill -USR2 masterPid
+kill -WINCH masterPid 切换到新的版本，老版本的进程不会退出，方便进行版本回退
+```
+
+版本回退
+
+直接用kill -USR1来执行reload，不要用nginx -s reload，这样还是老的nginx worker起来
+
+
+
+### 日志切割
+
+```
+mv access.log bak.log 
+../sbin/nginx -s reopen
+```
+
+>  这里要用mv而不是cp，因为linux文件系统中，改名并不会影响已经打开文件的写入操作，内核inode不变，这样就不会出现丢日志了
+>
+> 如果用mv移走，其实还在写移动了目录的老文件，因为进程中的句柄没变。用reopen重新打开这个目录下的文件，因为文件已经不存在，所以会重新创建
+
+
+
+常用cronjob 处理日志切割
+
+```
+0 0 1 * * root /usr/local/openresty/nginx/logs/rotate.sh
+```
+
+
+
+rotate.sh
+
+```
+#!/bin/bash
+
+LOGS_PATH=/usr/local/openresty/nginx/logs/history
+CUR_LOGS_PATH=/usr/local/openresty/nginx/logs
+YESTERDAY=$(date -d "yesterday" +%Y-%m-%d)
+mv ${CUR_LOGS_PATH}/access.log ${LOGS_PATH}/access_${YESTERDAY}.log
+kill -USR1 $(cat /usr/local/openresty/nginx/logs/nginx.pid)
 ```
 

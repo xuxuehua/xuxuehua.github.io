@@ -66,6 +66,8 @@ Firefox浏览器驱动：[geckodriver](https://github.com/mozilla/geckodriver/re
 
 Chrome浏览器驱动：[chromedriver](https://sites.google.com/a/chromium.org/chromedriver/home) , [taobao备用地址](https://npm.taobao.org/mirrors/chromedriver)
 
+> [chrome_all_version_list](http://chromedriver.storage.googleapis.com/index.html)
+
 IE浏览器驱动：[IEDriverServer](http://selenium-release.storage.googleapis.com/index.html)
 
 Edge浏览器驱动：[MicrosoftWebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver)
