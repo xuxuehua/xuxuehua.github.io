@@ -11,7 +11,7 @@ date: 2018-10-24 16:23
 
 在 Docker 1.13+ 推荐使用 docker container 子命令来管理 Docker 容器。
 
-## run 运行容器
+## docker run 运行容器
 
 docker run 就是运行容器的命令
 
@@ -98,15 +98,19 @@ root@243c32535da7:/#
 
 * nsenter 工具在 util-linux 包2.23版本后包含
 
-#### 安装 nsenter 命令
+#### 安装 nsenter 
 
 ```
-$ cd /tmp; curl https://www.kernel.org/pub/linux/utils/util-linux/v2.24/util-linux-2.24.tar.gz | tar -zxf-; cd util-linux-2.24;
+cd /tmp && wget wget https://www.kernel.org/pub/linux/utils/util-linux/v2.24/util-linux-2.24.tar.gz && tar -xf util-linux-2.24.tar.gz && cd util-linux-2.24 && ./configure --without-ncurses && make nsenter && sudo cp nsenter /usr/local/bin  
+
+
+
+curl https://www.kernel.org/pub/linux/utils/util-linux/v2.24/util-linux-2.24.tar.gz | tar -zxf-; cd util-linux-2.24;
 $ ./configure --without-ncurses
 $ make nsenter && sudo cp nsenter /usr/local/bin
 ```
 
-#### 使用 nsenter 命令
+#### 使用 nsenter 
 
 * nsenter 启动一个新的shell进程(默认是/bin/bash), 同时会把这个新进程切换到和目标(target)进程相同的命名空间，这样就相当于进入了容器内部。
 
@@ -130,6 +134,7 @@ $ nsenter --target $pid --mount --uts --ipc --net --pid  -- /usr/bin/env \
 ```
 
 
+
 #### 完整使用nsenter的例子
 
 ```
@@ -138,11 +143,22 @@ $ docker run -idt ubuntu
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 243c32535da7        ubuntu:latest       "/bin/bash"         18 seconds ago      Up 17 seconds                           nostalgic_hypatia
-$ PID=$(docker-pid 243c32535da7)
+$ (docker inspect --format "{{ .State.Pid }}" $(docker ps  -q))
 10981
 $ sudo nsenter --target 10981 --mount --uts --ipc --net --pid
 root@243c32535da7:/#
 ```
+
+
+
+### exec 命令
+
+```
+$ sudo docker ps  
+$ sudo docker exec -it 775c7c9ee1e1 /bin/bash  
+```
+
+
 
 
 

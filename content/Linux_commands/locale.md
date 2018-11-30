@@ -9,10 +9,16 @@ date: 2018-08-21 13:42
 
 # locale 
 
+
+
+## 本地语言
+
+
+
 查看本地语言环境
 
 ```
-(env3.5.3) xhxu-mac:visibleworld xhxu$ locale
+(env3.5.3) xhxu-mac: xhxu$ locale
 LANG="en_US.UTF-8"
 LC_COLLATE="en_US.UTF-8"
 LC_CTYPE="en_US.UTF-8"
@@ -26,3 +32,31 @@ LC_ALL=
 
 
 `export LANG=en_US.UTF-8` 可以更改
+
+
+
+修改terminal 显示语言
+
+```
+[root@vps sucai]# locale -a | grep zh
+zh_CN
+zh_CN.gb18030
+zh_CN.gb2312
+zh_CN.gbk
+zh_CN.utf8
+zh_HK
+zh_HK.big5hkscs
+zh_HK.utf8
+zh_SG
+zh_SG.gb2312
+zh_SG.gbk
+zh_SG.utf8
+zh_TW
+zh_TW.big5
+zh_TW.euctw
+zh_TW.utf8
+
+[root@vps sucai]# vim /etc/locale.conf
+```
+
+

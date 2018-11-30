@@ -104,3 +104,23 @@ $ git branch -D newbranch
 
 如果想保留分支只是想删除已经合并的部分只要把大写的D改成小写的d就行了。
 
+
+
+
+
+## credential
+
+```
+git config credential.helper 'cache --timeout 1800'
+```
+
+
+
+## Git fire
+
+```
+程序员的消防演习：
+alias incaseoffire="git checkout -b $USER-emergency; git add .; git commit -m fire; git push origin $USER-emergency -f"
+
+```
+
