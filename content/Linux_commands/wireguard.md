@@ -74,6 +74,8 @@ Endpoint = 218.75.123.186:39055 # 者个部分由于内网机器没有公网IP�
 > 公网机器的ip配置成192.168.2.1。里面的PostUp，和PostDown分别来配置iptables转发规则
 >
 > 里面的ens3根据查看自己的ifconfig来修改
+>
+> AllowedIPs设置在发送时充当路由表，在接收时充当ACL。当对等方尝试将数据包发送到IP时，它将检查AllowedIPs，如果IP出现在列表中，它将通过WireGuard接口发送它。当它通过接口接收数据包时，它将再次检查AllowedIPs，如果数据包的源地址不在列表中，它将被丢弃。
 
 
 
@@ -269,5 +271,48 @@ iptables -A POSTROUTING -t nat -o eth0 -j MASQUERADE
 net.ipv4.ip_forward=1
 然后执行 
 sysctl -p
+```
+
+
+
+
+
+## example
+
+### traffic forwarding
+
+要转发所有流量，只需将客户端上的AllowedIPs行更改为：
+
+AllowedIPs = 0.0.0.0/0, ::/0
+
+这是整个客户端配置：
+
+```
+[Interface]
+Address = 192.168.2.2
+PrivateKey = <client's privatekey>
+ListenPort = 21841
+
+[Peer]
+PublicKey = <server's publickey>
+Endpoint = <server's ip>:51820
+AllowedIPs = 0.0.0.0/0, ::/0
+```
+
+　　这将使wg0接口负责路由所有IP地址（因此为0.0.0.0/0），并且应该通过服务器路由所有流量。 您可以通过加载我的IP网站之一来检查您的服务器的IP是否被检测到。
+
+完成后，运行以下命令使目录和文件只能由管理员读取（它确实包含密钥）：
+
+```
+$ sudo chown -R root:root /etc/wireguard/
+$ sudo chmod -R og-rwx /etc/wireguard/*
+```
+
+创建并保护文件后，如果操作系统使用systemd，则可以轻松设置WireGuard以在启动时初始化
+
+```
+$ sudo systemctl enable wg-quick@wg0.service
+$ sudo systemctl start wg-quick@wg0.service
+$ sudo systemctl stop wg-quick@wg0.service
 ```
 

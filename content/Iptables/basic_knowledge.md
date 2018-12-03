@@ -14,6 +14,12 @@ Linux 下的网络防火墙
 
 
 
+netfilter框架调用hooks 函数对报文进行处理
+
+iptables 是规则管理工具
+
+
+
 ## Packages
 
 ### IPV4
@@ -197,7 +203,7 @@ raw > mangle > nat > filter
 
 
 
-### FORWARDING
+### FORWARD
 
 所有转送封包都在这里处理，这部分的过滤规则最复杂。
 

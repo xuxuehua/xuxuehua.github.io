@@ -1301,3 +1301,33 @@ ITEM_PIPELINES = {
 }
 ```
 
+
+
+
+
+##### jianshu.com
+
+```
+$ scrapy startproject jianshu_spider
+cd jianshu_spider/
+$ scrapy genspider -t crawl js "jianshu.com"
+```
+
+
+
+start.py
+
+```
+from scrapy import cmdline
+
+cmdline.execute('scrapy crawl js'.split())
+```
+
+
+
+settings.py
+
+```
+
+```
+

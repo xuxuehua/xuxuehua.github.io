@@ -37,7 +37,7 @@ NAT  Network Address Translation
 访问172.16.37.10的web服务需经过192.168.1.1
 
 ```
-# iptables -t nat -APREROUTING -d 192.168.1.1 -p tcp --dport 80 -j DNAT --to-destination 172.16.37.10
+# iptables -t nat -A PREROUTING -d 192.168.1.1 -p tcp --dport 80 -j DNAT --to-destination 172.16.37.10
 ```
 
 
@@ -80,7 +80,7 @@ iptables -t nat -A POSTROUTING -s 172.16.0.0/16 -j SNAT --to-source 192.168.1.1
 -j MASQUERADE (除非外网地址是动态的，效率比SNAT要低)
 
 ```
-iptables -t nat -APOSTROUTING -s 内网网络或主机地址 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 内网网络或主机地址 -j MASQUERADE
 ```
 
 
@@ -170,3 +170,43 @@ state: 状态扩展
 
 
 
+
+
+## example 
+
+### ss relay
+
+If you want your client connected to a Japan VPS, but you want a US IP.
+
+```
+Client <--> Japan VPS <--> US VPS
+```
+
+Easy version:
+
+1. Setup Shadowsocks server as usual on US VPS.
+
+2. On Japan VPS, enable forwarding. Replace `US_VPS_IP` and `JAPAN_VPS_IP` with actual IP:
+
+   ```
+    sudo su
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+    iptables -t nat -A PREROUTING -p tcp --dport 8388 -j DNAT --to-destination US_VPS_IP:8388
+    iptables -t nat -A POSTROUTING -p tcp -d US_VPS_IP --dport 8388 -j SNAT --to-source JAPAN_VPS_IP
+   ```
+
+3. Set your server to JAPAN_VPS_IP:8388 on your client.
+
+
+
+### Azure relay
+
+```
+iptables -t nat -A PREROUTING -p tcp --dport 8388 -j DNAT --to-destination SS_VPS_IP:8388
+iptables -t nat -A PREROUTING -p udp --dport 8388 -j DNAT --to-destination SS_VPS_IP:8388
+iptables -t nat -A POSTROUTING -p tcp -d SS_VPS_IP --dport 8388 -j SNAT --to-source Azure内部 IP 地址
+iptables -t nat -A POSTROUTING -p udp -d SS_VPS_IP --dport 8388 -j SNAT --to-source Azure内部 IP 地址
+```
+
+> **Azure在外层有一层NAT**，所给虚拟机的IP虽然是公网IP，但是不是绑定在虚拟机网卡上的IP。Azure的防火墙在收到数据包后进行一次NAT，转发给内部虚拟机**。出去的数据包也经过一次NAT**，之后才进行发送。
+> 虽然在出咱虚拟机网卡的包的目标地址被正确的修改，指向了SS-vps，但是源地址是该虚拟机的外网IP（Azure叫他：公用虚拟 IP (VIP)地址），这个包在经国Azure的外围防火墙的时候被丢弃，因为认为这个包的源IP不是内部的服务器的。

@@ -140,3 +140,271 @@ div {
 
 
 
+### 清除浮动
+
+```
+clear:left/right/both/b
+```
+
+
+
+#### 常用布局案例
+
+![img](https://cdn.pbrd.co/images/HPHVFKP.png)
+
+
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body, div, p {
+            padding: 0;
+            margin: 0;
+        }
+
+        div {
+            border: 1px solid lawngreen;
+        }
+
+        .top-nav {
+            height: 100px;
+            width: 960px;
+            margin: 0 auto;
+        }
+
+        .leftbar {
+            float: left;
+            width: 200px;
+            height: 300px;
+        }
+
+        .content {
+            float: left;
+            width: 756px;
+            height: 500px;
+        }
+
+        .main {
+            width: 960px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .footer {
+            margin: 0 auto;
+            width: 960px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        top area
+    </div>
+
+    <div class="main">
+    <div class="leftbar">
+        left area
+    </div>
+    <div class="content">
+        main area
+    </div>
+    </div>
+
+    <div class="footer">
+        footer area
+    </div>
+</body>
+</html>
+```
+
+
+
+![img](https://cdn.pbrd.co/images/HPHYkrm.png)
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		body, div {
+			margin: 0;
+			padding: 0;
+		}
+
+		div {
+			border: 1px solid saddlebrown;
+		}
+
+		.head {
+			height: 100px;
+			background-color: yellow;
+		}
+		
+		.left {
+			float: left;
+			width: 200px;
+			background-color: lightblue;
+			height: 400px;
+		}
+
+		.right {
+			margin-left: 203px;
+			height: 400px;
+			background-color: red;
+		}
+
+		.footer {
+			background-color: pink;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="head">
+		head area
+	</div>
+	<div class="left">
+		left area
+	</div>
+	<div class="right">
+		right area
+	</div>
+	<div class="footer">
+		footer area
+	</div>
+	<div>
+
+	</div>
+	
+</body>
+</html>
+```
+
+
+
+![img](https://cdn.pbrd.co/images/HPItfrE.png)
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		body,div {
+			padding: 0;
+			margin: 0;
+		}
+
+		div {
+			border: 1px solid saddlebrown;
+		}
+		
+		.head {
+			height: 100px;
+			background-color: lightgreen;
+		}
+
+		.left {
+			float: left;
+			width: 100px;
+			height: 300px;
+		}
+
+		.right {
+			float: right;
+			width: 100px;
+			height: 500px
+		}
+
+		.main {
+			margin: 0 105px;
+		}
+
+		.footer {
+			clear: both;
+		}
+	</style>
+</head>
+<body>
+	<div class="head">head area</div>	
+	<div class="left">left area</div>	
+	<div class="right">right area</div>	
+	<div class="main">main area</div>	
+	<div class="footer">footer area</div>	
+</body>
+</html>
+```
+
+
+
+![img](https://cdn.pbrd.co/images/HPIywhh.png)
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		body,div {
+			padding: 0;
+			margin: 0;
+		}
+
+		div {
+			border: 1px solid saddlebrown;
+		}
+
+		.head,.footer,.center {
+			margin: 0 auto;
+			width: 960;
+		}
+
+		.left,.right,.main {
+			float: left;
+		}
+
+		.center {
+			overflow: hidden;
+		}
+
+		.left , .right{
+			width: 100px;
+			height: 400px;
+		}
+
+		.main {
+			width: 960px;
+			margin: 0 2px;
+		}
+	</style>
+</head>
+<body>
+	<div class="head">head area</div>	
+	<div class="center">
+	<div class="left">left area</div>	
+	<div class="main">main area</div>	
+	<div class="right">right area</div>	
+	</div>
+	<div class="footer">footer area</div>	
+</body>
+</html>
+```
+

@@ -15,7 +15,7 @@ date: 2018-07-26 18:34
 
 
 
-### Download the Google signing key and install it.
+Download the Google signing key and install it.
 
 ```
 wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
@@ -23,7 +23,7 @@ wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key ad
 
 
 
-### Set up Google Chrome repository.
+Set up Google Chrome repository.
 
 ```
 echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
@@ -31,7 +31,7 @@ echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/ap
 
 
 
-### Update repository index.
+Update repository index.
 
 ```
 sudo apt-get update
@@ -39,15 +39,13 @@ sudo apt-get update
 
 
 
-### Install Google Chrome using the below command.
+Install Google Chrome using the below command.
 
 ```
 apt-get -y install google-chrome-stable
 ```
 
-
-
-### **Want to try Google Chrome beta, run:**
+Want to try Google Chrome beta, run:
 
 ```
 apt-get -y install google-chrome-beta
@@ -55,9 +53,9 @@ apt-get -y install google-chrome-beta
 
 
 
-### 访问
+访问
 
-#### Command Line
+Command Line
 
 ```
 google-chrome
@@ -79,7 +77,7 @@ google-chrome-beta
 
 
 
-## Ubuntu 
+## Ubuntu 安装
 
 ```
 sudo vim /etc/apt/sources.list
@@ -111,3 +109,23 @@ sudo apt install google-chrome-beta
 
 sudo apt install google-chrome-unstable
 ```
+
+
+
+## Centos 安装
+
+```bash
+cat << EOF > /etc/yum.repos.d/google-chrome.repo
+[google-chrome]
+name=google-chrome
+baseurl=https://dl.google.com/linux/chrome/rpm/stable/$basearch
+enabled=1
+gpgcheck=1
+gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
+EOF
+```
+
+```
+yum install google-chrome-stable
+```
+
