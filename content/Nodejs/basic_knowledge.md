@@ -35,6 +35,17 @@ npm其实是Node.js的包管理工具（package manager）
 
 
 
+### proxy 配置
+
+```
+npm config set proxy http://127.0.01:8123
+npm config set https-proxy http://127.0.0.1:8123
+```
+
+
+
+
+
 ### cnpm 使用
 
 ```

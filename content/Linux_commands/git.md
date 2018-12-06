@@ -7,6 +7,37 @@ date: 2018-08-27 18:14
 
 # git
 
+
+
+## proxy
+
+可以用git config --list查看是否设置成功
+
+```
+git config --global http.proxy http://localhost:8123
+git config --global https.proxy http://localhost:8123
+```
+
+
+
+
+
+## Commands
+
+### clone 
+
+克隆分支
+
+```
+git clone -b mybranch --single-branch git://sub.domain.com/repo.git
+```
+
+
+
+
+
+
+
 ## 创建 Create
 
 ```

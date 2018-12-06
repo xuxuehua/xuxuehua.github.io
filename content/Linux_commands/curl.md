@@ -379,11 +379,7 @@ curl -u 用户名:密码 -O http://blog.51yip.com/demo/curtain/bbstudy_files/sty
 
 
 
-### -v verbose
-
-```
--v/--verbose 
-```
+### -v/--verbose  verbose
 
 可以显示一次http通信的整个过程，包括端口连接和http request头信息
 
@@ -395,29 +391,22 @@ curl -v www.sina.com
 
 
 
-### -x http代理
+### -x/--proxy  代理
 
-```
--x/--proxy <host[:port]>
-```
-
-在给定的端口上使用HTTP代理 
+在给定的端口上使用代理 
 
 
 
 ```
-curl -x 192.168.100.100:1080 http://www.linux.com 
+curl --proxy socks5://127.0.0.1:1080 ip-api.com
+curl -x socks5://127.0.0.1:1080 ip-api.com
 ```
 
 
 
 
 
-### -X 指定请求
-
-```
--X/--request <command>
-```
+### -X/--request  指定请求
 
 指定什么命令  
 
@@ -531,11 +520,29 @@ curl URL --max-filesize bytes
 
 ### --socks5
 
+DNS解析是在本地上进行的
+
 ```
 --socks5 <host[:port]> 
 ```
 
 用socks5代理给定主机和端口 
+
+```
+ curl --socks5 127.0.0.1:1080  ifconfig.co
+```
+
+
+
+### --socks5-hostname
+
+DNS解析是在proxy上进行的
+
+```
+curl --socks5-hostname 127.0.0.1:1080 https://ip.cn
+```
+
+
 
 
 
