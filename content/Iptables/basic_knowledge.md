@@ -207,6 +207,18 @@ raw > mangle > nat > filter
 
 所有转送封包都在这里处理，这部分的过滤规则最复杂。
 
+#### 核心转发
+
+```
+/proc/sys/net/ipv4/ip_forward
+/etc/sysct.conf
+net.ipv4.ip_forward=1
+```
+
+
+
+
+
 
 
 ### OUTPUT

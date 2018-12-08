@@ -14,13 +14,25 @@ NAT  Network Address Translation
 
 
 
+NAT 常用在网络层和传输层转换
+
+proxy 在应用层实现
+
+
+
+
+
 ## DNAT
 
 目标地址转换(PREROUTING) 
 
+只是修改请求报文的目标地址 
+
 主要用于发布内部服务器，让内网中的服务器在外网中可以被访问到，要定义在 PREROUTING 链
 
-端口转发和透明代理都是DNAT
+
+
+端口映射和负载均衡都是DNAT （LVS替代了iptables的负载均衡功能）
 
 
 
@@ -45,6 +57,8 @@ NAT  Network Address Translation
 ## SNAT
 
 源地址转换(POSTROUTING, OUTPUT) 
+
+只是修改请求报文的源地址
 
 主要用于实现让内网客户端访问外部主机时使用，要定义在 POSTROUTING 链，也可以在 OUTPUT 使用。
 

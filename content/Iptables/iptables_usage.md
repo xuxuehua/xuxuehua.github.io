@@ -455,8 +455,15 @@ iptables -I INPUT -d 172.16.0.9 -p tcp --dport 80 -m time --timestart 14:00 --ti
 基于连接数作限制，对每个IP能够发起的并发连接数作限制；根据每客户端IP做并发连接数匹配；
 
 ```bash
-        --connlimit-upto n：连接数数量小于等于n，此时应该允许；
-        --connlimit-above n：连接数数量大于n，此时应该拒绝；
+--connlimit-upto n：连接数数量小于等于n，此时应该允许；
+--connlimit-above n：连接数数量大于n，此时应该拒绝；
+--connlimit-mask prefix length：
+--connlimit-saddr：
+--connlimit-daddr：
+```
+
+```
+iptables -I INPUT -p tcp --dport 22 -m connlimit --connlimt-above 3 -j REJECT
 ```
 
 
@@ -464,7 +471,7 @@ iptables -I INPUT -d 172.16.0.9 -p tcp --dport 80 -m time --timestart 14:00 --ti
 当连接172.16.100.11的ssh数大于5时[包括5个]拒绝
 
 ```
-# iptables -I INPUT 2 -d 172.16.100.11 -p tcp --dport 22-m connlimit --connlimit-above 5 -j REJECT
+# iptables -I INPUT 2 -d 172.16.100.11 -p tcp --dport 22 -m connlimit --connlimit-above 5 -j REJECT
 # iptables -P INPUT ACCEPT
 ```
 
@@ -488,18 +495,29 @@ iptables -I INPUT -d 172.16.0.9 -p tcp --dport 80 -m time --timestart 14:00 --ti
 
 基于发包速率作限制
 
-```
 专用选项：令牌桶算法
---limit  n[/second|/minit|/hour|/day]   例--limit 10/minit 指明每分钟允许10个数据包
+
+```
+--limit  n[/second|/minit|/hour|/day]   
 --limit-burst n    峰值为几，即最大突发为几
 ```
 
+```
+--limit 10/minit 指明每分钟允许10个数据包
+```
+
+
+
+```
+iptables -A INPUT -d 172.16.0.1 -p icmp --icmp-type 8 -m limit --limit 30/minute -j ACCEPT
+```
+
 
 
 
 
 ```
-# iptables -A INPUT -p icmp --icmp-type 8-m limit --limit 6/m --limit-burst 5 -j ACCEPT
+# iptables -A INPUT -p icmp --icmp-type 8 -m limit --limit 6/m --limit-burst 5 -j ACCEPT
 # iptables -P INPUT DROP
 ```
 
@@ -515,33 +533,143 @@ iptables -I INPUT -d 172.16.0.9 -p tcp --dport 80 -m time --timestart 14:00 --ti
 
 状态检测；连接追踪机制（conntrack）；
 
-​      启用连接追踪模板记录连接，并根据连接匹配连接状态的扩展；启用连接追踪功能之前：简单包过滤防火墙；启用连接追踪功能：带状态监测的包过滤防火墙；
+调整连接追踪功能能够容纳的最大连接数量（需要单独提高）
 
-​      连接追踪模板，用于记录各连接及相关状态；基于IP实现，与是否为TCP协议无关；通过倒计时的方式删除条目；记录连接的状态有：
+```
+/proc/sys/net/nf_conntrack_max 最大追踪的链接
+```
 
-​        INVALID：无法识别的状态； 
+已经追踪到并记录下的追踪信息
 
-​        ESTABLISHED：已建立的连接；NEW 状态之后，边距追踪模板中的条目删除之前所进行通信过程，都称为ESTABLISHED；
+```
+/proc/net/nf_conntrack
+```
 
-​        NEW：新建立的连接，连接追踪模板中无相应的条目时，客户端第一次发出的请求； 
+不同协议或者连接类型的时长
 
-​        RELATED：相关联的连接，如ftp协议的命令连接与数据连接即为相关联的连接；
+```
+/proc/sys/net/netfilter/
+```
 
-​        UNTRACKED：未追踪的连接；
+
+
+
+
+
+
+启用连接追踪模板记录连接，并根据连接匹配连接状态的扩展；
+
+连接追踪模板，用于记录各连接及相关状态；基于IP实现，与是否为TCP协议无关；通过倒计时的方式删除条目；记录连接的状态有
+
+```
+NEW：新发出的请求，连接追踪模版中不存在此连接相关的信息条目，因此，将其识别为第一次发出的请求 
+ESTABLISHED：NEW 状态之后，连接追踪模板中为其建立的条目在失效之前期间内所进行的通信状态
+RELATED：相关的连接，如ftp协议的命令连接与数据连接即为相关联的连接；
+UNTRACKED：未追踪的连接；
+INVALID：无法识别的状态； 
+```
 
 ```bash
-        [!] --state STATE
+[!] --state STATE
 ```
 
 
 
 
 
-放行OUTPUT已建立连接的ssh服务
+放行icmp，22， 80 连接
 
 ```
-# iptables -A OUTPUT -p tcp -sport 22-m --state ESTABLISHED -j ACCEPT
+iptables -I INPUT -d 172.16.0.1 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -I OUTPUT -s 172.16.0.1 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
 ```
+
+```
+iptables -I INPUT -d 172.16.0.1 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -I OUTPUT -s 172.16.0.1 -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
+```
+
+```
+iptables -I INPUT -d 172.16.0.1 -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -I OUTPUT -s 172.16.0.1 -p icmp --icmp-type 0 -m state --state ESBTALISHED -j ACCEPT
+```
+
+
+
+规则优化，即已连接的数据包进行放行
+
+```
+iptables -I INPUT -m state --state ESTABLISHED -m ACCEPT
+iptables -I OUTPUT -m state --state ESTABLISHED -j ACCEPT
+```
+
+单独对22，80等端口的建立进行检查
+
+```
+iptables -I INPUT 2 -d 172.16.0.1 -p tcp -m multiport --dports 22,80 -m state --state NEW -j ACCEPT
+```
+
+
+
+
+
+开放被动模式的ftp服务
+
+1. 装载ftp专用模块
+
+```
+# ls -l /lib/modules/4.15.1-1.el7.elrepo.x86_64/kernel/net/netfilter/nf_conntrack_ftp.ko
+-rwxr--r--. 1 root root 27472 Feb  4  2018 /lib/modules/4.15.1-1.el7.elrepo.x86_64/kernel/net/netfilter/nf_conntrack_ftp.ko
+
+# modinfo nf_conntrack_ftp.ko
+filename:       /lib/modules/4.15.1-1.el7.elrepo.x86_64/kernel/net/netfilter/nf_conntrack_ftp.ko
+alias:          nfct-helper-ftp
+alias:          ip_conntrack_ftp
+description:    ftp connection tracking helper
+author:         Rusty Russell <rusty@rustcorp.com.au>
+license:        GPL
+srcversion:     F7866B81ED3FB7B77825505
+depends:        nf_conntrack
+intree:         Y
+name:           nf_conntrack_ftp
+vermagic:       4.15.1-1.el7.elrepo.x86_64 SMP mod_unload modversions
+parm:           ports:array of ushort
+parm:           loose:bool
+
+# modprobe nf_conntrack_ftp
+
+#  lsmod | grep ftp
+nf_conntrack_ftp       20480  0
+nf_conntrack          135168  9 nf_conntrack_ipv6,nf_conntrack_ftp,nf_conntrack_ipv4,ipt_MASQUERADE,nf_nat_ipv6,nf_nat_masquerade_ipv4,xt_conntrack,nf_nat_ipv4,nf_nat
+
+```
+
+
+
+2. 放行请求报文
+
+命令连接： NEW ESTABLISHED
+
+数据连接：RELATED  ESTABLISHED
+
+```
+iptables -A INPUT -d local_ip -p tcp --dport 21 -m state --state NEW,ESTABLISHED -m ACCEPT
+iptables -A INPUT -d local_ip -p tcp -m state --state RELATED,ESTABLISHED -m ACCEPT
+```
+
+
+
+3. 放行响应报文
+
+```
+iptables -A OUTPUT -s local_ip -p tcp -m state --state ESTABLISHED -j ACCEPT
+```
+
+
+
+
+
+
 
 
 
