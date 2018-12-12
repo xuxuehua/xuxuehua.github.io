@@ -11,7 +11,7 @@ date: 2018-09-05 15:44
 
 
 
-## -t 
+## -t 类型
 
 类型 dsa | ecdsa | ed25519 | rsa
 
@@ -30,3 +30,32 @@ bit 位长度
 ```
 ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
 ```
+
+
+
+## -N 新建 passphrase
+
+清空passphrase
+
+```
+ssh-keygen -t rsa -N '' -f test_rsa_key
+```
+
+
+
+## -p 修改passphrase
+
+```
+ssh-keygen -p -f keyfile
+```
+
+
+
+
+
+## -f 指定key 文件
+
+```
+ssh-keygen -p -f keyfile
+```
+

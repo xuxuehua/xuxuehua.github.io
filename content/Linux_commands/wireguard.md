@@ -21,6 +21,14 @@ sudo apt-get install wireguard -y
 
 
 
+## CentOS
+
+```
+sudo curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo && 
+sudo yum -y install epel-release && 
+sudo yum -y install wireguard-dkms wireguard-tools
+```
+
 
 
 ## 部署
@@ -314,5 +322,47 @@ $ sudo chmod -R og-rwx /etc/wireguard/*
 $ sudo systemctl enable wg-quick@wg0.service
 $ sudo systemctl start wg-quick@wg0.service
 $ sudo systemctl stop wg-quick@wg0.service
+```
+
+
+
+### server
+
+```
+[Interface]
+Address = 10.0.0.1/24
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+ListenPort = 51820
+PrivateKey = server_private_key
+
+[Peer]
+
+PublicKey = client_public_key
+AllowedIPs = 10.0.2.0/24
+```
+
+```
+wg-quick down wg0 && wg-quick up wg0
+
+GCE mtu 1420 
+```
+
+
+
+### client
+
+```
+[Interface]
+PrivateKey = client_private_key
+ListenPort = 51820
+DNS = 8.8.8.8 
+Address = 10.0.2.1/24
+
+[Peer]
+PublicKey = server_public_key
+AllowedIPs = 0.0.0.0/0
+Endpoint = 208.73.201.156:51820
+PersistentKeepalive = 25
 ```
 
