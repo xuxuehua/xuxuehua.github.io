@@ -13,7 +13,41 @@ jenkins是一个广泛用于持续构建的可视化web工具，持续构建说�
 
 
 
+## requirements
+
+```
+256 MB RAM
+1GB space
+
+Java 8
+Java Runtime Environment or Java Development Kit
+```
+
+Docker Hardware
+
+```
+1GB RAM
+10GB space
+```
+
+
+
 ## 安装
+
+### docker
+
+```
+docker pull jenkins/jenkins:lts
+docker run --detach --publish 8080:8080: --volumn jenkins_home:/var/jenkins_home --name jenkins jenkins/jenkins:lts
+
+docker exec jenkins cat /var/jenkins_home/secrets?initialAdminPassword
+```
+
+
+
+
+
+
 
 ### Ubuntu 
 
@@ -23,25 +57,94 @@ The Web application ARchive (WAR) file version of Jenkins can be installed on an
 
 ```
 apt install default-jre
-wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+sudo apt-get install openjdk-8-jdk
+sudo update-alternatives --config java (set to java 8)
 
-java -jar jenkins.war
+wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+```
+
+```
+[Unit]
+Description=Jenkins Daemon
+
+[Service]
+ExecStart=/usr/bin/java -jar /home/jenkins_user/jenkins.war
+User=jenkins_user
+
+[Install]
+WantedBy=multi-user.target
+```
+
+
+
+/etc/systemd/system/jenkins.service
+
+```
+[Unit]
+Description=Jenkins Daemon
+
+[Service]
+ExecStart=/usr/bin/java -jar /home/jenkins_user/jenkins.war
+User=jenkins_user
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```
+systemctl start jenkins.service     
+systemctl stop jenkins.service
+systemctl restart jenkins.service
+systemctl enable jenkins.service                                      
+systemctl disable jenkins.service 
 ```
 
 Browse to `http://localhost:8080` and wait until the **Unlock Jenkins** page appears
 
 
 
+
+
 ## Plugins
 
+### Email extension & Extended E-mail Notification
 
-![img](https://images2015.cnblogs.com/blog/27612/201601/27612-20160118095859045-743552984.png)
+```
+smtp.163.com
+username
+password  #这里是163的授权码
+smtp port 25 
+```
 
-![img](https://images2015.cnblogs.com/blog/27612/201601/27612-20160118193702109-1177684936.png)
-
-![img](https://images2015.cnblogs.com/blog/27612/201601/27612-20160118223147422-362207840.png)
 
 
 
 
+### Role-based Authorization Strategy (用户权限)
+
+Installed and then go to "Configure Global Security"
+
+```
+Authorization -> Role-Based Strategy -> Apply -> Save
+```
+
+
+
+Go to 'Manage and Assign Roles'
+
+
+
+## 自动部署
+
+
+
+
+
+## Pipline 
+
+Jenkins 上的工作流程框架，将原本独立运行于单个或者多个节点的任务连接起来，实现单个任务难以完成的复杂流程编排与可视化
+
+
+
+### 语法
 

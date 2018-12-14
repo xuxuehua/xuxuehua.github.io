@@ -22,9 +22,86 @@ stat [OPTION]... FILE...
 
 ## Options
 
+### -L, --dereference
+
+follow links
+
+### -Z, --context
+
+ print the SELinux security context
+
+### -f, --file-system
+
+display file system status instead of file status
 
 
 
+```
+$stat -f /dev/
+  File: "/dev/"
+    ID: 0        Namelen: 255     Type: tmpfs
+Block size: 4096       Fundamental block size: 4096
+Blocks: Total: 124777     Free: 124738     Available: 124738
+Inodes: Total: 124777     Free: 124220
+```
+
+
+
+### -c  --format=FORMAT
+
+use the specified FORMAT instead of the default; output a newline after each use of FORMAT
+
+主要有以下几个：
+
+```
+%A：用文件权限代码来表示权限
+%a：用数字代码来表示权限
+%F：用八进制表示文件权限
+%G：文件拥有者的组名 
+%g：文件拥有者的属组id(gid) 
+%i：inode编号 
+%n：文件名 
+%s：文件大小 
+%U：文件拥有者名称 
+%u：文件拥有者的id(uid) 
+%x: 取用时间
+%y: 修改时间
+%z: 属性改动时间
+```
+
+
+
+
+
+```
+$stat -c "Access time is %x" file_new 
+Access time is 2016-12-31 22:34:50.000000000 +0800
+```
+
+
+
+### --printf=FORMAT
+
+ like  --format,  but  interpret backslash escapes, and do not output a mandatory trailing newline.  If you
+​              want a newline, include \n in FORMAT.
+
+### -t, --terse
+
+print the information in terse form
+
+​       
+
+### --help display this help and exit
+
+​      
+
+### --version
+
+output version information and exit
+
+
+
+# example
 
 
 
