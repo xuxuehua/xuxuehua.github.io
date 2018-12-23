@@ -333,7 +333,37 @@ Out[67]: '/bin/sh'
 
 ## 字符串修改
 
-(字符串是不可修改的，这里是返回一个新的字符串
+(字符串是不可修改的，这里是返回一个新的字符串)
+
+### replace 
+
+负数操作会替换所有
+
+```python
+In [146]: s 
+Out[146]: 'I love Python'
+
+In [147]: s.replace('o', 'x')
+Out[147]: 'I lxve Pythxn'
+
+In [148]: s.replace('o', 'x', 1)
+Out[148]: 'I lxve Python'
+
+In [149]: s.replace('o', 'x', -1)
+Out[149]: 'I lxve Pythxn'
+```
+
+
+
+```
+In [2]: s                                                                                                                                             
+Out[2]: 'I love Python'
+
+In [3]: s.replace('love', 'hate').replace('Python', 'C#')                                                                                             
+Out[3]: 'I hate C#'π
+```
+
+
 
 ### capitalize
 
@@ -605,24 +635,6 @@ Out[5]: -1
 
 
 
-
-### replace 
-
-负数操作会替换所有
-
-```python
-In [146]: s 
-Out[146]: 'I love Python'
-
-In [147]: s.replace('o', 'x')
-Out[147]: 'I lxve Pythxn'
-
-In [148]: s.replace('o', 'x', 1)
-Out[148]: 'I lxve Python'
-
-In [149]: s.replace('o', 'x', -1)
-Out[149]: 'I lxve Pythxn'
-```
 
 
 

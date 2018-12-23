@@ -26,9 +26,13 @@ stat [OPTION]... FILE...
 
 follow links
 
+
+
 ### -Z, --context
 
  print the SELinux security context
+
+
 
 ### -f, --file-system
 
@@ -91,7 +95,7 @@ print the information in terse form
 
 ​       
 
-### --help display this help and exit
+### --help 
 
 ​      
 

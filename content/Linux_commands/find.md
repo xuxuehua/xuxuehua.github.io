@@ -15,7 +15,29 @@ date: 2018-10-10 11:44
 
 ## Options
 
-### ！ 否定参数
+### 逻辑判断
+
+
+
+#### -a 与操作
+
+
+
+#### -o 或操作
+
+当前目录及子目录下查找所有以 `.txt` 或 `.pdf` 结尾的文件
+
+```
+find . \( -name "*.txt" -o -name "*.pdf" \)
+
+或
+
+find . -name "*.txt" -o -name "*.pdf" 
+```
+
+
+
+#### ！否定
 
 找出/home下不是以.txt结尾的文件
 
@@ -358,20 +380,6 @@ find . -type f -newer file.log
 
 
 
-### -o 和操作
-
-当前目录及子目录下查找所有以.txt和.pdf结尾的文件
-
-```
-find . \( -name "*.txt" -o -name "*.pdf" \)
-
-或
-
-find . -name "*.txt" -o -name "*.pdf" 
-```
-
-
-
 
 ### -ok 执行指令
 
@@ -547,32 +555,6 @@ find . -type f -group sunk
 ### -xtype<文件类型>
 
 此参数的效果和指定“-type”参数类似，差别在于它针对符号连接检查
-
-
-
-
-
-## -path 目录
-
-
-
-
-
-
-
-
-
-atime=access time
-
-
-
-mtime=modifiy time
-
-
-
-ctime=change time
-
-
 
 
 
