@@ -6,8 +6,32 @@ date: 2018-10-22 03:20
 
 [TOC]
 
-
 # 目录
+
+
+
+## /etc
+
+### /etc/sysconfig
+
+修改hostname
+
+```
+修改/etc/sysconfig/network中的：
+
+HOSTNAME
+
+比如改成机器的IP：
+NETWORKING=yes
+HOSTNAME=10.20.150.92
+
+GATEWAY=10.20.150.254
+
+
+
+改完后运行/etc/rc.d/rc.sysinit
+最后输入密码退出，不会重启，这个时候hostname 就修改完毕了
+```
 
 
 
@@ -186,7 +210,13 @@ Root　链接此进程的root目录
 
 
 
+#### /proc/sys/kernel
 
+修改hostname
+
+```
+sudo echo [my_host_name] > /proc/sys/kernel/hostname
+```
 
 
 

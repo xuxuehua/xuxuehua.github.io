@@ -74,6 +74,8 @@ chattr [-RVf] [mode]  [file]
 
 即append，设定该参数后，只能向文件中添加数据，而不能删除，多用于服务器日志文件安全，只有root才能设定这个属性。
 
+如果是登录文件，就更需要 +a参数，使之可以增加但不能修改与删除原有的数据。
+
 
 
 ### A access time
@@ -123,6 +125,18 @@ extent format
 ### i 锁定所有权限
 
 immutable，作用很大。它可以让一个文件“不能被删除、改名、设置连接，也无法写入或新增数据”。对于系统安全性有相当大的帮助
+
+因为它可以让一个文件无法被更改，对于需要很高系统安全性的人来说，相当重要。
+
+
+
+```
+[root@linuxtmp]# touch attrtest
+[root@linuxtmp]# chattr +i attrtest
+[root@linuxtmp]# rm attrtest
+rm: remove write-protected regular empty file `attrtest'? y
+rm: cannot remove `attrtest': Operation not permitted
+```
 
 
 

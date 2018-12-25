@@ -28,9 +28,16 @@ date: 2018-10-24 16:35
 
 ### push 到docker hub
 
-先打标签
+容器制成镜像
 
 ```
+docker commit <exiting-Container> <hub-user>/<repo-name>[:<tag>]
+```
+
+若以存在镜像，打上标签
+
+```
+docker tag <existing-image> <hub-user>/<repo-name>[:<tag>]
 docker tag 26ac9649d7da wdxtub/wdx-whale:latest
 ```
 
