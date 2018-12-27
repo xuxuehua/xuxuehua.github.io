@@ -101,3 +101,29 @@ Why did Jane cook John's wallet?
     A recent case concerns Jane Butlin whose fiancé, John, runs a successful furniture business. John had very good day and put his wallet containing $3,000 into the microwave oven for safekeeping. Then he and Jane went horse-riding. When they got home, Jane cooked their dinner in the microwave oven and without realizing it, cooked her fiancé's wallet as well. Imagine their dismay when they found a beautifully-cooked wallet and notes turned to ash! John went to see his bank manager who sent the remains of wallet and the money to the special department of the Bank of England in Newcastle: the Mutilate Ladies! They examined the remain and John got all his money back. 'So long as there's something to identify, we will give people their money back,' said a spokeswoman for the Bank. 'Last year, we paid $1.5m on 21,000 claims. 
 ```
 
+
+
+
+
+## A famous monastery
+
+```
+Listen to the tape then answer the question below.
+What are the St. Bernard dogs used for?
+
+    The Great St. Bernard Pass connects Switzerland to Italy. At 2,473 metres, it is the highest mountain pass in Europe. The famous monastery of St. Bernard, which was founded in eleventh century, lies about a mile away. For hundreds of years, St. Bernard dogs have saved the lives of travellers crossing the dangerous Pass. These friendly dogs, which were first brought from Asia, were used as watchdogs even in Roman times. Now that a tunnel has been built through the mountains, the Pass is less dangerous, but each year, the dogs are still sent out into the snow whenever a traveller is in difficulty. Despite the new tunnel, there are still a few people who rashly attempt to cross the Pass on foot.
+    During the summer months, the monastery is very busy, for it is visited by thousands of people who cross the Pass in cars. As there are so many people about, the dogs have to be kept in a special enclosure. In winter, however, life at the monastery is quite different. The temperature drops to -30 and very few people attempt to cross the Pass. The monks prefer winter to summer of they have more privacy. The dogs have greater freedom, too, for they are allowed to wander outside their enclosure. The only regular visitors to the monastery in winter are parties of skiers who go there at Christmas and Easter. These young people, who love the peace of mountains, always receive a warm welcome at St. Bernard's monastery.
+```
+
+
+
+## Flying cats
+
+```
+Listen to the tape then answer the question below.
+How do cats try to protect themselves when falling from great heights?
+
+    Cats never fail to fascinate human beings. They can be friendly and affectionate towards humans, but they lead mysterious lives of their own as well. They never become submissive like dogs and horses. As a result, humans have learned to respect feline independence. Most cats remain suspicious of humans all their lives. One of the things that fascinates us most about cats is the popular belief that they have nine lives. Apparently, there is a good deal of truth in this idea. A cat's ability to survive falls is based on fact.
+    Recently the New York Animal Medical Center made a study of 132 cats over a period of five months. All these cats had one experience in common: they had fallen off high buildings, yet only eight of them died from shock or injuries. Of course, New York is the ideal place for such an interesting study, because there is no shortage of tall buildings. There are plenty of high-rise windowsills to fall from! One cat, Sabrina, fell 32 storeys, yet only suffered from a broken tooth. 'Cats behave like well-trained paratroopers.' a doctor said. It seems that the further cats fall, the less they are likely to injure themselves. In a long drop, they reach speeds of 60 miles an hour and more. At high speeds, falling cats have time to relax. They stretch out their legs like flying squirrels. This increases their air-resistance and reduces the shock of impact when they hit the ground.
+```
+
