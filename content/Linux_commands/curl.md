@@ -211,6 +211,21 @@ curl --header "Content-Type:application/json" http://example.com
 
 
 
+分段下载
+
+```
+curl  --header "Range: bytes=0-20000" http://s0.cyberciti.org/images/misc/static/2012/11/ifdata-welcome-0.png -o part1
+curl  --header "Range: bytes=20001-36907" http://s0.cyberciti.org/images/misc/static/2012/11/ifdata-welcome-0.png -o part2
+cat part1 part2 >> test1.png
+gnome-open test1.png
+```
+
+> 获取Range结果使用 `curl I + url`
+
+
+
+
+
 ### -i/--include  显示头信息 及页面
 
  
@@ -229,11 +244,35 @@ curl -i www.sina.com
 
 只显示http response的头信息
 
+用于查看资源的HTTP 头部
+
 ```
-curl -I www.sina.com
+curl -I http://s0.cyberciti.org/images/misc/static/2012/11/ifdata-welcome-0.png
+```
+
+```
+HTTP/1.1 301 Moved Permanently
+Date: Sat, 29 Dec 2018 10:37:49 GMT
+Connection: keep-alive
+Cache-Control: max-age=3600
+Expires: Sat, 29 Dec 2018 11:37:49 GMT
+Location: https://s0.cyberciti.org/images/misc/static/2012/11/ifdata-welcome-0.png
+X-Content-Type-Options: nosniff
+Server: cloudflare
+CF-RAY: 490ba22e118b2e15-NRT
 ```
 
 
+
+#### 断点续传
+
+当请求资源时，如果服务器返回如下响应头
+
+```
+accept-ranges=bytes 
+```
+
+表明服务器支持bytes类型得数据断点续传。**如果为空或者none，可能不支持断点续传**。
 
 
 

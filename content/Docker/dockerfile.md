@@ -11,6 +11,62 @@ date: 2018-10-24 16:12
 
 ## Dockerfile 指令
 
+### FROM
+
+在Dockerfile中第一条非注释INSTRUCTION一定是`FROM`，它决定了以哪一个镜像作为基准，`<image>`首选本地是否存在，如果不存在则会从公共仓库下载（当然也可以使用私有仓库的格式）
+
+```
+FROM  <image>
+或
+FROM <image>:<tag>
+```
+
+
+
+### RUN 指令安装
+
+构建指令，RUN可以运行任何被基础image支持的命令。如基础image选择了ubuntu，那么软件管理部分只能使用ubuntu的命令。
+
+- RUN命令将在当前image中执行任意合法命令并提交执行结果。命令执行提交后，就会自动执行Dockerfile中的下一个指令。
+- 层级 RUN 指令和生成提交是符合Docker核心理念的做法。它允许像版本控制那样，在任意一个点，对image 镜像进行定制化构建。
+- RUN 指令缓存不会在下个命令执行时自动失效。比如 RUN apt-get dist-upgrade -y 的缓存就可能被用于下一个指令. --no-cache 标志可以被用于强制取消缓存使用。
+
+
+
+`CMD`与`RUN`的区别在于，`RUN`是在`build`成镜像时就运行的，先于`CMD`和`ENTRYPOINT`的，`CMD`会在每次启动容器的时候运行，而`RUN`只在创建镜像时执行一次，固化在image中。
+
+```
+RUN <commnad>
+或
+RUN ["executable", "param1", "param2"]
+```
+
+
+
+#### shell 格式
+
+shell格式，相当于执行`/bin/sh -c "<command>"`：
+
+```
+RUN apt-get install vim -y
+```
+
+
+
+#### exec 格式
+
+exec格式，不会触发shell，所以`$HOME`这样的环境变量无法使用，但它可以在没有`bash`的镜像中执行，而且可以避免错误的解析命令字符串：
+
+```
+RUN ["apt-get", "install", "vim", "-y"]
+或
+RUN ["/bin/bash", "-c", "apt-get install vim -y"]  与shell风格相同
+```
+
+
+
+
+
 ### COPY 复制文件
 
 复制本地主机的src文件为container的dest
@@ -20,44 +76,43 @@ COPY <源路径>... <目标路径>
 COPY ["<源路径1>",... "<目标路径>"]
 ```
 
+Same as ‘ADD’ but without the tar and remote url handling.
 
-
-```
-COPY package.json /usr/src/app/
-```
-
-<源路径> 可以是多个，甚至可以是通配符，其通配符规则要满足 Go 的 filepath.Match 规则，
-
-```
-COPY hom* /mydir/
-COPY hom?.txt /mydir/
-```
+`COPY`的语法与功能与`ADD`相同，只是不支持上面讲到的`<src>`是远程URL、自动解压这两个特性，但是[Best Practices for Writing Dockerfiles](https://docs.docker.com/articles/dockerfile_best-practices/)建议**尽量使用COPY**，并使用`RUN`与`COPY`的组合来代替`ADD`，这是因为虽然`COPY`只支持本地文件拷贝到container，但它的处理比`ADD`更加透明，建议只在复制tar文件时使用`ADD`，如`ADD trusty-core-amd64.tar.gz /`。
 
 
 
 ### ADD (仅用于需要自动解压缩的场合)
 
-从src复制文件到container的dest路径
+```
+ADD <src>... <dest>
+```
+
+将文件`<src>`拷贝到container的文件系统对应的路径`<dest>`下。
+
+> `<src>`可以是文件、文件夹、URL，对于文件和文件夹`<src>`必须是在Dockerfile的相对路径下（build context path），即只能是相对路径且不能包含`../path/`。
+> `<dest>`只能是容器中的绝对路径。如果路径不存在则会自动级联创建，根据你的需要是`<dest>`里是否需要反斜杠`/`，习惯使用`/`结尾从而避免被当成文件。
+
+
 
 构建指令，所有拷贝到container中的文件和文件夹权限为0755，uid和gid为0；如果是一个目录，那么会将该目录下的所有文件添加到container中，不包括目录
 
-```
-ADD <src> <dest>
-```
 
-> <src> 是相对被构建的源目录的相对路径，可以是文件或目录的路径，也可以是一个远程的文件url;
->
-> <dest> 是container中的绝对路径
-
-如果 <源路径> 为一个 tar 压缩文件的话，压缩格式为 gzip, bzip2 以及 xz 的情况下，ADD 指令将会自动解压缩这个压缩文件到 <目标路径> 去
 
 ```
-FROM scratch
-ADD ubuntu-xenial-core-cloudimg-amd64-root.tar.gz /
-...
+支持模糊匹配
+ADD hom* /mydir/        # adds all files starting with "hom"
+ADD hom?.txt /mydir/    # ? is replaced with any single character
+
+ADD requirements.txt /tmp/
+RUN pip install /tmp/requirements.txt
+ADD . /tmp/
 ```
 
-需要注意的是，ADD 指令会令镜像构建缓存失效，从而可能会令镜像构建变得比较缓慢。
+另外`ADD`支持远程URL获取文件，但官方认为是`strongly discouraged`，建议使用`wget`或`curl`代替。
+`ADD`还支持自动解压tar文件，比如`ADD trusty-core-amd64.tar.gz /`会线自动解压内容再COPY到在容器的`/`目录下。
+
+ADD只有在build镜像的时候运行一次，后面运行container的时候不会再重新加载，也就是你不能在运行时通过这种方式向容器中传送文件，`-v`选项映射本地到容器的目录。
 
 
 
@@ -73,21 +128,6 @@ MAINTAINER <name>
 
 
 
-### RUN 指令安装
-
-构建指令，RUN可以运行任何被基础image支持的命令。如基础image选择了ubuntu，那么软件管理部分只能使用ubuntu的命令。
-
-- RUN命令将在当前image中执行任意合法命令并提交执行结果。命令执行提交后，就会自动执行Dockerfile中的下一个指令。
-- 层级 RUN 指令和生成提交是符合Docker核心理念的做法。它允许像版本控制那样，在任意一个点，对image 镜像进行定制化构建。
-- RUN 指令缓存不会在下个命令执行时自动失效。比如 RUN apt-get dist-upgrade -y 的缓存就可能被用于下一个指令. --no-cache 标志可以被用于强制取消缓存使用。
-
-
-
-```
-RUN <command> (the command is run in a shell - /bin/sh -c)
-RUN ["executable", "param1", "param2" ... ] (exec form)
-```
-
 
 
 
@@ -96,9 +136,19 @@ RUN ["executable", "param1", "param2" ... ] (exec form)
 
 用于container启动时指定的操作。该操作可以是执行自定义脚本，也可以是执行系统命令。该指令只能在文件中存在一次，如果有多个，则只执行最后一条。
 
+
+
+CMD 可在 Dockerfile 中配置，在启动容器时会被  `docker run <image>` 后的参数覆盖
+
+CMD 的 exec 格式中，第一个元素是 shell 的 `$0`, 其余元素是 shell 的 `$@`。当 ENTRYPOINT 中用 shell 格式或显式的 sh(bash等)就可以引用 `$0`, `$@`
+
+
+
 #### shell 格式
 
-`CMD <命令>`
+```
+CMD command param1 param2  (shell格式)
+```
 
 
 
@@ -106,7 +156,25 @@ RUN ["executable", "param1", "param2" ... ] (exec form)
 
 推荐使用 exec 格式，这类格式在解析时会被解析为 JSON 数组
 
-`CMD ["可执行文件", "参数1", "参数2"...]`
+```
+CMD ["executable","param1","param2"]  （数组/exec格式）
+CMD ["param1","param2"]  (as default parameters to ENTRYPOINT)
+```
+
+
+
+```
+Dockerfile:
+    CMD ["echo CMD_args"]
+运行
+    docker run <image> echo run_arg
+结果
+    输出 run_arg
+```
+
+>  因为`echo run_arg`覆盖了`CMD`。如果`run`后没有`echo run_arg`，则输出`CMD_args`。
+
+
 
 
 
@@ -120,38 +188,83 @@ RUN ["executable", "param1", "param2" ... ] (exec form)
 
 ### ENTRYPOINT 入口点
 
-ENTRYPOINT 的目的和 CMD 一样，都是在指定容器启动程序及参数。需要通过 docker run 的参数 --entrypoint 来指定。
-当指定了 ENTRYPOINT 后，CMD 的含义就发生了改变，不再是直接的运行其命令，而是将 CMD 的内容作为参数传给 ENTRYPOINT 指令，
+ENTRYPOINT 的目的和 CMD 一样，都是在指定容器启动程序及参数。
+
+当然可以在`run`时使用`--entrypoint`来覆盖`ENTRYPOINT`指令。
 
 
 
-设置指令，指定容器启动时执行的命令，可以多次设置，但是只有最后一个有效。
+#### exec 格式
+
+ENTRYPOINT 和 CMD 合并前需转换为 exec 格式(用 `docker inspect <image>` 查看)，合并后(相当于数组) 第一个元素是命令，其他都为参数
+
+
 
 ```
-ENTRYPOINT ["executable", "param1", "param2"] (like an exec, the preferred form)
+Dockerfile:
+    ENTRYPOINT ["echo", "ENTRYPOINT_args"]
+运行
+    docker run <image> run_arg
+结果
+    输出 ENTRYPOINT_args run_arg
 ```
 
-```
-ENTRYPOINT command param1 param2 (as a shell)
-```
+> 因为`echo run_arg`追加到`ENTRYPOIINT`的`echo`后面了。如果在`ENTRYPOINT`后再加入一行`CMD ["CMD_args"]`，则结果依旧，除非去掉run后的所有参数。
+> 当出现`ENTRYPOINT`指令时`CMD`指令只可能(当`ENTRYPOINT`指令使用exec方式执行时)被当做`ENTRYPOINT`指令的参数使用，其他情况则会被忽略。
 
 
 
-当独自使用时，如果你还使用了CMD命令且CMD是一个完整的可执行的命令，那么CMD指令和ENTRYPOINT会互相覆盖只有最后一个CMD或者ENTRYPOINT有效。
+
+
+#### docker run 操作
+
+定义了 ENTRYPOINT, CMD 由 docker run 提供
 
 ```
-# CMD指令将不会被执行，只有ENTRYPOINT指令被执行  
-CMD echo “Hello, World!”  
-ENTRYPOINT ls -l  
+ENTRYPOINT  ["echo", "hello"]
 ```
 
-另一种用法和CMD指令配合使用来指定ENTRYPOINT的默认参数，这时CMD指令不是一个完整的可执行命令，仅仅是参数部分；ENTRYPOINT指令只能使用JSON方式指定执行命令，而不能指定参数。
+> 执行命令 docker run <image> rm -rf /, 实际入口是由 ["echo", "hello"] 与 ["rm", "-rf", "/"] 拼接而成的 ["echo", "hello", "rm", "-rf", "/"], 输出为 hello rm -rf /
+
+ENTRYPOINT 同样可以被覆盖，如 docker run --entrypoint ls test -l /，将会执行 ls -l / 命令。
+
+
+
+
+
+#### shell 格式
+
+使用shell格式，`ENTRYPOINT`相当于执行`/bin/sh -c <command..>`，这种格式会忽略`docker run`和`CMD`的所有参数。
+
+另一方面 CMD 或 `docker run <image>` 的输入第一个元素存成了 `$0`，其他剩余元素存为 `$@`, 所以 shell 格式的 ENTRYPOINT 可以这么写
 
 ```
-FROM ubuntu  
-CMD ["-l"]  
-ENTRYPOINT ["/usr/bin/ls"]  
+ENTRYPOINT echo hello $0 $@
 ```
+
+注：shell 中 `$0` 表示命令本身，`$@` 为所有参数
+
+这样执行下面 docker 命令将可获得所有的参数输入
+
+```
+$ docker run test world and China
+hello world and China
+```
+
+如果只是按常规 shell 脚本来对待，想当然的写成
+
+```
+ENTRYPOINT echo hello $@
+```
+
+效果将是
+
+```
+$ docker run test world and China
+hello and China
+```
+
+第一个参数将被丢失，`docker run <image>` 后第一个输入通常是一个命令，所以是 `$0`, 而 ENTRYPOINT 又希望它是一个普通参数，因此`$0 $@` 要同时写上。
 
 
 
@@ -163,33 +276,54 @@ ENV设置的环境变量，可以使用docker inspect命令来查看。同时还
 
 
 
-`ENV <key> <value>`
+```
+ENV <key> <value>
+```
+
+设置了后，后续的RUN命令都可以使用，当运行生成的镜像时这些环境变量依然有效，如果需要在运行时更改这些环境变量可以在运行`docker run`时添加`--env <key>=<value>`参数来修改。
 
 
 
 ```
-ENV NODE_VERSION 7.2.0
-
-RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
-  && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
-  && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
-  && grep " node-v$NODE_VERSION-linux-x64.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
-  && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
-  && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
-  && ln -s /usr/local/bin/node /usr/local/bin/nodejs
+$ docker run -e MYVAR1 --env MYVAR2=foo --env-file ./env.list ubuntu bash
 ```
 
-```
-ENV JAVA_HOME /path/to/java/dirent
-```
+Use the `-e`, `--env`, and `--env-file` flags to set simple (non-array) environment variables in the container you’re running, or overwrite variables that are defined in the Dockerfile of the image you’re running.
 
-
-
-`ENV <key1>=<value1> <key2>=<value2>...`
+You can define the variable and its value when running the container:
 
 ```
-ENV VERSION=1.0 DEBUG=on \
-    NAME="Happy Feet"
+$ docker run --env VAR1=value1 --env VAR2=value2 ubuntu env | grep VAR
+VAR1=value1
+VAR2=value2
+```
+
+You can also use variables that you’ve exported to your local environment:
+
+```
+export VAR1=value1
+export VAR2=value2
+
+$ docker run --env VAR1 --env VAR2 ubuntu env | grep VAR
+VAR1=value1
+VAR2=value2
+```
+
+When running the command, the Docker CLI client checks the value the variable has in your local environment and passes it to the container. If no `=` is provided and that variable is not exported in your local environment, the variable won’t be set in the container.
+
+You can also load the environment variables from a file. This file should use the syntax `<variable>=value` (which sets the variable to the given value) or `<variable>` (which takes the value from the local environment), and `#` for comments.
+
+```
+$ cat env.list
+# This is a comment
+VAR1=value1
+VAR2=value2
+USER
+
+$ docker run --env-file env.list ubuntu env | grep VAR
+VAR1=value1
+VAR2=value2
+USER=denis
 ```
 
 
@@ -249,7 +383,18 @@ docker run -t -i -rm -volumes-from container1 image2 bash
 
 `EXPOSE <端口1> [<端口2>...]`
 
-EXPOSE 指令是声明运行时容器提供服务端口，这只是一个声明，在运行时并不会因为这个声明应用就会开启这个端口的服务。在 Dockerfile 中写入这样的声明有两个好处，一个是帮助镜像使用者理解这个镜像服务的守护端口，以方便配置映射；另一个用处则是在运行时使用随机端口映射时，也就是 docker run -P 时，会自动随机映射 EXPOSE 的端口。
+EXPOSE 指令是声明运行时容器提供服务端口，这只是一个声明，在运行时并不会因为这个声明应用就会开启这个端口的服务。
+
+
+
+`EXPOSE`指令告诉容器在运行时要监听的端口，但是这个端口是用于多个容器之间通信用的（links），外面的host是访问不到的。要把端口暴露给外面的主机，在启动容器时使用`-p`选项。
+
+```
+# expose memcached(s) port
+EXPOSE 11211 11212
+```
+
+
 
 要将 EXPOSE 和在运行时使用 -p <宿主端口>:<容器端口> 区分开来。-p，是映射宿主端口和容器端口，换句话说，就是将容器的对应端口服务公开给外界访问，而 EXPOSE 仅仅是声明容器打算使用什么端口而已，并不会自动在宿主进行端口映射。
 
@@ -292,14 +437,7 @@ RUN echo "hello" > world.txt
 
 
 
-```
-# 在 /p1/p2 下执行 vim a.txt  
-WORKDIR /p1 
-WORKDIR p2 
-RUN vim a.txt  
-```
-
-
+`WORKDIR指`令用于设置`Dockerfile`中的`RUN`、`CMD`和`ENTRYPOINT`指令执行命令的工作目录(默认为`/`目录)，该指令在`Dockerfile`文件中可以出现多次，如果使用相对路径则为相对于`WORKDIR`上一次的值，例如`WORKDIR /a`，`WORKDIR b`，`RUN pwd`最终输出的当前目录是`/a/b`。（`RUN cd /a/b`，`RUN pwd`是得不到`/a/b`的）
 
 
 
@@ -384,21 +522,57 @@ $ docker inspect --format '{{json .State.Health}}' web | python -m json.tool
 
 ### ONBUILD 在子镜像中执行
 
-ONBUILD 指定的命令在构建镜像时并不执行，而是在它的子镜像中执行
-
-ONBUILD 是一个特殊的指令，它后面跟的是其它指令，比如 RUN, COPY 等，而这些指令，在当前镜像构建时并不会被执行。只有当以当前镜像为基础镜像，去构建下一级镜像的时候才会被执行。
+`ONBUILD`指令用来设置一些触发的指令，用于在当该镜像被作为基础镜像来创建其他镜像时(也就是`Dockerfile`中的`FROM`为当前镜像时)执行一些操作，`ONBUILD中`定义的指令会在用于生成其他镜像的`Dockerfile`文件的`FROM`指令之后被执行，上述介绍的任何一个指令都可以用于`ONBUILD`指令，可以用来执行一些因为环境而变化的操作，使镜像更加通用。
 
 
+
+1. ONBUILD中定义的指令在当前镜像的build中不会被执行。
+2. 可以通过查看`docker inspect <image>`命令执行结果的OnBuild键来查看某个镜像ONBUILD指令定义的内容。
+3. ONBUILD中定义的指令会当做引用该镜像的Dockerfile文件的FROM指令的一部分来执行，执行顺序会按ONBUILD定义的先后顺序执行，如果ONBUILD中定义的任何一个指令运行失败，则会使FROM指令中断并导致整个build失败，当所有的ONBUILD中定义的指令成功完成后，会按正常顺序继续执行build。
+4. ONBUILD中定义的指令不会继承到当前引用的镜像中，也就是当引用ONBUILD的镜像创建完成后将会清除所有引用的ONBUILD指令。
+5. ONBUILD指令不允许嵌套，例如`ONBUILD ONBUILD ADD . /data`是不允许的。
+6. ONBUILD指令不会执行其定义的FROM或MAINTAINER指令。
+
+例如，`Dockerfile`使用如下的内容创建了镜像 image-A ：
 
 ```
-ONBUILD <Dockerfile关键字>
+[...]
+ONBUILD ADD . /app/src
+ONBUILD RUN /usr/local/bin/python-build --dir /app/src
+[...]
 ```
 
 
 
+如果基于 image-A 创建新的镜像时，新的`Dockerfile`中使用`FROM image-A`指定基础镜像时，会自动执行`ONBUILD`指令内容，等价于在后面添加了两条指令。
+
+```
+FROM image-A
+
+#Automatically run the following
+ADD . /app/src
+RUN /usr/local/bin/python-build --dir /app/src
+```
 
 
-### 应用运行前的准备工作
+
+### .dockerignore 文件
+
+`.dockerignore`用来忽略上下文目录中包含的一些image用不到的文件，它们不会传送到docker daemon。规则使用go语言的匹配语法。如：
+
+```
+$ cat .dockerignore
+.git
+tmp*
+```
+
+
+
+更多内容参考[Dockerfile最佳实践](http://seanlook.com/2014/12/20/dockerfile_best_practice1)系列。官方有个[Dockerfile tutorial](http://seanlook.com/2014/11/17/dockerfile-introduction/%E6%A0%BC%E5%BC%8F)练习Dockerfile的写法，非常简单但对于养成良好的格式、注释有一些帮助。
+
+
+
+## 应用运行前的准备工作
 
 准备工作是和容器 CMD 无关的，无论 CMD 为什么，都需要事先进行一个预处理的工作。这种情况下，可以写一个脚本，然后放入 ENTRYPOINT 中去执行，而这个脚本会将接到的参数（也就是 <CMD>）作为命令，在脚本最后执行。比如官方镜像 redis 中就是这么做的：
 
@@ -416,6 +590,69 @@ CMD [ "redis-server" ]
 
 
 ## example
+
+### mysql 构建过程
+
+下面的`Dockerfile`是MySQL官方镜像的构建过程。从ubuntu基础镜像开始构建，安装mysql-server、配置权限、映射目录和端口，`CMD`在从这个镜像运行到容器时启动mysql。其中`VOLUME`定义的两个可挂载点，用于在host中挂载，因为数据库保存在主机上而非容器中才是比较安全的。
+
+```
+#
+# MySQL Dockerfile
+#
+# https://github.com/dockerfile/mysql
+#
+
+# Pull base image.
+FROM dockerfile/ubuntu
+
+# Install MySQL.
+RUN \
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server && \
+  rm -rf /var/lib/apt/lists/* && \
+  sed -i 's/^\(bind-address\s.*\)/# \1/' /etc/mysql/my.cnf && \
+  sed -i 's/^\(log_error\s.*\)/# \1/' /etc/mysql/my.cnf && \
+  echo "mysqld_safe &" > /tmp/config && \
+  echo "mysqladmin --silent --wait=30 ping || exit 1" >> /tmp/config && \
+  echo "mysql -e 'GRANT ALL PRIVILEGES ON *.* TO \"root\"@\"%\" WITH GRANT OPTION;'" >> /tmp/config && \
+  bash /tmp/config && \
+  rm -f /tmp/config
+
+# Define mountable directories.
+VOLUME ["/etc/mysql", "/var/lib/mysql"]
+
+# Define working directory.
+WORKDIR /data
+
+# Define default command.
+CMD ["mysqld_safe"]
+
+# Expose ports.
+EXPOSE 3306
+```
+
+使用：
+
+```
+$ docker build -t="dockerfile/mysql" github.com/dockerfile/mysql
+
+或下载Dockerfile内容再当前目录：
+$ docker build -t="dockerfile/mysql" .
+```
+
+
+
+（提示，上述第一条命令，如果你的host不可以连接Docker Hub，那么需要在启动docker服务时使用`HTTP_PROXY=`——用于build的时更新下载软件，同时执行`docker build`的终端设置`http_proxy`和`https_proxy`用于下载Dockerfile）
+
+运行：
+
+```
+$ docker run -d --name mysql -p 3306:3306 dockerfile/mysql
+或
+$ docker run -it --rm --link mysql:mysql dockerfile/mysql bash -c 'mysql -h $MYSQL_PORT_3306_TCP_ADDR'
+```
+
+
 
 ### 让镜像变成像命令一样使用
 

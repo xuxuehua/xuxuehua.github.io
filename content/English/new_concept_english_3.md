@@ -127,3 +127,50 @@ How do cats try to protect themselves when falling from great heights?
     Recently the New York Animal Medical Center made a study of 132 cats over a period of five months. All these cats had one experience in common: they had fallen off high buildings, yet only eight of them died from shock or injuries. Of course, New York is the ideal place for such an interesting study, because there is no shortage of tall buildings. There are plenty of high-rise windowsills to fall from! One cat, Sabrina, fell 32 storeys, yet only suffered from a broken tooth. 'Cats behave like well-trained paratroopers.' a doctor said. It seems that the further cats fall, the less they are likely to injure themselves. In a long drop, they reach speeds of 60 miles an hour and more. At high speeds, falling cats have time to relax. They stretch out their legs like flying squirrels. This increases their air-resistance and reduces the shock of impact when they hit the ground.
 ```
 
+
+
+## The loss of the Titanic
+
+```
+Listen to the tape then answer the question below.
+What would have happened if only two of the sixteen water-tight compartments had been flooded?
+
+    The great ship, Titanic, sailed for New York from Southampton on April 10th, 1912. She was carrying 1,316 passengers and crew of 891. Even by modern standards, the 46,000 ton Titanic was a colossal ship. At the time, however, she was not only the largest ship that had ever been built, but was regarded as unsinkable, for she had sixteen watertight compartments. Even if two of these were flooded, she would still be able to float. The tragic sinking of this great liner will always be remembered, for she went down on her first voyage with heavy loss of life.
+    Four days after setting out, while the Titanic was sailing across the icy water of the North Atlantic, a huge iceberg was suddenly spotted by a lookout. After the alarm had been given, the great ship turned sharply to avoid a direct collision. The Titanic turned just in time, narrowly missing the immense wall of ice which rose over 100 feet out of the water beside her. Suddenly, there was a slight trembling sound from below, and the captain went down to see what had happened. The noise had been so faint that no one though that the ship had been damaged. Below, the captain realized to his horror that the Titanic was sinking rapidly, for five of her sixteen watertight compartments had already been flooded! The order to abandon ship was given and hundreds of people plunged into the icy water. As there were not enough lifeboats for everybody, 1,500 lives were lost.
+```
+
+
+
+## Not guilty
+
+```
+Listen to the tape then answer the question below.
+What was the Customs Officer looking for?
+
+    Customs Officers are quite tolerant these days, but they can still stop you when you are going through the Green Channel and have nothing to declare. Even really honest people are often made to feel guilty. The hardened professional smuggler, on the other hand, is never troubled by such feelings, even if he has five hundred gold watches hidden in his suitcase. When I returned from abroad recently, a particularly officious young Customs Officer clearly regarded me as a smuggler.
+    'Have you anything to declare?' he asked, looking me in the eye.
+    'No', I answered confidently.
+    'Would you mind unlocking this suitcase please?'
+    'Not at all,' I answered.
+    The Officer went through the case with great care. All the thing I had packed so carefully were soon in a dreadful mess. I felt sure I would never be able to close the case again. Suddenly, I saw the Officer's face light up. He had spotted a tiny bottle at the bottom of my case and he pounced on it with delight.
+    'Perfume, eh?' he asked sarcastically. 'You should have declared that. Perfume is not exempt from import duty.'
+    'But it isn't perfume,' I said. 'It's hair gel.' Then I added with a smile, 'It's a strange mixture I make myself.'
+    As I expected, he did not believe me.
+    'Try it!' I said encouragingly.
+    The officer unscrewed the cap and put the bottle to his nostrils. He was greeted by an unpleasant smell which convinced him that I was telling the truth. A few minutes later, I was able to hurry away with precious chalk marks on my baggage.
+```
+
+
+
+
+
+```
+Life on a desert island
+
+Listen to the tape then answer the question below.
+What was exceptional about the two men's stay on the desert island?
+
+    Most of us have formed an unrealistic picture of life on a desert island. We sometimes imagine a desert island to be a sort of paradise where the sun always shines. Life there is simple and good. Ripe fruit falls from the trees and you never have to work. The other side of the picture is quite the opposite. Life on a desert island is wretched. You either starve to death or live like Robinson Crusoe, waiting for a boat which never comes. Perhaps there is an element of truth in both these pictures, but few us have had the opportunity to find out.
+    Two men who recently spent five days on a coral island wished they had stayed there longer. They were taking a badly damaged boat from the Virgin Islands to Miami to have it repaired. During the journey, their boat began to sink. They quickly loaded a small rubber dinghy with food, matches, and cans of beer and rowed for a few miles across the Caribbean until they arrived at a tiny coral island. There were hardly any trees on the island and there was no water, but this did not prove to be a problem. The men collected rainwater in the rubber dinghy. As they had brought a spear gun with them, they had plenty to eat. They caught lobster and fish every day，and, as one of them put it 'ate like kings'. When a passing tanker rescued them five days later, both men were genuinely sorry that they had to leave.
+```
+

@@ -76,6 +76,8 @@ nginx-1.15.5
 
 ```
 elinks http://nginx.org/en/download.html
+curl -O 'http://nginx.org/download/nginx-1.14.1.tar.gz'
+
 tar -xzf nginx-1.14.1.tar.gz
 ```
 
