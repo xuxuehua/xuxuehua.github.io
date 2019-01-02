@@ -34,12 +34,16 @@ date: 2018-10-24 16:35
 docker commit <exiting-Container> <hub-user>/<repo-name>[:<tag>]
 ```
 
+
+
 若以存在镜像，打上标签
 
 ```
 docker tag <existing-image> <hub-user>/<repo-name>[:<tag>]
 docker tag 26ac9649d7da wdxtub/wdx-whale:latest
 ```
+
+
 
 然后再 docker images 一次
 
@@ -56,6 +60,7 @@ docker login --username=yourhubusername --email=youremail@company.com
 push
 
 ```
+docker push <hub-user>/<repo-name>
 docker push wdxtub/wdx-whale
 ```
 

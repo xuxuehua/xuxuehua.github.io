@@ -162,15 +162,53 @@ What was the Customs Officer looking for?
 
 
 
-
+## Life on a desert island
 
 ```
-Life on a desert island
-
 Listen to the tape then answer the question below.
 What was exceptional about the two men's stay on the desert island?
 
     Most of us have formed an unrealistic picture of life on a desert island. We sometimes imagine a desert island to be a sort of paradise where the sun always shines. Life there is simple and good. Ripe fruit falls from the trees and you never have to work. The other side of the picture is quite the opposite. Life on a desert island is wretched. You either starve to death or live like Robinson Crusoe, waiting for a boat which never comes. Perhaps there is an element of truth in both these pictures, but few us have had the opportunity to find out.
     Two men who recently spent five days on a coral island wished they had stayed there longer. They were taking a badly damaged boat from the Virgin Islands to Miami to have it repaired. During the journey, their boat began to sink. They quickly loaded a small rubber dinghy with food, matches, and cans of beer and rowed for a few miles across the Caribbean until they arrived at a tiny coral island. There were hardly any trees on the island and there was no water, but this did not prove to be a problem. The men collected rainwater in the rubber dinghy. As they had brought a spear gun with them, they had plenty to eat. They caught lobster and fish every day，and, as one of them put it 'ate like kings'. When a passing tanker rescued them five days later, both men were genuinely sorry that they had to leave.
+```
+
+
+
+
+
+## "It's only me'"
+
+```
+Listen to the tape then answer the question below.
+What did the man expect to find under the stairs?
+
+    After her husband had gone to work. Mrs. Richards sent her children to school and went upstairs to her bedroom. She was too excited to do any housework that morning, for in the evening she would be going to a fancy-dress party with her husband. She intended to dress up as a ghost and as she had made her costume the night before, she was impatient to try it on. Though the costume consisted only of a sheet, it was very effective. After putting it on, Mrs. Richards went downstairs. She wanted to find out whether it would be comfortable to wear.
+    Just as Mrs. Richards was entering the dinning room, there was a knock on the front door. She knew that it must be the baker. She had told him to come straight in if ever she failed to open the door and to leave the bread on the kitchen table. Not wanting to frighten the poor man, Mrs. Richards quickly hid in the small storeroom under the stairs. She heard the front door open and heavy footsteps in the hall. Suddenly the door of the storeroom was opened and a man entered. Mrs. Richards realized that it must be the man from the Electricity Board who had come to read the meter. She tried to explain the situation, saying "It's only me", but it was too late. The man let out cry and jumped back several paces. When Mrs. Richards walked towards him, he fled, slamming the door behind him.
+```
+
+
+
+
+
+## A noble gangster
+
+```
+Listen to the tape then answer the question below.
+How did Hawkwood make money in times of peace?
+
+    There was a time when the owners of shops and businesses in Chicago had to pay large sums of money to gangsters in return for 'protection.' If the money was not paid promptly, the gangsters would quickly put a man out of business by destroying his shop. Obtaining 'protection money' is not a modern crime. As long ago as the fourteenth century, an Englishman, Sir John Hawkwood, made the remarkable discovery that people would rather pay large sums of money than have their life work destroyed by gangsters.
+    Six hundred years ago, Sir John Hawkwood arrived in Italy with a band of soldiers and settled near Florence. He soon made a name for himself and came to be known to the Italians as Giovanni Acuto. Whenever the Italian city-states were at war with each other, Hawkwood used to hire his soldiers to princes who were willing to pay the high price he demanded. In times of peace, when business was bad, Hawkwood and his men would march into a city-state and, after burning down a few farms, would offer to go away if protection money was paid to them. Hawkwood made large sums of money in this way. In spite of this, the Italians regarded him as a sort of hero. When he died at the age of eighty, the Florentines gave him a state funeral and had a pictured with as dedicated to the memory of 'the most valiant soldier and most notable leader, Signor Giovanni Haukodue.'
+```
+
+
+
+## Fifty pence worth of trouble
+
+```
+Listen to the tape then answer the question below.
+Did George get anything for his fifty pence? What?
+    
+    Children always appreciate small gifts of money. Mum or dad, of course, provide a regular supply of pocket money, but uncles and ants are always a source of extra income. With some children, small sums go a long way. If fifty pence pieces are not exchanged for sweets, they rattle for months inside money boxes. Only very thrifty children manage to fill up a money box. For most of them, fifty pence is a small price to pay for a nice big bar of chocolate.
+    My nephew, George, has a money box but it is always empty. Very few of the fifty pence pieces and pound coins I have given him have found their way there. I gave him fifty pence yesterday and advised him to save it. Instead he bought himself fifty pence worth of trouble. On his way to the sweet shop, he dropped his fifty pence and it bounced along the pavement and then disappeared down a drain. George took off his jacket, rolled up his sleeves and pushed is right arm through the drain cover. He could not find his fifty pence piece anywhere, and what is more, he could no get his arm out. A crowd of people gathered round him and a lady rubbed his arm with soap and butter, but George was firmly stuck. The fire brigade was called and two fire fighter freed George using a special type of grease. George was not too upset by his experience because the lady who owns the sweet shop heard about his troubles and rewarded him with large box of chocolates.
 ```
 

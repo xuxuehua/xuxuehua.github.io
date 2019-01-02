@@ -284,3 +284,71 @@ mv ${CUR_LOGS_PATH}/access.log ${LOGS_PATH}/access_${YESTERDAY}.log
 kill -USR1 $(cat /usr/local/openresty/nginx/logs/nginx.pid)
 ```
 
+
+
+## 进程结构
+
+### Master Process
+
+Master Process 用于管理Worker Processes， Worker Processes 用于响应请求
+
+
+
+所以会将CPU核数配置成Worker Processes 数量，或者绑定到指定的核上
+
+
+
+### Worker processes
+
+
+
+### Cache manager
+
+
+
+### ngnix 信号
+
+#### master 进程
+
+通过CHLD 监控worker 进程， 当worker进程崩溃，可以被重新拉起
+
+
+
+通过接受以下信号管理worker进程
+
+```
+TERM	立刻停止进程
+INT  	立刻停止进程
+QUIT	优雅停止进程
+HUP		重载配置文件	
+USR1	重新打开日志文件，做日志文件切割
+USR2	做热部署时使用
+WINCH	做热部署时使用
+```
+
+
+
+#### worker 进程
+
+接受信号处理worker进程
+
+```
+TERM	立刻停止进程
+QUIT	优雅停止进程
+USR1	重新打开日志文件，做日志文件切割
+WINCH	做热部署时使用
+```
+
+
+
+#### nginx 命令行
+
+读取pid文件信息，可发送以下信号
+
+```
+reload	->	HUP
+reopen	-> 	USR1
+stop	-> 	TERM
+quit	-> 	QUIT
+```
+
