@@ -9,6 +9,16 @@ date: 2018-08-27 18:18
 
 
 
+## Basic development tools
+
+```
+apt-get install build-essential && \
+apt install libpcre* && \ 
+apt install libz*
+```
+
+
+
 ## Ubuntu Chinese Setup
 
 *A Quick Start Guide toChinese Setup, Input Methods, Fonts, and Other Features inUbuntu 18.04 (Bionic Beaver) and the new GNOME*
@@ -278,5 +288,34 @@ fi
 #if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 #    . /etc/bash_completion
 #fi
+```
+
+
+
+## Desktop 
+
+```
+apt install tasksel
+
+# tasksel --list-tasks
+u manual        Manual package selection
+u lubuntu-live  Lubuntu live CD
+u ubuntu-gnome-live     Ubuntu GNOME live CD
+u ubuntu-live   Ubuntu live CD
+u ubuntu-mate-live      Ubuntu MATE Live CD
+u ubuntustudio-dvd-live Ubuntu Studio live DVD
+u ubuntustudio-live     Ubuntu Studio live CD
+u xubuntu-live  Xubuntu live CD
+i cloud-image   Ubuntu Cloud Image (instance)
+u dns-server    DNS server
+u lamp-server   LAMP server
+u mail-server   Mail server
+u postgresql-server     PostgreSQL database
+u samba-server  Samba file server
+u ubuntu-desktop        Ubuntu desktop
+u ubuntu-usb    Ubuntu desktop USB
+u virt-host     Virtual Machine host
+i openssh-server        OpenSSH server
+i server        Basic Ubuntu server
 ```
 

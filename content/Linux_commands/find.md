@@ -9,7 +9,11 @@ date: 2018-10-10 11:44
 
 # find
 
+## Usage
 
+```
+find [-H] [-L] [-P] [-Olevel] [-D help|tree|search|stat|rates|opt|exec] [path...] [expression]
+```
 
 
 
@@ -235,7 +239,7 @@ find . -path "./sk" -prune -o -name "*.txt" -print
 查找符合指定之群组名称的文件或目录
 
 
-### -help或——help
+### -help或--help
 
 在线帮助
 

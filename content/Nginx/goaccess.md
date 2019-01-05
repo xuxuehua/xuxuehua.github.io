@@ -21,7 +21,10 @@ https://goaccess.io
 ### Debian/Ubuntu
 
 ```
-apt-get install goaccess
+echo "deb http://deb.goaccess.io/ $(lsb_release -cs) main" | sudo tee -a && \ /etc/apt/sources.list.d/goaccess.list && \
+wget -O - https://deb.goaccess.io/gnugpg.key | sudo apt-key add - && \
+sudo apt-get update && \
+sudo apt-get install goaccess
 ```
 
 
@@ -76,6 +79,14 @@ goaccess logs/access.log  -o html/report.html --real-time-html --time-format='%H
 
 ### systemd
 
+#### Centos
+
+```
+/usr/lib/systemd/system/goaccess.service
+```
+
+
+
 ```
 [Unit]
 Description= goaccess
@@ -87,6 +98,37 @@ Type=simple
 User=root
 Group=root
 ExecStart=/bin/goaccess /var/log/httpd/access_log  -o /var/www/html/report.html --real-time-html --time-format='%H:%M:%S' --date-format='%d/%b/%Y' --log-format=COMBINED
+ExecReload=/bin/kill -HUP ${MAINPID}
+KillSignal=SIGINT
+TimeoutSec=30
+Restart=on-failure
+RestartSec=1
+
+
+
+[Install]
+WantedBy = multi-user.target
+```
+
+
+
+#### Ubuntu
+
+```
+/lib/systemd/system/goaccess.service
+```
+
+```
+[Unit]
+Description= goaccess
+After=network.target
+
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/bin/goaccess /usr/local/nginx/logs/access.log  -o /usr/local/nginx/html/report.html --real-time-html --time-format='%H:%M:%S' --date-format='%d/%b/%Y' --log-format=COMBINED
 ExecReload=/bin/kill -HUP ${MAINPID}
 KillSignal=SIGINT
 TimeoutSec=30

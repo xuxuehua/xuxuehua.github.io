@@ -376,3 +376,89 @@ mysql -uroot -p123456 -h 127.0.0.1 -P3306
 
 
 
+# 并发控制
+
+## 锁控制
+
+### 读锁
+
+共享锁
+
+
+
+### 写锁
+
+独占锁
+
+
+
+## 锁粒度
+
+
+
+
+
+### 表级锁
+
+用户可以显示请求， 但不建议手动显示请求施加写操作
+
+
+
+### 行级锁
+
+
+
+### 锁策略
+
+在锁粒度及数据安全性寻求的平衡机制
+
+每种存储引擎都可以自行实现其锁策略和锁粒度
+
+MySQL在服务器级也实现了锁
+
+
+
+#### 方法一
+
+语法
+
+```
+LOCK TABLES tbl_name [[AS] alias] lock_type [, tbl_name [[AS] alias] lock_type]
+```
+
+```
+UNLOCK TABLES
+```
+
+
+
+* lock_type
+
+```
+READ [LOCAL] | [LOW_PRIORITY] WRITE
+```
+
+
+
+```
+LOCK TABLES students READ;
+UNLOCK TABLES;
+LOCK TABLES students WRITE;
+```
+
+
+
+#### 方法二
+
+```
+FLUSH TABLES tb_name[,...] [WITH READ LOCK]
+```
+
+
+
+#### 方法三
+
+```
+SELECT class [FOR UPDATE] [WITH READ LOCK]
+```
+

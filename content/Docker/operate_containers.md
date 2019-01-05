@@ -52,6 +52,18 @@ $ docker run -d ubuntu:14.04 /bin/sh -c "while true; do echo hello world; sleep 
 
 
 
+### -v volumn 
+
+指定本地卷信息
+
+默认容器对这个目录有可读写权限，可以通过指定ro，将权限改为只读（readonly）
+
+```
+docker run --name some-nginx -p 80:80 -v /some/content:/usr/share/nginx/html:ro -d nginx
+```
+
+
+
 ### --rm 容器退出后删除
 
 这个参数是说容器退出后随之将其删除。默认情况下，为了排障需求，退出的容器并不会立即删除，除非手动 docker rm。我们这里只是随便执行个命令，看看结果，不需要排障和保留结果，因此使用 --rm 可以避免浪费空间。

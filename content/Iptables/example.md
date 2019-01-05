@@ -87,10 +87,10 @@ iptables -A FORWARD -i eth0 -o eth1 -j ACCEPT
 开放172.16.37.1对本机172.16.37.10的ping响应，和ping请求；注：若默认INPUT/OUPUT为DROP，请求和响应同时开启才能ping通
 
 ```
-# iptables -A INPUT -s 172.16.37.1 -d 172.16.37.10 -p icmp --icmp-type 8 -j ACCEPT
-# iptables -A OUTPUT -s 172.16.37.10 -d 172.16.37.1 -p icmp --icmp-type 0 -j ACCEPT
-# iptables -P INPUT DROP
-# iptables -P OUTPUT DROP
+iptables -A INPUT -s 172.16.37.1 -d 172.16.37.10 -p icmp --icmp-type 8 -j ACCEPT
+iptables -A OUTPUT -s 172.16.37.10 -d 172.16.37.1 -p icmp --icmp-type 0 -j ACCEPT
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
 ```
 
 
@@ -171,10 +171,10 @@ iptables -A INPUT -i eth0 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCE
 本机IP172.16.37.10，仅允许172.16.37.1访问sshd服务
 
 ```
-# iptables -A INPUT -s 172.16.37.1 -d 172.16.37.10 -p tcp --dport 22 -j ACCEPT
-# iptables -A OUTPUT -s 172.16.37.10 -d 172.16.37.1 -p tcp --sport 22 -j ACCEPT
-# iptables -P INPUTDROP
-# iptables -P OUTPUTDROP
+iptables -A INPUT -s 172.16.37.1 -d 172.16.37.10 -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -s 172.16.37.10 -d 172.16.37.1 -p tcp --sport 22 -j ACCEPT
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
 ```
 
 
@@ -233,10 +233,10 @@ iptables -A OUTPUT -o eth0 -p tcp --sport 80 -m state --state ESTABLISHED -j ACC
 本机IP172.16.37.10，允许172.16.37.1访问httpd服务
 
 ```
-# iptables -A INPUT -s 172.16.37.1 -d 172.16.37.10 -ptcp --dport 80 -j ACCEPT
-# iptables -A OUTPUT -s 172.16.37.10 -d 172.16.37.1 -ptcp --sport 80 -j ACCEPT
-# iptables -P INPUT DROP
-# iptables -P OUTPUT DROP
+iptables -A INPUT -s 172.16.37.1 -d 172.16.37.10 -p tcp --dport 80 -j ACCEPT
+iptables -A OUTPUT -s 172.16.37.10 -d 172.16.37.1 -p tcp --sport 80 -j ACCEPT
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
 ```
 
 

@@ -254,4 +254,3 @@ mysql> SHOW VARIABLES LIKE 'sql_mo%';
 中继日志
 
 
-

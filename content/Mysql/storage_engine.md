@@ -170,4 +170,39 @@ dynamic, fixed, compressed, compact, redundent
 
 
 
-## MariaDB
+## MariaDB还支持的
+
+### OQGraph
+
+
+
+### SphinxSE
+
+可以全文搜索，常用于企业内部的搜索引擎
+
+
+
+### TokuDB
+
+可以存储大量数据
+
+
+
+### Cassandra
+
+NoSQL的一种
+
+
+
+### CONNECT
+
+
+
+### SQUENCE
+
+
+
+
+
+
+

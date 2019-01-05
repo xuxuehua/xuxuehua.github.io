@@ -352,3 +352,10 @@ stop	-> 	TERM
 quit	-> 	QUIT
 ```
 
+
+
+
+
+## epoll
+
+select和poll最大的问题是，每次都需要传递全部并发fd，而实际只有少量fd有数据需要处理，所以效率低下。而epoll通过epoll_ctl和epoll_wait分解了这个问题，效率大幅提高。

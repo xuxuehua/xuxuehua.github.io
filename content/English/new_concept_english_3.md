@@ -212,3 +212,43 @@ Did George get anything for his fifty pence? What?
     My nephew, George, has a money box but it is always empty. Very few of the fifty pence pieces and pound coins I have given him have found their way there. I gave him fifty pence yesterday and advised him to save it. Instead he bought himself fifty pence worth of trouble. On his way to the sweet shop, he dropped his fifty pence and it bounced along the pavement and then disappeared down a drain. George took off his jacket, rolled up his sleeves and pushed is right arm through the drain cover. He could not find his fifty pence piece anywhere, and what is more, he could no get his arm out. A crowd of people gathered round him and a lady rubbed his arm with soap and butter, but George was firmly stuck. The fire brigade was called and two fire fighter freed George using a special type of grease. George was not too upset by his experience because the lady who owns the sweet shop heard about his troubles and rewarded him with large box of chocolates.
 ```
 
+
+
+## Mary had a little lamb
+
+```
+Listen to the tape then answer the question below.
+Was Dimitri right to apologize to his neighbour? Why not?
+
+　　Mary and her husband Dimitri lived in the tiny village of Perachora in southern Greece. One of Mary's prize possessions was a little white lamb which her husband had given her. She kept it tied to a tree in a field during the day and went to fetch it every evening. One evening, however, the lamb was missing. The rope had been cut, so it was obvious that the lamb had been stolen.
+　　When Dimitri came in from the fields, his wife told him what had happened. Dimitri at once set out to find the thief. He knew it would not prove difficult in such a small village. After telling several of his friends about the theft, Dimitri found out that his neighbour, Aleko, had suddenly acquired a new lamb. Dimitri immediately went to Aleko's house and angrily accused him of stealing the lamb. He told him he had better return it or he would call the police. Aleko denied taking it and led Dimitri into his backyard. It was true that he had just bought a lamb, he explained, but his lamb was black. Ashamed of having acted so rashly, Dimitri apologized to Aleko for having accused him. While they were talking it began to rain and Dimitri stayed in Aleko's house until the rain stopped. When he went outside half an hour later, he was astonished to find that the little black lamb was almost white. Its wool, which had been dyed black, had been washed clean by the rain!
+```
+
+
+
+
+
+## The longest suspension bridge in the world
+
+```
+Listen to the tape then answer the question below.
+How is the bridge supported?
+
+    Verrazano, an Italian about whom little is known, sailed into New York Harbour in 1524 and named it Angouleme. He described it as 'a very agreeable situation located within two small hills in the midst of which flowed a great river.' Though Verrazano is by no means considered to be a great explorer, his name will probably remain immortal, for on November 21st, 1964, the longest suspension bridge in the world was named after him.
+    The Verrazano Bridge, which was designed by Othmar Ammann, joins Brooklyn to Staten Island. It has a span of 4,260 feet. The bridge is so long that the shape of the earth had to be taken into account by its designer. Two great towers support four huge cables. The towers are built on immense underwater platforms make of steel and concrete. The platforms extend to a depth of over 100 feet under the sea. These alone took sixteen months to build. Above the surface of the water, the towers rise to a height of nearly 700 feet. They support the cables from which the bridge has been suspended. Each of the four cables contains 26,108 lengths of wire. It has been estimated that if the bridge were packed with cars, it would still only be carrying a third of its total capacity. However, size and strength are not the only important things about this bridge. Despite its immensity, it is both simple and elegant, fulfilling its designer's dream to create 'an enormous object drawn as faintly as possible'.
+```
+
+
+
+
+
+```
+Electric currents in modern art 
+
+Listen to the tape then answer the question below.
+How might some of the exhibits have been dangerous?
+
+    Modern sculpture rarely surprises us any more. The idea that modern art can only be seen in museums is mistaken. Even people who take no interest in art cannot have failed to notice examples of modern sculpture on display in public places. Strange forms stand in gardens, and outside buildings and shops. We have got quite used to them. Some so-called 'modern' pieces have been on display for nearly eighty years.
+    In spite of this, some people -- including myself -- were surprise by a recent exhibition of modern sculpture. The first thing I saw when I entered the art gallery was a notice which said: 'Do not touch the exhibits. Some of them are dangerous!' The objects on display were pieces of moving sculpture. Oddly shaped forms that are suspended from the ceiling and move in response to a gust of wind are quite familiar to everybody. These objects, however, were different. Lined up against the wall, there were long thin wires attached to metal spheres. The spheres had been magnetized and attracted or repelled each other all the time. In the centre of the hall, there were a number of tall structures which contained coloured lights. These lights flickered continuously like traffic lights which have gone mad. Sparks were emitted from small black boxes and red lamps flashed on and off angrily. It was rather like an exhibition of prehistoric electronic equipment. These peculiar forms not only seemed designed to shock people emotionally, but to give them electric shocks as well!
+```
+
