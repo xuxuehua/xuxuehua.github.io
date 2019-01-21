@@ -240,15 +240,173 @@ How is the bridge supported?
 
 
 
-
+## Electric currents in modern art 
 
 ```
-Electric currents in modern art 
-
 Listen to the tape then answer the question below.
 How might some of the exhibits have been dangerous?
 
     Modern sculpture rarely surprises us any more. The idea that modern art can only be seen in museums is mistaken. Even people who take no interest in art cannot have failed to notice examples of modern sculpture on display in public places. Strange forms stand in gardens, and outside buildings and shops. We have got quite used to them. Some so-called 'modern' pieces have been on display for nearly eighty years.
     In spite of this, some people -- including myself -- were surprise by a recent exhibition of modern sculpture. The first thing I saw when I entered the art gallery was a notice which said: 'Do not touch the exhibits. Some of them are dangerous!' The objects on display were pieces of moving sculpture. Oddly shaped forms that are suspended from the ceiling and move in response to a gust of wind are quite familiar to everybody. These objects, however, were different. Lined up against the wall, there were long thin wires attached to metal spheres. The spheres had been magnetized and attracted or repelled each other all the time. In the centre of the hall, there were a number of tall structures which contained coloured lights. These lights flickered continuously like traffic lights which have gone mad. Sparks were emitted from small black boxes and red lamps flashed on and off angrily. It was rather like an exhibition of prehistoric electronic equipment. These peculiar forms not only seemed designed to shock people emotionally, but to give them electric shocks as well!
+```
+
+
+
+## A very dear cat
+
+```
+Listen to the tape then answer the question below.
+Why was Rastus 'very dear' in more ways than one?
+
+    Kidnappers are rarely interested in animals, but they recently took considerable interest in Mrs. Eleanor Ramsay's cat. Mrs. Eleanor Ramsay, a very wealthy old lady, has shared a flat with her cat, Rastus, for a great many years. Rastus leads an orderly life. He usually takes a short walk in the evenings and is always home by seven o'clock. One evening, however, he failed to arrive. Mrs. Ramsay got very worried. She looked everywhere for him but could not find him.
+    Three days after Rastus' disappearance, Mrs. Ramsay received an anonymous letter. The writer stated that Rastus was in safe hands and would be returned immediately if Mrs. Ramsay paid a ransom of $1,000. Mrs. Ramsay was instructed to place the money in a cardboard box and to leave it outside her door. At first she decided to go to the police, but fearing that she would never see Rastus again -- the letter had made that quite clear -- she changed her mind. She withdrew $1000 from her bank and followed the kidnapper's instructions. The next morning, the box had disappeared but Mrs. Ramsay was sure that the kidnapper would keep his word. Sure enough, Rastus arrived punctually at seven o'clock that evening. He looked very well though he was rather thirsty, for he drank half a bottle of milk. The police were astounded when Mrs. Ramsay told them what she had done. She explained that Rastus was very dear to her. Considering the amount she paid, he was dear in more ways than one!
+```
+
+
+
+## Pioneer pilots
+
+```
+Listen to the tape then answer the question below.
+What was the name of the first plane to fly across the English Channel?
+
+    In 1908 Lord Northcliffe offered a prize of $1,000 to the first man who would fly across the English Channel. Over a year passed before the first attempt was made. On July 19th, 1909, in the early morning, Hubert Latham took off from the French coast in his plane the 'Antoinette IV.' He had travelled only seven miles across the Channel when his engine failed and he was forced to land on sea. The 'Antoinette' floated on the water until Latham was picked up by a ship.
+    Two days later, Louis Bleriot arrived near Calais with a plane called 'No. XI'. Bleriot had been making planes since 1905 and this was his latest model. A week before, he had completed a successful overland flight during which he covered twenty-six miles. Latham, however, did not give up easily. He, too, arrived near Calais on the same day with a new  'Antoinette'. It looked as if there would be an exciting race across the Channel. Both planes were going to take off on July 25th, but Latham failed to get up early enough, After making a short test flight at 4:15 a.m., Bleriot set off half an hour later. His great flight lasted thirty-seven minutes. When he landed near Dover, the first person to greet him was a local policeman. Latham made another attempt a week later and got within half a mile of Dover, but he was unlucky again. His engine failed and he landed on the sea for the second time.
+```
+
+
+
+## Daniel Mendoza
+
+```
+Listen to the tape then answer the question below.
+How many unsuccessful attempts did Mendoza make before becoming Champion of all England?
+
+    Boxing matches were very popular in England two hundred years ago. In those days, boxers fought with bare fists for prize money. Because of this, they were known as 'prizefighters'. However, boxing was very crude, for these were no rules and a prizefighter could be seriously injured or even killed during a match.
+    One of the most colourful figures in boxing history was Daniel Mendoza, who was born in 1764. The use of gloves was not introduced until 1860, when the Marquis of Queensberry drew up the first set of rules. Though he was technically a prizefighter, Mendoza did much to change crude prizefighting into a sport, for he brought science to the game. In this day, Mendoza enjoyed tremendous popularity. He was adored by rich and poor alike.
+    Mendoza rose to fame swiftly after a boxing match when he was only fourteen years old. This attracted the attention of Richard Humphries who was then the most eminent boxer in England. He offered to train Mendoza and his young pupil was quick to learn. In fact, Mendoza soon became so successful that Humphries turned against him. The two men quarrelled bitterly and it was clear that the argument could only be settled by a fight. A match was held at Stilton, where both men fought for an hour. The public bet a great deal of money on Mendoza, but he was defeated. Mendoza met Humphries in the ring on a later occasion and he lost for a second time. It was not until his third match in 1790 that he finally beat Humphries and became Champion of England. Meanwhile, he founded a highly successful Academy and even Lord Byron became one of his pupils. He earned enormous sums of money and was paid as much as $100 for a single appearance. Despite this, he was so extravagant that he was always in debt. After he was defeated by a boxer called Gentleman Jackson, he was quickly forgotten. He was sent to prison for failing to pay his debts and died in poverty in 1836.
+```
+
+
+
+## By heart
+
+```
+Listen to the tape then answer the question below.
+Which actor read the letter in the end, the aristocrat or the gaoler?
+
+    Some plays are so successful that they run for years on end, In many ways, this is unfortunate for the poor actors who are required to go on repeating the same lines night after night. One would expect them to know their parts by heart and never have cause to falter. Yet this is not always the case.
+    A famous actor in a highly successful play was once cast in the role of an aristocrat who had been imprisoned in the Bastille for twenty years. In the last act, a gaoler would always come on to the stage with a letter which he would hand to the prisoner. Even though the noble was expected to read the letter at each performance, he always insisted that it should be written out in full.
+    One night, the gaoler decided to play a joke on his colleague to find out if, after so many performances, he had managed to learn the contents of the letter by heart. The curtain went up on the final act of the play and revealed the aristocrat sitting alone behind bars in his dark cell. Just then, the gaoler appeared with the precious letter in his bands. He entered the cell and presented the letter to the aristocrat. But the copy he gave him had not been written out in full as usual. It was simply a blank sheet of paper. The gaoler looked on eagerly, anxious to see if his fellow actor had at last learnt his lines. The noble stared at the blank sheet of paper for a few seconds. Then, squinting his eyes, he said: 'The light is dim. Read the letter to me'. And he promptly handed the sheet of paper to the gaoler. Finding that he could not remember a word of the letter either, the gaoler replied: 'The light is indeed dim, sire, I must get my glasses.' With this, he hurried off the stage. Much to the aristocrat's amusement, the gaoler returned a few moments later with a pair of glasses and the usual copy of the letter with he proceeded to read to the prisoner.
+```
+
+
+
+## One man's meat is another man's poison
+
+```
+Listen to the tape then answer the question below.
+What was it about snails that made the writer collect them for his friend on that day in particular?
+
+    People become quite illogical when they try to decide what can be eaten and what cannot be eaten. If you lived in the Mediterranean, for instance, you would consider octopus a great delicacy. You would not be able to understand why some people find it repulsive. On the other hand, your stomach would turn at the idea of frying potatoes in animal fat -- the normally accepted practice in many northern countries. The sad truth is that most of us have been brought up to eat certain foods and we stick to them all our lives.
+    No creature has received more praise and abuse than the common garden snail. Cooked in wine, snails are a great luxury in various parts of the world. There are countless people who, ever since their early years, have learned to associate snails with food. My friend, Robert, lives in a country where snails are despised. As his flat is in a large town, he has no garden of his own. For years he has been asking me to collect snails from my garden and take them to him. The idea never appealed to me very much, but one day, after heavy shower, I happened to be walking in my garden when I noticed a huge number of snails taking a stroll on some of my prize plants. Acting on a sudden impulse, I collected several dozen, put them in a paper bag, and took them to Robert. Robert was delighted to see me and equally pleased with my little gift. I left the bag in the hall and Robert and I went into the living room where we talked for a couple of hours. I had forgotten all about the snails when Robert suddenly said that I must stay to dinner. Snails would, of course, be the main dish. I did not fancy the idea and I reluctantly followed Robert out of the room. To our dismay, we saw that there were snails everywhere: they had escaped from the paper bag and had taken complete possession of the hall! I have never been able to look at a snail since then.
+```
+
+
+
+
+
+## A skeleton in the cupboard
+
+```
+Listen to the tape then answer the question below.
+Who was Sebastian?
+
+    We often read in novels how a seemingly respectable person or family has some terrible secret which has been concealed from strangers for years. The English language possesses a vivid saying to describe this sort of situation. The terrible secret is called 'a skeleton in the cupboard'. At some dramatic moment in the story, the terrible secret becomes known and a reputation is ruined. The reader's hair stands on end when he reads in the final pages of the novel that the heroine a dear old lady who had always been so kind to everybody, had, in her youth, poisoned every one of her five husbands.
+    It is all very well for such things to occur in fiction. To varying degrees, we all have secrets which we do not want even our closest friends to learn, but few of us have skeletons in the cupboard. The only person I know who has a skeleton in the cupboard is George Carlton, and he is very pound of the fact. George studied medicine in his youth. Instead of becoming a doctor, however, he became a successful writer of detective stories. I once spend an uncomfortable weekend which I shall never forget at his house. George showed me to the guestroom which, he said, was rarely used. He told me to unpack my things and then come down to dinner. After I had stacked my shirts and underclothes in two empty drawers, I decided to hang one of the tow suits I had brought with me in the cupboard. I opened the cupboard door and then stood in front of it petrified. A skeleton was dangling before my eyes. The sudden movement of the door made it sway slightly and it gave me the impression that it was about to leap out at me. Dropping my suit, I dashed downstairs to tell George. This was worse than "a terrible secret'; this was a read skeleton! But George was unsympathetic. 'Oh, that,' he said with a smile as if he were talking about an old friend. 'That's Sebastian. You forget that I was a medical student once upon a time.'
+```
+
+
+
+## The Cutty Sark
+
+```
+Listen to the tape then answer the question below.
+What piece of bad luck prevented the Cutty Sark from winning the race?
+
+    One of the most famous sailing ships of the nineteenth century, the Cutty Sark, can still be seen at Greenwich. She stands on dry land and is visited by thousands of people each year. She serves as an impressive reminder of the great ships of past. Before they were replaced by steamships, sailing vessels like the Cutty Sark were used to carry tea from China and wool from Australia. The Cutty Sark was one the fastest sailing ships that has ever been built. The only other ship to match her was the Thermopylae. Both these ships set out from Shanghai on June 18th, 1872 on an exciting race to England. This race, which went on for exactly four months, was the last of its kind. It marked the end of the great tradition of ships with sails and the beginning of a new era.
+    The first of the two ships to reach Java after the race had begun was the Thermopylae, but on the Indian Ocean, the Cutty Sark took lead. It seemed certain that she would be the first ship home, but during the race she had a lot of bad luck. In August, she was struck by a very heavy storm during which her rudder was torn away. The Cutty Sark rolled from side to side and it became impossible to steer her. A temporary rudder was made on board from spare planks and it was fitted with great difficulty. This greatly reduced the speed of the ship, for there was a danger that if she traveled too quickly, this rudder would be torn away as well. Because of this, the Cutty Sark lost her lead. After crossing the Equator, the captain called in at a port to have a new rudder fitted, but by now the Thermopylae was over five hundred miles ahead. Though the new rudder was fitted at tremendous speed, it was impossible for the Cutty Sark to win. She arrived in England a week after the Thermopylae. Even this was remarkable, considering that she had had so many delays. These is no doubt that if she had not lost her rudder she would have won the race easily.
+```
+
+
+
+
+
+```
+Wanted: a large biscuit tin
+    
+Listen to the tape then answer the question below.
+Who won the prize for biggest biscuit?
+
+    No one can avoid being influenced by advertisements. Much as we may pride ourselves on our good taste, we are no longer free to choose the things we want, for advertising exerts a subtle influence on us. In their efforts to persuade us to buy this or that product, advertisers have made a close study of human nature and have classified all our little weaknesses.
+    Advertisers discovered years ago that all of us love to get something for nothing. An advertisement which begins with the magic word FREE can rarely go wrong. These days, advertisers not only offer free samples, but free cars, free houses, and free trips round the world as well. They devise hundreds of competitions which will enable us to win huge sums of money. Radio and television have made it possible for advertisers to capture the attention of millions of people in this way.
+    During a radio programme, a company of biscuit manufacturers once asked listeners to bake biscuits and send them to their factory. They offered to pay $10 a pound for the biggest biscuit baked by a listener. The response to this competition was tremendous. Before long, biscuits of all shapes and sizes began arriving at the factory. One lady brought in a biscuit on a wheelbarrow. It weighed nearly 500 pounds. A little later, a man came along with a biscuit which occupied the whole boot of his car. All the biscuits that were sent were carefully weighed. The largest was 713 pounds. It seemed certain that this would win the prize. But just before the competition closed, a lorry arrived at the factory with a truly colossal biscuit which weighed 2,400 pounds. It had been baked by a college student who had used over 1,000 pounds of flour, 800 pounds of sugar, 200 pounds of fat, and 400 pounds of various other ingredients. It was so heavy that a crane had to be used to remove it from the lorry. The manufacturers had to pay more money than they had anticipated, or they bought the biscuit from the student for $24,000.
+```
+
+
+
+
+
+## Nothing to sell and nothing to buy
+
+```
+Listen to the tape then answer the question below.   
+What is the most important thing for a tramp?
+
+    It has been said that everyone lives by selling something. In the light of this statement, teachers live by selling knowledge, philosophers by selling wisdom and priests by selling spiritual comfort. Though it may be possible to measure the value of material good in terms of money, it is extremely difficult to estimate the true value of the services which people perform for us. There are times when we would willingly give everything we possess to save our lives, yet we might grudge paying a surgeon a high fee for offering us precisely this service. The conditions of society are such that skills have to be paid for in the same way that goods are paid for at a shop. Everyone has something to sell.
+    Tramps seem to be the only exception to this general rule. Beggars almost sell themselves as human being to arouse the pity of passers-by. But real tramps are not beggars. They have nothing to sell and require nothing from others. In seeking independence, they do not sacrifice their human dignity. A tramp may ask you for money, but he will never ask you to feel sorry for him. He has deliberately chosen to lead the life he leads and is fully aware of the consequences. He may never be sure where the next meal is coming from, but his is free from the thousands of anxieties which afflict other people. His few material possessions make it possible for him to move from place to place with ease. By having to sleep in the open, he gets far closer to the world of nature than most of us ever do. He may hunt, beg, or steal occasionally to keep himself alive; he may even, in times of real need, do a little work; but he will never sacrifice his freedom. We often speak of tramps with contempt and put them in the same class as beggars, but how many of us can honestly say that we have not felt a little envious of their simple way of life and their freedom from care?
+```
+
+
+
+## Five pounds too dear
+
+```
+Listen to the tape then answer the question below.
+Why was even five pounds 'too dear'? 
+
+    Small boats loaded with wares sped to the great liner as she was entering the harbour. Before she had anchored, the men from the boats had climbed on board and the decks were soon covered with colourful rugs from Persia, silks from India, copper coffee pots, and beautiful handmade silverware. It was difficult not to be tempted. Many of the tourists on board had begun bargaining with the tradesmen, but I decide not to buy anything until I had disembarked.
+    I had no sooner got off the ship than I was assailed by a man who wanted to sell me a diamond ring. I had no intention of buying one, but I could not conceal the fact that I was impressed by the size of the diamonds. Some of them were as big as marbles. The man went to great lengths to prove that the diamonds were real. As we were walking past a shop, he held a diamond firmly against the window and made a deep impression in the glass. It took me over half an hour to get rid of him.
+    The next man to approach me was selling expensive pens and watches. I examined one of the pens closely. It certainly looked genuine. At the base of the gold cap, the words 'made in the U.S.A.' had been neatly inscribed. The man said that the pen was worth $50, but as a special favour, he would let me have it for $30. I shook my head and held up a five fingers indicating that I was willing to pay five pound. Gesticulating wildly, the man acted as if he found my offer out-rageous, but he eventually reduced the price to $10. Shrugging my shoulders, I began to walk away when, a moment later, he ran after me and thrust the pen into my hands. Though he kept throwing up his arms in despair, he readily accepted the pound I gave him. I felt especially pleased with my wonderful bargain--until I got back to the ship. No matter how hard I tried, it was im-possible to fill this beautiful pen with ink and to this day it has never written a single word!
+```
+
+
+
+
+
+## funny or not?
+
+```
+Listen to the tape then answer the question below.
+What is the basis of 'sick' humour? 
+
+    Whether we find a joke funny or not largely depends on where we have been brought up. The sense of humour is mysteriously bound up with national characteristics. A Frenchman, for instance, might find it hard to laugh at a Russian joke. In the same way, a Russian might fail to see anything amusing in a joke which would make an Englishman laugh to tears.
+    Most funny stories are based on comic situations. In spite of national differences, certain funny situations have a universal appeal. No matter where you live, you would find it difficult not to laugh at, say, Charlie Chaplin's early films. However, a new type of humour, which stems largely from the U.S., has recently come into fashion. It is called 'sick humour'. Comedians base their jokes on tragic situation like violent death or serious accidents. Many people find this sort of joke distasteful. The following example of 'sick humour' will enable you to judge for yourself.
+    A man who had broken his right leg was taken to hospital a few weeks before Christmas. From the moment he arrived there, he kept on pestering his doctor to tell him when he would be able to go home. He dreaded having to spend Christmas in hospital. Though the doctors did his best, the patient's recovery was slow. On Christmas Day, the man still had his right leg in plaster. He spent a miserable day in bed thinking of all the fun he was missing. The following day, however, the doctor consoled him by telling him that his chances of being able to leave hospital in time for New Year celebrations were good. The man took heart and, sure enough, on New Years' Eve he was able to hobble along to a party. To compensate for his unpleasant experiences in hospital, the man drank a little more than was good for him. In the process, he enjoyed himself thoroughly and kept telling everybody how much he hated hospitals. He was still mumbling something about hospitals at the end of the party when he slipped on a piece of ice and broke his left leg.
+```
+
+
+
+
+
+```
+The death of a ghost
+
+Listen to the tape then answer the question below.
+Why did the two brothers keep the secret?
+
+    For years, villagers believed that Endley Farm was hunted. The farm was owned by two brothers, Joe and Bob Cox. They employed a few farmhands, but no one was willing to work there long. Every time a worker gave up his job, he told the same story. Farm labourers said that they always woke up to find that work had been done overnight. Hay had been cut and cowsheds had been cleaned. A farm worker, who stayed up all night claimed to have seen a figure cutting corn in the moonlight. In time, it became an accepted fact the Cox brothers employed a conscientious ghost that did most of their work for them.
+    No one suspected that there might be someone else on the farm who had never been seen. This was indeed the case. A short time ago, villagers were astonished to learn that the ghost of Endley had died. Everyone went to the funeral, for the 'ghost' was none other than Eric Cox, a third brother who was supposed to have died as a young man. After the funeral, Joe and Bob revealed a secret which they had kept for over fifty years.
+    Eric had been the eldest son of the family, very much older than his two brothers. He had been obliged to join the army during the Second World War. As he hated army life, he decided to desert his regiment. When he learnt that he would be sent abroad, he returned to the farm and his father hid him until the end of the war. Fearing the authorities, Eric remained in hiding after the war as well. His father told everybody that Eric had been killed in action. The only other people who knew the secret were Joe and Bob. They did not even tell their wives. When their father died, they thought it their duty to keep Eric in hiding. All these years, Eric had lived as a recluse. He used to sleep during the day and work at night, quite unaware of the fact that he had become the ghost of Endley. When he died, however, his brothers found it impossible to keep the secret any longer.
 ```
 

@@ -15,7 +15,7 @@ date: 2018-08-21 13:42
 
 
 
-查看本地语言环境
+### 查看本地语言环境
 
 ```
 (env3.5.3) xhxu-mac: xhxu$ locale
@@ -31,11 +31,25 @@ LC_ALL=
 
 
 
+#### 查看可选的语言环境
+
+```
+localectl list-locales
+```
+
+
+
+### 修改本地语言环境
+
 `export LANG=en_US.UTF-8` 可以更改
 
+```
+localectl set-locale LANG=en_US.UTF-8
+```
 
 
-修改terminal 显示语言
+
+### 修改terminal 显示语言
 
 ```
 [root@vps sucai]# locale -a | grep zh
@@ -58,5 +72,6 @@ zh_TW.utf8
 
 [root@vps sucai]# vim /etc/locale.conf
 ```
+
 
 

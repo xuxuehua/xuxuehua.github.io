@@ -12,9 +12,9 @@ date: 2018-08-27 18:18
 ## Basic development tools
 
 ```
-apt-get install build-essential && \
-apt install libpcre* && \ 
-apt install libz*
+sudo apt-get install build-essential && \
+sudo apt install libpcre* && \ 
+sudo apt install libz*
 ```
 
 
@@ -26,12 +26,6 @@ apt install libz*
 [Looking for other versions of Ubuntu? Please see the menu above.]
 
 
-
-
-
- 
-
- 
 
  
 
@@ -317,5 +311,15 @@ u ubuntu-usb    Ubuntu desktop USB
 u virt-host     Virtual Machine host
 i openssh-server        OpenSSH server
 i server        Basic Ubuntu server
+```
+
+
+
+### pkexec 命令
+
+修复破坏的sudoer 文件
+
+```
+pkexec vi /etc/sudoer
 ```
 

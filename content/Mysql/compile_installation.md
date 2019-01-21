@@ -20,7 +20,8 @@ cmake是独立于源码(out of source)的编译功能，即编译工作可以在
 
 ```
 yum -y install epel-release && \
-yum -y install cmake
+yum -y install cmake && \
+yum -y install ncurses-devel openssl-devel libevent-devel jemalloc-devel
 ```
 
  
@@ -115,7 +116,7 @@ rm CMakeCache.txt	<=> 	make clean
 
 ## Mariadb	
 
-### Installation
+### Installation mariadb-5.5.44
 
 ```
 yum -y groupinstall Development Tools
@@ -173,7 +174,78 @@ service mysqld start
 
 
 
+### Installation mariadb-5.5.62
 
+```
+yum -y groupinstall Development Tools
+wget http://ftp.hosteurope.de/mirror/archive.mariadb.org/mariadb-5.5.62/source/mariadb-5.5.62.tar.gz
+
+mkdir -p /data/mysql
+
+cmake . -DCMAKE_INSTALL_PREFIX=/usr/local/mariadb-5.5.62 -DMYSQL_DATADIR=/data/mysql -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_ARCHIVE_STORAGE_ENGINE=1 -DWITH_BLACKHOLE_STORAGE_ENGINE=1 -DWITH_ARIA_STORAGE_ENGINE=1 -DWITH_PARTITION_STORAGE_ENGINE=1 -DWITH_READLINE=1 -DWITH_SSL=system -DWITH_ZLIB=system -DWITH_LIBWRAP=0 -DMYSQL_UNIX_ADDR=/tmp/mysql.sock -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci
+
+make && make install
+```
+
+
+
+```
+vim /usr/lib/systemd/system/mariadb.service
+```
+
+```
+[Unit]
+Description=MariaDB database server
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=mysql
+Group=mysql
+
+ExecStart=/usr/local/mysql/bin/mysqld_safe --basedir=/usr/local/mysql
+TimeoutSec=300
+#Place temp files in a secure directory, not /tmp
+PrivateTmp=false  
+
+[Install]
+WantedBy=multi-user.target
+```
+
+
+
+```
+cd /usr/local/
+ln -sv mariadb-5.5.62 mysql
+
+groupadd -r -g 306 mysql
+useradd -r -g 306 -u 306 mysql
+id mysql
+
+mkdir -p /data/mysql
+chown mysql.mysql /data/mysql
+cp ~/mariadb-5.5.62/support-files/my-large.cnf /etc/my.cnf
+```
+
+```
+vim /etc/my.cnf
+
+[mysqld]
+datadir = /data/mysql
+```
+
+
+
+```
+cd /usr/local/mysql
+chown -R root.mysql ./*
+scripts/mysql_install_db --user=mysql --datadir=/data/mysql  # 必须使用含有scripts的相对路径
+
+ln -sv /usr/local/mysql/bin/mysql /usr/bin/mysql
+
+mysql
+```
 
 
 

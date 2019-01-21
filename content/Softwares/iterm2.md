@@ -23,3 +23,7 @@ make && make install
 
 
 
+## 关闭选中复制
+
+Preferences -> General -> Selection -> `Copy to pasteboard on selection`
+

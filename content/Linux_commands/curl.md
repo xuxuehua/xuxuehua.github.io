@@ -224,6 +224,10 @@ gnome-open test1.png
 
 
 
+```
+curl -H "Authorization: token OAUTH-TOKEN" https://api.github.com
+```
+
 
 
 ### -i/--include  显示头信息 及页面
@@ -401,8 +405,7 @@ curl -T dodo1.JPG -u 用户名:密码 ftp://www.linux.com/img/
 
 
 ```
-curl -u user:pwd http://man.linuxde.net
-curl -u user http://man.linuxde.net
+curl -u "username" https://api.github.com
 ```
 
 

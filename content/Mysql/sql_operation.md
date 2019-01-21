@@ -881,7 +881,69 @@ possible_keys: NULL
 
 ## 设计表
 
-需要遵循规范
+### 字符集
+
+主要是为了保存emoji表情，例如: 微信昵称，就有很多带有emoji表情的，这里我们使用utf8mb4字符集，千万不要使用blob类型来存储
+
+
+
+### 主/外键类型
+
+主键的设定是非常重要的，在主键的选择上，应该满足以下几个条件:
+
+```
+1. 唯一性 (必要条件)
+2. 非空性
+3. 有序性
+4. 可读性
+5. 可扩展性
+```
+
+>  有序性就有不少好处。例如: 查询时，为有序IO，就可提高查询效率，存储的顺序也是有序的，往远了看，分库分表也是有好处的。因此，我建议使8字节无符号的bigint(20)作为主键的数据类型  
+>
+> 主外键的数据类型一定要一致！
+>
+> 每个表中的主键命名保持一致！
+
+```
+create table t_base_user(
+id bigint(20) unsigned not null primary key auto_increment;
+....
+)
+```
+
+
+
+无符号与有符号的区别
+
+```
+有符号允许存储负数，无符号只允许从正数开始，无符号最小值为0，最大值根据类型不同而不同。
+```
+
+
+
+外键约束用来保证数据完整性的。但不建议在数据库表中加外键约束，因为在数据表中添加外键约束，会影响性能，例如: 每一次修改数据时，都要在另外的一张表中执行查询。应该是：在应用层，也就是代码层面，来维持外键关系。
+
+
+
+### 添加注释
+
+添加注释，这是非常重要的，其中包括表注释，字段注释。主要是为了后期表结构的维护，我相信你对着数据表中那么多字段，如果没有注释的话，你是很难一下子明白是什么意思的，即使你是该表结构的设计者，十天半个月过去后，你还记得吗？
+
+```
+create table t_base_user(
+ id bigint(20) UNSIGNED not null primary key auto_increment comment "主键",
+ name varchar(50) character set utf8mb4 comment "",
+ created_time datetime null default now() comment "创建时间",
+ updated_time datetime null default now() comment "修改时间",
+ deleted tinyint not null default 1 comment "逻辑删除 0正常数据 1删除数据"
+)engine=InnoDB charset=utf8 comment "用户表";
+
+//添加索引
+alter table t_base_user idx_created_time(created_time);
+```
+
+
 
 
 

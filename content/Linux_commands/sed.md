@@ -29,3 +29,7 @@ sed -i '6d' ~/.ssh/known_hosts
 sed -i 'columns/.*/replacement-word/' file.txt
 ```
 
+```
+sed -i 's/some_a/some_b/g' file.txt
+```
+
