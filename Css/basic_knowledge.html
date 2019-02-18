@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>basic_knowledge - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Css">Css</a>&nbsp;&#187;&nbsp;basic_knowledge
+    <span class="updated">Page Updated&nbsp;
+      2018-11-11 13:35
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">basic_knowledge</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#basic_knowledge">basic_knowledge</a><ul>
+<li><a href="#_1">定义</a></li>
+<li><a href="#_2">语法</a></li>
+<li><a href="#_3">注释</a></li>
+<li><a href="#_4">样式</a><ul>
+<li><a href="#important">Important 样式 （优先级最高）（少用）</a></li>
+<li><a href="#_5">内联样式 （优先级其次高）</a></li>
+<li><a href="#_6">嵌入样式/页内样式 （优先级再其次）</a></li>
+<li><a href="#_7">外部样式 （优先级再其次）</a></li>
+<li><a href="#_8">继承样式 （优先级再其次）</a></li>
+<li><a href="#_9">默认样式 （优先级最低）</a></li>
+</ul>
+</li>
+<li><a href="#_10">特性</a><ul>
+<li><a href="#_11">层叠性</a></li>
+<li><a href="#_12">继承性</a></li>
+</ul>
+</li>
+<li><a href="#_13">简单属性</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="basic_knowledge">basic_knowledge</h1>
+<h2 id="_1">定义</h2>
+<p>层叠样式表(英文全称：Cascading Style Sheets)</p>
+<p>用于设置HTML页面中的文字内容（字体，大小，对齐方式），图片外形（宽高，边框样式）及页面布局等外观显示样式</p>
+<h2 id="_2">语法</h2>
+<div class="hlcode"><pre><span class="n">p</span> <span class="p">{</span><span class="n">color</span><span class="o">:</span><span class="n">red</span><span class="p">;}</span>
+</pre></div>
+
+
+<blockquote>
+<p>选择符号p， 大小敏感</p>
+<p>属性声明color， 大小不敏感，一般为小写</p>
+<p>换行和空格不敏感</p>
+</blockquote>
+<h2 id="_3">注释</h2>
+<div class="hlcode"><pre><span class="cm">/* .... */</span> 
+</pre></div>
+
+
+<h2 id="_4">样式</h2>
+<p>优先级自上往下</p>
+<h3 id="important">Important 样式 （优先级最高）（少用）</h3>
+<div class="hlcode"><pre><span class="n">p</span> <span class="p">{</span>
+    <span class="n">color</span><span class="p">;</span> <span class="n">red</span> <span class="o">!</span><span class="n">important</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3 id="_5">内联样式 （优先级其次高）</h3>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">div</span> <span class="n">style</span><span class="o">=</span><span class="s">&quot;color: red; font-size:24px;border: 1px solid black;&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="_6">嵌入样式/页内样式 （优先级再其次）</h3>
+<ul>
+<li>
+<p>和外部样式重复时，依据就近原则</p>
+</li>
+<li>
+<p><code>&lt;style&gt;</code></p>
+</li>
+</ul>
+<div class="hlcode"><pre><span class="nt">&lt;style&gt;</span>
+    p {
+        color: yellowgreen;
+    }
+<span class="nt">&lt;/style&gt;</span>
+</pre></div>
+
+
+<h3 id="_7">外部样式 （优先级再其次）</h3>
+<ul>
+<li>
+<p>和嵌入样式重复时，依据就近原则</p>
+</li>
+<li>
+<p><code>&lt;link&gt;</code></p>
+</li>
+</ul>
+<p>index.css</p>
+<div class="hlcode"><pre><span class="n">p</span> <span class="p">{</span>
+    <span class="cm">/* define font */</span>
+    <span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">:</span> <span class="mi">50</span><span class="n">px</span><span class="p">;</span>
+    <span class="cm">/* background color */</span>
+    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="o">:</span> <span class="n">silver</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Index.html 引入</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;./css/index.css&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="_8">继承样式 （优先级再其次）</h3>
+<p>继承得到的样式</p>
+<p>a标签除外</p>
+<h3 id="_9">默认样式 （优先级最低）</h3>
+<p>html默认的样式</p>
+<p>a标签除外</p>
+<h2 id="_10">特性</h2>
+<h3 id="_11">层叠性</h3>
+<p>多层样式以最后一层样式为准</p>
+<div class="hlcode"><pre><span class="n">p</span> <span class="p">{</span>
+    <span class="nl">color:</span><span class="n">red</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">p</span> <span class="p">{</span>
+    <span class="nl">color:</span><span class="n">green</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>以green 为准</p>
+</blockquote>
+<h3 id="_12">继承性</h3>
+<p>父容器设置的样式，子容器也可以享受相同的待遇</p>
+<p>对于字体，文本属性等网页中通用的样式可以统一继承，如字体，字号，颜色，行距等</p>
+<div class="hlcode"><pre><span class="nt">&lt;style&gt;</span>
+    p {
+        color: red
+    }
+<span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+        this is p
+        <span class="nt">&lt;span&gt;</span>1<span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;span&gt;</span>2<span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;span&gt;</span>3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+</pre></div>
+
+
+<p>a 标签默认不继承字体颜色</p>
+<div class="hlcode"><pre><span class="nt">&lt;style&gt;</span>
+    p {
+        color: red
+    }
+    a {
+        color: inherit;
+    }
+<span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+        this is p
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;span&quot;</span><span class="nt">&gt;</span>this is a<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;span&gt;</span>1<span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;span&gt;</span>2<span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;span&gt;</span>3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+</pre></div>
+
+
+<h2 id="_13">简单属性</h2>
+<div class="hlcode"><pre><span class="n">width</span><span class="err">：</span> <span class="err">宽度</span> <span class="err">（限制块结构）</span>
+<span class="n">height</span><span class="err">：高度</span> <span class="err">（限制块结构）</span>
+<span class="n">color</span><span class="err">：前景色，文字颜色</span>
+<span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="err">：</span> <span class="err">背景色</span>
+<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="err">：字体的大小</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

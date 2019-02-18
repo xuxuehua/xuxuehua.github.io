@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>copy - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python_modules">Python_modules</a>&nbsp;&#187;&nbsp;copy
+    <span class="updated">Page Updated&nbsp;
+      2018-08-15 10:46
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">copy</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#copy">copy 模块</a></li>
+</ul>
+</div>
+<h1 id="copy">copy 模块</h1>
+<p>浅拷贝是相当于创建一个全新的对象,但修改了新对象后依然能影响原对象,本质上还是对原对象的引用</p>
+<p>深拷贝跟浅拷贝类似，深拷贝也会创建一个新的对象,并重新开辟一块新的内存已提供引用,再如何修改新对象也不会影响到原对象</p>
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">import</span> <span class="n">copy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
+<span class="cp">#origin 里边有三个元素：1， 2，[3, 4]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cop1</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cop2</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cop1</span> <span class="o">==</span> <span class="n">cop2</span>
+<span class="n">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cop1</span> <span class="n">is</span> <span class="n">cop2</span>
+<span class="n">False</span> 
+<span class="cp">#cop1 和 cop2 看上去相同，但已不再是同一个object</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;hey!&quot;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">origin</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">hey</span><span class="o">!</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cop1</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">hey</span><span class="o">!</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cop2</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
+<span class="cp">#把origin内的子list [3, 4] 改掉了一个元素，观察 cop1 和 cop2</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

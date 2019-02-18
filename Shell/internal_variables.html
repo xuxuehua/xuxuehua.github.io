@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>internal_variables 内部变量 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Shell">Shell</a>&nbsp;&#187;&nbsp;internal_variables 内部变量
+    <span class="updated">Page Updated&nbsp;
+      2018-11-08 13:07
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">internal_variables 内部变量</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#internal_variables">internal_variables</a><ul>
+<li><a href="#random">RANDOM 随机数</a></li>
+<li><a href="#histtimeformat">HISTTIMEFORMAT 历史命令格式</a></li>
+<li><a href="#histcontrol">HISTCONTROL 控制</a><ul>
+<li><a href="#ignoredups">ignoredups 过滤重复</a></li>
+<li><a href="#unset-export">unset export 关闭定义</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="internal_variables">internal_variables</h1>
+<h2 id="random">RANDOM 随机数</h2>
+<p>随机字符串</p>
+<div class="hlcode"><pre><span class="cp"># echo $RANDOM | md5sum | cut -c 1-8</span>
+<span class="mo">024</span><span class="n">cbfdc</span>
+</pre></div>
+
+
+<p>随机数字</p>
+<div class="hlcode"><pre><span class="cp"># echo $RANDOM | cksum | cut -c 1-8</span>
+<span class="mi">20613431</span>
+</pre></div>
+
+
+<h2 id="histtimeformat">HISTTIMEFORMAT 历史命令格式</h2>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">export</span> <span class="n">HISTTIMEFORMAT</span><span class="o">=</span><span class="err">&#39;</span><span class="o">%</span><span class="n">F</span> <span class="o">%</span><span class="n">T</span>  <span class="err">&#39;</span>
+
+      <span class="mi">1</span>  <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mi">09</span> <span class="mi">10</span><span class="o">:</span><span class="mi">40</span><span class="o">:</span><span class="mi">12</span>   <span class="n">cat</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">issue</span>
+      <span class="mi">2</span>  <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mi">09</span> <span class="mi">10</span><span class="o">:</span><span class="mi">40</span><span class="o">:</span><span class="mi">12</span>   <span class="n">clear</span>
+      <span class="mi">3</span>  <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mi">09</span> <span class="mi">10</span><span class="o">:</span><span class="mi">40</span><span class="o">:</span><span class="mi">12</span>   <span class="n">find</span> <span class="o">/</span><span class="n">etc</span> <span class="o">-</span><span class="n">name</span> <span class="o">*</span><span class="p">.</span><span class="n">conf</span>
+      <span class="mi">4</span>  <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mi">09</span> <span class="mi">10</span><span class="o">:</span><span class="mi">40</span><span class="o">:</span><span class="mi">12</span>   <span class="n">clear</span>
+      <span class="mi">5</span>  <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mi">09</span> <span class="mi">10</span><span class="o">:</span><span class="mi">40</span><span class="o">:</span><span class="mi">12</span>   <span class="n">history</span>
+      <span class="mi">6</span>  <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mi">09</span> <span class="mi">10</span><span class="o">:</span><span class="mi">40</span><span class="o">:</span><span class="mi">12</span>   <span class="n">PS1</span><span class="o">=</span><span class="err">&#39;\</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">;</span><span class="mi">35</span><span class="n">m</span><span class="p">[</span><span class="err">\</span><span class="n">u</span><span class="err">@\</span><span class="n">h</span> <span class="err">\</span><span class="n">w</span><span class="p">]</span><span class="err">$</span> <span class="err">\</span><span class="n">e</span><span class="p">[</span><span class="n">m</span> <span class="err">&#39;</span>
+      <span class="mi">7</span>  <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mi">09</span> <span class="mi">10</span><span class="o">:</span><span class="mi">40</span><span class="o">:</span><span class="mi">12</span>   <span class="n">PS1</span><span class="o">=</span><span class="s">&quot;\e[0;32m[\u@\h \W]$ \e[m &quot;</span>
+      <span class="mi">8</span>  <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mi">09</span> <span class="mi">10</span><span class="o">:</span><span class="mi">40</span><span class="o">:</span><span class="mi">12</span>   <span class="n">PS1</span><span class="o">=</span><span class="s">&quot;\u@\h:\w [\j]$ &quot;</span>
+      <span class="mi">9</span>  <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mi">09</span> <span class="mi">10</span><span class="o">:</span><span class="mi">40</span><span class="o">:</span><span class="mi">12</span>   <span class="n">ping</span> <span class="n">google</span><span class="p">.</span><span class="n">com</span>
+     <span class="mi">10</span>  <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mi">09</span> <span class="mi">10</span><span class="o">:</span><span class="mi">40</span><span class="o">:</span><span class="mi">12</span>   <span class="n">echo</span> <span class="err">$</span><span class="n">PS1</span>
+</pre></div>
+
+
+<h2 id="histcontrol">HISTCONTROL 控制</h2>
+<h3 id="ignoredups">ignoredups 过滤重复</h3>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">export</span> <span class="n">HISTCONTROL</span><span class="o">=</span><span class="n">ignoredups</span>
+</pre></div>
+
+
+<h3 id="unset-export">unset export 关闭定义</h3>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">unset</span> <span class="n">export</span> <span class="n">HISTCONTROL</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

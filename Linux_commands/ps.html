@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>ps - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Linux_commands">Linux_commands</a>&nbsp;&#187;&nbsp;ps
+    <span class="updated">Page Updated&nbsp;
+      2018-08-06 16:01
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">ps</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#ps">PS 命令</a><ul>
+<li><a href="#etime">etime</a></li>
+<li><a href="#etimes">etimes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="ps">PS 命令</h1>
+<h2 id="etime">etime</h2>
+<p><strong>etime</strong> – elapsed time since the process was started, in the form [[DD-]hh:]mm:ss.</p>
+<div class="hlcode"><pre><span class="sx">!6 $ ps -p 4261 -o etime</span>
+    <span class="n">ELAPSED</span>
+      <span class="mi">25</span><span class="p">:</span><span class="mi">05</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">ps</span> <span class="o">-</span><span class="n">eo</span> <span class="n">pid</span><span class="p">,</span><span class="n">comm</span><span class="p">,</span><span class="n">lstart</span><span class="p">,</span><span class="n">etime</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">args</span>
+</pre></div>
+
+
+<ul>
+<li>PID – The Process ID</li>
+<li>COMMAND(second column) – The command name without options and/or arguments.</li>
+<li>STARTED – The absolute starting time of the process.</li>
+<li>ELAPSED – The elapsed time since the process was started, in the form of [[dd-]hh:]mm:ss.</li>
+<li>TIME – Cumulative CPU time, “[dd-]hh:mm:ss” format.</li>
+<li>COMMAND (last column) – Command name with all its provided options and arguments.</li>
+</ul>
+<h2 id="etimes">etimes</h2>
+<p><strong>etimes</strong> – elapsed time since the process was started, in seconds.</p>
+<div class="hlcode"><pre><span class="sx">!7 $ ps -p 4261 -o etimes</span>
+<span class="n">ELAPSED</span>
+   <span class="mi">1516</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">ps</span> <span class="o">-</span><span class="n">eo</span> <span class="n">pid</span><span class="p">,</span><span class="n">comm</span><span class="p">,</span><span class="n">lstart</span><span class="p">,</span><span class="n">etimes</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">args</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

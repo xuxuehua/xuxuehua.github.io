@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>sed - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Linux_commands">Linux_commands</a>&nbsp;&#187;&nbsp;sed
+    <span class="updated">Page Updated&nbsp;
+      2018-09-27 16:01
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">sed</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#sed">sed</a><ul>
+<li><a href="#-i">-i 插入</a><ul>
+<li><a href="#_1">删除</a></li>
+<li><a href="#_2">替换</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="sed">sed</h1>
+<p>sed [-nefri] 'command' 输入文本 </p>
+<h2 id="-i">-i 插入</h2>
+<h3 id="_1">删除</h3>
+<div class="hlcode"><pre><span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="err">&#39;</span><span class="mi">6</span><span class="n">d</span><span class="err">&#39;</span> <span class="o">~/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">known_hosts</span>
+</pre></div>
+
+
+<h3 id="_2">替换</h3>
+<div class="hlcode"><pre><span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="err">&#39;</span><span class="n">columns</span><span class="o">/</span><span class="p">.</span><span class="err">*/</span><span class="n">replacement</span><span class="o">-</span><span class="n">word</span><span class="o">/</span><span class="err">&#39;</span> <span class="n">file</span><span class="p">.</span><span class="n">txt</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="err">&#39;</span><span class="n">s</span><span class="o">/</span><span class="n">some_a</span><span class="o">/</span><span class="n">some_b</span><span class="o">/</span><span class="n">g</span><span class="err">&#39;</span> <span class="n">file</span><span class="p">.</span><span class="n">txt</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

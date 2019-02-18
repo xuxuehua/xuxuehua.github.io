@@ -1,0 +1,273 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>ubuntu - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Linux">Linux</a>&nbsp;&#187;&nbsp;ubuntu
+    <span class="updated">Page Updated&nbsp;
+      2018-08-27 18:18
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">ubuntu</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#ubuntu">Ubuntu</a><ul>
+<li><a href="#basic-development-tools">Basic development tools</a></li>
+<li><a href="#ubuntu-chinese-setup">Ubuntu Chinese Setup</a><ul>
+<li><a href="#chinese-china-input-methods">Chinese (China) input methods</a></li>
+<li><a href="#chinese-hong-kong-input-methods">Chinese (Hong Kong) input methods</a></li>
+</ul>
+</li>
+<li><a href="#bashrc">新用户 启动.bashrc</a><ul>
+<li><a href="#profile">.profile</a></li>
+<li><a href="#bashrc_1">.bashrc</a></li>
+</ul>
+</li>
+<li><a href="#desktop">Desktop</a><ul>
+<li><a href="#pkexec">pkexec 命令</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="ubuntu">Ubuntu</h1>
+<h2 id="basic-development-tools">Basic development tools</h2>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="o">&amp;&amp;</span> \
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">libpcre</span><span class="o">*</span> <span class="o">&amp;&amp;</span> <span class="err">\</span> 
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">libz</span><span class="o">*</span>
+</pre></div>
+
+
+<h2 id="ubuntu-chinese-setup">Ubuntu Chinese Setup</h2>
+<p><em>A Quick Start Guide toChinese Setup, Input Methods, Fonts, and Other Features inUbuntu 18.04 (Bionic Beaver) and the new GNOME</em></p>
+<p>[Looking for other versions of Ubuntu? Please see the menu above.]</p>
+<p>This page describes how to install Chinese features in non-Chinese versions of Ubuntu 18.04. The preview version of this new GNOME-based interface,<a href="https://www.pinyinjoe.com/faq/ubuntu-1710-ibus-fcitx.htm"> Ubuntu 17.10,</a> required its own FAQ page. If you need an earlier version, see the setup pages for <a href="https://www.pinyinjoe.com/linux/ubuntu-12-chinese-setup.htm">Ubuntu 12.04-17.04</a>, <a href="https://www.pinyinjoe.com/linux/ubuntu-11-chinese-setup.htm">Ubuntu 11</a>, and <a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-setup.htm">Ubuntu 10</a>(they share the same <a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-input-pinyin-chewing.htm">input methods</a> and <a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-fonts-openoffice-language-features.htm">fonts</a>) or <a href="https://www.pinyinjoe.com/linux/ubuntu-chinese-setup.htm">Ubuntu 9</a>.</p>
+<p>Canonical has dropped the Unity interface and returned to GNOME. The basic installation includes the <a href="https://en.wikipedia.org/wiki/Intelligent_Input_Bus">IBus input framework <img alt="Open new window" src="https://www.pinyinjoe.com/images/arrow-new-site.jpg" /></a> — which may or may not have everything you need — and many users will want to manually install the <a href="https://en.wikipedia.org/wiki/Fcitx">fcitx framework <img alt="Open new window" src="https://www.pinyinjoe.com/images/arrow-new-site.jpg" /></a> which is now the standard in China.</p>
+<p><img alt="No need to install a fully localized Chinese Ubuntu desktop. Just click English" src="https://www.pinyinjoe.com/images/ubuntu/1710/ubuntu-17-install-english-display.jpg" /></p>
+<p>If you're doing a clean installation, at the Welcome screen it's OK to select English as shown here. ---&gt;</p>
+<p><em>It is not necessary to use a Chinese language desktop.</em> Chinese input methods and interfaces will still be available. You can select "English" or another language now, and use Chinese menus later if you wish.</p>
+<p><strong>Adding Chinese language support:</strong></p>
+<p>After your install is complete, log in, then click on "Activities" in the upper left corner or tap the Super key (Windows/Ubuntu key).</p>
+<p>In the Activities search box, type "language":</p>
+<p><img alt="Ubuntu Dash : search for Language Support" src="https://www.pinyinjoe.com/images/ubuntu/1710/ubuntu-17-search-language-support.jpg" /></p>
+<p>Double-click Language Support (or just press your <Enter> key).</p>
+<p>In the Language Support panel, click the "Install / Remove Languages..." button:</p>
+<p><img alt="Ubuntu Language Support panel" src="https://www.pinyinjoe.com/images/ubuntu/1710/language-support.jpg" /></p>
+<p>In the Installed Languages panel, select Chinese (Simplified and/or Traditional), and then click the "Apply Changes" button (not shown here), after which the necessary fonts and other bits will be downloaded and installed.</p>
+<p><img alt="Ubuntu Installed Languages panel : installing Chinese" src="https://www.pinyinjoe.com/images/ubuntu/1710/installed-languages.jpg" /></p>
+<p>After the file installation process is complete, log out and log back in:</p>
+<p><img alt="Ubuntu 11 logout" src="https://www.pinyinjoe.com/images/ubuntu/1804/logout.jpg" /></p>
+<p><strong>Let's take a ride on the IBus</strong><br />
+After logging in, click again on "Activities" at the upper left or tap the Super key (Windows/Ubuntu key). In the search box type "region", then select Region &amp; Language:</p>
+<p><img alt="img" src="https://www.pinyinjoe.com/images/ubuntu/1804/region.jpg" /></p>
+<p>Click the "Manage Installed Language" button to reopen the Language Support panel, which will cause the system to automatically check for any missing pieces necessary for Chinese support. Allow that install to proceed, then close Language Support and return to Region and Language. Then click the "+" button to add input methods.</p>
+<p><img alt="img" src="https://www.pinyinjoe.com/images/ubuntu/1710/region-and-language-cr.jpg" /></p>
+<p>After clicking the "+" button, you'll see "Add an Input Source":</p>
+<p><img alt="img" src="https://www.pinyinjoe.com/images/ubuntu/1710/add-an-input-source.jpg" /></p>
+<h3 id="chinese-china-input-methods">Chinese (China) input methods</h3>
+<p>If you select "Chinese (China)" from the above list, you'll see the following choices. As <em>Pinyin</em> Joe I'm looking for phonetic input methods. The default install includes Intelligent Pinyin, which supports Simplified and Traditional characters. After selecting it here, log out and log in, and then it should show up on your input menu.</p>
+<p><img alt="img" src="https://www.pinyinjoe.com/images/ubuntu/1804/add-input-source-china.jpg" /></p>
+<p>The gear button in the Region and Language panel will allow you to select Simplified or Traditional and other options:</p>
+<p><img alt="img" src="https://www.pinyinjoe.com/images/ubuntu/1804/gear-intelligent-pinyin.jpg" /></p>
+<p><em>Note that the Traditional characters produced by this IME will be in mainland GB encoding.</em> If you are sharing messages or documents with anyone using a system set to Taiwan/HK/Macau Big5 encoding, your text could be corrupted into unrecoverable garbage characters. For most situations requiring Traditional characters, it is best to use the China (Hong Kong) IME.</p>
+<p>Other input methods are available via manual install, including the (Simplified character only) SunPinyin which in some ways offers a superior candidate list algorithm. I have not yet played with this, but as an example to install SunPinyin you would drop into Terminal and enter this:</p>
+<p><strong>sudo apt-get install ibus-sunpinyin</strong></p>
+<h3 id="chinese-hong-kong-input-methods">Chinese (Hong Kong) input methods</h3>
+<p>If you select Chinese (Hong Kong) you'll find that the basic install offers no phonetic input at all, unless Chewing was carried over from a previous install during an upgrade...and if it still works. QuickClassic is a version of the non-phonetic Quick (簡易) input method popular with people in Hong Kong, but I need Chewing (as in "Zhuyin", though it supports both Bopomofo and Pinyin). </p>
+<p><img alt="img" src="https://www.pinyinjoe.com/images/ubuntu/1710/add-an-input-source-3.jpg" /></p>
+<p>I've tried to add Chewing without success, using this in Terminal:</p>
+<p><strong>sudo apt-get install ibus-chewing</strong></p>
+<p>I get a message back saying the latest version is already installed, so nothing happens and I'm still unable to bring Chewing up in any panel or menu. I'm still trying to figure out why. This is yet another reason to go back to fcitx.</p>
+<p><strong>Forward with fcitx?</strong></p>
+<p>Maybe IBus just doesn't take you where you need to go. Fcitx has been the standard in China for Ubuntu Kylin for quite some time now, and if you'd like to install it see this article posted by a member of the fcitx team when this problem presented itself in 17.10:</p>
+<p><a href="https://www.csslayer.info/wordpress/fcitx-dev/how-to-use-fcitx-on-ubuntu-17-10/">https://www.csslayer.info/wordpress/fcitx-dev/how-to-use-fcitx-on-ubuntu-17-10/ <img alt="open new site in new window" src="https://www.pinyinjoe.com/images/arrow-new-site.jpg" /></a></p>
+<p>For either framework, to learn more about input methods, fonts, or OpenOffice/LibreOffice features see the next steps below.</p>
+<p><strong>Next steps:</strong></p>
+<blockquote>
+<p><a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-input-pinyin-chewing.htm"><img alt="Ubuntu Chinese IMEs" src="https://www.pinyinjoe.com/images/ubuntu/1010/IME-icons-7.jpg" /></a></p>
+</blockquote>
+<ul>
+<li>
+<p><a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-input-pinyin-chewing.htm">A summary of available Ubuntu Chinese Input Methods</a></p>
+</li>
+<li>
+<p><a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-fonts-openoffice-language-features.htm">Chinese Fonts in Ubuntu, and LibreOffice Asian Language Features</a></p>
+</li>
+</ul>
+<p>As always, feel free to <a href="https://www.pinyinjoe.com/contact.htm">contact me</a> with any questions, comments and suggestions.</p>
+<h2 id="bashrc">新用户 启动.bashrc</h2>
+<h3 id="profile">.profile</h3>
+<div class="hlcode"><pre><span class="cp"># ~/.profile: executed by Bourne-compatible login shells.</span>
+
+<span class="k">if</span> <span class="p">[</span> <span class="s">&quot;$BASH&quot;</span> <span class="p">];</span> <span class="n">then</span>
+  <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">f</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span> <span class="p">];</span> <span class="n">then</span>
+    <span class="p">.</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span>
+  <span class="n">fi</span>
+<span class="n">fi</span>
+
+<span class="n">mesg</span> <span class="n">n</span> <span class="o">||</span> <span class="nb">true</span>
+</pre></div>
+
+
+<h3 id="bashrc_1">.bashrc</h3>
+<div class="hlcode"><pre># ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don&#39;t do anything
+[ -z &quot;<span class="nv">$PS1</span>&quot; ] <span class="err">&amp;&amp;</span> return
+
+# don&#39;t put duplicate lines in the history. See bash(1) for more options
+# ... or force ignoredups and ignorespace
+#HISTCONTROL=ignoredups:ignorespace
+
+# append to the history file, don&#39;t overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+#HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] <span class="err">&amp;&amp;</span> eval &quot;$(SHELL=/bin/sh lesspipe)&quot;
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z &quot;<span class="nv">$debian_chroot</span>&quot; ] <span class="err">&amp;&amp;</span> [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we &quot;want&quot; color)
+case &quot;<span class="nv">$TERM</span>&quot; in
+    xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n &quot;<span class="nv">$force_color_prompt</span>&quot; ]; then
+    if [ -x /usr/bin/tput ] <span class="err">&amp;&amp;</span> tput setaf 1 &gt;<span class="ni">&amp;/dev/null;</span> then
+    # We have color support; assume it&#39;s compliant with Ecma-48
+    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+    # a case would tend to support setf rather than setaf.)
+    color_prompt=yes
+    else
+    color_prompt=
+    fi
+fi
+
+if [ &quot;<span class="nv">$color_prompt</span>&quot; = yes ]; then
+    PS1=&#39;<span class="cp">${</span><span class="n">debian_chroot</span><span class="p">:</span><span class="o">+</span><span class="p">(</span><span class="err">$</span><span class="n">debian_chroot</span><span class="p">)</span><span class="cp">}</span>\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ &#39;
+else
+    PS1=&#39;<span class="cp">${</span><span class="n">debian_chroot</span><span class="p">:</span><span class="o">+</span><span class="p">(</span><span class="err">$</span><span class="n">debian_chroot</span><span class="p">)</span><span class="cp">}</span>\u@\h:\w\$ &#39;
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case &quot;<span class="nv">$TERM</span>&quot; in
+xterm*|rxvt*)
+    PS1=&quot;\[\e]0;<span class="cp">${</span><span class="n">debian_chroot</span><span class="p">:</span><span class="o">+</span><span class="p">(</span><span class="err">$</span><span class="n">debian_chroot</span><span class="p">)</span><span class="cp">}</span>\u@\h: \w\a\]<span class="nv">$PS1</span>&quot;
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors <span class="err">&amp;&amp;</span> eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;
+    alias ls=&#39;ls --color=auto&#39;
+    #alias dir=&#39;dir --color=auto&#39;
+    #alias vdir=&#39;vdir --color=auto&#39;
+
+    alias grep=&#39;grep --color=auto&#39;
+    alias fgrep=&#39;fgrep --color=auto&#39;
+    alias egrep=&#39;egrep --color=auto&#39;
+fi
+
+# some more ls aliases
+alias ll=&#39;ls -alF&#39;
+alias la=&#39;ls -A&#39;
+alias l=&#39;ls -CF&#39;
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don&#39;t need to enable
+# this, if it&#39;s already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+#if [ -f /etc/bash_completion ] <span class="err">&amp;&amp;</span> ! shopt -oq posix; then
+#    . /etc/bash_completion
+#fi
+</pre></div>
+
+
+<h2 id="desktop">Desktop</h2>
+<div class="hlcode"><pre><span class="n">apt</span> <span class="n">install</span> <span class="n">tasksel</span>
+
+<span class="cp"># tasksel --list-tasks</span>
+<span class="n">u</span> <span class="n">manual</span>        <span class="n">Manual</span> <span class="n">package</span> <span class="n">selection</span>
+<span class="n">u</span> <span class="n">lubuntu</span><span class="o">-</span><span class="n">live</span>  <span class="n">Lubuntu</span> <span class="n">live</span> <span class="n">CD</span>
+<span class="n">u</span> <span class="n">ubuntu</span><span class="o">-</span><span class="n">gnome</span><span class="o">-</span><span class="n">live</span>     <span class="n">Ubuntu</span> <span class="n">GNOME</span> <span class="n">live</span> <span class="n">CD</span>
+<span class="n">u</span> <span class="n">ubuntu</span><span class="o">-</span><span class="n">live</span>   <span class="n">Ubuntu</span> <span class="n">live</span> <span class="n">CD</span>
+<span class="n">u</span> <span class="n">ubuntu</span><span class="o">-</span><span class="n">mate</span><span class="o">-</span><span class="n">live</span>      <span class="n">Ubuntu</span> <span class="n">MATE</span> <span class="n">Live</span> <span class="n">CD</span>
+<span class="n">u</span> <span class="n">ubuntustudio</span><span class="o">-</span><span class="n">dvd</span><span class="o">-</span><span class="n">live</span> <span class="n">Ubuntu</span> <span class="n">Studio</span> <span class="n">live</span> <span class="n">DVD</span>
+<span class="n">u</span> <span class="n">ubuntustudio</span><span class="o">-</span><span class="n">live</span>     <span class="n">Ubuntu</span> <span class="n">Studio</span> <span class="n">live</span> <span class="n">CD</span>
+<span class="n">u</span> <span class="n">xubuntu</span><span class="o">-</span><span class="n">live</span>  <span class="n">Xubuntu</span> <span class="n">live</span> <span class="n">CD</span>
+<span class="n">i</span> <span class="n">cloud</span><span class="o">-</span><span class="n">image</span>   <span class="n">Ubuntu</span> <span class="n">Cloud</span> <span class="n">Image</span> <span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+<span class="n">u</span> <span class="n">dns</span><span class="o">-</span><span class="n">server</span>    <span class="n">DNS</span> <span class="n">server</span>
+<span class="n">u</span> <span class="n">lamp</span><span class="o">-</span><span class="n">server</span>   <span class="n">LAMP</span> <span class="n">server</span>
+<span class="n">u</span> <span class="n">mail</span><span class="o">-</span><span class="n">server</span>   <span class="n">Mail</span> <span class="n">server</span>
+<span class="n">u</span> <span class="n">postgresql</span><span class="o">-</span><span class="n">server</span>     <span class="n">PostgreSQL</span> <span class="n">database</span>
+<span class="n">u</span> <span class="n">samba</span><span class="o">-</span><span class="n">server</span>  <span class="n">Samba</span> <span class="n">file</span> <span class="n">server</span>
+<span class="n">u</span> <span class="n">ubuntu</span><span class="o">-</span><span class="n">desktop</span>        <span class="n">Ubuntu</span> <span class="n">desktop</span>
+<span class="n">u</span> <span class="n">ubuntu</span><span class="o">-</span><span class="n">usb</span>    <span class="n">Ubuntu</span> <span class="n">desktop</span> <span class="n">USB</span>
+<span class="n">u</span> <span class="n">virt</span><span class="o">-</span><span class="n">host</span>     <span class="n">Virtual</span> <span class="n">Machine</span> <span class="n">host</span>
+<span class="n">i</span> <span class="n">openssh</span><span class="o">-</span><span class="n">server</span>        <span class="n">OpenSSH</span> <span class="n">server</span>
+<span class="n">i</span> <span class="n">server</span>        <span class="n">Basic</span> <span class="n">Ubuntu</span> <span class="n">server</span>
+</pre></div>
+
+
+<h3 id="pkexec">pkexec 命令</h3>
+<p>修复破坏的sudoer 文件</p>
+<div class="hlcode"><pre><span class="n">pkexec</span> <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sudoer</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

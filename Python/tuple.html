@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>tuple - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python">Python</a>&nbsp;&#187;&nbsp;tuple
+    <span class="updated">Page Updated&nbsp;
+      2018-08-17 21:27
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">tuple</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">元组</a><ul>
+<li><a href="#_2">定义元组</a></li>
+<li><a href="#_3">元组常用操作</a><ul>
+<li><a href="#count">count 计数</a></li>
+<li><a href="#index">index 索引</a></li>
+<li><a href="#len">len 长度</a></li>
+<li><a href="#_4">下标操作及切片</a></li>
+<li><a href="#packing-unpacking">Packing &amp; Unpacking</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">元组</h1>
+<p>元组是不可变的结构<br />
+元组和列表的大多数地方相似</p>
+<h2 id="_2">定义元组</h2>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="n">T</span> <span class="o">=</span> <span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">27</span><span class="p">]:</span> <span class="n">T</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="n">T</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+
+<h2 id="_3">元组常用操作</h2>
+<h3 id="count">count 计数</h3>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">name</span>  <span class="o">=</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">Michelle</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">name</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">name</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="mi">0</span>
+</pre></div>
+
+
+<h3 id="index">index 索引</h3>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">name</span>  <span class="o">=</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">Michelle</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">name</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="mi">0</span>
+</pre></div>
+
+
+<h3 id="len">len 长度</h3>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">33</span><span class="p">]</span><span class="o">:</span> <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">34</span><span class="p">]</span><span class="o">:</span> <span class="n">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">34</span><span class="p">]</span><span class="o">:</span> <span class="mi">3</span>
+</pre></div>
+
+
+<h3 id="_4">下标操作及切片</h3>
+<div class="hlcode"><pre><span class="nv">In</span> <span class="p">[</span><span class="m">7</span><span class="p">]</span><span class="s-Atom">:</span> <span class="nv">T</span>
+<span class="nv">Out</span><span class="p">[</span><span class="m">7</span><span class="p">]</span><span class="s-Atom">:</span> <span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+
+<span class="nv">In</span> <span class="p">[</span><span class="m">8</span><span class="p">]</span><span class="s-Atom">:</span> <span class="nv">T</span><span class="p">[</span><span class="m">3</span><span class="s-Atom">:</span><span class="m">5</span><span class="p">]</span>
+<span class="nv">Out</span><span class="p">[</span><span class="m">8</span><span class="p">]</span><span class="s-Atom">:</span> <span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+
+<span class="nv">In</span> <span class="p">[</span><span class="m">9</span><span class="p">]</span><span class="s-Atom">:</span> <span class="nv">T</span><span class="p">[</span><span class="m">3</span><span class="s-Atom">:</span><span class="p">]</span>
+<span class="nv">Out</span><span class="p">[</span><span class="m">9</span><span class="p">]</span><span class="s-Atom">:</span> <span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+
+<span class="nv">In</span> <span class="p">[</span><span class="m">10</span><span class="p">]</span><span class="s-Atom">:</span> <span class="nv">T</span><span class="p">[</span><span class="s-Atom">:</span><span class="p">]</span>
+<span class="nv">Out</span><span class="p">[</span><span class="m">10</span><span class="p">]</span><span class="s-Atom">:</span> <span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+
+<span class="nv">In</span> <span class="p">[</span><span class="m">11</span><span class="p">]</span><span class="s-Atom">:</span> <span class="nv">T</span><span class="p">[</span><span class="m">3</span><span class="p">:-</span><span class="m">2</span><span class="p">]</span>
+<span class="nv">Out</span><span class="p">[</span><span class="m">11</span><span class="p">]</span><span class="s-Atom">:</span> <span class="p">()</span>
+
+<span class="nv">In</span> <span class="p">[</span><span class="m">12</span><span class="p">]</span><span class="s-Atom">:</span> <span class="nv">T</span><span class="p">[</span><span class="m">3</span><span class="p">:-</span><span class="m">1</span><span class="p">]</span>
+<span class="nv">Out</span><span class="p">[</span><span class="m">12</span><span class="p">]</span><span class="s-Atom">:</span> <span class="p">(</span><span class="m">4</span><span class="p">,)</span>
+
+<span class="nv">In</span> <span class="p">[</span><span class="m">13</span><span class="p">]</span><span class="s-Atom">:</span> <span class="nv">T</span><span class="p">[</span><span class="o">-</span><span class="m">4</span><span class="p">:-</span><span class="m">1</span><span class="p">]</span>
+<span class="nv">Out</span><span class="p">[</span><span class="m">13</span><span class="p">]</span><span class="s-Atom">:</span> <span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+
+<span class="nv">In</span> <span class="p">[</span><span class="m">14</span><span class="p">]</span><span class="s-Atom">:</span> <span class="nv">T</span><span class="p">[</span><span class="m">1</span><span class="s-Atom">:</span><span class="m">6</span><span class="s-Atom">:</span><span class="m">2</span><span class="p">]</span>
+<span class="nv">Out</span><span class="p">[</span><span class="m">14</span><span class="p">]</span><span class="s-Atom">:</span> <span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+
+<span class="nv">In</span> <span class="p">[</span><span class="m">15</span><span class="p">]</span><span class="s-Atom">:</span> <span class="nv">T</span><span class="p">[</span><span class="s-Atom">::-</span><span class="m">1</span><span class="p">]</span>
+<span class="nv">Out</span><span class="p">[</span><span class="m">15</span><span class="p">]</span><span class="s-Atom">:</span> <span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+
+<span class="nv">In</span> <span class="p">[</span><span class="m">16</span><span class="p">]</span><span class="s-Atom">:</span> <span class="nv">T</span><span class="p">[</span><span class="s-Atom">::</span><span class="m">2</span><span class="p">]</span>
+<span class="nv">Out</span><span class="p">[</span><span class="m">16</span><span class="p">]</span><span class="s-Atom">:</span> <span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="packing-unpacking">Packing &amp; Unpacking</h3>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">42</span><span class="p">]:</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">43</span><span class="p">]:</span> <span class="n">x</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">43</span><span class="p">]:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">44</span><span class="p">]:</span> <span class="n">y</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">44</span><span class="p">]:</span> <span class="mi">2</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">45</span><span class="p">]:</span> <span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">46</span><span class="p">]:</span> <span class="n">x</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">46</span><span class="p">]:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">48</span><span class="p">]:</span> <span class="n">y</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">48</span><span class="p">]:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">49</span><span class="p">]:</span> <span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">50</span><span class="p">]:</span> <span class="n">x</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">50</span><span class="p">]:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">51</span><span class="p">]:</span> <span class="n">y</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">51</span><span class="p">]:</span> <span class="mi">4</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">52</span><span class="p">]:</span> <span class="n">_</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">52</span><span class="p">]:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">53</span><span class="p">]:</span> <span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">54</span><span class="p">]:</span> <span class="n">x</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">54</span><span class="p">]:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">55</span><span class="p">]:</span> <span class="n">y</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">55</span><span class="p">]:</span> <span class="mi">2</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">56</span><span class="p">]:</span> <span class="n">z</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">56</span><span class="p">]:</span> <span class="mi">3</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">68</span><span class="p">]:</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">69</span><span class="p">]:</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">70</span><span class="p">]:</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">71</span><span class="p">]:</span> <span class="n">x</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">71</span><span class="p">]:</span> <span class="mi">2</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">72</span><span class="p">]:</span> <span class="n">y</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">72</span><span class="p">]:</span> <span class="mi">1</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

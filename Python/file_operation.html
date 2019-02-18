@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>file_operation 文件操作 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python">Python</a>&nbsp;&#187;&nbsp;file_operation 文件操作
+    <span class="updated">Page Updated&nbsp;
+      2018-08-19 11:30
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">file_operation 文件操作</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">文件操作</a><ul>
+<li><a href="#_2">标准模式</a><ul>
+<li><a href="#r">r 只读打开</a></li>
+<li><a href="#w">w 只写打开</a></li>
+<li><a href="#x">x 创建写入</a></li>
+<li><a href="#a">a 追加</a></li>
+<li><a href="#b">b 二进制模式</a></li>
+<li><a href="#t">t 文本</a></li>
+</ul>
+</li>
+<li><a href="#_3">模式</a><ul>
+<li><a href="#r_1">r+ 可读写</a></li>
+<li><a href="#w_1">w+ 清零读写</a></li>
+<li><a href="#a_1">a+</a></li>
+</ul>
+</li>
+<li><a href="#u">U模式</a><ul>
+<li><a href="#ru">rU</a></li>
+<li><a href="#ru_1">r+U</a></li>
+</ul>
+</li>
+<li><a href="#_4">二进制模式</a><ul>
+<li><a href="#rb">rb</a></li>
+<li><a href="#wb">wb</a></li>
+<li><a href="#ab">ab</a></li>
+<li><a href="#tell">tell()</a></li>
+</ul>
+</li>
+<li><a href="#_5">文件对象的方法</a><ul>
+<li><a href="#open">open 打开</a><ul>
+<li><a href="#buffering">buffering</a></li>
+<li><a href="#encoding">encoding</a></li>
+<li><a href="#errors">errors</a></li>
+<li><a href="#newline">newline</a></li>
+<li><a href="#closedf">closedf</a></li>
+</ul>
+</li>
+<li><a href="#readline">readline 行读取</a></li>
+<li><a href="#readlines">readlines 多行读取</a></li>
+<li><a href="#read">read 读取</a></li>
+<li><a href="#write">write 写入</a></li>
+<li><a href="#close">close 关闭</a></li>
+</ul>
+</li>
+<li><a href="#with">with语句</a><ul>
+<li><a href="#_6">单词统计</a></li>
+</ul>
+</li>
+<li><a href="#_7">查找</a><ul>
+<li><a href="#seek">seek 文件指针</a></li>
+<li><a href="#tell_1">tell 指针位置</a></li>
+<li><a href="#flush">flush 缓冲</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">文件操作</h1>
+<h2 id="_2">标准模式</h2>
+<h3 id="r">r 只读打开</h3>
+<p>只读模式（默认） 文件必须存在</p>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h3 id="w">w 只写打开</h3>
+<p>只写文件，若文件存在则文件长度清为0，即该文件内容会消失。若文件不存在则建立该文件。</p>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h3 id="x">x 创建写入</h3>
+<p>创建并写入一个新文件， 要求文件事先不存在</p>
+<h3 id="a">a 追加</h3>
+<p>以附加的方式打开只写文件。</p>
+<p>若文件不存在，则会建立该文件，并在尾部追加</p>
+<p>如果文件存在，写入的数据会被加到文件尾，即文件原先的内容会被保留。</p>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h3 id="b">b 二进制模式</h3>
+<p>字节流，将文件就按照字节理解，与字符编码无关，二进制模式操作时，字节操作用bytes类型</p>
+<h3 id="t">t 文本</h3>
+<p>字符流，将文件的字节按照某种字符编码理解，按照字符操作</p>
+<h2 id="_3">模式</h2>
+<h3 id="r_1">r+ 可读写</h3>
+<p>打开可读写的文件，该文件必须存在</p>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h3 id="w_1">w+ 清零读写</h3>
+<p>可读写文件，若文件存在则文件长度清为零，即该文件内容会消失。若文件不存在则建立该文件。</p>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h3 id="a_1">a+</h3>
+<p>以附加方式打开可读写的文件。若文件不存在，则会建立该文件，如果文件存在，写入的数据会被加到文件尾后，即文件原先的内容会被保留。</p>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h2 id="u">U模式</h2>
+<p>"U"表示在读取时，可以将 \r \n \r\n自动转换成 \n （与 r 或 r+ 模式同使用）</p>
+<h3 id="ru">rU</h3>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h3 id="ru_1">r+U</h3>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h2 id="_4">二进制模式</h2>
+<p>表示处理二进制文件（如：FTP发送上传ISO镜像文件，linux可忽略，windows处理二进制文件时需标注）</p>
+<h3 id="rb">rb</h3>
+<p>读取二进制文件</p>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h3 id="wb">wb</h3>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h3 id="ab">ab</h3>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h3 id="tell">tell()</h3>
+<p>打印光标位置</p>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h2 id="_5">文件对象的方法</h2>
+<h3 id="open">open 打开</h3>
+<div class="hlcode"><pre><span class="n">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="sc">&#39;r&#39;</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">closefd</span><span class="o">=</span><span class="n">True</span><span class="p">,</span> <span class="n">opener</span><span class="o">=</span><span class="n">None</span><span class="p">)</span>
+</pre></div>
+
+
+<h4 id="buffering">buffering</h4>
+<p>-1表示缺省大小的buffer</p>
+<p>如果是二进制模式，使用io.DEFAULT_BUFFER_SIZE值，默认为4096或者8192</p>
+<h4 id="encoding">encoding</h4>
+<p>仅文本模式使用</p>
+<p>None表示缺省编码，Linux为UTF-8</p>
+<h4 id="errors">errors</h4>
+<p>None和strict表示有编码错误，将抛出ValueError异常</p>
+<h4 id="newline">newline</h4>
+<p>换行转换，\r, \n. \r\n</p>
+<p>读时，None表示\r, \n, \r\n都被转换为\n，表示不会自动转换通用换行符，其他合法字符表示换行符就是指定字符，就会按照指定字符分行</p>
+<p>写时，None表示\n都会被替换为缺省行分隔符os.linesep; 其他合法字符表示\n会被替换为指定的字符</p>
+<h4 id="closedf">closedf</h4>
+<p>关闭文件描述符，True表示关闭，False会在文件关闭后保持这个描述符</p>
+<h3 id="readline">readline 行读取</h3>
+<p>读取每行的内容</p>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h3 id="readlines">readlines 多行读取</h3>
+<p>读取整个文件，生成列表</p>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h3 id="read">read 读取</h3>
+<p>文件内容替换</p>
+<div class="hlcode"><pre><span class="k">for</span> <span class="n">line</span> <span class="n">in</span> <span class="n">fileinput</span><span class="p">.</span><span class="n">input</span><span class="p">(</span><span class="err">&#39;</span><span class="n">filepath</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="err">&#39;</span><span class="n">oldtext</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">newtext</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</pre></div>
+
+
+<p>修改某行</p>
+<div class="hlcode"><pre><span class="n">with</span> <span class="n">open</span><span class="p">(</span><span class="err">&#39;</span><span class="n">foo</span><span class="p">.</span><span class="n">txt</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">r</span><span class="o">++</span><span class="err">&#39;</span><span class="p">)</span> <span class="n">as</span> <span class="n">f</span><span class="o">:</span>
+    <span class="n">old</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">()</span> 
+    <span class="n">f</span><span class="p">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="err">&#39;</span><span class="n">new</span> <span class="n">line</span><span class="err">\</span><span class="n">n</span><span class="err">&#39;</span> <span class="o">+</span> <span class="n">old</span><span class="p">)</span>
+<span class="n">line</span> <span class="n">before</span>
+</pre></div>
+
+
+<h3 id="write">write 写入</h3>
+<p>写入</p>
+<div class="hlcode"><pre><span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="err">&#39;</span><span class="n">I</span> <span class="n">like</span> <span class="n">apple</span><span class="o">!</span><span class="err">\</span><span class="n">n</span><span class="err">&#39;</span><span class="p">)</span>      <span class="err">#</span> <span class="err">将&#39;</span><span class="n">I</span> <span class="n">like</span> <span class="n">apple</span><span class="err">&#39;写入文件并换行</span>
+</pre></div>
+
+
+<h3 id="close">close 关闭</h3>
+<p>关闭前会调用flush()</p>
+<div class="hlcode"><pre><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>  <span class="err">#关闭文件</span>
+</pre></div>
+
+
+<h2 id="with">with语句</h2>
+<p>为了避免打开文件后忘记关闭，可以通过管理上下文，即：</p>
+<div class="hlcode"><pre><span class="n">with</span> <span class="n">open</span><span class="p">(</span><span class="err">&#39;</span><span class="n">log</span><span class="sc">&#39;,&#39;</span><span class="n">r</span><span class="err">&#39;</span><span class="p">)</span> <span class="n">as</span> <span class="n">f</span><span class="o">:</span>
+    <span class="n">pass</span>
+</pre></div>
+
+
+<p>如此方式，当with代码块执行完毕时，内部会自动关闭并释放文件资源。</p>
+<p>在Python 2.7 后，with又支持同时对多个文件的上下文进行管理，即：</p>
+<div class="hlcode"><pre><span class="n">with</span> <span class="n">open</span><span class="p">(</span><span class="err">&#39;</span><span class="n">log1</span><span class="err">&#39;</span><span class="p">)</span> <span class="n">as</span> <span class="n">obj1</span><span class="p">,</span> <span class="n">open</span><span class="p">(</span><span class="err">&#39;</span><span class="n">log2</span><span class="err">&#39;</span><span class="p">)</span> <span class="n">as</span> <span class="n">obj2</span><span class="o">:</span>
+    <span class="n">pass</span>
+</pre></div>
+
+
+<h3 id="_6">单词统计</h3>
+<div class="hlcode"><pre><span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">with</span> <span class="n">open</span><span class="p">(</span><span class="err">&#39;</span><span class="n">sample</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="err">&#39;</span><span class="n">utf</span><span class="o">-</span><span class="mi">8</span><span class="err">&#39;</span><span class="p">)</span> <span class="n">as</span> <span class="n">f</span><span class="o">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="n">in</span> <span class="n">f</span><span class="o">:</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="n">in</span> <span class="n">map</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">words</span><span class="p">)</span><span class="o">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">print</span><span class="p">(</span><span class="n">sorted</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">lambda</span> <span class="n">item</span><span class="o">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="n">True</span><span class="p">))</span>
+</pre></div>
+
+
+<h2 id="_7">查找</h2>
+<h3 id="seek">seek 文件指针</h3>
+<p>移动文件指针位置，offset偏移多少字节，whence从哪里开始</p>
+<div class="hlcode"><pre><span class="n">seek</span><span class="p">(</span><span class="n">offset</span><span class="p">[,</span> <span class="n">whence</span><span class="p">])</span>
+</pre></div>
+
+
+<h3 id="tell_1">tell 指针位置</h3>
+<h3 id="flush">flush 缓冲</h3>
+<p>刷新缓冲，即将缓冲区的数据写入磁盘</p>
+<div class="hlcode"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="err">&#39;</span><span class="n">test</span><span class="p">.</span><span class="n">txt</span><span class="err">&#39;</span><span class="p">,</span> <span class="sc">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello1</span><span class="err">\</span><span class="n">n</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">f</span><span class="p">.</span><span class="n">flush</span><span class="p">()</span>
+<span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello2</span><span class="err">\</span><span class="n">n</span><span class="err">&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>实时生成进度条 </p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">sys</span><span class="p">,</span> <span class="n">time</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">sys</span><span class="p">.</span><span class="n">stdout</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="sc">&#39;#&#39;</span><span class="p">);</span>
+    <span class="n">sys</span><span class="p">.</span><span class="n">stdout</span><span class="p">.</span><span class="n">flush</span><span class="p">()</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>generator 生成器 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python">Python</a>&nbsp;&#187;&nbsp;generator 生成器
+    <span class="updated">Page Updated&nbsp;
+      2018-08-22 11:18
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">generator 生成器</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">生成器</a><ul>
+<li><a href="#_2">定义</a></li>
+<li><a href="#_3">生成器对象</a></li>
+<li><a href="#_4">生成器调用</a></li>
+</ul>
+</li>
+<li><a href="#_5">应用</a><ul>
+<li><a href="#_6">斐波那契数列</a></li>
+<li><a href="#yield-from">yield from</a></li>
+<li><a href="#coroutine">协程 coroutine</a><ul>
+<li><a href="#_7">实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_8">生成器表达式</a></li>
+<li><a href="#_9">语法</a></li>
+</ul>
+</div>
+<h1 id="_1">生成器</h1>
+<h2 id="_2">定义</h2>
+<p>生成器(generator)的编写方法和函数定义类似。只是在return的地方改成yield。并且可以有多个yield。<br />
+当生成器遇到一个yield的时候，会暂停运行生成器，返回yield的后面的值。再次调用的时候，会从刚刚暂停的地方继续运行，直到下一个yield。</p>
+<h2 id="_3">生成器对象</h2>
+<p>生成器对象是一个可迭代对象，是一个迭代器</p>
+<h2 id="_4">生成器调用</h2>
+<p>生成器只有在调用的时候才会生成相应的数据</p>
+<div class="hlcode"><pre><span class="k">In</span> <span class="err">[</span><span class="mi">18</span><span class="cp">]</span>: g = ((i*2 for i in range(2)))
+
+In <span class="cp">[</span><span class="mi">19</span><span class="cp">]</span>: g.__next__()
+Out<span class="cp">[</span><span class="mi">19</span><span class="cp">]</span>: 0
+
+In <span class="cp">[</span><span class="mi">20</span><span class="cp">]</span>: g.__next__()
+Out<span class="cp">[</span><span class="mi">20</span><span class="cp">]</span>: 2
+
+In <span class="cp">[</span><span class="mi">21</span><span class="cp">]</span>: g.__next__()
+---------------------------------------------------------------------------
+StopIteration                             Traceback (most recent call last)
+<span class="nt">&lt;ipython</span><span class="na">-input-21-42e506b10868</span><span class="nt">&gt;</span> in <span class="nt">&lt;module&gt;</span>()
+----&gt; 1 g.__next__()
+
+StopIteration:
+</pre></div>
+
+
+<h1 id="_5">应用</h1>
+<h2 id="_6">斐波那契数列</h2>
+<p>函数生成方法</p>
+<div class="hlcode"><pre><span class="n">def</span> <span class="n">fib</span><span class="p">(</span><span class="n">max</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">max</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">fib</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">1</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">5</span>
+<span class="mi">8</span>
+<span class="mi">13</span>
+<span class="mi">21</span>
+<span class="mi">34</span>
+<span class="mi">55</span>
+</pre></div>
+
+
+<p>生成器方法</p>
+<div class="hlcode"><pre><span class="n">def</span> <span class="n">fib</span><span class="p">(</span><span class="n">max</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">max</span><span class="o">:</span>
+        <span class="n">yield</span> <span class="n">b</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">fib</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span>
+<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span>
+<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span>
+<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">__next__</span><span class="p">())</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">1</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+</pre></div>
+
+
+<h2 id="yield-from">yield from</h2>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">197</span><span class="p">]</span><span class="o">:</span> <span class="n">def</span> <span class="n">inc</span><span class="p">()</span><span class="o">:</span>
+     <span class="p">...</span><span class="o">:</span>     <span class="n">yield</span> <span class="n">from</span> <span class="n">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+     <span class="p">...</span><span class="o">:</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">198</span><span class="p">]</span><span class="o">:</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">inc</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">199</span><span class="p">]</span><span class="o">:</span> <span class="n">next</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">199</span><span class="p">]</span><span class="o">:</span> <span class="mi">0</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">200</span><span class="p">]</span><span class="o">:</span> <span class="n">next</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">200</span><span class="p">]</span><span class="o">:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">201</span><span class="p">]</span><span class="o">:</span> <span class="n">next</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">201</span><span class="p">]</span><span class="o">:</span> <span class="mi">2</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">202</span><span class="p">]</span><span class="o">:</span> <span class="n">def</span> <span class="n">counter</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">:</span>
+     <span class="p">...</span><span class="o">:</span>     <span class="k">for</span> <span class="n">x</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">:</span>
+     <span class="p">...</span><span class="o">:</span>         <span class="n">yield</span> <span class="n">x</span>
+     <span class="p">...</span><span class="o">:</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">203</span><span class="p">]</span><span class="o">:</span> <span class="n">def</span> <span class="n">inc</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">:</span>
+     <span class="p">...</span><span class="o">:</span>     <span class="n">yield</span> <span class="n">from</span> <span class="n">counter</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+     <span class="p">...</span><span class="o">:</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">204</span><span class="p">]</span><span class="o">:</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">inc</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">205</span><span class="p">]</span><span class="o">:</span> <span class="n">next</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">205</span><span class="p">]</span><span class="o">:</span> <span class="mi">0</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">206</span><span class="p">]</span><span class="o">:</span> <span class="n">next</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">206</span><span class="p">]</span><span class="o">:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">207</span><span class="p">]</span><span class="o">:</span> <span class="n">next</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">207</span><span class="p">]</span><span class="o">:</span> <span class="mi">2</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">208</span><span class="p">]</span><span class="o">:</span> <span class="n">next</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">208</span><span class="p">]</span><span class="o">:</span> <span class="mi">3</span>
+</pre></div>
+
+
+<h2 id="coroutine">协程 coroutine</h2>
+<p>比进程，线程轻量级</p>
+<p>是在用户空间调度函数的一种实现</p>
+<p>asyncio是协程的实现</p>
+<h3 id="_7">实现</h3>
+<p>即两个生成器A B</p>
+<p>next(A) 之后，A执行到yield语句暂停，然后去执行next(B), B执行到yield之后也暂停，然后再次调用next(A)， 周而复始，实现调度效果。</p>
+<p>可通过调度策略来实现切换操作</p>
+<h1 id="_8">生成器表达式</h1>
+<p>生成器本身并没有返回任何值，只是返回了一个生成器对象</p>
+<h1 id="_9">语法</h1>
+<p>其返回一个生成器，为惰性求值，需要的时候才计算值</p>
+<div class="hlcode"><pre><span class="p">(</span><span class="err">返回值</span> <span class="k">for</span> <span class="err">元素</span> <span class="n">in</span> <span class="err">可迭代对象</span> <span class="k">if</span> <span class="err">条件</span><span class="p">)</span>
+</pre></div>
+
+
+<p>将列表生成式的中括号变成小括号即是生成器</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">type</span><span class="p">([</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="n">type</span><span class="p">((</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)))</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="n">generator</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">143</span><span class="p">]</span><span class="o">:</span> <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;{:04}&quot;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">144</span><span class="p">]</span><span class="o">:</span> <span class="n">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">144</span><span class="p">]</span><span class="o">:</span> <span class="err">&#39;</span><span class="mo">0001</span><span class="err">&#39;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">145</span><span class="p">]</span><span class="o">:</span> <span class="n">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">145</span><span class="p">]</span><span class="o">:</span> <span class="err">&#39;</span><span class="mo">0002</span><span class="err">&#39;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">146</span><span class="p">]</span><span class="o">:</span> <span class="n">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">146</span><span class="p">]</span><span class="o">:</span> <span class="err">&#39;</span><span class="mo">0003</span><span class="err">&#39;</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>calculation - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python">Python</a>&nbsp;&#187;&nbsp;calculation
+    <span class="updated">Page Updated&nbsp;
+      2019-01-26 11:31
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">calculation</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">运算符</a><ul>
+<li><a href="#_2">运算符优先级</a></li>
+<li><a href="#_3">算数运算</a><ul>
+<li><a href="#43">+</a></li>
+<li><a href="#45">-</a></li>
+<li><a href="#42">*</a></li>
+<li><a href="#_4">/</a></li>
+<li><a href="#_5">%</a></li>
+<li><a href="#42_1">**</a></li>
+</ul>
+</li>
+<li><a href="#_6">位运算</a><ul>
+<li><a href="#_7">\&amp;</a></li>
+<li><a href="#124">|</a></li>
+<li><a href="#_8">\~</a></li>
+<li><a href="#_9">^</a></li>
+<li><a href="#_10">\&lt;&lt;</a></li>
+<li><a href="#62">>&gt;</a></li>
+</ul>
+</li>
+<li><a href="#_11">比较运算符</a><ul>
+<li><a href="#_12">==</a></li>
+<li><a href="#33">!=</a></li>
+<li><a href="#62_1">></a></li>
+<li><a href="#_13">\&lt;</a></li>
+<li><a href="#62_2">>=</a></li>
+<li><a href="#_14">\&lt;=</a></li>
+<li><a href="#_15">链式比较</a></li>
+</ul>
+</li>
+<li><a href="#_16">逻辑运算符</a><ul>
+<li><a href="#and">and</a></li>
+<li><a href="#or">or</a></li>
+<li><a href="#not">not</a></li>
+</ul>
+</li>
+<li><a href="#_17">赋值运算符</a><ul>
+<li><a href="#_18">=</a></li>
+</ul>
+</li>
+<li><a href="#_19">成员运算符</a><ul>
+<li><a href="#in">in</a></li>
+<li><a href="#not-in">not in</a></li>
+</ul>
+</li>
+<li><a href="#_20">身份运算符</a><ul>
+<li><a href="#is">is</a></li>
+<li><a href="#is-not">is not</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">运算符</h1>
+<h3 id="_2">运算符优先级</h3>
+<div class="hlcode"><pre><span class="err">算数</span> <span class="o">&gt;</span> <span class="err">位</span> <span class="o">&gt;</span> <span class="err">身份</span> <span class="o">&gt;</span> <span class="err">成员</span> <span class="o">&gt;</span> <span class="err">逻辑</span>
+</pre></div>
+
+
+<h2 id="_3">算数运算</h2>
+<h3 id="43">+</h3>
+<h3 id="45">-</h3>
+<h3 id="42">*</h3>
+<h3 id="_4">/</h3>
+<h3 id="_5">%</h3>
+<h3 id="42_1">**</h3>
+<h2 id="_6">位运算</h2>
+<h3 id="_7">\&amp;</h3>
+<h3 id="124">|</h3>
+<h3 id="_8">\~</h3>
+<h3 id="_9">^</h3>
+<h3 id="_10">\&lt;&lt;</h3>
+<h3 id="62">>&gt;</h3>
+<p>除以2的整数倍</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="mi">32</span> <span class="c1">// 4</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="mi">8</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="mi">32</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="mi">8</span>
+</pre></div>
+
+
+<h2 id="_11">比较运算符</h2>
+<h3 id="_12">==</h3>
+<h3 id="33">!=</h3>
+<h3 id="62_1">></h3>
+<h3 id="_13">\&lt;</h3>
+<h3 id="62_2">>=</h3>
+<h3 id="_14">\&lt;=</h3>
+<h3 id="_15">链式比较</h3>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="mi">4</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="o">&gt;</span> <span class="mi">2</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="n">True</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="mi">4</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="o">&gt;</span> <span class="mi">2</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="n">False</span>
+</pre></div>
+
+
+<h2 id="_16">逻辑运算符</h2>
+<h3 id="and">and</h3>
+<h3 id="or">or</h3>
+<h3 id="not">not</h3>
+<h2 id="_17">赋值运算符</h2>
+<h3 id="_18">=</h3>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="mi">3</span>
+</pre></div>
+
+
+<h2 id="_19">成员运算符</h2>
+<h3 id="in">in</h3>
+<h3 id="not-in">not in</h3>
+<h2 id="_20">身份运算符</h2>
+<h3 id="is">is</h3>
+<h3 id="is-not">is not</h3>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

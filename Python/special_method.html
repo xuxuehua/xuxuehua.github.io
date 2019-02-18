@@ -1,0 +1,491 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>special_method 特殊方法 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python">Python</a>&nbsp;&#187;&nbsp;special_method 特殊方法
+    <span class="updated">Page Updated&nbsp;
+      2018-08-28 14:39
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">special_method 特殊方法</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">魔术方法和特殊方法</a><ul>
+<li><a href="#_2">对象的创建与销毁</a><ul>
+<li><a href="#_3">可视化对象</a></li>
+</ul>
+</li>
+<li><a href="#_4">特殊方法</a><ul>
+<li><a href="#_5">运算符计算</a></li>
+<li><a href="#__getattr__">__getattr__</a></li>
+<li><a href="#__setattr__">__setattr__</a></li>
+<li><a href="#__delattr__">__delattr__</a></li>
+<li><a href="#bool">bool 函数</a></li>
+<li><a href="#hashhash">hash与可hash对象</a></li>
+<li><a href="#_6">可调用对象</a></li>
+</ul>
+</li>
+<li><a href="#_7">运算符重载</a><ul>
+<li><a href="#_8">比较运算符重载</a></li>
+<li><a href="#_9">算数运算符重载</a></li>
+</ul>
+</li>
+<li><a href="#_10">反射</a><ul>
+<li><a href="#getattr">getattr</a></li>
+<li><a href="#hasattr">hasattr</a></li>
+<li><a href="#setattr">setattr</a></li>
+<li><a href="#delattr">delattr</a></li>
+</ul>
+</li>
+<li><a href="#with">with 语句实现的方法</a></li>
+<li><a href="#_11">描述器</a><ul>
+<li><a href="#property">property 装饰器的实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">魔术方法和特殊方法</h1>
+<h2 id="_2">对象的创建与销毁</h2>
+<p><code>__new__</code> 创建对象<br />
+<code>__init__</code> 初始化对象<br />
+<code>__del__</code> 销毁对象 （销毁对象时调用）</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;call __new__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;call __init__&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;call method&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;call __del__&#39;</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
+
+<span class="k">del</span> <span class="n">a</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">call</span> <span class="n">__new__</span>
+<span class="n">call</span> <span class="n">__init__</span>
+<span class="n">call</span> <span class="n">method</span>
+<span class="n">call</span> <span class="n">__del__</span>
+</pre></div>
+
+
+<h3 id="_3">可视化对象</h3>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;call __str__ name is {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;call __bytes__ name is {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">(</span><span class="s">&#39;Rick&#39;</span><span class="p">)</span>
+
+<span class="c">#其实调用的是print(repr(a))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">call</span> <span class="n">__str__</span> <span class="n">name</span> <span class="ow">is</span> <span class="n">Rick</span>
+<span class="n">call</span> <span class="n">__str__</span> <span class="n">name</span> <span class="ow">is</span> <span class="n">Rick</span>
+<span class="n">b</span><span class="s">&#39;call __bytes__ name is Rick&#39;</span>
+</pre></div>
+
+
+<h2 id="_4">特殊方法</h2>
+<p>Python 的多范式依赖于Python对象中的特殊方法</p>
+<h3 id="_5">运算符计算</h3>
+<p>Python 中两个对象能否进行加法运算，需要确认相应的对象是否含有<code>__add__()</code>方法</p>
+<div class="hlcode"><pre><span class="err">&#39;</span><span class="n">abc</span><span class="err">&#39;</span> <span class="o">+</span> <span class="err">&#39;</span><span class="n">xyz</span><span class="err">&#39;</span>
+<span class="cp">#实际上执行了如下操作</span>
+<span class="err">&#39;</span><span class="n">abc</span><span class="err">&#39;</span><span class="p">.</span><span class="n">__add__</span><span class="p">(</span><span class="err">&#39;</span><span class="n">xyz</span><span class="err">&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>其实内置函数也是调用对象的特殊方法</p>
+<div class="hlcode"><pre><span class="n">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="cp"># 实际上是调用的</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="n">__len__</span><span class="p">()</span>
+</pre></div>
+
+
+<p>表元素引用方式, 调用<code>__getitem__()</code>方法</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">li</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">li</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="mi">4</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">li</span><span class="p">.</span><span class="n">__getitem__</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="mi">4</span>
+</pre></div>
+
+
+<p><code>__call__()</code>特殊方法的对象都会被当做函数</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">SampleMore</span><span class="p">(</span><span class="n">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__call__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">5</span>
+
+<span class="n">add</span> <span class="o">=</span> <span class="n">SampleMore</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">map</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]))</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">7</span>
+<span class="o">&lt;</span><span class="n">map</span> <span class="n">object</span> <span class="n">at</span> <span class="mh">0x10ebd4588</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="__getattr__"><code>__getattr__</code></h3>
+<p><code>__getattr__(self, name)</code> 来查询即时生成的属性。如果通过<code>__dict__</code>方法无法找到改属性，Python会调用<code>__getattr__</code>方法来即时生成属性。</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Bird</span><span class="p">(</span><span class="n">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">feather</span> <span class="o">=</span> <span class="n">True</span>
+
+
+<span class="n">class</span> <span class="n">Chicken</span><span class="p">(</span><span class="n">Bird</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">fly</span> <span class="o">=</span> <span class="n">False</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+
+    <span class="n">def</span> <span class="n">__getattr__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="err">&#39;</span><span class="n">adult</span><span class="err">&#39;</span><span class="o">:</span>
+            <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="o">:</span>
+                <span class="k">return</span> <span class="n">True</span>
+            <span class="nl">else:</span>
+                <span class="k">return</span> <span class="n">False</span>
+        <span class="n">raise</span> <span class="n">AttributeError</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+<span class="n">summer</span> <span class="o">=</span> <span class="n">Chicken</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">summer</span><span class="p">.</span><span class="n">adult</span><span class="p">)</span>
+<span class="n">summer</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">print</span><span class="p">(</span><span class="n">summer</span><span class="p">.</span><span class="n">adult</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">True</span>
+<span class="n">False</span>
+</pre></div>
+
+
+<h3 id="__setattr__"><code>__setattr__</code></h3>
+<p><code>__setattr__(self, name, value)</code> <br />
+可用于修改属性，可用于任意属性。</p>
+<h3 id="__delattr__"><code>__delattr__</code></h3>
+<p><code>__delattr__(self, name)</code> <br />
+可用于删除属性，可用于任意属性。</p>
+<h3 id="bool">bool 函数</h3>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">Grok</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span>
+
+<span class="n">grok1</span> <span class="o">=</span> <span class="n">Grok</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">grok2</span> <span class="o">=</span> <span class="n">Grok</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">grok1</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">grok2</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="bp">False</span>
+<span class="bp">True</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">LIST</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">args</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+
+<span class="n">lst</span> <span class="o">=</span> <span class="n">LIST</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">lst2</span> <span class="o">=</span> <span class="n">LIST</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lst2</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">3</span>
+<span class="mi">0</span>
+</pre></div>
+
+
+<h3 id="hashhash">hash与可hash对象</h3>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">Grok</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+
+<span class="n">grok</span> <span class="o">=</span> <span class="n">Grok</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">grok</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">4306027616</span>
+</pre></div>
+
+
+<h3 id="_6">可调用对象</h3>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">InjectUser</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_user</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">default_user</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&#39;user&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+            <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrap</span>
+
+<span class="nd">@InjectUser</span><span class="p">(</span><span class="s">&#39;Rick&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">do_something</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">))</span>
+
+<span class="n">do_something</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Rick</span>
+</pre></div>
+
+
+<h2 id="_7">运算符重载</h2>
+<h3 id="_8">比较运算符重载</h3>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+
+    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;lt&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">age</span>
+
+    <span class="k">def</span> <span class="nf">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;le&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">age</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;eq&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">age</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;ne&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">age</span>
+
+    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;gt&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">age</span>
+
+    <span class="k">def</span> <span class="nf">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;ge&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;=</span> <span class="n">other</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
+
+<span class="n">p2</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">p1</span> <span class="o">&gt;</span> <span class="n">p2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">p1</span> <span class="o">&lt;</span> <span class="n">p2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">gt</span>
+<span class="bp">True</span>
+<span class="n">lt</span>
+<span class="bp">False</span>
+</pre></div>
+
+
+<h3 id="_9">算数运算符重载</h3>
+<p>在Python中，运算符也是通过相应函数实现的</p>
+<p>运算符对应的其实就是类中的一些魔术方法（专有方法）。比如加、减、乘、除对应的就是<code>__add__</code>、<code>__sub__</code>、<code>__mul__</code>、<code>__div__</code></p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Mylist</span><span class="p">(</span><span class="n">object</span><span class="p">)</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__mylist</span><span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="n">in</span> <span class="n">args</span><span class="o">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">__mylist</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">__add__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">len</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">__mylist</span><span class="p">))</span><span class="o">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">__mylist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">__mylist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">other</span>
+
+    <span class="n">def</span> <span class="n">show</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">__mylist</span><span class="p">)</span>
+
+
+<span class="n">l</span> <span class="o">=</span> <span class="n">Mylist</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">l</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">l</span> <span class="o">+</span> <span class="mi">10</span>
+<span class="n">l</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
+</pre></div>
+
+
+<h2 id="_10">反射</h2>
+<p>过字符串映射或修改程序运行时的状态、属性、方法,</p>
+<h3 id="getattr">getattr</h3>
+<p>getattr(object, name, default=None)</p>
+<h3 id="hasattr">hasattr</h3>
+<p>hasattr(object,name)</p>
+<h3 id="setattr">setattr</h3>
+<p>setattr(x, y, v)</p>
+<h3 id="delattr">delattr</h3>
+<p>delattr(x, y)</p>
+<h2 id="with">with 语句实现的方法</h2>
+<p>with 语句可以自动关闭资源</p>
+<p>任何定义了<code>__enter__()</code> 和<code>__exit__()</code>方法的对象都可以用于上下文管理器。文件对象f是内置对象，所以f自动带有这两种特殊方法</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">Resource</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;init&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;enter&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;exit&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Resource</span><span class="p">()</span> <span class="k">as</span> <span class="n">res</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">init</span>
+<span class="n">enter</span>
+<span class="o">&lt;</span><span class="n">__main__</span><span class="o">.</span><span class="n">Resource</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x103995da0</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">__main__</span><span class="o">.</span><span class="n">Resource</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x103995da0</span><span class="o">&gt;</span>
+<span class="nb">exit</span>
+</pre></div>
+
+
+<h2 id="_11">描述器</h2>
+<p>实现了<code>__get__</code>, <code>__set__</code>, <code>__delete__</code> 的方法成为描述器</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+
+<span class="k">class</span> <span class="nc">Number</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">cls</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;set&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;excepted int or float&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="k">del</span> <span class="n">instance</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+<span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Number</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">Number</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+
+<span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>  <span class="c"># 其调用Point.x.__get__(point, Point)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="nb">set</span>
+<span class="nb">set</span>
+<span class="n">get</span>
+<span class="mi">1</span>
+<span class="n">get</span>
+<span class="mi">2</span>
+</pre></div>
+
+
+<h3 id="property">property 装饰器的实现</h3>
+<p>通过描述器实现</p>
+<p>描述器就是一个传递协议</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">Property</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fget</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fset</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fdel</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fget</span> <span class="o">=</span> <span class="n">fget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fset</span> <span class="o">=</span> <span class="n">fset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fdel</span> <span class="o">=</span> <span class="n">fdel</span>
+
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">cls</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fget</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">fset</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fdel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">fdel</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fget</span> <span class="o">=</span> <span class="n">fn</span>
+
+    <span class="k">def</span> <span class="nf">setter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fset</span> <span class="o">=</span> <span class="n">fn</span>
+
+    <span class="k">def</span> <span class="nf">deler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fdel</span> <span class="o">=</span> <span class="n">fn</span>
+
+<span class="k">class</span> <span class="nc">Spam</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__val</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">val</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__val</span>
+
+    <span class="nd">@val.setter</span>
+    <span class="k">def</span> <span class="nf">val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__val</span> <span class="o">=</span> <span class="n">value</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">Spam</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">3</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

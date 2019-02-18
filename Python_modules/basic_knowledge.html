@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>basic_knowledge 模块基础 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python_modules">Python_modules</a>&nbsp;&#187;&nbsp;basic_knowledge 模块基础
+    <span class="updated">Page Updated&nbsp;
+      2018-08-25 00:39
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">basic_knowledge 模块基础</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">模块基本使用</a><ul>
+<li><a href="#_2">定义</a></li>
+<li><a href="#_3">包</a></li>
+<li><a href="#_4">搜索路径</a></li>
+<li><a href="#_5">导入方法</a><ul>
+<li><a href="#_6">优化多个调用</a></li>
+</ul>
+</li>
+<li><a href="#__name__">使用__name__</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">模块基本使用</h1>
+<h2 id="_2">定义</h2>
+<p>.py 文件组成的代码集合就称为模块</p>
+<p>模块分为三种：</p>
+<ul>
+<li>自定义模块</li>
+<li>内置标准模块（又称标准库）</li>
+<li>开源模块</li>
+</ul>
+<p>自定义模块 和开源模块的使用参考 http://www.cnblogs.com/wupeiqi/articles/4963027.html</p>
+<h2 id="_3">包</h2>
+<p>用来从逻辑上组织模块的，本质就是一个目录(含有<code>__init__</code>)</p>
+<p>导入包的本质，就是解释<code>__init__</code> 文件</p>
+<ul>
+<li><code>__init__.py</code> (package_testing 包)</li>
+</ul>
+<div class="hlcode"><pre><span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Package</span> <span class="n">testing</span> <span class="n">file</span><span class="err">&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<ul>
+<li>My_testing.py</li>
+</ul>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">package_testing</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Package</span> <span class="n">testing</span> <span class="n">file</span>
+</pre></div>
+
+
+<p>导入包就是执行<code>__init__</code> 代码，无法执行包内的模块和函数。因此需要在<code>__init__</code> 中加载指定的函数</p>
+<div class="hlcode"><pre><span class="n">from</span> <span class="p">.</span> <span class="n">import</span> <span class="n">test1</span>
+</pre></div>
+
+
+<h2 id="_4">搜索路径</h2>
+<p>Python默认会通过下列路径搜索需要的模块</p>
+<ol>
+<li>程序所在的文件夹</li>
+<li>操作系统环境变量PYTHONPATH所包含的路径</li>
+<li>标准库的安装路径</li>
+</ol>
+<h2 id="_5">导入方法</h2>
+<p>import 的本质就是路径检索</p>
+<p>导入模块的本质就是把Python文件解释一遍</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">module_name</span>
+<span class="n">import</span> <span class="n">module_name_1</span><span class="p">,</span> <span class="n">module_name_2</span>
+<span class="n">from</span> <span class="n">modules</span> <span class="n">import</span> <span class="o">*</span>
+<span class="n">from</span> <span class="n">modules</span> <span class="n">import</span> <span class="n">logger</span> <span class="n">as</span> <span class="n">my_logger</span>
+</pre></div>
+
+
+<h3 id="_6">优化多个调用</h3>
+<p>当导入的模块被多次函数调用，建议是使用</p>
+<div class="hlcode"><pre><span class="nx">from</span> <span class="nx">module_name</span> <span class="kr">import</span> <span class="nx">my_function</span>
+</pre></div>
+
+
+<h2 id="__name__">使用<code>__name__</code></h2>
+<p>当整个程序作为库被import的时候，我们并不需要测试语句。可以使用__name__跳过</p>
+<div class="hlcode"><pre><span class="k">def</span> <span class="nf">lib_func</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">10</span>
+
+<span class="k">def</span> <span class="nf">lib_func_another</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">b</span> <span class="o">+</span> <span class="mi">20</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="mi">101</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">lib_func</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;__name__:&#39;</span><span class="p">,</span> <span class="n">__name__</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">111</span>
+<span class="n">__name__</span><span class="p">:</span> <span class="n">__main__</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

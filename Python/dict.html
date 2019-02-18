@@ -1,0 +1,411 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>dict - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python">Python</a>&nbsp;&#187;&nbsp;dict
+    <span class="updated">Page Updated&nbsp;
+      2018-08-18 10:12
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">dict</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">字典</a><ul>
+<li><a href="#_2">定义字典</a><ul>
+<li><a href="#fromkeys">fromkeys 不常用</a></li>
+</ul>
+</li>
+<li><a href="#_3">字典的常用操作</a><ul>
+<li><a href="#_4">添加元素</a></li>
+<li><a href="#_5">查找元素</a><ul>
+<li><a href="#get">get</a></li>
+<li><a href="#in">in</a></li>
+<li><a href="#keys">keys</a></li>
+<li><a href="#values">values</a></li>
+<li><a href="#items">items</a></li>
+</ul>
+</li>
+<li><a href="#_6">变更元素</a><ul>
+<li><a href="#setdefault">setdefault</a></li>
+<li><a href="#update">update</a></li>
+</ul>
+</li>
+<li><a href="#_7">访问元素</a><ul>
+<li><a href="#key">key</a></li>
+<li><a href="#keys-values-items">keys, values, items 遍历字典</a></li>
+</ul>
+</li>
+<li><a href="#_8">删除元素</a><ul>
+<li><a href="#pop">pop</a></li>
+<li><a href="#popitem">popitem</a></li>
+<li><a href="#del">del</a></li>
+<li><a href="#clear">clear</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_9">字典解析</a><ul>
+<li><a href="#_10">基本语法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">字典</h1>
+<p>字典是一种无序集合<br />
+字典是一种kv结构<br />
+value 可以是任何对象<br />
+key是唯一的<br />
+key必须是可hash 对象</p>
+<h2 id="_2">定义字典</h2>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">27</span><span class="p">]:</span> <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">}</span>
+</pre></div>
+
+
+<p>dict(**kwargs) 使用name=value初始化一个字典</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">86</span><span class="p">]</span><span class="o">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">87</span><span class="p">]</span><span class="o">:</span> <span class="n">x</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">87</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">88</span><span class="p">]</span><span class="o">:</span> <span class="n">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">88</span><span class="p">]</span><span class="o">:</span> <span class="n">dict</span>
+</pre></div>
+
+
+<h3 id="fromkeys">fromkeys 不常用</h3>
+<p>初始化一个新的字典</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">37</span><span class="p">]</span><span class="o">:</span> <span class="n">dict</span><span class="p">.</span><span class="n">fromkeys</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="err">&#39;</span><span class="n">test</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">37</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="mi">1</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">test</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">test</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">test</span><span class="err">&#39;</span><span class="p">}</span>
+</pre></div>
+
+
+<ul>
+<li>坑，少用</li>
+</ul>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">38</span><span class="p">]</span><span class="o">:</span> <span class="n">dict</span><span class="p">.</span><span class="n">fromkeys</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="err">&#39;</span><span class="n">name</span><span class="err">&#39;</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">rick</span><span class="err">&#39;</span><span class="p">},</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">38</span><span class="p">]</span><span class="o">:</span> 
+<span class="p">{</span><span class="mi">6</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="err">&#39;</span><span class="n">name</span><span class="err">&#39;</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">rick</span><span class="err">&#39;</span><span class="p">},</span> <span class="mi">2</span><span class="p">],</span>
+ <span class="mi">7</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="err">&#39;</span><span class="n">name</span><span class="err">&#39;</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">rick</span><span class="err">&#39;</span><span class="p">},</span> <span class="mi">2</span><span class="p">],</span>
+ <span class="mi">8</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="err">&#39;</span><span class="n">name</span><span class="err">&#39;</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">rick</span><span class="err">&#39;</span><span class="p">},</span> <span class="mi">2</span><span class="p">]}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">39</span><span class="p">]</span><span class="o">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">dict</span><span class="p">.</span><span class="n">fromkeys</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="err">&#39;</span><span class="n">name</span><span class="err">&#39;</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">rick</span><span class="err">&#39;</span><span class="p">},</span> <span class="mi">2</span><span class="p">])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">40</span><span class="p">]</span><span class="o">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">7</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="err">&#39;</span><span class="n">name</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">41</span><span class="p">]</span><span class="o">:</span> <span class="n">x</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">41</span><span class="p">]</span><span class="o">:</span> 
+<span class="p">{</span><span class="mi">6</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="err">&#39;</span><span class="n">name</span><span class="err">&#39;</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">},</span> <span class="mi">2</span><span class="p">],</span>
+ <span class="mi">7</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="err">&#39;</span><span class="n">name</span><span class="err">&#39;</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">},</span> <span class="mi">2</span><span class="p">],</span>
+ <span class="mi">8</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="err">&#39;</span><span class="n">name</span><span class="err">&#39;</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">},</span> <span class="mi">2</span><span class="p">]}</span>
+</pre></div>
+
+
+<h2 id="_3">字典的常用操作</h2>
+<h3 id="_4">添加元素</h3>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">[</span><span class="sc">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+
+
+<h3 id="_5">查找元素</h3>
+<h4 id="get">get</h4>
+<p>返回key对应的value</p>
+<p>未找到不会报错</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="o">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="sc">&#39;d&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> 
+</pre></div>
+
+
+<h4 id="in">in</h4>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="o">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="sc">&#39;a&#39;</span> <span class="n">in</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="n">True</span>
+</pre></div>
+
+
+<h4 id="keys">keys</h4>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="o">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="o">:</span> <span class="n">dict_keys</span><span class="p">([</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<h4 id="values">values</h4>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">values</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span><span class="o">:</span> <span class="n">dict_values</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+
+
+<h4 id="items">items</h4>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">18</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="o">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">items</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">19</span><span class="p">]</span><span class="o">:</span> <span class="n">dict_items</span><span class="p">([(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)])</span>
+</pre></div>
+
+
+<h3 id="_6">变更元素</h3>
+<h4 id="setdefault">setdefault</h4>
+<p>返回key对应的value</p>
+<p>key不存在，则添加kv，value为default，如果没有设置，缺省为None</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="o">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="o">:</span> <span class="mi">3</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">22</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span><span class="sc">&#39;d&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">23</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">23</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="sc">&#39;d&#39;</span><span class="o">:</span> <span class="n">None</span><span class="p">}</span>
+
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span><span class="sc">&#39;e&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">:</span> <span class="mi">5</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="sc">&#39;d&#39;</span><span class="o">:</span> <span class="n">None</span><span class="p">,</span> <span class="sc">&#39;e&#39;</span><span class="o">:</span> <span class="mi">5</span><span class="p">}</span>
+</pre></div>
+
+
+<h4 id="update">update</h4>
+<p>key不存在，就添加</p>
+<p>key存在，覆盖已经存在key的value</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">33</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">33</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="sc">&#39;d&#39;</span><span class="o">:</span> <span class="n">None</span><span class="p">,</span> <span class="sc">&#39;e&#39;</span><span class="o">:</span> <span class="mi">5</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">34</span><span class="p">]</span><span class="o">:</span> <span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="sc">&#39;d&#39;</span><span class="o">:</span> <span class="mi">5</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">35</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="sc">&#39;d&#39;</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span> <span class="sc">&#39;e&#39;</span><span class="o">:</span> <span class="mi">5</span><span class="p">}</span>
+</pre></div>
+
+
+<h3 id="_7">访问元素</h3>
+<h4 id="key">key</h4>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">30</span><span class="p">]:</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">31</span><span class="p">]:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">31</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]:</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;c&#39;</span><span class="p">]</span>
+<span class="o">---------------------------------------------------------------------------</span>
+<span class="ne">KeyError</span>                                  <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">32</span><span class="o">-</span><span class="mf">3e4</span><span class="n">d85f12902</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;c&#39;</span><span class="p">]</span>
+
+<span class="ne">KeyError</span><span class="p">:</span> <span class="s">&#39;c&#39;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="s">&#39;cannot found c&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="s">&#39;cannot found c&#39;</span>
+</pre></div>
+
+
+<h4 id="keys-values-items">keys, values, items 遍历字典</h4>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">33</span><span class="p">]:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">33</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">34</span><span class="p">]:</span> <span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">34</span><span class="p">]:</span> <span class="n">dict_keys</span><span class="p">([</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">35</span><span class="p">]:</span> <span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">35</span><span class="p">]:</span> <span class="n">dict_values</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">36</span><span class="p">]:</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">36</span><span class="p">]:</span> <span class="n">dict_items</span><span class="p">([(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="k">print</span><span class="p">(</span><span class="s">&#39;{0} -&gt; {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+   <span class="o">...</span><span class="p">:</span>     
+<span class="n">c</span> <span class="o">-&gt;</span> <span class="mi">3</span>
+<span class="n">b</span> <span class="o">-&gt;</span> <span class="mi">2</span>
+<span class="n">a</span> <span class="o">-&gt;</span> <span class="mi">1</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">94</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">94</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">95</span><span class="p">]</span><span class="o">:</span> <span class="k">for</span> <span class="n">k</span> <span class="n">in</span> <span class="n">d</span><span class="p">.</span><span class="n">keys</span><span class="p">()</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="p">...</span><span class="o">:</span>
+<span class="n">a</span>
+<span class="n">b</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">96</span><span class="p">]</span><span class="o">:</span> <span class="k">for</span> <span class="n">v</span> <span class="n">in</span> <span class="n">d</span><span class="p">.</span><span class="n">values</span><span class="p">()</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="p">...</span><span class="o">:</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">97</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">97</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">99</span><span class="p">]</span><span class="o">:</span> <span class="k">for</span> <span class="n">item</span> <span class="n">in</span> <span class="n">d</span><span class="p">.</span><span class="n">items</span><span class="p">()</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="n">type</span><span class="p">(</span><span class="n">item</span><span class="p">),</span> <span class="n">item</span><span class="p">)</span>
+    <span class="p">...</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>
+<span class="o">&lt;</span><span class="n">class</span> <span class="err">&#39;</span><span class="n">tuple</span><span class="err">&#39;</span><span class="o">&gt;</span> <span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">class</span> <span class="err">&#39;</span><span class="n">tuple</span><span class="err">&#39;</span><span class="o">&gt;</span> <span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="_8">删除元素</h3>
+<h4 id="pop">pop</h4>
+<p>key存在，移除并返回value</p>
+<p>key不存在，返回给定的default值</p>
+<p>default为设置，抛出keyerror异常</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">37</span><span class="p">]:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">37</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">38</span><span class="p">]:</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">38</span><span class="p">]:</span> <span class="mi">5</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">39</span><span class="p">]:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">39</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">40</span><span class="p">]:</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+<span class="o">---------------------------------------------------------------------------</span>
+<span class="ne">KeyError</span>                                  <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">40</span><span class="o">-</span><span class="n">adf338c8a0db</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+
+<span class="ne">KeyError</span><span class="p">:</span> <span class="s">&#39;c&#39;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">41</span><span class="p">]:</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">41</span><span class="p">]:</span> <span class="bp">True</span>
+</pre></div>
+
+
+<h4 id="popitem">popitem</h4>
+<p>随机删除任意的键值对</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">44</span><span class="p">]:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">44</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">45</span><span class="p">]:</span> <span class="n">d</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">45</span><span class="p">]:</span> <span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">46</span><span class="p">]:</span> <span class="n">d</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">46</span><span class="p">]:</span> <span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">47</span><span class="p">]:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">47</span><span class="p">]:</span> <span class="p">{}</span>
+</pre></div>
+
+
+<h4 id="del">del</h4>
+<p>关键字 删除</p>
+<p>实际上删除的是名称，而不是对象</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="k">del</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+</pre></div>
+
+
+<h4 id="clear">clear</h4>
+<p>清空字典</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">90</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">90</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">91</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">clear</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">92</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">92</span><span class="p">]</span><span class="o">:</span> <span class="p">{}</span>
+</pre></div>
+
+
+<h2 id="_9">字典解析</h2>
+<h3 id="_10">基本语法</h3>
+<p><code>ret = {exprK:exprV for item in iterator}</code></p>
+<p>等价于</p>
+<div class="hlcode"><pre><span class="n">ret</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">exprK</span><span class="p">:</span> <span class="n">exprV</span><span class="p">})</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">24</span><span class="p">]:</span> <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">25</span><span class="p">]:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">25</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="n">l1</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">27</span><span class="p">]:</span> <span class="n">l2</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">27</span><span class="p">]:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l1</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">l2</span><span class="p">}</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">6</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]}</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

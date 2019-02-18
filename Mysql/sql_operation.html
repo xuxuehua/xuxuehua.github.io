@@ -1,0 +1,1135 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>sql_operation - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Mysql">Mysql</a>&nbsp;&#187;&nbsp;sql_operation
+    <span class="updated">Page Updated&nbsp;
+      2018-12-20 21:49
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">sql_operation</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#ddl-dml">DDL &amp; DML</a><ul>
+<li><a href="#ddl">DDL 数据定义语言</a><ul>
+<li><a href="#create">CREATE</a></li>
+<li><a href="#alter">ALTER</a></li>
+<li><a href="#drop">DROP</a></li>
+</ul>
+</li>
+<li><a href="#dml">DML 数据操作语言</a><ul>
+<li><a href="#insert">INSERT</a></li>
+<li><a href="#delete">DELETE</a></li>
+<li><a href="#update">UPDATE</a></li>
+<li><a href="#select">SELECT</a><ul>
+<li><a href="#_1">单表查询</a><ul>
+<li><a href="#query_cache_type">query_cache_type</a></li>
+<li><a href="#_2">别名使用</a></li>
+<li><a href="#where">WHERE 子句</a><ul>
+<li><a href="#_3">过滤条件</a></li>
+<li><a href="#_4">算数操作符</a></li>
+<li><a href="#_5">比较操作符</a></li>
+<li><a href="#_6">逻辑运算符</a></li>
+</ul>
+</li>
+<li><a href="#group">GROUP 子句</a><ul>
+<li><a href="#having">HAVING</a></li>
+</ul>
+</li>
+<li><a href="#order-by">ORDER BY</a></li>
+<li><a href="#limit">LIMIT</a></li>
+<li><a href="#_7">查询结果加锁</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_8">多表查询</a><ul>
+<li><a href="#_9">交叉连接</a></li>
+<li><a href="#_10">内连接</a><ul>
+<li><a href="#_11">等值连接</a></li>
+<li><a href="#_12">不等值连接</a></li>
+<li><a href="#_13">自然连接</a></li>
+<li><a href="#_14">自连接</a></li>
+</ul>
+</li>
+<li><a href="#_15">外连接</a><ul>
+<li><a href="#_16">左外连接</a></li>
+<li><a href="#_17">右外连接</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_18">子查询</a><ul>
+<li><a href="#where_1">WHERE 子句子查询</a></li>
+<li><a href="#from">FROM 子句子查询</a></li>
+</ul>
+</li>
+<li><a href="#union">联合查询 UNION</a></li>
+</ul>
+</li>
+<li><a href="#_19">数据库操作</a><ul>
+<li><a href="#create-alter-drop">CREATE   ALTER   DROP</a></li>
+</ul>
+</li>
+<li><a href="#_20">表</a><ul>
+<li><a href="#_21">设计表</a><ul>
+<li><a href="#_22">字符集</a></li>
+<li><a href="#_23">主/外键类型</a></li>
+<li><a href="#_24">添加注释</a></li>
+</ul>
+</li>
+<li><a href="#_25">定义</a><ul>
+<li><a href="#_26">字段</a></li>
+<li><a href="#_27">索引</a><ul>
+<li><a href="#_28">稠密索引</a></li>
+<li><a href="#b-hash-r-fulltext">B+索引， hash索引， R树索引， FULLTEXT索引</a></li>
+<li><a href="#_29">稀疏索引</a></li>
+<li><a href="#_30">聚合索引， 非聚合索引</a></li>
+<li><a href="#_31">简单索引，组合索引</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_32">创建表</a><ul>
+<li><a href="#_33">表类型</a></li>
+<li><a href="#_34">表结构</a></li>
+<li><a href="#_35">表状态信息</a></li>
+</ul>
+</li>
+<li><a href="#_36">修改表</a><ul>
+<li><a href="#_37">删除表</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_38">索引管理</a><ul>
+<li><a href="#_39">索引类型</a><ul>
+<li><a href="#_40">聚集索引，非聚集索引</a></li>
+<li><a href="#_41">主键索引，辅助索引</a></li>
+<li><a href="#_42">稠密索引，稀疏索引</a></li>
+<li><a href="#b-treehashr-tree">B+ Tree，HASH索引（键值索引），R Tree</a></li>
+<li><a href="#_43">简单索引，组合索引</a></li>
+<li><a href="#_44">左前缀索引</a></li>
+<li><a href="#_45">覆盖索引</a></li>
+</ul>
+</li>
+<li><a href="#_46">管理索引方法</a><ul>
+<li><a href="#_47">创建索引</a></li>
+<li><a href="#_48">创建或删除索引</a></li>
+<li><a href="#_49">删除索引</a></li>
+<li><a href="#_50">查看表索引</a></li>
+<li><a href="#explain">EXPLAIN 表索引对比操作</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#view">视图 VIEW</a><ul>
+<li><a href="#view_1">创建view</a><ul>
+<li><a href="#view_2">删除view</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="ddl-dml">DDL &amp; DML</h1>
+<h2 id="ddl">DDL 数据定义语言</h2>
+<h3 id="create">CREATE</h3>
+<p>DB 组件：数据库，表，索引，视图，用户，存储过程，存储函数，触发器，事件调度器等</p>
+<div class="hlcode"><pre><span class="nx">mysql</span><span class="o">&gt;</span> <span class="nx">help</span> <span class="nb">CREATE</span>
+<span class="nx">Many</span> <span class="nx">help</span> <span class="nx">items</span> <span class="nb">for</span> <span class="nx">your</span> <span class="nx">request</span> <span class="nx">exist.</span>
+<span class="k">To</span> <span class="nx">make</span> <span class="nx">a</span> <span class="nx">more</span> <span class="nx">specific</span> <span class="nx">request</span><span class="p">,</span> <span class="nx">please</span> <span class="k">type</span> <span class="s1">&#39;help &lt;item&gt;&#39;</span><span class="p">,</span>
+<span class="k">where</span> <span class="o">&lt;</span><span class="nb">item</span><span class="o">&gt;</span> <span class="nx">is</span> <span class="nx">one</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">following</span>
+<span class="nx">topics</span><span class="p">:</span>
+   <span class="nb">CREATE</span> <span class="nx">DATABASE</span>
+   <span class="nb">CREATE</span> <span class="nx">EVENT</span>
+   <span class="nb">CREATE</span> <span class="nx">FUNCTION</span>
+   <span class="nb">CREATE</span> <span class="nx">FUNCTION</span> <span class="nx">UDF</span>
+   <span class="nb">CREATE</span> <span class="nb">INDEX</span>
+   <span class="nb">CREATE</span> <span class="nx">PROCEDURE</span>
+   <span class="nb">CREATE</span> <span class="nx">RESOURCE</span> <span class="k">GROUP</span>
+   <span class="nb">CREATE</span> <span class="nx">ROLE</span>
+   <span class="nb">CREATE</span> <span class="nx">SERVER</span>
+   <span class="nb">CREATE</span> <span class="nx">SPATIAL</span> <span class="nb">REFERENCE</span> <span class="nx">SYSTEM</span>
+   <span class="nb">CREATE</span> <span class="nb">TABLE</span>
+   <span class="nb">CREATE</span> <span class="nx">TABLESPACE</span>
+   <span class="nb">CREATE</span> <span class="nb">TRIGGER</span>
+   <span class="nb">CREATE</span> <span class="nb">USER</span>
+   <span class="nb">CREATE</span> <span class="nx">VIEW</span>
+   <span class="nx">SHOW</span>
+   <span class="nx">SHOW</span> <span class="nb">CREATE</span> <span class="nx">DATABASE</span>
+   <span class="nx">SHOW</span> <span class="nb">CREATE</span> <span class="nx">EVENT</span>
+   <span class="nx">SHOW</span> <span class="nb">CREATE</span> <span class="nx">FUNCTION</span>
+   <span class="nx">SHOW</span> <span class="nb">CREATE</span> <span class="nx">PROCEDURE</span>
+   <span class="nx">SHOW</span> <span class="nb">CREATE</span> <span class="nb">TABLE</span>
+   <span class="nx">SHOW</span> <span class="nb">CREATE</span> <span class="nb">USER</span>
+   <span class="nx">SPATIAL</span>
+</pre></div>
+
+
+<h3 id="alter">ALTER</h3>
+<p>组件同CREATE</p>
+<h3 id="drop">DROP</h3>
+<p>组件同CREATE</p>
+<h2 id="dml">DML 数据操作语言</h2>
+<h3 id="insert">INSERT</h3>
+<p>一次插入一行或多行数据</p>
+<p>每插入一次，会触发index更新一次</p>
+<ul>
+<li>方法1</li>
+</ul>
+<div class="hlcode"><pre><span class="n">INSERT</span> <span class="p">[</span><span class="n">LOW_PRIORITY</span> <span class="o">|</span> <span class="n">DELAYED</span> <span class="o">|</span> <span class="n">HIGH_PRIORITY</span><span class="p">]</span> <span class="p">[</span><span class="n">IGNORE</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">INTO</span><span class="p">]</span> <span class="n">tbl_name</span>
+    <span class="p">[</span><span class="n">PARTITION</span> <span class="p">(</span><span class="n">partition_name</span> <span class="p">[,</span> <span class="n">partition_name</span><span class="p">]</span> <span class="p">...)]</span>
+    <span class="p">[(</span><span class="n">col_name</span> <span class="p">[,</span> <span class="n">col_name</span><span class="p">]</span> <span class="p">...)]</span>
+    <span class="p">{</span><span class="n">VALUES</span> <span class="o">|</span> <span class="n">VALUE</span><span class="p">}</span> <span class="p">(</span><span class="n">value_list</span><span class="p">)</span> <span class="p">[,</span> <span class="p">(</span><span class="n">value_list</span><span class="p">)]</span> <span class="p">...</span>
+    <span class="p">[</span><span class="n">ON</span> <span class="n">DUPLICATE</span> <span class="n">KEY</span> <span class="n">UPDATE</span> <span class="n">assignment_list</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">students</span> <span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="n">Age</span><span class="p">,</span><span class="n">Gender</span><span class="p">)</span> <span class="n">VALUES</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">Jingjiao</span> <span class="n">King</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="sc">&#39;M&#39;</span><span class="p">);</span>
+</pre></div>
+
+
+<ul>
+<li>方法2</li>
+</ul>
+<div class="hlcode"><pre><span class="n">INSERT</span> <span class="p">[</span><span class="n">LOW_PRIORITY</span> <span class="o">|</span> <span class="n">DELAYED</span> <span class="o">|</span> <span class="n">HIGH_PRIORITY</span><span class="p">]</span> <span class="p">[</span><span class="n">IGNORE</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">INTO</span><span class="p">]</span> <span class="n">tbl_name</span>
+    <span class="p">[</span><span class="n">PARTITION</span> <span class="p">(</span><span class="n">partition_name</span> <span class="p">[,</span> <span class="n">partition_name</span><span class="p">]</span> <span class="p">...)]</span>
+    <span class="n">SET</span> <span class="n">assignment_list</span>
+    <span class="p">[</span><span class="n">ON</span> <span class="n">DUPLICATE</span> <span class="n">KEY</span> <span class="n">UPDATE</span> <span class="n">assignment_list</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">students</span> <span class="n">SET</span> <span class="n">Name</span><span class="o">=</span><span class="err">&#39;</span><span class="n">Yinjiao</span> <span class="n">King</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">Age</span><span class="o">=</span><span class="mi">98</span><span class="p">,</span> <span class="n">Gender</span><span class="o">=</span><span class="sc">&#39;M&#39;</span><span class="p">;</span>
+</pre></div>
+
+
+<ul>
+<li>方法3</li>
+</ul>
+<div class="hlcode"><pre><span class="n">INSERT</span> <span class="p">[</span><span class="n">LOW_PRIORITY</span> <span class="o">|</span> <span class="n">HIGH_PRIORITY</span><span class="p">]</span> <span class="p">[</span><span class="n">IGNORE</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">INTO</span><span class="p">]</span> <span class="n">tbl_name</span>
+    <span class="p">[</span><span class="n">PARTITION</span> <span class="p">(</span><span class="n">partition_name</span> <span class="p">[,</span> <span class="n">partition_name</span><span class="p">]</span> <span class="p">...)]</span>
+    <span class="p">[(</span><span class="n">col_name</span> <span class="p">[,</span> <span class="n">col_name</span><span class="p">]</span> <span class="p">...)]</span>
+    <span class="n">SELECT</span> <span class="p">...</span>
+    <span class="p">[</span><span class="n">ON</span> <span class="n">DUPLICATE</span> <span class="n">KEY</span> <span class="n">UPDATE</span> <span class="n">assignment_list</span><span class="p">]</span>
+</pre></div>
+
+
+<h3 id="delete">DELETE</h3>
+<p>一定要加上的限制条件，否则将清空表中的所有数据。</p>
+<p>如WHERE，LIMIT</p>
+<div class="hlcode"><pre><span class="n">Single</span><span class="o">-</span><span class="n">Table</span> <span class="n">Syntax</span>
+<span class="n">DELETE</span> <span class="p">[</span><span class="n">LOW_PRIORITY</span><span class="p">]</span> <span class="p">[</span><span class="n">QUICK</span><span class="p">]</span> <span class="p">[</span><span class="n">IGNORE</span><span class="p">]</span> <span class="n">FROM</span> <span class="n">tbl_name</span>
+    <span class="p">[</span><span class="n">PARTITION</span> <span class="p">(</span><span class="n">partition_name</span> <span class="p">[,</span> <span class="n">partition_name</span><span class="p">]</span> <span class="p">...)]</span>
+    <span class="p">[</span><span class="n">WHERE</span> <span class="n">where_condition</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">ORDER</span> <span class="n">BY</span> <span class="p">...]</span>
+    <span class="p">[</span><span class="n">LIMIT</span> <span class="n">row_count</span><span class="p">]</span>
+</pre></div>
+
+
+<h3 id="update">UPDATE</h3>
+<p>一定要加上的限制条件，否则将修改表中所有行的字段。</p>
+<p>如WHERE，LIMIT</p>
+<div class="hlcode"><pre><span class="n">Single</span><span class="o">-</span><span class="n">table</span> <span class="n">syntax</span><span class="o">:</span>
+
+<span class="n">UPDATE</span> <span class="p">[</span><span class="n">LOW_PRIORITY</span><span class="p">]</span> <span class="p">[</span><span class="n">IGNORE</span><span class="p">]</span> <span class="n">table_reference</span>
+    <span class="n">SET</span> <span class="n">assignment_list</span>
+    <span class="p">[</span><span class="n">WHERE</span> <span class="n">where_condition</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">ORDER</span> <span class="n">BY</span> <span class="p">...]</span>
+    <span class="p">[</span><span class="n">LIMIT</span> <span class="n">row_count</span><span class="p">]</span>
+</pre></div>
+
+
+<h3 id="select">SELECT</h3>
+<p>查询执行路径中的组件：查询缓存，解析器，预处理器，优化器，查询执行引擎，存储引擎</p>
+<p>SELECT执行流程</p>
+<div class="hlcode"><pre><span class="n">FROM</span> <span class="n">Clause</span> <span class="o">-&gt;</span> <span class="n">WHERE</span> <span class="n">Clause</span> <span class="o">-&gt;</span> <span class="n">GROUP</span> <span class="n">BY</span> <span class="o">-&gt;</span> <span class="n">HAVING</span> <span class="n">Clause</span> <span class="o">-&gt;</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="o">-&gt;</span> <span class="n">SELECT</span> <span class="o">-&gt;</span> 
+</pre></div>
+
+
+<h4 id="_1">单表查询</h4>
+<div class="hlcode"><pre><span class="n">SELECT</span>
+    <span class="p">[</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">DISTINCT</span> <span class="o">|</span> <span class="n">DISTINCTROW</span> <span class="p">]</span>
+      <span class="p">[</span><span class="n">HIGH_PRIORITY</span><span class="p">]</span>
+      <span class="p">[</span><span class="n">STRAIGHT_JOIN</span><span class="p">]</span>
+      <span class="p">[</span><span class="n">SQL_SMALL_RESULT</span><span class="p">]</span> <span class="p">[</span><span class="n">SQL_BIG_RESULT</span><span class="p">]</span> <span class="p">[</span><span class="n">SQL_BUFFER_RESULT</span><span class="p">]</span>
+      <span class="p">[</span><span class="n">SQL_CACHE</span> <span class="o">|</span> <span class="n">SQL_NO_CACHE</span><span class="p">]</span> <span class="p">[</span><span class="n">SQL_CALC_FOUND_ROWS</span><span class="p">]</span>
+    <span class="n">select_expr</span> <span class="p">[,</span> <span class="n">select_expr</span> <span class="p">...]</span>
+    <span class="p">[</span><span class="n">FROM</span> <span class="n">table_references</span>
+      <span class="p">[</span><span class="n">PARTITION</span> <span class="n">partition_list</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">WHERE</span> <span class="n">where_condition</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">GROUP</span> <span class="n">BY</span> <span class="p">{</span><span class="n">col_name</span> <span class="o">|</span> <span class="n">expr</span> <span class="o">|</span> <span class="n">position</span><span class="p">},</span> <span class="p">...</span> <span class="p">[</span><span class="n">WITH</span> <span class="n">ROLLUP</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">HAVING</span> <span class="n">where_condition</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">WINDOW</span> <span class="n">window_name</span> <span class="n">AS</span> <span class="p">(</span><span class="n">window_spec</span><span class="p">)</span>
+        <span class="p">[,</span> <span class="n">window_name</span> <span class="n">AS</span> <span class="p">(</span><span class="n">window_spec</span><span class="p">)]</span> <span class="p">...]</span>
+    <span class="p">[</span><span class="n">ORDER</span> <span class="n">BY</span> <span class="p">{</span><span class="n">col_name</span> <span class="o">|</span> <span class="n">expr</span> <span class="o">|</span> <span class="n">position</span><span class="p">}</span>
+      <span class="p">[</span><span class="n">ASC</span> <span class="o">|</span> <span class="n">DESC</span><span class="p">],</span> <span class="p">...</span> <span class="p">[</span><span class="n">WITH</span> <span class="n">ROLLUP</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">LIMIT</span> <span class="p">{[</span><span class="n">offset</span><span class="p">,]</span> <span class="n">row_count</span> <span class="o">|</span> <span class="n">row_count</span> <span class="n">OFFSET</span> <span class="n">offset</span><span class="p">}]</span>
+    <span class="p">[</span><span class="n">INTO</span> <span class="n">OUTFILE</span> <span class="err">&#39;</span><span class="n">file_name</span><span class="err">&#39;</span>
+        <span class="p">[</span><span class="n">CHARACTER</span> <span class="n">SET</span> <span class="n">charset_name</span><span class="p">]</span>
+        <span class="n">export_options</span>
+      <span class="o">|</span> <span class="n">INTO</span> <span class="n">DUMPFILE</span> <span class="err">&#39;</span><span class="n">file_name</span><span class="err">&#39;</span>
+      <span class="o">|</span> <span class="n">INTO</span> <span class="n">var_name</span> <span class="p">[,</span> <span class="n">var_name</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">FOR</span> <span class="p">{</span><span class="n">UPDATE</span> <span class="o">|</span> <span class="n">SHARE</span><span class="p">}</span> <span class="p">[</span><span class="n">OF</span> <span class="n">tbl_name</span> <span class="p">[,</span> <span class="n">tbl_name</span><span class="p">]</span> <span class="p">...]</span> <span class="p">[</span><span class="n">NOWAIT</span> <span class="o">|</span> <span class="n">SKIP</span> <span class="n">LOCKED</span><span class="p">]</span>
+      <span class="o">|</span> <span class="n">LOCK</span> <span class="n">IN</span> <span class="n">SHARE</span> <span class="n">MODE</span><span class="p">]]</span>
+</pre></div>
+
+
+<p>DISTINCT 数据去重</p>
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">DISTINCT</span> <span class="n">Gender</span> <span class="n">FROM</span> <span class="n">students</span><span class="p">;</span>
+<span class="o">+--------+</span>
+<span class="o">|</span> <span class="n">Gender</span> <span class="o">|</span>
+<span class="o">+--------+</span>
+<span class="o">|</span> <span class="n">M</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">F</span>      <span class="o">|</span>
+<span class="o">+--------+</span>
+</pre></div>
+
+
+<p>SQL_CACHE 显式指定存储查询结果于缓存之中</p>
+<p>SQL_NO_CACHE 显式查询结果不予缓存</p>
+<h5 id="query_cache_type">query_cache_type</h5>
+<div class="hlcode"><pre><span class="n">query_cache_type</span> <span class="err">的值为</span><span class="n">ON</span><span class="err">时，查询缓存功能打开</span>
+<span class="n">SELECT</span><span class="err">的结果符合缓存条件即会缓存，否则不予缓存</span>
+<span class="err">显式指定</span><span class="n">SQL_NO_CACHE</span><span class="err">，不予缓存</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">query_cache_type</span> <span class="err">的值为</span><span class="n">DEMAND</span><span class="err">时，查询缓存功能按需进行，</span>
+<span class="err">显式指定</span><span class="n">SQL_CACHE</span><span class="err">的</span><span class="n">SELECT</span><span class="err">语句才会缓存，其他不予缓存</span>
+</pre></div>
+
+
+<h5 id="_2">别名使用</h5>
+<div class="hlcode"><pre><span class="n">col1</span> <span class="n">AS</span> <span class="n">alias1</span><span class="p">,</span> <span class="n">col2</span> <span class="n">AS</span> <span class="n">alias2</span><span class="p">,</span> <span class="p">....</span>
+</pre></div>
+
+
+<h5 id="where">WHERE 子句</h5>
+<p>指明过滤条件以实现“选择” 功能</p>
+<h6 id="_3">过滤条件</h6>
+<p>布尔表达式</p>
+<h6 id="_4">算数操作符</h6>
+<div class="hlcode"><pre><span class="o">+</span><span class="err">，</span> <span class="o">-</span><span class="err">，</span> <span class="o">*</span><span class="err">，</span> <span class="o">/</span><span class="err">，</span> <span class="o">%</span>
+</pre></div>
+
+
+<h6 id="_5">比较操作符</h6>
+<div class="hlcode"><pre><span class="o">=</span><span class="p">,</span> <span class="o">!=</span><span class="p">,</span> <span class="o">&lt;&gt;</span><span class="p">,</span> <span class="o">&lt;=&gt;</span><span class="p">,</span> <span class="o">&gt;</span><span class="p">,</span> <span class="o">&gt;=</span><span class="p">,</span> <span class="o">&lt;</span><span class="p">,</span> <span class="o">&lt;=</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">BETWEEN</span> <span class="n">min_num</span> <span class="n">AND</span> <span class="n">max_num</span>
+<span class="n">IN</span> <span class="p">(</span><span class="n">element1</span><span class="p">,</span> <span class="n">element2</span><span class="p">,</span> <span class="p">...)</span>
+<span class="n">IS</span> <span class="nb">NULL</span>
+<span class="n">IS</span> <span class="n">NOT</span> <span class="nb">NULL</span>
+<span class="nl">LIKE:</span>
+    <span class="o">%</span> <span class="err">任意长度的任意字符</span>
+    <span class="n">_</span> <span class="err">任意单个字符</span>
+<span class="n">RLIKE</span>
+<span class="n">REGEXP</span> <span class="err">匹配字符串可以用正则表达式书写模式</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">Name</span><span class="p">,</span> <span class="n">ClassID</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">WHERE</span> <span class="n">ClassID</span> <span class="n">IS</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="o">+---------------+---------+</span>
+<span class="o">|</span> <span class="n">Name</span>          <span class="o">|</span> <span class="n">ClassID</span> <span class="o">|</span>
+<span class="o">+---------------+---------+</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Xian</span>       <span class="o">|</span>    <span class="nb">NULL</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Sun</span> <span class="n">Dasheng</span>   <span class="o">|</span>    <span class="nb">NULL</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Jingjiao</span> <span class="n">King</span> <span class="o">|</span>    <span class="nb">NULL</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yinjiao</span> <span class="n">King</span>  <span class="o">|</span>    <span class="nb">NULL</span> <span class="o">|</span>
+<span class="o">+---------------+---------+</span>
+</pre></div>
+
+
+<h6 id="_6">逻辑运算符</h6>
+<div class="hlcode"><pre><span class="n">NOT</span><span class="p">,</span> <span class="n">AND</span><span class="p">,</span> <span class="n">OR</span><span class="p">,</span> <span class="n">XOR</span><span class="err">（异或）</span>
+</pre></div>
+
+
+<h5 id="group">GROUP 子句</h5>
+<p>根据指定的条件把查询结果进行分组，以用于做聚合运算</p>
+<div class="hlcode"><pre><span class="n">avg</span><span class="p">(),</span> <span class="n">max</span><span class="p">(),</span> <span class="n">min</span><span class="p">(),</span> <span class="n">count</span><span class="p">(),</span> <span class="n">sum</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">avg</span><span class="p">(</span><span class="n">Age</span><span class="p">),</span><span class="n">Gender</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">Gender</span><span class="p">;</span>
+<span class="o">+----------+--------+</span>
+<span class="o">|</span> <span class="n">avg</span><span class="p">(</span><span class="n">Age</span><span class="p">)</span> <span class="o">|</span> <span class="n">Gender</span> <span class="o">|</span>
+<span class="o">+----------+--------+</span>
+<span class="o">|</span>  <span class="mf">40.7647</span> <span class="o">|</span> <span class="n">M</span>      <span class="o">|</span>
+<span class="o">|</span>  <span class="mf">19.0000</span> <span class="o">|</span> <span class="n">F</span>      <span class="o">|</span>
+<span class="o">+----------+--------+</span>
+<span class="mi">2</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h6 id="having">HAVING</h6>
+<p>对分组聚合运算后的结果指定过滤条件</p>
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">avg</span><span class="p">(</span><span class="n">Age</span><span class="p">)</span> <span class="n">as</span> <span class="n">AAge</span><span class="p">,</span><span class="n">Gender</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">Gender</span> <span class="n">HAVING</span> <span class="n">AAge</span> <span class="o">&gt;</span><span class="mi">20</span><span class="p">;</span>
+<span class="o">+---------+--------+</span>
+<span class="o">|</span> <span class="n">AAge</span>    <span class="o">|</span> <span class="n">Gender</span> <span class="o">|</span>
+<span class="o">+---------+--------+</span>
+<span class="o">|</span> <span class="mf">40.7647</span> <span class="o">|</span> <span class="n">M</span>      <span class="o">|</span>
+<span class="o">+---------+--------+</span>
+<span class="mi">1</span> <span class="n">row</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">count</span><span class="p">(</span><span class="n">StuID</span><span class="p">)</span> <span class="n">AS</span> <span class="n">NumOfStu</span><span class="p">,</span> <span class="n">ClassID</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">ClassID</span> <span class="n">HAVING</span> <span class="n">NumOfStu</span> <span class="o">&gt;</span><span class="mi">2</span><span class="p">;</span>
+<span class="o">+----------+---------+</span>
+<span class="o">|</span> <span class="n">NumOfStu</span> <span class="o">|</span> <span class="n">ClassID</span> <span class="o">|</span>
+<span class="o">+----------+---------+</span>
+<span class="o">|</span>        <span class="mi">3</span> <span class="o">|</span>       <span class="mi">2</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mi">4</span> <span class="o">|</span>       <span class="mi">1</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mi">4</span> <span class="o">|</span>       <span class="mi">4</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mi">4</span> <span class="o">|</span>       <span class="mi">3</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mi">3</span> <span class="o">|</span>       <span class="mi">7</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mi">4</span> <span class="o">|</span>       <span class="mi">6</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mi">4</span> <span class="o">|</span>    <span class="nb">NULL</span> <span class="o">|</span>
+<span class="o">+----------+---------+</span>
+<span class="mi">7</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h5 id="order-by">ORDER BY</h5>
+<p>根据指定字段对查询结果进行排序</p>
+<p>升序 ASC</p>
+<p>降序 DESC</p>
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Age</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">Age</span> <span class="n">DESC</span>
+    <span class="o">-&gt;</span> <span class="p">;</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Name</span>          <span class="o">|</span> <span class="n">Age</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Jingjiao</span> <span class="n">King</span> <span class="o">|</span> <span class="mi">100</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Sun</span> <span class="n">Dasheng</span>   <span class="o">|</span> <span class="mi">100</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yinjiao</span> <span class="n">King</span>  <span class="o">|</span>  <span class="mi">98</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xie</span> <span class="n">Yanke</span>     <span class="o">|</span>  <span class="mi">53</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Qing</span>      <span class="o">|</span>  <span class="mi">46</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Tian</span> <span class="n">Boguang</span>  <span class="o">|</span>  <span class="mi">33</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ding</span> <span class="n">Dian</span>     <span class="o">|</span>  <span class="mi">32</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Xian</span>       <span class="o">|</span>  <span class="mi">27</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yu</span> <span class="n">Yutong</span>     <span class="o">|</span>  <span class="mi">26</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Chong</span>     <span class="o">|</span>  <span class="mi">25</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ma</span> <span class="n">Chao</span>       <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yuan</span> <span class="n">Chengzhi</span> <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Hua</span> <span class="n">Rong</span>      <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Potian</span>    <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Huang</span> <span class="n">Yueying</span> <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Zhongyu</span>   <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Zhu</span>        <span class="o">|</span>  <span class="mi">21</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xiao</span> <span class="n">Qiao</span>     <span class="o">|</span>  <span class="mi">20</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ren</span> <span class="n">Yingying</span>  <span class="o">|</span>  <span class="mi">20</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Duan</span> <span class="n">Yu</span>       <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Diao</span> <span class="n">Chan</span>     <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Wen</span> <span class="n">Qingqing</span>  <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yue</span> <span class="n">Lingshan</span>  <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xi</span> <span class="n">Ren</span>        <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xue</span> <span class="n">Baochai</span>   <span class="o">|</span>  <span class="mi">18</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lu</span> <span class="n">Wushuang</span>   <span class="o">|</span>  <span class="mi">17</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Daiyu</span>     <span class="o">|</span>  <span class="mi">17</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="mi">27</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h5 id="limit">LIMIT</h5>
+<div class="hlcode"><pre><span class="n">LIMIT</span> <span class="p">[[</span><span class="n">offset</span><span class="p">,]</span> <span class="n">row_count</span><span class="p">]</span> <span class="err">对查询</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Age</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">Age</span> <span class="n">DESC</span><span class="p">;</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Name</span>          <span class="o">|</span> <span class="n">Age</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Jingjiao</span> <span class="n">King</span> <span class="o">|</span> <span class="mi">100</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Sun</span> <span class="n">Dasheng</span>   <span class="o">|</span> <span class="mi">100</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yinjiao</span> <span class="n">King</span>  <span class="o">|</span>  <span class="mi">98</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xie</span> <span class="n">Yanke</span>     <span class="o">|</span>  <span class="mi">53</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Qing</span>      <span class="o">|</span>  <span class="mi">46</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Tian</span> <span class="n">Boguang</span>  <span class="o">|</span>  <span class="mi">33</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ding</span> <span class="n">Dian</span>     <span class="o">|</span>  <span class="mi">32</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Xian</span>       <span class="o">|</span>  <span class="mi">27</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yu</span> <span class="n">Yutong</span>     <span class="o">|</span>  <span class="mi">26</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Chong</span>     <span class="o">|</span>  <span class="mi">25</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ma</span> <span class="n">Chao</span>       <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yuan</span> <span class="n">Chengzhi</span> <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Hua</span> <span class="n">Rong</span>      <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Potian</span>    <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Huang</span> <span class="n">Yueying</span> <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Zhongyu</span>   <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Zhu</span>        <span class="o">|</span>  <span class="mi">21</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xiao</span> <span class="n">Qiao</span>     <span class="o">|</span>  <span class="mi">20</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ren</span> <span class="n">Yingying</span>  <span class="o">|</span>  <span class="mi">20</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Duan</span> <span class="n">Yu</span>       <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Diao</span> <span class="n">Chan</span>     <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Wen</span> <span class="n">Qingqing</span>  <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yue</span> <span class="n">Lingshan</span>  <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xi</span> <span class="n">Ren</span>        <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xue</span> <span class="n">Baochai</span>   <span class="o">|</span>  <span class="mi">18</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lu</span> <span class="n">Wushuang</span>   <span class="o">|</span>  <span class="mi">17</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Daiyu</span>     <span class="o">|</span>  <span class="mi">17</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="mi">27</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Age</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">Age</span> <span class="n">DESC</span> <span class="n">LIMIT</span> <span class="mi">10</span><span class="p">;</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Name</span>          <span class="o">|</span> <span class="n">Age</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Sun</span> <span class="n">Dasheng</span>   <span class="o">|</span> <span class="mi">100</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Jingjiao</span> <span class="n">King</span> <span class="o">|</span> <span class="mi">100</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yinjiao</span> <span class="n">King</span>  <span class="o">|</span>  <span class="mi">98</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xie</span> <span class="n">Yanke</span>     <span class="o">|</span>  <span class="mi">53</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Qing</span>      <span class="o">|</span>  <span class="mi">46</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Tian</span> <span class="n">Boguang</span>  <span class="o">|</span>  <span class="mi">33</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ding</span> <span class="n">Dian</span>     <span class="o">|</span>  <span class="mi">32</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Xian</span>       <span class="o">|</span>  <span class="mi">27</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yu</span> <span class="n">Yutong</span>     <span class="o">|</span>  <span class="mi">26</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Chong</span>     <span class="o">|</span>  <span class="mi">25</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="mi">10</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Age</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">Age</span> <span class="n">DESC</span> <span class="n">LIMIT</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">;</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Name</span>          <span class="o">|</span> <span class="n">Age</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Ma</span> <span class="n">Chao</span>       <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yuan</span> <span class="n">Chengzhi</span> <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Hua</span> <span class="n">Rong</span>      <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Potian</span>    <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Huang</span> <span class="n">Yueying</span> <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Zhongyu</span>   <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Zhu</span>        <span class="o">|</span>  <span class="mi">21</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xiao</span> <span class="n">Qiao</span>     <span class="o">|</span>  <span class="mi">20</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ren</span> <span class="n">Yingying</span>  <span class="o">|</span>  <span class="mi">20</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Duan</span> <span class="n">Yu</span>       <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="mi">10</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h5 id="_7">查询结果加锁</h5>
+<div class="hlcode"><pre><span class="n">FROM</span> <span class="n">UPDATE</span> <span class="err">写锁，排他锁</span>
+<span class="n">LOCK</span> <span class="n">IN</span> <span class="n">SHARE</span> <span class="n">MODE</span> <span class="err">读锁，共享锁</span>
+</pre></div>
+
+
+<h2 id="_8">多表查询</h2>
+<h3 id="_9">交叉连接</h3>
+<p>即笛卡尔积</p>
+<h3 id="_10">内连接</h3>
+<h4 id="_11">等值连接</h4>
+<p>让表之间的字段以等值建立连接关系</p>
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">s</span><span class="p">.</span><span class="n">Name</span> <span class="p">,</span> <span class="n">c</span><span class="p">.</span><span class="n">Class</span>  <span class="n">FROM</span> <span class="n">students</span> <span class="n">as</span> <span class="n">s</span><span class="p">,</span> <span class="n">classes</span> <span class="n">as</span> <span class="n">c</span> <span class="n">WHERE</span> <span class="n">s</span><span class="p">.</span><span class="n">ClassID</span><span class="o">=</span><span class="n">c</span><span class="p">.</span><span class="n">ClassID</span><span class="p">;</span>
+<span class="o">+---------------+----------------+</span>
+<span class="o">|</span> <span class="n">Name</span>          <span class="o">|</span> <span class="n">Class</span>          <span class="o">|</span>
+<span class="o">+---------------+----------------+</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Zhongyu</span>   <span class="o">|</span> <span class="n">Emei</span> <span class="n">Pai</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Potian</span>    <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xie</span> <span class="n">Yanke</span>     <span class="o">|</span> <span class="n">Emei</span> <span class="n">Pai</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ding</span> <span class="n">Dian</span>     <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yu</span> <span class="n">Yutong</span>     <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Qing</span>      <span class="o">|</span> <span class="n">Riyue</span> <span class="n">Shenjiao</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xi</span> <span class="n">Ren</span>        <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Daiyu</span>     <span class="o">|</span> <span class="n">Ming</span> <span class="n">Jiao</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ren</span> <span class="n">Yingying</span>  <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yue</span> <span class="n">Lingshan</span>  <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yuan</span> <span class="n">Chengzhi</span> <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Wen</span> <span class="n">Qingqing</span>  <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Tian</span> <span class="n">Boguang</span>  <span class="o">|</span> <span class="n">Emei</span> <span class="n">Pai</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lu</span> <span class="n">Wushuang</span>   <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Duan</span> <span class="n">Yu</span>       <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Zhu</span>        <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Chong</span>     <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">Hua</span> <span class="n">Rong</span>      <span class="o">|</span> <span class="n">Ming</span> <span class="n">Jiao</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xue</span> <span class="n">Baochai</span>   <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Diao</span> <span class="n">Chan</span>     <span class="o">|</span> <span class="n">Ming</span> <span class="n">Jiao</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Huang</span> <span class="n">Yueying</span> <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xiao</span> <span class="n">Qiao</span>     <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ma</span> <span class="n">Chao</span>       <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">+---------------+----------------+</span>
+<span class="mi">23</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h4 id="_12">不等值连接</h4>
+<h4 id="_13">自然连接</h4>
+<h4 id="_14">自连接</h4>
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">s</span><span class="p">.</span><span class="n">Name</span> <span class="p">,</span> <span class="n">t</span><span class="p">.</span><span class="n">Name</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">as</span> <span class="n">s</span><span class="p">,</span> <span class="n">students</span> <span class="n">as</span> <span class="n">t</span> <span class="n">WHERE</span> <span class="n">s</span><span class="p">.</span><span class="n">TeacherID</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">StuID</span><span class="p">;</span>
+<span class="o">+---------------+-------------+</span>
+<span class="o">|</span> <span class="n">Name</span>          <span class="o">|</span> <span class="n">Name</span>        <span class="o">|</span>
+<span class="o">+---------------+-------------+</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Zhongyu</span>   <span class="o">|</span> <span class="n">Xie</span> <span class="n">Yanke</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Potian</span>    <span class="o">|</span> <span class="n">Xi</span> <span class="n">Ren</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xie</span> <span class="n">Yanke</span>     <span class="o">|</span> <span class="n">Xu</span> <span class="n">Zhu</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ding</span> <span class="n">Dian</span>     <span class="o">|</span> <span class="n">Ding</span> <span class="n">Dian</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yu</span> <span class="n">Yutong</span>     <span class="o">|</span> <span class="n">Shi</span> <span class="n">Zhongyu</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Jingjiao</span> <span class="n">King</span> <span class="o">|</span> <span class="n">Shi</span> <span class="n">Zhongyu</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yinjiao</span> <span class="n">King</span>  <span class="o">|</span> <span class="n">Shi</span> <span class="n">Potian</span>  <span class="o">|</span>
+<span class="o">+---------------+-------------+</span>
+<span class="mi">7</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="_15">外连接</h3>
+<h4 id="_16">左外连接</h4>
+<div class="hlcode"><pre><span class="n">FROM</span> <span class="n">tb1</span> <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">tb2</span> <span class="n">ON</span> <span class="n">tb1</span><span class="p">.</span><span class="n">col</span><span class="o">=</span><span class="n">tb2</span><span class="p">.</span><span class="n">col</span><span class="p">;</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">s</span><span class="p">.</span><span class="n">Name</span> <span class="p">,</span> <span class="n">c</span><span class="p">.</span><span class="n">Class</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">as</span> <span class="n">s</span> <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">classes</span> <span class="n">AS</span> <span class="n">c</span> <span class="n">ON</span> <span class="n">s</span><span class="p">.</span><span class="n">ClassID</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">ClassID</span><span class="p">;</span>
+<span class="o">+---------------+----------------+</span>
+<span class="o">|</span> <span class="n">Name</span>          <span class="o">|</span> <span class="n">Class</span>          <span class="o">|</span>
+<span class="o">+---------------+----------------+</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Zhongyu</span>   <span class="o">|</span> <span class="n">Emei</span> <span class="n">Pai</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Potian</span>    <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xie</span> <span class="n">Yanke</span>     <span class="o">|</span> <span class="n">Emei</span> <span class="n">Pai</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ding</span> <span class="n">Dian</span>     <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yu</span> <span class="n">Yutong</span>     <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Qing</span>      <span class="o">|</span> <span class="n">Riyue</span> <span class="n">Shenjiao</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xi</span> <span class="n">Ren</span>        <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Daiyu</span>     <span class="o">|</span> <span class="n">Ming</span> <span class="n">Jiao</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ren</span> <span class="n">Yingying</span>  <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yue</span> <span class="n">Lingshan</span>  <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yuan</span> <span class="n">Chengzhi</span> <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Wen</span> <span class="n">Qingqing</span>  <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Tian</span> <span class="n">Boguang</span>  <span class="o">|</span> <span class="n">Emei</span> <span class="n">Pai</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lu</span> <span class="n">Wushuang</span>   <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Duan</span> <span class="n">Yu</span>       <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Zhu</span>        <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Chong</span>     <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">Hua</span> <span class="n">Rong</span>      <span class="o">|</span> <span class="n">Ming</span> <span class="n">Jiao</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xue</span> <span class="n">Baochai</span>   <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Diao</span> <span class="n">Chan</span>     <span class="o">|</span> <span class="n">Ming</span> <span class="n">Jiao</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Huang</span> <span class="n">Yueying</span> <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xiao</span> <span class="n">Qiao</span>     <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ma</span> <span class="n">Chao</span>       <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Xian</span>       <span class="o">|</span> <span class="nb">NULL</span>           <span class="o">|</span>
+<span class="o">|</span> <span class="n">Sun</span> <span class="n">Dasheng</span>   <span class="o">|</span> <span class="nb">NULL</span>           <span class="o">|</span>
+<span class="o">|</span> <span class="n">Jingjiao</span> <span class="n">King</span> <span class="o">|</span> <span class="nb">NULL</span>           <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yinjiao</span> <span class="n">King</span>  <span class="o">|</span> <span class="nb">NULL</span>           <span class="o">|</span>
+<span class="o">+---------------+----------------+</span>
+<span class="mi">27</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h4 id="_17">右外连接</h4>
+<div class="hlcode"><pre><span class="n">FROM</span> <span class="n">tb1</span> <span class="n">RIGHT</span> <span class="n">JOIN</span> <span class="n">tb2</span> <span class="n">ON</span> <span class="n">tb1</span><span class="p">.</span><span class="n">col</span><span class="o">=</span><span class="n">tb2</span><span class="p">.</span><span class="n">col</span><span class="p">;</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">s</span><span class="p">.</span><span class="n">Name</span> <span class="p">,</span> <span class="n">c</span><span class="p">.</span><span class="n">Class</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">as</span> <span class="n">s</span> <span class="n">RIGHT</span> <span class="n">JOIN</span> <span class="n">classes</span> <span class="n">AS</span> <span class="n">c</span> <span class="n">ON</span> <span class="n">s</span><span class="p">.</span><span class="n">ClassID</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">ClassID</span><span class="p">;</span>
+<span class="o">+---------------+----------------+</span>
+<span class="o">|</span> <span class="n">Name</span>          <span class="o">|</span> <span class="n">Class</span>          <span class="o">|</span>
+<span class="o">+---------------+----------------+</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Zhongyu</span>   <span class="o">|</span> <span class="n">Emei</span> <span class="n">Pai</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Potian</span>    <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xie</span> <span class="n">Yanke</span>     <span class="o">|</span> <span class="n">Emei</span> <span class="n">Pai</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ding</span> <span class="n">Dian</span>     <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yu</span> <span class="n">Yutong</span>     <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Qing</span>      <span class="o">|</span> <span class="n">Riyue</span> <span class="n">Shenjiao</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xi</span> <span class="n">Ren</span>        <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Daiyu</span>     <span class="o">|</span> <span class="n">Ming</span> <span class="n">Jiao</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ren</span> <span class="n">Yingying</span>  <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yue</span> <span class="n">Lingshan</span>  <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yuan</span> <span class="n">Chengzhi</span> <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Wen</span> <span class="n">Qingqing</span>  <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Tian</span> <span class="n">Boguang</span>  <span class="o">|</span> <span class="n">Emei</span> <span class="n">Pai</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lu</span> <span class="n">Wushuang</span>   <span class="o">|</span> <span class="n">QingCheng</span> <span class="n">Pai</span>  <span class="o">|</span>
+<span class="o">|</span> <span class="n">Duan</span> <span class="n">Yu</span>       <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Zhu</span>        <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Chong</span>     <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">Hua</span> <span class="n">Rong</span>      <span class="o">|</span> <span class="n">Ming</span> <span class="n">Jiao</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xue</span> <span class="n">Baochai</span>   <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Diao</span> <span class="n">Chan</span>     <span class="o">|</span> <span class="n">Ming</span> <span class="n">Jiao</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Huang</span> <span class="n">Yueying</span> <span class="o">|</span> <span class="n">Lianshan</span> <span class="n">Pai</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xiao</span> <span class="n">Qiao</span>     <span class="o">|</span> <span class="n">Shaolin</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ma</span> <span class="n">Chao</span>       <span class="o">|</span> <span class="n">Wudang</span> <span class="n">Pai</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="nb">NULL</span>          <span class="o">|</span> <span class="n">Xiaoyao</span> <span class="n">Pai</span>    <span class="o">|</span>
+<span class="o">+---------------+----------------+</span>
+<span class="mi">24</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h2 id="_18">子查询</h2>
+<p>在查询语句嵌套查询语句</p>
+<p>基于某语句的查询结果再次进行的查询</p>
+<h3 id="where_1">WHERE 子句子查询</h3>
+<ul>
+<li>基于比较表达式中的子查询，子查询仅能返回单个值</li>
+</ul>
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SElect</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Age</span> <span class="n">from</span> <span class="n">students</span> <span class="n">where</span> <span class="n">Age</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">Select</span> <span class="n">avg</span><span class="p">(</span><span class="n">Age</span><span class="p">)</span> <span class="n">from</span> <span class="n">students</span><span class="p">);</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Name</span>          <span class="o">|</span> <span class="n">Age</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Xie</span> <span class="n">Yanke</span>     <span class="o">|</span>  <span class="mi">53</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Qing</span>      <span class="o">|</span>  <span class="mi">46</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Tian</span> <span class="n">Boguang</span>  <span class="o">|</span>  <span class="mi">33</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Sun</span> <span class="n">Dasheng</span>   <span class="o">|</span> <span class="mi">100</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Jingjiao</span> <span class="n">King</span> <span class="o">|</span> <span class="mi">100</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yinjiao</span> <span class="n">King</span>  <span class="o">|</span>  <span class="mi">98</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="mi">6</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">EXPLAIN</span> <span class="n">SElect</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Age</span> <span class="n">from</span> <span class="n">students</span> <span class="n">where</span> <span class="n">Age</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">Select</span> <span class="n">avg</span><span class="p">(</span><span class="n">Age</span><span class="p">)</span> <span class="n">from</span> <span class="n">students</span><span class="p">)</span><span class="err">\</span><span class="n">G</span><span class="p">;</span>
+<span class="o">***************************</span> <span class="mf">1.</span> <span class="n">row</span> <span class="o">***************************</span>
+           <span class="nl">id:</span> <span class="mi">1</span>
+  <span class="nl">select_type:</span> <span class="n">PRIMARY</span>
+        <span class="nl">table:</span> <span class="n">students</span>
+   <span class="nl">partitions:</span> <span class="nb">NULL</span>
+         <span class="nl">type:</span> <span class="n">ALL</span>
+<span class="nl">possible_keys:</span> <span class="nb">NULL</span>
+          <span class="nl">key:</span> <span class="nb">NULL</span>
+      <span class="nl">key_len:</span> <span class="nb">NULL</span>
+          <span class="nl">ref:</span> <span class="nb">NULL</span>
+         <span class="nl">rows:</span> <span class="mi">27</span>
+     <span class="nl">filtered:</span> <span class="mf">33.33</span>
+        <span class="nl">Extra:</span> <span class="n">Using</span> <span class="n">where</span>
+<span class="o">***************************</span> <span class="mf">2.</span> <span class="n">row</span> <span class="o">***************************</span>
+           <span class="nl">id:</span> <span class="mi">2</span>
+  <span class="nl">select_type:</span> <span class="n">SUBQUERY</span>
+        <span class="nl">table:</span> <span class="n">students</span>
+   <span class="nl">partitions:</span> <span class="nb">NULL</span>
+         <span class="nl">type:</span> <span class="n">ALL</span>
+<span class="nl">possible_keys:</span> <span class="nb">NULL</span>
+          <span class="nl">key:</span> <span class="nb">NULL</span>
+      <span class="nl">key_len:</span> <span class="nb">NULL</span>
+          <span class="nl">ref:</span> <span class="nb">NULL</span>
+         <span class="nl">rows:</span> <span class="mi">27</span>
+     <span class="nl">filtered:</span> <span class="mf">100.00</span>
+        <span class="nl">Extra:</span> <span class="nb">NULL</span>
+<span class="mi">2</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span><span class="p">,</span> <span class="mi">1</span> <span class="n">warning</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="nl">ERROR:</span>
+<span class="n">No</span> <span class="n">query</span> <span class="n">specified</span>
+</pre></div>
+
+
+<ul>
+<li>基于IN中的子查询，子查询应该单键查询并返回一个或者多个值从构成列表</li>
+</ul>
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Age</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">WHERE</span> <span class="n">Age</span> <span class="n">IN</span> <span class="p">(</span><span class="n">SELECT</span> <span class="n">Age</span> <span class="n">FROM</span> <span class="n">teachers</span><span class="p">);</span>
+<span class="n">Empty</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.01</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="from">FROM 子句子查询</h3>
+<div class="hlcode"><pre><span class="n">SELECT</span> <span class="n">tb_alias</span><span class="p">.</span><span class="n">col1</span><span class="p">,...</span> <span class="n">FROM</span> <span class="p">(</span><span class="n">SELECT</span> <span class="n">clause</span><span class="p">)</span> <span class="n">AS</span> <span class="n">tb_alias</span> <span class="n">WHERE</span> <span class="n">Clause</span><span class="p">;</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">aage</span><span class="p">,</span><span class="n">ClassID</span> <span class="n">FROM</span> <span class="p">(</span> <span class="n">SELECT</span> <span class="n">avg</span><span class="p">(</span><span class="n">Age</span><span class="p">)</span> <span class="n">AS</span> <span class="n">aage</span><span class="p">,</span> <span class="n">ClassID</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">WHERE</span> <span class="n">ClassID</span> <span class="n">IS</span> <span class="n">NOT</span> <span class="nb">NULL</span> <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">ClassID</span><span class="p">)</span> <span class="n">AS</span> <span class="n">s</span> <span class="n">WHERE</span> <span class="n">s</span><span class="p">.</span><span class="n">aage</span><span class="o">&gt;</span><span class="mi">30</span><span class="p">;</span>
+<span class="o">+---------+---------+</span>
+<span class="o">|</span> <span class="n">aage</span>    <span class="o">|</span> <span class="n">ClassID</span> <span class="o">|</span>
+<span class="o">+---------+---------+</span>
+<span class="o">|</span> <span class="mf">36.0000</span> <span class="o">|</span>       <span class="mi">2</span> <span class="o">|</span>
+<span class="o">|</span> <span class="mf">46.0000</span> <span class="o">|</span>       <span class="mi">5</span> <span class="o">|</span>
+<span class="o">+---------+---------+</span>
+<span class="mi">2</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h2 id="union">联合查询 UNION</h2>
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="n">Name</span><span class="p">,</span><span class="n">Age</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">UNION</span> <span class="n">SELECT</span> <span class="n">Name</span><span class="p">,</span><span class="n">Age</span> <span class="n">FROM</span> <span class="n">teachers</span><span class="p">;</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Name</span>          <span class="o">|</span> <span class="n">Age</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Zhongyu</span>   <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Potian</span>    <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xie</span> <span class="n">Yanke</span>     <span class="o">|</span>  <span class="mi">53</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ding</span> <span class="n">Dian</span>     <span class="o">|</span>  <span class="mi">32</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yu</span> <span class="n">Yutong</span>     <span class="o">|</span>  <span class="mi">26</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Shi</span> <span class="n">Qing</span>      <span class="o">|</span>  <span class="mi">46</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xi</span> <span class="n">Ren</span>        <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Daiyu</span>     <span class="o">|</span>  <span class="mi">17</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ren</span> <span class="n">Yingying</span>  <span class="o">|</span>  <span class="mi">20</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yue</span> <span class="n">Lingshan</span>  <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yuan</span> <span class="n">Chengzhi</span> <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Wen</span> <span class="n">Qingqing</span>  <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Tian</span> <span class="n">Boguang</span>  <span class="o">|</span>  <span class="mi">33</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lu</span> <span class="n">Wushuang</span>   <span class="o">|</span>  <span class="mi">17</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Duan</span> <span class="n">Yu</span>       <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Zhu</span>        <span class="o">|</span>  <span class="mi">21</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Chong</span>     <span class="o">|</span>  <span class="mi">25</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Hua</span> <span class="n">Rong</span>      <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xue</span> <span class="n">Baochai</span>   <span class="o">|</span>  <span class="mi">18</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Diao</span> <span class="n">Chan</span>     <span class="o">|</span>  <span class="mi">19</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Huang</span> <span class="n">Yueying</span> <span class="o">|</span>  <span class="mi">22</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xiao</span> <span class="n">Qiao</span>     <span class="o">|</span>  <span class="mi">20</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Ma</span> <span class="n">Chao</span>       <span class="o">|</span>  <span class="mi">23</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Xu</span> <span class="n">Xian</span>       <span class="o">|</span>  <span class="mi">27</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Sun</span> <span class="n">Dasheng</span>   <span class="o">|</span> <span class="mi">100</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Jingjiao</span> <span class="n">King</span> <span class="o">|</span> <span class="mi">100</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Yinjiao</span> <span class="n">King</span>  <span class="o">|</span>  <span class="mi">98</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Song</span> <span class="n">Jiang</span>    <span class="o">|</span>  <span class="mi">45</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Zhang</span> <span class="n">Sanfeng</span> <span class="o">|</span>  <span class="mi">94</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Miejue</span> <span class="n">Shitai</span> <span class="o">|</span>  <span class="mi">77</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Lin</span> <span class="n">Chaoying</span>  <span class="o">|</span>  <span class="mi">93</span> <span class="o">|</span>
+<span class="o">+---------------+-----+</span>
+<span class="mi">31</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">EXPLAIN</span> <span class="n">SELECT</span> <span class="n">Name</span><span class="p">,</span><span class="n">Age</span> <span class="n">FROM</span> <span class="n">students</span> <span class="n">UNION</span> <span class="n">SELECT</span> <span class="n">Name</span><span class="p">,</span><span class="n">Age</span> <span class="n">FROM</span> <span class="n">teachers</span><span class="err">\</span><span class="n">G</span><span class="p">;</span>
+<span class="o">***************************</span> <span class="mf">1.</span> <span class="n">row</span> <span class="o">***************************</span>
+           <span class="nl">id:</span> <span class="mi">1</span>
+  <span class="nl">select_type:</span> <span class="n">PRIMARY</span>
+        <span class="nl">table:</span> <span class="n">students</span>
+   <span class="nl">partitions:</span> <span class="nb">NULL</span>
+         <span class="nl">type:</span> <span class="n">ALL</span>
+<span class="nl">possible_keys:</span> <span class="nb">NULL</span>
+          <span class="nl">key:</span> <span class="nb">NULL</span>
+      <span class="nl">key_len:</span> <span class="nb">NULL</span>
+          <span class="nl">ref:</span> <span class="nb">NULL</span>
+         <span class="nl">rows:</span> <span class="mi">27</span>
+     <span class="nl">filtered:</span> <span class="mf">100.00</span>
+        <span class="nl">Extra:</span> <span class="nb">NULL</span>
+<span class="o">***************************</span> <span class="mf">2.</span> <span class="n">row</span> <span class="o">***************************</span>
+           <span class="nl">id:</span> <span class="mi">2</span>
+  <span class="nl">select_type:</span> <span class="n">UNION</span>
+        <span class="nl">table:</span> <span class="n">teachers</span>
+   <span class="nl">partitions:</span> <span class="nb">NULL</span>
+         <span class="nl">type:</span> <span class="n">ALL</span>
+<span class="nl">possible_keys:</span> <span class="nb">NULL</span>
+          <span class="nl">key:</span> <span class="nb">NULL</span>
+      <span class="nl">key_len:</span> <span class="nb">NULL</span>
+          <span class="nl">ref:</span> <span class="nb">NULL</span>
+         <span class="nl">rows:</span> <span class="mi">4</span>
+     <span class="nl">filtered:</span> <span class="mf">100.00</span>
+        <span class="nl">Extra:</span> <span class="nb">NULL</span>
+<span class="o">***************************</span> <span class="mf">3.</span> <span class="n">row</span> <span class="o">***************************</span>
+           <span class="nl">id:</span> <span class="nb">NULL</span>
+  <span class="nl">select_type:</span> <span class="n">UNION</span> <span class="n">RESULT</span>
+        <span class="nl">table:</span> <span class="o">&lt;</span><span class="n">union1</span><span class="p">,</span><span class="mi">2</span><span class="o">&gt;</span>
+   <span class="nl">partitions:</span> <span class="nb">NULL</span>
+         <span class="nl">type:</span> <span class="n">ALL</span>
+<span class="nl">possible_keys:</span> <span class="nb">NULL</span>
+          <span class="nl">key:</span> <span class="nb">NULL</span>
+      <span class="nl">key_len:</span> <span class="nb">NULL</span>
+          <span class="nl">ref:</span> <span class="nb">NULL</span>
+         <span class="nl">rows:</span> <span class="nb">NULL</span>
+     <span class="nl">filtered:</span> <span class="nb">NULL</span>
+        <span class="nl">Extra:</span> <span class="n">Using</span> <span class="n">temporary</span>
+<span class="mi">3</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span><span class="p">,</span> <span class="mi">1</span> <span class="n">warning</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h1 id="_19">数据库操作</h1>
+<h2 id="create-alter-drop">CREATE   ALTER   DROP</h2>
+<p>[IF EXISTS]</p>
+<p>[IF NOT EXISTS]</p>
+<h1 id="_20">表</h1>
+<h2 id="_21">设计表</h2>
+<h3 id="_22">字符集</h3>
+<p>主要是为了保存emoji表情，例如: 微信昵称，就有很多带有emoji表情的，这里我们使用utf8mb4字符集，千万不要使用blob类型来存储</p>
+<h3 id="_23">主/外键类型</h3>
+<p>主键的设定是非常重要的，在主键的选择上，应该满足以下几个条件:</p>
+<div class="hlcode"><pre><span class="mf">1.</span> <span class="err">唯一性</span> <span class="p">(</span><span class="err">必要条件</span><span class="p">)</span>
+<span class="mf">2.</span> <span class="err">非空性</span>
+<span class="mf">3.</span> <span class="err">有序性</span>
+<span class="mf">4.</span> <span class="err">可读性</span>
+<span class="mf">5.</span> <span class="err">可扩展性</span>
+</pre></div>
+
+
+<blockquote>
+<p>有序性就有不少好处。例如: 查询时，为有序IO，就可提高查询效率，存储的顺序也是有序的，往远了看，分库分表也是有好处的。因此，我建议使8字节无符号的bigint(20)作为主键的数据类型  </p>
+<p>主外键的数据类型一定要一致！</p>
+<p>每个表中的主键命名保持一致！</p>
+</blockquote>
+<div class="hlcode"><pre><span class="n">create</span> <span class="n">table</span> <span class="n">t_base_user</span><span class="p">(</span>
+<span class="n">id</span> <span class="n">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="kt">unsigned</span> <span class="n">not</span> <span class="n">null</span> <span class="n">primary</span> <span class="n">key</span> <span class="n">auto_increment</span><span class="p">;</span>
+<span class="p">....</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>无符号与有符号的区别</p>
+<div class="hlcode"><pre><span class="err">有符号允许存储负数，无符号只允许从正数开始，无符号最小值为</span><span class="mi">0</span><span class="err">，最大值根据类型不同而不同。</span>
+</pre></div>
+
+
+<p>外键约束用来保证数据完整性的。但不建议在数据库表中加外键约束，因为在数据表中添加外键约束，会影响性能，例如: 每一次修改数据时，都要在另外的一张表中执行查询。应该是：在应用层，也就是代码层面，来维持外键关系。</p>
+<h3 id="_24">添加注释</h3>
+<p>添加注释，这是非常重要的，其中包括表注释，字段注释。主要是为了后期表结构的维护，我相信你对着数据表中那么多字段，如果没有注释的话，你是很难一下子明白是什么意思的，即使你是该表结构的设计者，十天半个月过去后，你还记得吗？</p>
+<div class="hlcode"><pre><span class="n">create</span> <span class="n">table</span> <span class="n">t_base_user</span><span class="p">(</span>
+ <span class="n">id</span> <span class="n">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="n">UNSIGNED</span> <span class="n">not</span> <span class="n">null</span> <span class="n">primary</span> <span class="n">key</span> <span class="n">auto_increment</span> <span class="n">comment</span> <span class="s">&quot;主键&quot;</span><span class="p">,</span>
+ <span class="n">name</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="n">character</span> <span class="n">set</span> <span class="n">utf8mb4</span> <span class="n">comment</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+ <span class="n">created_time</span> <span class="n">datetime</span> <span class="n">null</span> <span class="k">default</span> <span class="n">now</span><span class="p">()</span> <span class="n">comment</span> <span class="s">&quot;创建时间&quot;</span><span class="p">,</span>
+ <span class="n">updated_time</span> <span class="n">datetime</span> <span class="n">null</span> <span class="k">default</span> <span class="n">now</span><span class="p">()</span> <span class="n">comment</span> <span class="s">&quot;修改时间&quot;</span><span class="p">,</span>
+ <span class="n">deleted</span> <span class="n">tinyint</span> <span class="n">not</span> <span class="n">null</span> <span class="k">default</span> <span class="mi">1</span> <span class="n">comment</span> <span class="s">&quot;逻辑删除 0正常数据 1删除数据&quot;</span>
+<span class="p">)</span><span class="n">engine</span><span class="o">=</span><span class="n">InnoDB</span> <span class="n">charset</span><span class="o">=</span><span class="n">utf8</span> <span class="n">comment</span> <span class="s">&quot;用户表&quot;</span><span class="p">;</span>
+
+<span class="c1">//添加索引</span>
+<span class="n">alter</span> <span class="n">table</span> <span class="n">t_base_user</span> <span class="nf">idx_created_time</span><span class="p">(</span><span class="n">created_time</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="_25">定义</h2>
+<h3 id="_26">字段</h3>
+<div class="hlcode"><pre><span class="err">字段：字段名，</span> <span class="err">字段数据类型，修饰符</span>
+</pre></div>
+
+
+<h3 id="_27">索引</h3>
+<p>应该创建在经常用作查询条件的字段上</p>
+<p>实现级别在存储引擎</p>
+<h4 id="_28">稠密索引</h4>
+<h4 id="b-hash-r-fulltext">B+索引， hash索引， R树索引， FULLTEXT索引</h4>
+<h4 id="_29">稀疏索引</h4>
+<h4 id="_30">聚合索引， 非聚合索引</h4>
+<h4 id="_31">简单索引，组合索引</h4>
+<h2 id="_32">创建表</h2>
+<ul>
+<li>直接创建</li>
+</ul>
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">help</span> <span class="n">create</span> <span class="n">table</span>
+<span class="n">CREATE</span> <span class="p">[</span><span class="n">TEMPORARY</span><span class="p">]</span> <span class="n">TABLE</span> <span class="p">[</span><span class="n">IF</span> <span class="n">NOT</span> <span class="n">EXISTS</span><span class="p">]</span> <span class="n">tbl_name</span>
+    <span class="p">(</span><span class="n">create_definition</span><span class="p">,...)</span>
+    <span class="p">[</span><span class="n">table_options</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">partition_options</span><span class="p">]</span>
+</pre></div>
+
+
+<ul>
+<li>通过现存的表创建，新表会被直接插入查询而来的数据</li>
+</ul>
+<div class="hlcode"><pre><span class="n">CREATE</span> <span class="p">[</span><span class="n">TEMPORARY</span><span class="p">]</span> <span class="n">TABLE</span> <span class="p">[</span><span class="n">IF</span> <span class="n">NOT</span> <span class="n">EXISTS</span><span class="p">]</span> <span class="n">tbl_name</span>
+    <span class="p">[(</span><span class="n">create_definition</span><span class="p">,...)]</span>
+    <span class="p">[</span><span class="n">table_options</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">partition_options</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">IGNORE</span> <span class="o">|</span> <span class="n">REPLACE</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">AS</span><span class="p">]</span> <span class="n">query_expression</span>
+</pre></div>
+
+
+<ul>
+<li>通过复制现存表结构创建，只复制表不复制数据</li>
+</ul>
+<div class="hlcode"><pre><span class="n">CREATE</span> <span class="p">[</span><span class="n">TEMPORARY</span><span class="p">]</span> <span class="n">TABLE</span> <span class="p">[</span><span class="n">IF</span> <span class="n">NOT</span> <span class="n">EXISTS</span><span class="p">]</span> <span class="n">tbl_name</span>
+    <span class="p">{</span> <span class="n">LIKE</span> <span class="n">old_tbl_name</span> <span class="o">|</span> <span class="p">(</span><span class="n">LIKE</span> <span class="n">old_tbl_name</span><span class="p">)</span> <span class="p">}</span>
+</pre></div>
+
+
+<h3 id="_33">表类型</h3>
+<p>Storage Engine 是指表类型，也就是在表创建时指明其使用的存储引擎</p>
+<p>同一个库中表要使用同一种存储引擎类型</p>
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SHOW</span> <span class="n">GLOBAL</span> <span class="n">VARIABLES</span> <span class="n">LIKE</span> <span class="err">&#39;</span><span class="o">%</span><span class="k">default</span><span class="o">%</span><span class="n">engine</span><span class="o">%</span><span class="err">&#39;</span><span class="p">;</span>
+<span class="o">+----------------------------+--------+</span>
+<span class="o">|</span> <span class="n">Variable_name</span>              <span class="o">|</span> <span class="n">Value</span>  <span class="o">|</span>
+<span class="o">+----------------------------+--------+</span>
+<span class="o">|</span> <span class="n">default_storage_engine</span>     <span class="o">|</span> <span class="n">InnoDB</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">default_tmp_storage_engine</span> <span class="o">|</span> <span class="n">InnoDB</span> <span class="o">|</span>
+<span class="o">+----------------------------+--------+</span>
+<span class="mi">2</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="_34">表结构</h3>
+<div class="hlcode"><pre><span class="n">DESCRIBE</span> <span class="n">tbl_name</span><span class="p">;</span>
+</pre></div>
+
+
+<h3 id="_35">表状态信息</h3>
+<div class="hlcode"><pre><span class="n">SHOW</span> <span class="p">[</span><span class="n">FULL</span><span class="p">]</span> <span class="n">TABLES</span> <span class="p">[{</span><span class="n">FROM</span> <span class="o">|</span> <span class="n">IN</span> <span class="p">}</span> <span class="n">db_name</span><span class="p">]</span> <span class="p">[</span><span class="n">LIKE</span> <span class="err">&#39;</span><span class="n">pattern</span><span class="err">&#39;</span> <span class="o">|</span> <span class="n">WHERE</span> <span class="n">expr</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SHOW</span> <span class="n">TABLE</span> <span class="n">STATUS</span> <span class="n">LIKE</span> <span class="err">&#39;</span><span class="n">t1</span><span class="err">&#39;\</span><span class="n">G</span><span class="p">;</span>
+<span class="o">***************************</span> <span class="mf">1.</span> <span class="n">row</span> <span class="o">***************************</span>
+           <span class="nl">Name:</span> <span class="n">t1</span>
+         <span class="nl">Engine:</span> <span class="n">InnoDB</span>
+        <span class="nl">Version:</span> <span class="mi">10</span>
+     <span class="nl">Row_format:</span> <span class="n">Dynamic</span>
+           <span class="nl">Rows:</span> <span class="mi">0</span>
+ <span class="nl">Avg_row_length:</span> <span class="mi">0</span>
+    <span class="nl">Data_length:</span> <span class="mi">16384</span>
+<span class="nl">Max_data_length:</span> <span class="mi">0</span>
+   <span class="nl">Index_length:</span> <span class="mi">0</span>
+      <span class="nl">Data_free:</span> <span class="mi">0</span>
+ <span class="nl">Auto_increment:</span> <span class="mi">5</span>
+    <span class="nl">Create_time:</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">20</span> <span class="mi">13</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">39</span>
+    <span class="nl">Update_time:</span> <span class="nb">NULL</span>
+     <span class="nl">Check_time:</span> <span class="nb">NULL</span>
+      <span class="nl">Collation:</span> <span class="n">utf8mb4_0900_ai_ci</span>
+       <span class="nl">Checksum:</span> <span class="nb">NULL</span>
+ <span class="nl">Create_options:</span>
+        <span class="nl">Comment:</span>
+<span class="mi">1</span> <span class="n">row</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h2 id="_36">修改表</h2>
+<div class="hlcode"><pre><span class="n">ALTER</span> <span class="n">TABLE</span>
+</pre></div>
+
+
+<h3 id="_37">删除表</h3>
+<div class="hlcode"><pre><span class="n">DROP</span> <span class="n">TABLE</span>
+</pre></div>
+
+
+<h1 id="_38">索引管理</h1>
+<p>索引是按照特定数据结构存储的数据</p>
+<p>索引并不会是我们需要的数据本身，而是类似指针指向所需要的数据</p>
+<h2 id="_39">索引类型</h2>
+<h3 id="_40">聚集索引，非聚集索引</h3>
+<p>数据是否与索引存储在一起</p>
+<h3 id="_41">主键索引，辅助索引</h3>
+<h3 id="_42">稠密索引，稀疏索引</h3>
+<p>是否索引了每一个数据项</p>
+<h3 id="b-treehashr-tree">B+ Tree，HASH索引（键值索引），R Tree</h3>
+<h3 id="_43">简单索引，组合索引</h3>
+<h3 id="_44">左前缀索引</h3>
+<div class="hlcode"><pre><span class="n">like</span> <span class="err">‘</span><span class="n">abc</span><span class="o">%</span><span class="err">’</span>
+</pre></div>
+
+
+<h3 id="_45">覆盖索引</h3>
+<h2 id="_46">管理索引方法</h2>
+<h3 id="_47">创建索引</h3>
+<p>创建表时指定 CREATE INDEX</p>
+<h3 id="_48">创建或删除索引</h3>
+<p>修改表的命令</p>
+<h3 id="_49">删除索引</h3>
+<p>DROP INDEX</p>
+<h3 id="_50">查看表索引</h3>
+<div class="hlcode"><pre><span class="nl">Syntax:</span>
+<span class="n">SHOW</span> <span class="p">[</span><span class="n">EXTENDED</span><span class="p">]</span> <span class="p">{</span><span class="n">INDEX</span> <span class="o">|</span> <span class="n">INDEXES</span> <span class="o">|</span> <span class="n">KEYS</span><span class="p">}</span>
+    <span class="p">{</span><span class="n">FROM</span> <span class="o">|</span> <span class="n">IN</span><span class="p">}</span> <span class="n">tbl_name</span>
+    <span class="p">[{</span><span class="n">FROM</span> <span class="o">|</span> <span class="n">IN</span><span class="p">}</span> <span class="n">db_name</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">WHERE</span> <span class="n">expr</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SHOW</span> <span class="n">INDEXES</span> <span class="n">FROM</span> <span class="n">students</span><span class="p">;</span>
+<span class="o">+----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+</span>
+<span class="o">|</span> <span class="n">Table</span>    <span class="o">|</span> <span class="n">Non_unique</span> <span class="o">|</span> <span class="n">Key_name</span> <span class="o">|</span> <span class="n">Seq_in_index</span> <span class="o">|</span> <span class="n">Column_name</span> <span class="o">|</span> <span class="n">Collation</span> <span class="o">|</span> <span class="n">Cardinality</span> <span class="o">|</span> <span class="n">Sub_part</span> <span class="o">|</span> <span class="n">Packed</span> <span class="o">|</span> <span class="n">Null</span> <span class="o">|</span> <span class="n">Index_type</span> <span class="o">|</span> <span class="n">Comment</span> <span class="o">|</span> <span class="n">Index_comment</span> <span class="o">|</span> <span class="n">Visible</span> <span class="o">|</span> <span class="n">Expression</span> <span class="o">|</span>
+<span class="o">+----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+</span>
+<span class="o">|</span> <span class="n">students</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="n">PRIMARY</span>  <span class="o">|</span>            <span class="mi">1</span> <span class="o">|</span> <span class="n">StuID</span>       <span class="o">|</span> <span class="n">A</span>         <span class="o">|</span>          <span class="mi">25</span> <span class="o">|</span>     <span class="nb">NULL</span> <span class="o">|</span>   <span class="nb">NULL</span> <span class="o">|</span>      <span class="o">|</span> <span class="n">BTREE</span>      <span class="o">|</span>         <span class="o">|</span>               <span class="o">|</span> <span class="n">YES</span>     <span class="o">|</span> <span class="nb">NULL</span>       <span class="o">|</span>
+<span class="o">+----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+</span>
+<span class="mi">1</span> <span class="n">row</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.12</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="explain">EXPLAIN 表索引对比操作</h3>
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">explain</span> <span class="n">select</span> <span class="o">*</span> <span class="n">from</span> <span class="n">students</span> <span class="n">WHERE</span> <span class="n">StuID</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>
+<span class="o">+----+-------------+----------+------------+-------+---------------+---------+---------+-------+------+----------+-------+</span>
+<span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">select_type</span> <span class="o">|</span> <span class="n">table</span>    <span class="o">|</span> <span class="n">partitions</span> <span class="o">|</span> <span class="n">type</span>  <span class="o">|</span> <span class="n">possible_keys</span> <span class="o">|</span> <span class="n">key</span>     <span class="o">|</span> <span class="n">key_len</span> <span class="o">|</span> <span class="n">ref</span>   <span class="o">|</span> <span class="n">rows</span> <span class="o">|</span> <span class="n">filtered</span> <span class="o">|</span> <span class="n">Extra</span> <span class="o">|</span>
+<span class="o">+----+-------------+----------+------------+-------+---------------+---------+---------+-------+------+----------+-------+</span>
+<span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span> <span class="n">SIMPLE</span>      <span class="o">|</span> <span class="n">students</span> <span class="o">|</span> <span class="nb">NULL</span>       <span class="o">|</span> <span class="k">const</span> <span class="o">|</span> <span class="n">PRIMARY</span>       <span class="o">|</span> <span class="n">PRIMARY</span> <span class="o">|</span> <span class="mi">4</span>       <span class="o">|</span> <span class="k">const</span> <span class="o">|</span>    <span class="mi">1</span> <span class="o">|</span>   <span class="mf">100.00</span> <span class="o">|</span> <span class="nb">NULL</span>  <span class="o">|</span>
+<span class="o">+----+-------------+----------+------------+-------+---------------+---------+---------+-------+------+----------+-------+</span>
+<span class="mi">1</span> <span class="n">row</span> <span class="n">in</span> <span class="n">set</span><span class="p">,</span> <span class="mi">1</span> <span class="n">warning</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">explain</span> <span class="n">select</span> <span class="o">*</span> <span class="n">from</span> <span class="n">students</span> <span class="n">WHERE</span> <span class="n">Age</span><span class="o">=</span><span class="mi">53</span><span class="p">;;</span>
+<span class="o">+----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------------+</span>
+<span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">select_type</span> <span class="o">|</span> <span class="n">table</span>    <span class="o">|</span> <span class="n">partitions</span> <span class="o">|</span> <span class="n">type</span> <span class="o">|</span> <span class="n">possible_keys</span> <span class="o">|</span> <span class="n">key</span>  <span class="o">|</span> <span class="n">key_len</span> <span class="o">|</span> <span class="n">ref</span>  <span class="o">|</span> <span class="n">rows</span> <span class="o">|</span> <span class="n">filtered</span> <span class="o">|</span> <span class="n">Extra</span>       <span class="o">|</span>
+<span class="o">+----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------------+</span>
+<span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span> <span class="n">SIMPLE</span>      <span class="o">|</span> <span class="n">students</span> <span class="o">|</span> <span class="nb">NULL</span>       <span class="o">|</span> <span class="n">ALL</span>  <span class="o">|</span> <span class="nb">NULL</span>          <span class="o">|</span> <span class="nb">NULL</span> <span class="o">|</span> <span class="nb">NULL</span>    <span class="o">|</span> <span class="nb">NULL</span> <span class="o">|</span>   <span class="mi">25</span> <span class="o">|</span>    <span class="mf">10.00</span> <span class="o">|</span> <span class="n">Using</span> <span class="n">where</span> <span class="o">|</span>
+<span class="o">+----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------------+</span>
+<span class="mi">1</span> <span class="n">row</span> <span class="n">in</span> <span class="n">set</span><span class="p">,</span> <span class="mi">1</span> <span class="n">warning</span> <span class="p">(</span><span class="mf">0.01</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<blockquote>
+<p>Type 类型显示拥有索引的查询只会查询一条rows记录</p>
+</blockquote>
+<h1 id="view">视图 VIEW</h1>
+<p>视图是一张虚表，是存储下来的select 语句</p>
+<p>视图中的数据事实上存储于“基表”中，其修改操作也会针对基表实现，其修改操作受基表限制</p>
+<h2 id="view_1">创建view</h2>
+<div class="hlcode"><pre><span class="n">CREATE</span>
+    <span class="p">[</span><span class="n">OR</span> <span class="n">REPLACE</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">ALGORITHM</span> <span class="o">=</span> <span class="p">{</span><span class="n">UNDEFINED</span> <span class="o">|</span> <span class="n">MERGE</span> <span class="o">|</span> <span class="n">TEMPTABLE</span><span class="p">}]</span>
+    <span class="p">[</span><span class="n">DEFINER</span> <span class="o">=</span> <span class="p">{</span> <span class="n">user</span> <span class="o">|</span> <span class="n">CURRENT_USER</span> <span class="p">}]</span>
+    <span class="p">[</span><span class="n">SQL</span> <span class="n">SECURITY</span> <span class="p">{</span> <span class="n">DEFINER</span> <span class="o">|</span> <span class="n">INVOKER</span> <span class="p">}]</span>
+    <span class="n">VIEW</span> <span class="n">view_name</span> <span class="p">[(</span><span class="n">column_list</span><span class="p">)]</span>
+    <span class="n">AS</span> <span class="n">select_statement</span>
+    <span class="p">[</span><span class="n">WITH</span> <span class="p">[</span><span class="n">CASCADED</span> <span class="o">|</span> <span class="n">LOCAL</span><span class="p">]</span> <span class="n">CHECK</span> <span class="n">OPTION</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">CREATE</span> <span class="n">VIEW</span> <span class="n">test</span> <span class="n">AS</span> <span class="n">SELECT</span> <span class="n">StuID</span><span class="p">,</span><span class="n">Name</span><span class="p">,</span><span class="n">Age</span> <span class="n">FROM</span> <span class="n">students</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="n">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mf">0.02</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SHOW</span> <span class="n">TABLES</span><span class="p">;</span>
+<span class="o">+-------------------+</span>
+<span class="o">|</span> <span class="n">Tables_in_hellodb</span> <span class="o">|</span>
+<span class="o">+-------------------+</span>
+<span class="o">|</span> <span class="n">classes</span>           <span class="o">|</span>
+<span class="o">|</span> <span class="n">coc</span>               <span class="o">|</span>
+<span class="o">|</span> <span class="n">courses</span>           <span class="o">|</span>
+<span class="o">|</span> <span class="n">scores</span>            <span class="o">|</span>
+<span class="o">|</span> <span class="n">students</span>          <span class="o">|</span>
+<span class="o">|</span> <span class="n">teachers</span>          <span class="o">|</span>
+<span class="o">|</span> <span class="n">test</span>              <span class="o">|</span>
+<span class="o">|</span> <span class="n">toc</span>               <span class="o">|</span>
+<span class="o">+-------------------+</span>
+<span class="mi">8</span> <span class="n">rows</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.01</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">SHOW</span> <span class="n">TABLE</span> <span class="n">STATUS</span> <span class="n">LIKE</span> <span class="err">&#39;</span><span class="n">test</span><span class="err">&#39;\</span><span class="n">G</span><span class="p">;</span>
+<span class="o">***************************</span> <span class="mf">1.</span> <span class="n">row</span> <span class="o">***************************</span>
+           <span class="nl">Name:</span> <span class="n">test</span>
+         <span class="nl">Engine:</span> <span class="nb">NULL</span>
+        <span class="nl">Version:</span> <span class="nb">NULL</span>
+     <span class="nl">Row_format:</span> <span class="nb">NULL</span>
+           <span class="nl">Rows:</span> <span class="mi">0</span>
+ <span class="nl">Avg_row_length:</span> <span class="mi">0</span>
+    <span class="nl">Data_length:</span> <span class="mi">0</span>
+<span class="nl">Max_data_length:</span> <span class="mi">0</span>
+   <span class="nl">Index_length:</span> <span class="mi">0</span>
+      <span class="nl">Data_free:</span> <span class="mi">0</span>
+ <span class="nl">Auto_increment:</span> <span class="nb">NULL</span>
+    <span class="nl">Create_time:</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">21</span> <span class="mi">12</span><span class="o">:</span><span class="mi">44</span><span class="o">:</span><span class="mi">43</span>
+    <span class="nl">Update_time:</span> <span class="nb">NULL</span>
+     <span class="nl">Check_time:</span> <span class="nb">NULL</span>
+      <span class="nl">Collation:</span> <span class="nb">NULL</span>
+       <span class="nl">Checksum:</span> <span class="nb">NULL</span>
+ <span class="nl">Create_options:</span> <span class="nb">NULL</span>
+        <span class="nl">Comment:</span> <span class="n">VIEW</span>
+<span class="mi">1</span> <span class="n">row</span> <span class="n">in</span> <span class="n">set</span> <span class="p">(</span><span class="mf">0.01</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="view_2">删除view</h3>
+<div class="hlcode"><pre><span class="n">DROP</span> <span class="n">VIEW</span> <span class="p">[</span><span class="n">IF</span> <span class="n">EXISTS</span><span class="p">]</span>
+    <span class="n">view_name</span> <span class="p">[,</span> <span class="n">view_name</span><span class="p">]</span> <span class="p">...</span>
+    <span class="p">[</span><span class="n">RESTRICT</span> <span class="o">|</span> <span class="n">CASCADE</span><span class="p">]</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

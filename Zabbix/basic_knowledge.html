@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>basic_knowledge - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Zabbix">Zabbix</a>&nbsp;&#187;&nbsp;basic_knowledge
+    <span class="updated">Page Updated&nbsp;
+      2019-02-15 17:22
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">basic_knowledge</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">组成</a><ul>
+<li><a href="#zabbix-server">zabbix-server</a><ul>
+<li><a href="#_2">进程</a></li>
+<li><a href="#zabbix_serverconf">zabbix_server.conf</a></li>
+<li><a href="#zabbix_serverlog">zabbix_server.log</a></li>
+<li><a href="#zabbix_get">zabbix_get</a></li>
+</ul>
+</li>
+<li><a href="#zabbix-agent">zabbix-agent</a><ul>
+<li><a href="#zabbix_agentd">zabbix_agentd</a></li>
+<li><a href="#zabbix_agentdconf">zabbix_agentd.conf</a></li>
+<li><a href="#zabbix_agentdlog">zabbix_agentd.log</a></li>
+</ul>
+</li>
+<li><a href="#zabbix-database">zabbix-database</a></li>
+<li><a href="#zabbix-web">zabbix-web</a></li>
+<li><a href="#zabbix-proxy">zabbix-proxy</a><ul>
+<li><a href="#zabbix_proxyconf">zabbix_proxy.conf</a></li>
+<li><a href="#zabbix_proxylog">zabbix_proxy.log</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_3">术语</a><ul>
+<li><a href="#template">template</a></li>
+<li><a href="#application">application</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">组成</h1>
+<h2 id="zabbix-server">zabbix-server</h2>
+<p>C语言编写</p>
+<h3 id="_2">进程</h3>
+<p>watchdog</p>
+<p>housekeeper</p>
+<p>alerter</p>
+<p>poller</p>
+<p>httppoller</p>
+<p>discoverer</p>
+<p>pinger</p>
+<p>db_config_syncer</p>
+<p>db_data_syncer</p>
+<p>nodewatcher</p>
+<p>timer</p>
+<p>escalater</p>
+<h3 id="zabbix_serverconf">zabbix_server.conf</h3>
+<p>配置文件</p>
+<h3 id="zabbix_serverlog">zabbix_server.log</h3>
+<p>日志</p>
+<h3 id="zabbix_get">zabbix_get</h3>
+<p>收集数据</p>
+<p>和zabbix_agentd 通信</p>
+<h2 id="zabbix-agent">zabbix-agent</h2>
+<p>C语言编写</p>
+<h3 id="zabbix_agentd">zabbix_agentd</h3>
+<p>收集本地数据</p>
+<h3 id="zabbix_agentdconf">zabbix_agentd.conf</h3>
+<h3 id="zabbix_agentdlog">zabbix_agentd.log</h3>
+<h2 id="zabbix-database">zabbix-database</h2>
+<p>支持MySQL，PostgreSQL， Oracle，DB2， </p>
+<h2 id="zabbix-web">zabbix-web</h2>
+<p>GUI，用于实现zabbix设定和展示</p>
+<h2 id="zabbix-proxy">zabbix-proxy</h2>
+<p>分布式监控环境中的专用组件</p>
+<h3 id="zabbix_proxyconf">zabbix_proxy.conf</h3>
+<h3 id="zabbix_proxylog">zabbix_proxy.log</h3>
+<h1 id="_3">术语</h1>
+<h2 id="template">template</h2>
+<p>通常包含item， trigger， graph， screen</p>
+<p>模版可以直接链接至单个主机</p>
+<h2 id="application">application</h2>
+<p>一组item的集合</p>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

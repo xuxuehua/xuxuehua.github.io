@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>random - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python_modules">Python_modules</a>&nbsp;&#187;&nbsp;random
+    <span class="updated">Page Updated&nbsp;
+      2018-08-25 22:49
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">random</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#random">random</a><ul>
+<li><a href="#random_1">random()</a></li>
+<li><a href="#randint">randint()</a></li>
+<li><a href="#randrange">randrange()</a></li>
+<li><a href="#choice">choice()</a></li>
+<li><a href="#sample">sample()</a></li>
+<li><a href="#uniform">uniform()</a></li>
+<li><a href="#shuffle">shuffle()</a></li>
+<li><a href="#_1">验证码生成</a></li>
+<li><a href="#seed">seed()</a></li>
+<li><a href="#gauss">gauss()</a></li>
+<li><a href="#expovariatelambd">expovariate(lambd)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="random">random</h1>
+<p>取随机值</p>
+<h2 id="random_1">random()</h2>
+<p>随机生成下一个实数，在[0, 1]范围内</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="mf">0.5265427803029777</span>
+</pre></div>
+
+
+<p>随机生成下一个实数，在[a, b]范围内<br />
+random.random(a, b)</p>
+<h2 id="randint">randint()</h2>
+<p>1-3之间</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="mi">3</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="mi">2</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="mi">2</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="mi">2</span>
+</pre></div>
+
+
+<h2 id="randrange">randrange()</h2>
+<p>randrange([start], stop, [step])</p>
+<p>基数缺省值为1</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">18</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span><span class="o">:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">19</span><span class="p">]</span><span class="o">:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">:</span> <span class="mi">2</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="o">:</span> <span class="mi">1</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">:</span> <span class="mi">3</span>
+</pre></div>
+
+
+<h2 id="choice">choice()</h2>
+<p>random.choice(seq)</p>
+<p>从非空序列的元素中随机挑选一个元素</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">22</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">22</span><span class="p">]</span><span class="o">:</span> <span class="sc">&#39;e&#39;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">23</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">23</span><span class="p">]</span><span class="o">:</span> <span class="sc">&#39;l&#39;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">24</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">24</span><span class="p">]</span><span class="o">:</span> <span class="sc">&#39;o&#39;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">25</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">25</span><span class="p">]</span><span class="o">:</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">26</span><span class="p">]</span><span class="o">:</span> <span class="mi">1</span>
+</pre></div>
+
+
+<h2 id="sample">sample()</h2>
+<p>random.sample(seq, k)</p>
+<p>从样本序列中随机挑选k个元素，返回新的列表</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">27</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">27</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="sc">&#39;l&#39;</span><span class="p">,</span> <span class="sc">&#39;l&#39;</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">28</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">28</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="sc">&#39;l&#39;</span><span class="p">,</span> <span class="sc">&#39;h&#39;</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">29</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="sc">&#39;h&#39;</span><span class="p">,</span> <span class="sc">&#39;e&#39;</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="sc">&#39;e&#39;</span><span class="p">,</span> <span class="sc">&#39;h&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<h2 id="uniform">uniform()</h2>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">:</span> <span class="mf">2.039522432404592</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">:</span> <span class="mf">2.0421261888899847</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">33</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">33</span><span class="p">]</span><span class="o">:</span> <span class="mf">1.0705082811151863</span>
+</pre></div>
+
+
+<h2 id="shuffle">shuffle()</h2>
+<p>将序列的所有元素随机排序<br />
+random.shuffle(seq)</p>
+<p>洗牌功能</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">34</span><span class="p">]</span><span class="o">:</span> <span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">35</span><span class="p">]</span><span class="o">:</span> <span class="n">random</span><span class="p">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="o">:</span> <span class="n">L</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+
+
+<h2 id="_1">验证码生成</h2>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">random</span>
+
+<span class="n">checkcode</span> <span class="o">=</span> <span class="err">&#39;&#39;</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">current</span> <span class="o">==</span> <span class="n">i</span><span class="o">:</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">chr</span><span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="mi">90</span><span class="p">))</span>
+    <span class="nl">else:</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+    <span class="n">checkcode</span> <span class="o">+=</span> <span class="n">str</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+
+<span class="n">print</span><span class="p">(</span><span class="n">checkcode</span><span class="p">)</span>
+</pre></div>
+
+
+<h2 id="seed">seed()</h2>
+<p>random.seed(x) 通过改变随机数生成器的种子.</p>
+<h2 id="gauss">gauss()</h2>
+<p>随机生成符合高斯分布的随机数，mu， sigma为高斯分布的两个参数<br />
+random.gauss(mu, sigma)</p>
+<h2 id="expovariatelambd">expovariate(lambd)</h2>
+<p>随机生成符合指数分布的随机数，lambd为指数分布的参数<br />
+random.expovariate(lambd)</p>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>rsync - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Linux_commands">Linux_commands</a>&nbsp;&#187;&nbsp;rsync
+    <span class="updated">Page Updated&nbsp;
+      2018-09-21 21:08
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">rsync</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#rsync">rsync</a><ul>
+<li><a href="#push">本地到远程  PUSH</a></li>
+<li><a href="#pull">远程到本地  PULL</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="rsync">rsync</h1>
+<p>Rsync命令是一个远程同步程序，与scp相比，它可以以最小的代价备份文件，只备份有差异的文件，这样每次备份就少了很多时间</p>
+<h2 id="push">本地到远程  PUSH</h2>
+<div class="hlcode"><pre><span class="n">rsync</span> <span class="o">-</span><span class="n">avH</span> <span class="p">[</span><span class="n">ssh</span><span class="p">]</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">source</span> <span class="n">user</span><span class="err">@</span><span class="n">des</span><span class="o">:/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">local</span>  
+</pre></div>
+
+
+<h2 id="pull">远程到本地  PULL</h2>
+<div class="hlcode"><pre><span class="n">rsync</span> <span class="o">-</span><span class="n">avH</span> <span class="p">[</span><span class="n">ssh</span><span class="p">]</span> <span class="n">user</span><span class="err">@</span><span class="n">des</span><span class="o">:/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">source</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">local</span>  
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

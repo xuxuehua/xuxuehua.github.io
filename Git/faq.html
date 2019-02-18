@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>faq 常见问题 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Git">Git</a>&nbsp;&#187;&nbsp;faq 常见问题
+    <span class="updated">Page Updated&nbsp;
+      2018-09-15 11:17
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">faq 常见问题</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#faq">FAQ</a><ul>
+<li><a href="#everything-up-to-date">Everything up-to-date</a></li>
+<li><a href="#credential">credential</a></li>
+<li><a href="#git-fire">Git fire</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="faq">FAQ</h1>
+<h2 id="everything-up-to-date">Everything up-to-date</h2>
+<p>确保配置了基本的user.name &amp; user.email</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">config</span> <span class="o">-</span><span class="n">l</span>
+<span class="n">credential</span><span class="p">.</span><span class="n">helper</span><span class="o">=</span><span class="n">osxkeychain</span>
+<span class="n">core</span><span class="p">.</span><span class="n">repositoryformatversion</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">core</span><span class="p">.</span><span class="n">filemode</span><span class="o">=</span><span class="nb">true</span>
+<span class="n">core</span><span class="p">.</span><span class="n">bare</span><span class="o">=</span><span class="nb">false</span>
+<span class="n">core</span><span class="p">.</span><span class="n">logallrefupdates</span><span class="o">=</span><span class="nb">true</span>
+<span class="n">core</span><span class="p">.</span><span class="n">ignorecase</span><span class="o">=</span><span class="nb">true</span>
+<span class="n">core</span><span class="p">.</span><span class="n">precomposeunicode</span><span class="o">=</span><span class="nb">true</span>
+<span class="n">remote</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">url</span><span class="o">=</span><span class="n">git</span><span class="err">@</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">:</span><span class="n">xuxuehua</span><span class="o">/</span><span class="n">scripts</span><span class="p">.</span><span class="n">git</span>
+<span class="n">remote</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">fetch</span><span class="o">=+</span><span class="n">refs</span><span class="o">/</span><span class="n">heads</span><span class="o">/*:</span><span class="n">refs</span><span class="o">/</span><span class="n">remotes</span><span class="o">/</span><span class="n">origin</span><span class="o">/*</span>
+<span class="n">branch</span><span class="p">.</span><span class="n">master</span><span class="p">.</span><span class="n">remote</span><span class="o">=</span><span class="n">origin</span>
+<span class="n">branch</span><span class="p">.</span><span class="n">master</span><span class="p">.</span><span class="n">merge</span><span class="o">=</span><span class="n">refs</span><span class="o">/</span><span class="n">heads</span><span class="o">/</span><span class="n">master</span>
+<span class="n">user</span><span class="p">.</span><span class="n">email</span><span class="o">=</span><span class="n">xuxuehua3</span><span class="err">@</span><span class="n">gmail</span><span class="p">.</span><span class="n">com</span>
+<span class="n">user</span><span class="p">.</span><span class="n">name</span><span class="o">=</span><span class="n">Xuehua</span> <span class="n">Xu</span>
+</pre></div>
+
+
+<p>出现这个问题的原因是git提交改动到缓存，要push的时候不会将本地所有的分支都push掉，所以出现这个问题。我们应该告诉git提交哪个分支。</p>
+<p>这里有种特殊的情况是如果你是fork别人的仓库再clone到本地的话，即使git上只有一个主分支，他还是可能出现这个错误。那么我们就需要新建分支提交改动然后合并分支。</p>
+<p>接下来先创建一个新分支提交改动</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">branch</span> <span class="n">newbranch</span>
+</pre></div>
+
+
+<p>然后输入这条命令检查是否创建成功</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">branch</span>
+</pre></div>
+
+
+<p>这时终端输出</p>
+<div class="hlcode"><pre>  <span class="n">newbranch</span>
+<span class="o">*</span> <span class="n">master</span>
+</pre></div>
+
+
+<p>这样就创建成功了，前面的*代表的是当前你所在的工作分支。我们接下来就要切换工作分支。</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">newbranch</span>
+</pre></div>
+
+
+<p>这样就切换完了，可以<code>$ git branch</code>确认下。然后你要将你的改动提交到新的分支上。</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="err">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+
+
+<p>此时可以<code>$ git status</code>检查下提交情况。如果提交成功，我们接下来就要回主分支了，代码和之前一样。</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span>
+</pre></div>
+
+
+<p>然后我们要将新分支提交的改动合并到主分支上</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">merge</span> <span class="n">newbranch</span>
+</pre></div>
+
+
+<p>合并分支可能产生冲突这是正常的，虽然我们这是新建的分支不会产生冲突，但还是在这里记录下。下面的代码可以查看产生冲突的文件，然后做对应的修改再提交一次就可以了。</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">diff</span>
+</pre></div>
+
+
+<p>我们的问题就解决了，接下来就可以push代码了。</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">push</span> <span class="o">-</span><span class="n">u</span> <span class="n">origin</span> <span class="n">master</span>
+</pre></div>
+
+
+<p>新建分支的朋友别忘了删除这个分支</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">D</span> <span class="n">newbranch</span>
+</pre></div>
+
+
+<p>如果想保留分支只是想删除已经合并的部分只要把大写的D改成小写的d就行了。</p>
+<h2 id="credential">credential</h2>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">config</span> <span class="n">credential</span><span class="p">.</span><span class="n">helper</span> <span class="err">&#39;</span><span class="n">cache</span> <span class="o">--</span><span class="n">timeout</span> <span class="mi">1800</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<h2 id="git-fire">Git fire</h2>
+<div class="hlcode"><pre><span class="err">程序员的消防演习：</span>
+<span class="n">alias</span> <span class="n">incaseoffire</span><span class="o">=</span><span class="s">&quot;git checkout -b $USER-emergency; git add .; git commit -m fire; git push origin $USER-emergency -f&quot;</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>http - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Protocols">Protocols</a>&nbsp;&#187;&nbsp;http
+    <span class="updated">Page Updated&nbsp;
+      2018-09-16 13:07
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">http</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#http">http</a><ul>
+<li><a href="#_1">请求头</a><ul>
+<li><a href="#user-agent">User-Agent</a></li>
+<li><a href="#referer">Referer</a></li>
+<li><a href="#cookie">Cookie</a></li>
+</ul>
+</li>
+<li><a href="#_2">状态码</a><ul>
+<li><a href="#1xx">1XX</a></li>
+<li><a href="#2xx">2XX</a><ul>
+<li><a href="#200">200</a></li>
+<li><a href="#206">206</a></li>
+</ul>
+</li>
+<li><a href="#3xx">3XX</a><ul>
+<li><a href="#301">301</a></li>
+<li><a href="#302">302</a></li>
+<li><a href="#303">303</a></li>
+<li><a href="#304">304</a></li>
+</ul>
+</li>
+<li><a href="#4xx">4XX</a><ul>
+<li><a href="#400">400</a></li>
+<li><a href="#403">403</a></li>
+<li><a href="#404">404</a></li>
+</ul>
+</li>
+<li><a href="#5xx">5XX</a><ul>
+<li><a href="#500">500</a></li>
+<li><a href="#501">501</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="http">http</h1>
+<h2 id="_1">请求头</h2>
+<h3 id="user-agent">User-Agent</h3>
+<p>浏览器名称</p>
+<h3 id="referer">Referer</h3>
+<p>表明档期这个请求是从哪个url过来的，常用于反爬虫机制。如果不是从指定页面过来的，就不会响应</p>
+<h3 id="cookie">Cookie</h3>
+<p>cookie用来标识相同的请求</p>
+<h2 id="_2">状态码</h2>
+<h3 id="1xx">1XX</h3>
+<p>纯信息</p>
+<h3 id="2xx">2XX</h3>
+<p>“成功”类的信息</p>
+<h4 id="200">200</h4>
+<p>请求正常</p>
+<h4 id="206">206</h4>
+<p>partial content 客户发送了一个带有Range头的GET请求，服务器完成了它。</p>
+<h3 id="3xx">3XX</h3>
+<p>重定向类的信息</p>
+<h4 id="301">301</h4>
+<p>永久重定向</p>
+<p>Moved Permanently 所请求的页面已经转移至新的url。</p>
+<h4 id="302">302</h4>
+<p>临时重定向。</p>
+<p>如访问一个需要登录页面，没有登录，会重定向到登录页面</p>
+<h4 id="303">303</h4>
+<p>See Other 所请求的页面可在别的url下被找到。</p>
+<h4 id="304">304</h4>
+<p>Not modified 未按预期修改文档。客户端有缓冲的文档并发出了一个条件性的请求（一般是提供If-Modified-Since头表示客户只想比指定日期更新的文档）。服务器告诉客户，原来缓冲的文档还可以继续使用。</p>
+<h3 id="4xx">4XX</h3>
+<p>客户端错误类的信息</p>
+<h4 id="400">400</h4>
+<p>请求到URL在服务器上找不到，也就是请求URL 错误</p>
+<p>Bad Request 服务器未能理解请求。</p>
+<h4 id="403">403</h4>
+<p>服务器拒绝访问，权限不够</p>
+<h4 id="404">404</h4>
+<p>Not Found 服务器无法找到被请求的页面。</p>
+<h3 id="5xx">5XX</h3>
+<p>服务器端错误类的信息</p>
+<h4 id="500">500</h4>
+<p>Internet Server Error 请求未完成。服务器遇到不可预知的情况。</p>
+<h4 id="501">501</h4>
+<p>Not Implemented 请求未完成。服务器不支持所请求的功能。</p>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

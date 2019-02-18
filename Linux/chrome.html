@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>chrome - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Linux">Linux</a>&nbsp;&#187;&nbsp;chrome
+    <span class="updated">Page Updated&nbsp;
+      2018-07-26 18:34
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">chrome</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#chrome">Chrome</a><ul>
+<li><a href="#debian">Debian 安装</a></li>
+<li><a href="#ubuntu">Ubuntu 安装</a></li>
+<li><a href="#centos">Centos 安装</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="chrome">Chrome</h1>
+<h2 id="debian">Debian 安装</h2>
+<p>Download the Google signing key and install it.</p>
+<div class="hlcode"><pre><span class="n">wget</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">O</span> <span class="o">-</span> <span class="n">https</span><span class="o">:</span><span class="c1">//dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -</span>
+</pre></div>
+
+
+<p>Set up Google Chrome repository.</p>
+<div class="hlcode"><pre><span class="n">echo</span> <span class="s">&quot;deb http://dl.google.com/linux/chrome/deb/ stable main&quot;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">google</span><span class="o">-</span><span class="n">chrome</span><span class="p">.</span><span class="n">list</span>
+</pre></div>
+
+
+<p>Update repository index.</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+</pre></div>
+
+
+<p>Install Google Chrome using the below command.</p>
+<div class="hlcode"><pre><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">google</span><span class="o">-</span><span class="n">chrome</span><span class="o">-</span><span class="n">stable</span>
+</pre></div>
+
+
+<p>Want to try Google Chrome beta, run:</p>
+<div class="hlcode"><pre><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">google</span><span class="o">-</span><span class="n">chrome</span><span class="o">-</span><span class="n">beta</span>
+</pre></div>
+
+
+<p>访问</p>
+<p>Command Line</p>
+<div class="hlcode"><pre><span class="n">google</span><span class="o">-</span><span class="n">chrome</span>
+</pre></div>
+
+
+<p>OR</p>
+<div class="hlcode"><pre><span class="n">google</span><span class="o">-</span><span class="n">chrome</span><span class="o">-</span><span class="n">stable</span>
+</pre></div>
+
+
+<p><strong>Google Chrome beta:</strong></p>
+<div class="hlcode"><pre><span class="n">google</span><span class="o">-</span><span class="n">chrome</span><span class="o">-</span><span class="n">beta</span>
+</pre></div>
+
+
+<h2 id="ubuntu">Ubuntu 安装</h2>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span>
+<span class="n">deb</span> <span class="p">[</span><span class="n">arch</span><span class="o">=</span><span class="n">amd64</span><span class="p">]</span> <span class="n">http</span><span class="o">:</span><span class="c1">//dl.google.com/linux/chrome/deb/ stable main</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">wget</span> <span class="n">https</span><span class="o">:</span><span class="c1">//dl.google.com/linux/linux_signing_key.pub</span>
+</pre></div>
+
+
+<p>Then use <strong>apt-key</strong> to add it to your keyring so the package manager can verify the integrity of Google Chrome package.</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="n">linux_signing_key</span><span class="p">.</span><span class="n">pub</span>
+</pre></div>
+
+
+<p>Now update package list and install the stable version of Google Chrome.</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">google</span><span class="o">-</span><span class="n">chrome</span><span class="o">-</span><span class="n">stable</span>
+</pre></div>
+
+
+<p>If you want to install the beta or unstable version of Google Chrome, use the following commands:</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">google</span><span class="o">-</span><span class="n">chrome</span><span class="o">-</span><span class="n">beta</span>
+
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">google</span><span class="o">-</span><span class="n">chrome</span><span class="o">-</span><span class="n">unstable</span>
+</pre></div>
+
+
+<h2 id="centos">Centos 安装</h2>
+<div class="hlcode"><pre>cat <span class="s">&lt;&lt; EOF &gt; /etc/yum.repos.d/google-chrome.repo</span>
+<span class="s">[google-chrome]</span>
+<span class="s">name=google-chrome</span>
+<span class="s">baseurl=https://dl.google.com/linux/chrome/rpm/stable/$basearch</span>
+<span class="s">enabled=1</span>
+<span class="s">gpgcheck=1</span>
+<span class="s">gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub</span>
+<span class="s">EOF</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">yum</span> <span class="n">install</span> <span class="n">google</span><span class="o">-</span><span class="n">chrome</span><span class="o">-</span><span class="n">stable</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-18 20:43:52</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>
