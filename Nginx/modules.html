@@ -39,6 +39,10 @@
 <li><a href="#ngx_conf_module">NGX_CONF_MODULE</a></li>
 </ul>
 </li>
+<li><a href="#_4">动态模块</a><ul>
+<li><a href="#_5">案例</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -115,12 +119,54 @@
 <p>只有一个模块，负责解析nginx的conf 文件</p>
 <div class="hlcode"><pre><span class="n">ngx_conf_module</span>
 </pre></div>
+
+
+<h2 id="_4">动态模块</h2>
+<p>可以减少编译环节</p>
+<h3 id="_5">案例</h3>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">O</span> <span class="err">&#39;</span><span class="n">http</span><span class="o">:</span><span class="c1">//nginx.org/download/nginx-1.14.1.tar.gz&#39;</span>
+<span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">gd</span><span class="o">-</span><span class="n">devel</span>
+<span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">geek</span><span class="o">/</span><span class="n">nginx</span>
+<span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">geek</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">http_image_filter_module</span><span class="o">=</span><span class="n">dynamic</span>
+<span class="n">make</span> <span class="o">&amp;&amp;</span> <span class="n">make</span> <span class="n">install</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">mkdir</span> <span class="n">test</span> <span class="err">#</span> <span class="err">与</span><span class="n">html</span> <span class="err">同级</span>
+<span class="n">cd</span> <span class="n">test</span>
+<span class="n">curl</span> <span class="err">&#39;</span><span class="n">https</span><span class="o">:</span><span class="c1">//avatars1.githubusercontent.com/u/20882653?s=460&amp;v=4&#39; &gt; xu.png </span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">vim</span> <span class="n">conf</span><span class="o">/</span><span class="n">nginx</span><span class="p">.</span><span class="n">conf</span>
+
+<span class="n">load_module</span> <span class="n">modules</span><span class="o">/</span><span class="n">ngx_http_image_filter_module</span><span class="p">.</span><span class="n">so</span><span class="p">;</span>
+<span class="cp">#user  nobody;</span>
+ <span class="n">server</span> <span class="p">{</span>
+        <span class="n">listen</span>       <span class="mi">8080</span><span class="p">;</span>
+        <span class="n">server_name</span>  <span class="n">localhost</span><span class="p">;</span>
+
+        <span class="err">#</span><span class="n">charset</span> <span class="n">koi8</span><span class="o">-</span><span class="n">r</span><span class="p">;</span>
+
+        <span class="err">#</span><span class="n">access_log</span>  <span class="n">logs</span><span class="o">/</span><span class="n">host</span><span class="p">.</span><span class="n">access</span><span class="p">.</span><span class="n">log</span>  <span class="n">main</span><span class="p">;</span>
+
+        <span class="n">location</span> <span class="o">/</span> <span class="p">{</span>
+            <span class="n">root</span>   <span class="n">test</span><span class="p">;</span>
+            <span class="n">image_filter</span> <span class="n">resize</span> <span class="mi">15</span> <span class="mi">10</span><span class="p">;</span>   <span class="err">#这里会修改图片大小</span>
+            <span class="n">index</span>  <span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="n">index</span><span class="p">.</span><span class="n">htm</span><span class="p">;</span>
+        <span class="p">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>访问http://us2.xurick.com:8080/xu.png 的图片会变小</p>
+</blockquote>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-18 21:25:37</p>
+        <p>Site Generated 2019-02-20 15:54:31</p>
       </span>
     </div>
 
