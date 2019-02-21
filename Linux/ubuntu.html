@@ -28,6 +28,7 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#ubuntu">Ubuntu</a><ul>
 <li><a href="#basic-development-tools">Basic development tools</a></li>
+<li><a href="#aptsourcelist-for-18041">apt/source.list for 18.04.1</a></li>
 <li><a href="#ubuntu-chinese-setup">Ubuntu Chinese Setup</a><ul>
 <li><a href="#chinese-china-input-methods">Chinese (China) input methods</a></li>
 <li><a href="#chinese-hong-kong-input-methods">Chinese (Hong Kong) input methods</a></li>
@@ -51,6 +52,59 @@
 <div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="o">&amp;&amp;</span> \
 <span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">libpcre</span><span class="o">*</span> <span class="o">&amp;&amp;</span> <span class="err">\</span> 
 <span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">libz</span><span class="o">*</span>
+</pre></div>
+
+
+<h2 id="aptsourcelist-for-18041">apt/source.list for 18.04.1</h2>
+<div class="hlcode"><pre><span class="c"># See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to</span>
+<span class="c"># newer versions of the distribution.</span>
+<span class="k">deb</span> <span class="s">http://us.archive.ubuntu.com/ubuntu/</span> <span class="kp">bionic</span> <span class="kp">main</span> <span class="kp">restricted</span>
+<span class="c"># deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted</span>
+
+<span class="c">## Major bug fix updates produced after the final release of the</span>
+<span class="c">## distribution.</span>
+<span class="k">deb</span> <span class="s">http://us.archive.ubuntu.com/ubuntu/</span> <span class="kp">bionic-updates</span> <span class="kp">main</span> <span class="kp">restricted</span>
+<span class="c"># deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted</span>
+
+<span class="c">## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu</span>
+<span class="c">## team. Also, please note that software in universe WILL NOT receive any</span>
+<span class="c">## review or updates from the Ubuntu security team.</span>
+<span class="k">deb</span> <span class="s">http://us.archive.ubuntu.com/ubuntu/</span> <span class="kp">bionic</span> <span class="kp">universe</span>
+<span class="c"># deb-src http://us.archive.ubuntu.com/ubuntu/ bionic universe</span>
+<span class="k">deb</span> <span class="s">http://us.archive.ubuntu.com/ubuntu/</span> <span class="kp">bionic-updates</span> <span class="kp">universe</span>
+<span class="c"># deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates universe</span>
+
+<span class="c">## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu </span>
+<span class="c">## team, and may not be under a free licence. Please satisfy yourself as to </span>
+<span class="c">## your rights to use the software. Also, please note that software in </span>
+<span class="c">## multiverse WILL NOT receive any review or updates from the Ubuntu</span>
+<span class="c">## security team.</span>
+<span class="k">deb</span> <span class="s">http://us.archive.ubuntu.com/ubuntu/</span> <span class="kp">bionic</span> <span class="kp">multiverse</span>
+<span class="c"># deb-src http://us.archive.ubuntu.com/ubuntu/ bionic multiverse</span>
+<span class="k">deb</span> <span class="s">http://us.archive.ubuntu.com/ubuntu/</span> <span class="kp">bionic-updates</span> <span class="kp">multiverse</span>
+<span class="c"># deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates multiverse</span>
+
+<span class="c">## N.B. software from this repository may not have been tested as</span>
+<span class="c">## extensively as that contained in the main release, although it includes</span>
+<span class="c">## newer versions of some applications which may provide useful features.</span>
+<span class="c">## Also, please note that software in backports WILL NOT receive any review</span>
+<span class="c">## or updates from the Ubuntu security team.</span>
+<span class="c"># deb http://us.archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse</span>
+<span class="c"># deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse</span>
+
+<span class="c">## Uncomment the following two lines to add software from Canonical&#39;s</span>
+<span class="c">## &#39;partner&#39; repository.</span>
+<span class="c">## This software is not part of Ubuntu, but is offered by Canonical and the</span>
+<span class="c">## respective vendors as a service to Ubuntu users.</span>
+<span class="c"># deb http://archive.canonical.com/ubuntu bionic partner</span>
+<span class="c"># deb-src http://archive.canonical.com/ubuntu bionic partner</span>
+
+<span class="k">deb</span> <span class="s">http://security.ubuntu.com/ubuntu</span> <span class="kp">bionic-security</span> <span class="kp">main</span> <span class="kp">restricted</span>
+<span class="c"># deb-src http://security.ubuntu.com/ubuntu bionic-security main restricted</span>
+<span class="k">deb</span> <span class="s">http://security.ubuntu.com/ubuntu</span> <span class="kp">bionic-security</span> <span class="kp">universe</span>
+<span class="c"># deb-src http://security.ubuntu.com/ubuntu bionic-security universe</span>
+<span class="k">deb</span> <span class="s">http://security.ubuntu.com/ubuntu</span> <span class="kp">bionic-security</span> <span class="kp">multiverse</span>
+<span class="c"># deb-src http://security.ubuntu.com/ubuntu bionic-security multiverse</span>
 </pre></div>
 
 
@@ -263,7 +317,7 @@ fi
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-20 15:54:31</p>
+        <p>Site Generated 2019-02-21 11:54:09</p>
       </span>
     </div>
 
