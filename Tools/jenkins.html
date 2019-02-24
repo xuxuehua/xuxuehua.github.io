@@ -175,11 +175,14 @@
 
 <p>Browse to <code>http://localhost:8080</code> and wait until the <strong>Unlock Jenkins</strong> page appears</p>
 <h3 id="centos">CentOS</h3>
-<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">java</span><span class="o">-</span><span class="mf">1.8.0</span><span class="o">-</span><span class="n">openjdk</span><span class="o">-</span><span class="n">devel</span>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">java</span><span class="o">-</span><span class="mf">1.8.0</span><span class="o">-</span><span class="n">openjdk</span><span class="o">-</span><span class="n">devel</span>
 
 <span class="n">curl</span> <span class="o">--</span><span class="n">silent</span> <span class="o">--</span><span class="n">location</span> <span class="n">http</span><span class="o">:</span><span class="c1">//pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo</span>
 <span class="n">sudo</span> <span class="n">rpm</span> <span class="o">--</span><span class="n">import</span> <span class="n">https</span><span class="o">:</span><span class="c1">//jenkins-ci.org/redhat/jenkins-ci.org.key</span>
-<span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">jenkins</span>
+<span class="n">sudo</span> <span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">jenkins</span>
+
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">jenkins</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">jenkins</span>
 </pre></div>
 
 
@@ -1043,7 +1046,7 @@ node {
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-21 11:54:09</p>
+        <p>Site Generated 2019-02-24 13:42:28</p>
       </span>
     </div>
 

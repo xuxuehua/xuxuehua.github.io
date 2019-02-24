@@ -95,6 +95,40 @@
 <h3 id="zabbix_proxyconf">zabbix_proxy.conf</h3>
 <h3 id="zabbix_proxylog">zabbix_proxy.log</h3>
 <h1 id="installation">Installation 安装</h1>
+<div class="hlcode"><pre><span class="n">rpm</span> <span class="o">-</span><span class="n">Uvh</span> <span class="n">https</span><span class="o">:</span><span class="c1">//repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm</span>
+<span class="n">yum</span> <span class="n">clean</span> <span class="n">all</span>
+<span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">zabbix</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">mysql</span> <span class="n">zabbix</span><span class="o">-</span><span class="n">web</span><span class="o">-</span><span class="n">mysql</span> <span class="n">zabbix</span><span class="o">-</span><span class="n">agent</span>
+<span class="n">zcat</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">doc</span><span class="o">/</span><span class="n">zabbix</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">mysql</span><span class="err">*/</span><span class="n">create</span><span class="p">.</span><span class="n">sql</span><span class="p">.</span><span class="n">gz</span> <span class="o">|</span> <span class="n">mysql</span> <span class="o">-</span><span class="n">uzbxuser</span> <span class="o">-</span><span class="n">p</span> <span class="n">zabbix</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">MariaDB</span> <span class="p">[(</span><span class="n">none</span><span class="p">)]</span><span class="o">&gt;</span> <span class="n">CREATE</span> <span class="n">database</span> <span class="n">zabbix</span> <span class="n">character</span> <span class="n">set</span> <span class="n">utf8</span> <span class="n">collate</span> <span class="n">utf8_bin</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">1</span> <span class="n">row</span> <span class="n">affected</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">MariaDB</span> <span class="p">[(</span><span class="n">none</span><span class="p">)]</span><span class="o">&gt;</span> <span class="n">grant</span> <span class="n">all</span> <span class="n">on</span> <span class="n">zabbix</span><span class="p">.</span><span class="o">*</span> <span class="n">TO</span> <span class="err">&#39;</span><span class="n">zbxuser</span><span class="sc">&#39;@&#39;</span><span class="n">localhost</span><span class="err">&#39;</span> <span class="n">identified</span> <span class="n">by</span> <span class="err">&#39;</span><span class="n">zbxpass</span><span class="err">&#39;</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="n">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mf">0.01</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">Edit</span> <span class="n">file</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zabbix</span><span class="o">/</span><span class="n">zabbix_server</span><span class="p">.</span><span class="n">conf</span>
+
+<span class="n">DBPassword</span><span class="o">=</span><span class="n">password</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">Edit</span> <span class="n">file</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">conf</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">zabbix</span><span class="p">.</span><span class="n">conf</span><span class="p">,</span> <span class="n">uncomment</span> <span class="n">and</span> <span class="n">set</span> <span class="n">the</span> <span class="n">right</span> <span class="n">timezone</span> <span class="k">for</span> <span class="n">you</span><span class="p">.</span>
+<span class="cp"># php_value date.timezone Europe/Riga</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">Start</span> <span class="n">Zabbix</span> <span class="n">server</span> <span class="n">and</span> <span class="n">agent</span> <span class="n">processes</span>
+<span class="n">Start</span> <span class="n">Zabbix</span> <span class="n">server</span> <span class="n">and</span> <span class="n">agent</span> <span class="n">processes</span> <span class="n">and</span> <span class="n">make</span> <span class="n">it</span> <span class="n">start</span> <span class="n">at</span> <span class="n">system</span> <span class="n">boot</span><span class="o">:</span>
+
+<span class="cp"># systemctl restart zabbix-server zabbix-agent httpd</span>
+<span class="cp"># systemctl enable zabbix-server zabbix-agent httpd</span>
+</pre></div>
+
+
 <h1 id="_3">术语</h1>
 <h2 id="template">template</h2>
 <p>通常包含item， trigger， graph， screen</p>
@@ -106,7 +140,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-21 11:54:09</p>
+        <p>Site Generated 2019-02-24 13:42:28</p>
       </span>
     </div>
 

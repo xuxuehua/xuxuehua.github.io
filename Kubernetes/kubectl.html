@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>kubectl - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Kubernetes">Kubernetes</a>&nbsp;&#187;&nbsp;kubectl
+    <span class="updated">Page Updated&nbsp;
+      2019-02-22 22:32
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">kubectl</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#kubectl">kubectl</a><ul>
+<li><a href="#run">run</a></li>
+<li><a href="#expose">expose 暴露服务</a></li>
+<li><a href="#create">create</a></li>
+<li><a href="#apply">apply 实现声明</a></li>
+<li><a href="#get">get</a><ul>
+<li><a href="#-o-yaml-json">-o yaml | json</a></li>
+<li><a href="#-o-wide">-o wide</a></li>
+</ul>
+</li>
+<li><a href="#describe">describe 详细信息</a></li>
+<li><a href="#log">log 日志</a><ul>
+<li><a href="#-c">-c 指定容器名称</a></li>
+</ul>
+</li>
+<li><a href="#exec">exec 执行命令</a><ul>
+<li><a href="#-it-shell">-it 交互Shell</a></li>
+</ul>
+</li>
+<li><a href="#delete">delete 删除</a><ul>
+<li><a href="#-all">--all</a></li>
+</ul>
+</li>
+<li><a href="#scale">scale 扩容/缩容</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="kubectl">kubectl</h1>
+<p>Kubernetes API Server最常用的客户端程序之一，功能强大，能够几乎完成除了安装部署之外的所有管理操作</p>
+<h2 id="run">run</h2>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">run</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deploy</span> <span class="o">--</span><span class="n">image</span><span class="o">=</span><span class="n">nginx</span><span class="o">:</span><span class="mf">1.12</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">2</span>
+</pre></div>
+
+
+<h2 id="expose">expose 暴露服务</h2>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">expose</span> <span class="n">deployment</span><span class="o">/</span><span class="n">nginx</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">nginx</span><span class="o">-</span><span class="n">svc</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">80</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">expose</span> <span class="n">deployments</span><span class="o">/</span><span class="n">myapp</span> <span class="o">--</span><span class="n">type</span><span class="o">=</span><span class="s">&quot;NodePort&quot;</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">80</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">myapp</span>
+</pre></div>
+
+
+<h2 id="create">create</h2>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">nignx</span><span class="o">-</span><span class="n">deploy</span><span class="p">.</span><span class="n">yaml</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">svc</span><span class="p">.</span><span class="n">yaml</span>
+</pre></div>
+
+
+<h2 id="apply">apply 实现声明</h2>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deploy</span><span class="p">.</span><span class="n">yaml</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">svc</span><span class="p">.</span><span class="n">yaml</span>
+</pre></div>
+
+
+<h2 id="get">get</h2>
+<p>列出所有资源</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">get</span> <span class="n">namespaces</span>
+</pre></div>
+
+
+<p>查看多个资源</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span><span class="p">,</span><span class="n">services</span> <span class="o">-</span><span class="n">o</span> <span class="n">wide</span>
+</pre></div>
+
+
+<p>列出名称空间中拥有k8s-app标签名称的所有Pod 对象</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="n">k8s</span><span class="o">-</span><span class="n">app</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
+</pre></div>
+
+
+<h3 id="-o-yaml-json">-o yaml | json</h3>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="n">component</span><span class="o">=</span><span class="n">kube</span><span class="o">=</span><span class="n">apiserver</span> <span class="o">-</span><span class="n">o</span> <span class="n">yaml</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
+</pre></div>
+
+
+<h3 id="-o-wide">-o wide</h3>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">o</span> <span class="n">wide</span> 
+</pre></div>
+
+
+<h2 id="describe">describe 详细信息</h2>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">describe</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="n">component</span><span class="o">=</span><span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">describe</span> <span class="n">services</span> <span class="n">myapp</span><span class="o">-</span><span class="n">svc</span>
+</pre></div>
+
+
+<h2 id="log">log 日志</h2>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">log</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span><span class="p">]</span> <span class="p">(</span><span class="n">POD</span><span class="o">|</span><span class="n">TYPE</span><span class="o">/</span><span class="n">NAME</span><span class="p">)</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">CONTAINER</span><span class="p">]</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> 
+</pre></div>
+
+
+<blockquote>
+<p>-f 类似于tail -f</p>
+</blockquote>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">logs</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="n">master</span><span class="p">.</span><span class="n">xuxuehua</span><span class="p">.</span><span class="n">com</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
+</pre></div>
+
+
+<h3 id="-c">-c 指定容器名称</h3>
+<h2 id="exec">exec 执行命令</h2>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">exec</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="n">master</span><span class="p">.</span><span class="n">xuxuehua</span><span class="p">.</span><span class="n">com</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span> <span class="o">--</span><span class="n">ps</span>
+</pre></div>
+
+
+<blockquote>
+<p>Pod对象中的容器里面运行ps命令</p>
+</blockquote>
+<h3 id="-it-shell">-it 交互Shell</h3>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="err">$</span><span class="n">POD_NAME</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+</pre></div>
+
+
+<h2 id="delete">delete 删除</h2>
+<p>删除默认名称空间中ngnix-svc的Service 资源对象 </p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">delete</span> <span class="n">services</span> <span class="n">nginx</span><span class="o">-</span><span class="n">svc</span>
+</pre></div>
+
+
+<p>删除默认名称空间中所有的Deployment控制器</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">delete</span> <span class="n">deployment</span> <span class="o">--</span><span class="n">all</span>
+</pre></div>
+
+
+<h3 id="-all">--all</h3>
+<p>删除kube-public 名称空间中的所有pod对象</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">delete</span> <span class="n">pods</span> <span class="o">--</span><span class="n">all</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">public</span>
+</pre></div>
+
+
+<h2 id="scale">scale 扩容/缩容</h2>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">scale</span> <span class="n">deployments</span><span class="o">/</span><span class="n">myapp</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">3</span> 
+</pre></div>
+
+
+<blockquote>
+<p>replicas 指明对象创建或管理Pod对象的副本数量</p>
+</blockquote>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">scale</span> <span class="n">deployments</span><span class="o">/</span><span class="n">myapp</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">2</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-24 13:42:28</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

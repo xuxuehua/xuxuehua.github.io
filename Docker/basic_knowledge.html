@@ -35,22 +35,23 @@
 <li><a href="#dockercom">docker.com</a></li>
 </ul>
 </li>
-<li><a href="#_4">守护进程</a></li>
-<li><a href="#_5">图形用户界面</a></li>
+<li><a href="#_4">卸载</a></li>
+<li><a href="#_5">守护进程</a></li>
+<li><a href="#_6">图形用户界面</a></li>
 </ul>
 </li>
-<li><a href="#_6">基本概念</a><ul>
+<li><a href="#_7">基本概念</a><ul>
 <li><a href="#image">镜像 Image</a><ul>
-<li><a href="#_7">分层存储</a><ul>
-<li><a href="#_8">镜像的实现原理</a></li>
+<li><a href="#_8">分层存储</a><ul>
+<li><a href="#_9">镜像的实现原理</a></li>
 </ul>
 </li>
-<li><a href="#_9">镜像体积</a></li>
-<li><a href="#_10">虚悬镜像</a></li>
+<li><a href="#_10">镜像体积</a></li>
+<li><a href="#_11">虚悬镜像</a></li>
 </ul>
 </li>
 <li><a href="#container">容器 Container</a><ul>
-<li><a href="#_11">容器存储层</a></li>
+<li><a href="#_12">容器存储层</a></li>
 </ul>
 </li>
 <li><a href="#repository">仓库 Repository</a><ul>
@@ -62,26 +63,26 @@
 </ul>
 </li>
 <li><a href="#docker_1">Docker 数据管理</a><ul>
-<li><a href="#_12">数据卷</a><ul>
-<li><a href="#_13">创建一个数据卷</a></li>
-<li><a href="#_14">查看所有的数据卷</a><ul>
-<li><a href="#_15">查看数据卷的具体信息</a></li>
+<li><a href="#_13">数据卷</a><ul>
+<li><a href="#_14">创建一个数据卷</a></li>
+<li><a href="#_15">查看所有的数据卷</a><ul>
+<li><a href="#_16">查看数据卷的具体信息</a></li>
 </ul>
 </li>
-<li><a href="#_16">启动一个挂载数据卷的容器</a></li>
-<li><a href="#_17">挂载一个主机目录作为数据卷</a></li>
-<li><a href="#_18">挂载一个本地主机文件作为数据卷</a></li>
-<li><a href="#_19">删除数据卷</a></li>
+<li><a href="#_17">启动一个挂载数据卷的容器</a></li>
+<li><a href="#_18">挂载一个主机目录作为数据卷</a></li>
+<li><a href="#_19">挂载一个本地主机文件作为数据卷</a></li>
+<li><a href="#_20">删除数据卷</a></li>
 </ul>
 </li>
 <li><a href="#docker-machine">Docker Machine 项目</a><ul>
-<li><a href="#_20">安装</a><ul>
+<li><a href="#_21">安装</a><ul>
 <li><a href="#macoswindows">macOS、Windows</a></li>
 <li><a href="#linux">Linux</a></li>
 </ul>
 </li>
 <li><a href="#docker-machines">Docker Machines 使用</a><ul>
-<li><a href="#_21">本地主机实例</a></li>
+<li><a href="#_22">本地主机实例</a></li>
 </ul>
 </li>
 </ul>
@@ -89,11 +90,11 @@
 <li><a href="#docker-swarm">Docker Swarm</a></li>
 <li><a href="#etcd">etcd</a><ul>
 <li><a href="#etcd_1">etcd 安装</a><ul>
-<li><a href="#_22">二进制文件方式下载</a></li>
+<li><a href="#_23">二进制文件方式下载</a></li>
 <li><a href="#etcdctl">使用 etcdctl</a><ul>
-<li><a href="#_23">数据库操作</a></li>
-<li><a href="#_24">非数据库操作</a></li>
-<li><a href="#_25">命令选项</a></li>
+<li><a href="#_24">数据库操作</a></li>
+<li><a href="#_25">非数据库操作</a></li>
+<li><a href="#_26">命令选项</a></li>
 </ul>
 </li>
 </ul>
@@ -103,20 +104,20 @@
 <li><a href="#coreos">CoreOS</a><ul>
 <li><a href="#coreos_1">CoreOS 特性</a></li>
 <li><a href="#coreos_2">CoreOS 工具介绍</a><ul>
-<li><a href="#_26">服务发现</a></li>
-<li><a href="#_27">容器管理</a></li>
+<li><a href="#_27">服务发现</a></li>
+<li><a href="#_28">容器管理</a></li>
 </ul>
 </li>
 <li><a href="#coreos_3">快速搭建 CoreOS 集群</a></li>
 </ul>
 </li>
 <li><a href="#kubernetes">Kubernetes</a><ul>
-<li><a href="#_28">项目简介</a><ul>
-<li><a href="#_29">快速上手</a><ul>
+<li><a href="#_29">项目简介</a><ul>
+<li><a href="#_30">快速上手</a><ul>
 <li><a href="#etcd_2">启动 Etcd 服务</a></li>
-<li><a href="#_30">启动主节点</a></li>
-<li><a href="#_31">启动服务代理</a></li>
-<li><a href="#_32">测试状态</a></li>
+<li><a href="#_31">启动主节点</a></li>
+<li><a href="#_32">启动服务代理</a></li>
+<li><a href="#_33">测试状态</a></li>
 </ul>
 </li>
 </ul>
@@ -205,32 +206,43 @@
 </pre></div>
 
 
-<h2 id="_4">守护进程</h2>
+<h2 id="_4">卸载</h2>
+<div class="hlcode"><pre><span class="n">dpkg</span> <span class="o">-</span><span class="n">l</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">i</span> <span class="n">docker</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">purge</span> <span class="o">-</span><span class="n">y</span> <span class="n">docker</span><span class="o">-</span><span class="n">engine</span> <span class="n">docker</span> <span class="n">docker</span><span class="p">.</span><span class="n">io</span> <span class="n">docker</span><span class="o">-</span><span class="n">ce</span>  
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">autoremove</span> <span class="o">-</span><span class="n">y</span> <span class="o">--</span><span class="n">purge</span> <span class="n">docker</span><span class="o">-</span><span class="n">engine</span> <span class="n">docker</span> <span class="n">docker</span><span class="p">.</span><span class="n">io</span> <span class="n">docker</span><span class="o">-</span><span class="n">ce</span>  
+<span class="n">sudo</span> <span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">docker</span>
+<span class="n">sudo</span> <span class="n">rm</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apparmor</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">docker</span>
+<span class="n">sudo</span> <span class="n">groupdel</span> <span class="n">docker</span>
+<span class="n">sudo</span> <span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="p">.</span><span class="n">sock</span>
+</pre></div>
+
+
+<h2 id="_5">守护进程</h2>
 <p>运行  Docker 守护进程时，可以用 -H 来改变绑定接口的方式，比如 sudo /usr/bin/docker -d -H  tcp://0.0.0.0:2375，如果不想每次都输入这么长的命令，需要加入以下环境变量 </p>
 <p>export  DOCKER_HOST="tcp://0.0.0.0:2375"</p>
-<h2 id="_5">图形用户界面</h2>
+<h2 id="_6">图形用户界面</h2>
 <p>虽然我们可以用命令来控制 docker，但是如果能有一个 web 管理界面，操作什么的会方便很多，比较常见的有</p>
 <ul>
 <li>Shipyard</li>
 <li>Potainer</li>
 </ul>
-<h1 id="_6">基本概念</h1>
+<h1 id="_7">基本概念</h1>
 <h2 id="image">镜像 Image</h2>
 <p>一个只读的模板，镜像可以用来创建 Docker 容器</p>
 <p>就相当于一个root文件系统。官方镜像Ubuntu:14.04 就包含了完整的一套 Ubuntu 14.04 最小系统的 root 文件系统</p>
 <p>镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
-<h3 id="_7">分层存储</h3>
+<h3 id="_8">分层存储</h3>
 <p>Docker 设计时，就充分利用 Union FS 的技术，将其设计为分层存储的架构</p>
 <p>镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。</p>
 <blockquote>
 <p>比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。</p>
 </blockquote>
-<h4 id="_8">镜像的实现原理</h4>
+<h4 id="_9">镜像的实现原理</h4>
 <p>Docker 镜像是怎么实现增量的修改和维护的？ 每个镜像都由很多层次构成，Docker 使用 Union FS 将这些不同的层结合到一个镜像中去。<br />
 通常 Union FS 有两个用途, 一方面可以实现不借助 LVM、RAID 将多个 disk 挂到同一个目录下,另一个更常用的就是将一个只读的分支和一个可写的分支联合在一起，Live CD 正是基于此方法可以允许在镜像不变的基础上允许用户在其上进行一些写操作。 Docker 在 AUFS 上构建的容器也是利用了类似的原理。</p>
-<h3 id="_9">镜像体积</h3>
+<h3 id="_10">镜像体积</h3>
 <p>Docker Hub 中显示的体积是压缩后的体积。在镜像下载和上传过程中镜像是保持着压缩状态的，因此 Docker Hub 所显示的大小是网络传输中更关心的流量大小。</p>
-<h3 id="_10">虚悬镜像</h3>
+<h3 id="_11">虚悬镜像</h3>
 <p>镜像既没有仓库名，也没有标签，均为 <code>&lt;none&gt;</code></p>
 <blockquote>
 <p>这个镜像原本是有镜像名和标签的，原来为 mongo:3.2，随着官方镜像维护，发布了新版本后，重新 docker pull mongo:3.2 时，mongo:3.2 这个镜像名被转移到了新下载的镜像身上，而旧的镜像上的这个名称则被取消，从而成为了 <code>&lt;none&gt;</code>。<br />
@@ -253,7 +265,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 <p>可以被启动、开始、停止、删除。每个容器都是相互隔离的、保证安全的平台</p>
 <p>容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的 命名空间。</p>
 <p>容器可以拥有自己的 root 文件系统、自己的网络配置、自己的进程空间，甚至自己的用户 ID 空间。</p>
-<h3 id="_11">容器存储层</h3>
+<h3 id="_12">容器存储层</h3>
 <p>每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层</p>
 <p>容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。</p>
 <blockquote>
@@ -295,7 +307,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 <p>甚至提供了用户界面以及一些高级功能。比如，VMWare Harbor 和 Sonatype Nexus。</p>
 </blockquote>
 <h1 id="docker_1">Docker 数据管理</h1>
-<h2 id="_12">数据卷</h2>
+<h2 id="_13">数据卷</h2>
 <ul>
 <li>数据卷是一个可供一个或多个容器使用的特殊目录</li>
 <li>数据卷可以在容器之间共享和重用</li>
@@ -306,7 +318,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 <blockquote>
 <p>注意：数据卷的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会隐藏掉，能显示看的是挂载的数据卷。</p>
 </blockquote>
-<h3 id="_13">创建一个数据卷</h3>
+<h3 id="_14">创建一个数据卷</h3>
 <ul>
 <li><code>-v</code></li>
 <li><code>-–mount</code></li>
@@ -315,7 +327,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 </pre></div>
 
 
-<h3 id="_14">查看所有的数据卷</h3>
+<h3 id="_15">查看所有的数据卷</h3>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">docker</span> <span class="n">volume</span> <span class="n">ls</span>
 
 <span class="n">local</span>               <span class="n">my</span><span class="o">-</span><span class="n">vol</span>
@@ -336,13 +348,13 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 </pre></div>
 
 
-<h4 id="_15">查看数据卷的具体信息</h4>
+<h4 id="_16">查看数据卷的具体信息</h4>
 <p>在主机里使用以下命令可以查看 web 容器的信息</p>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">docker</span> <span class="n">inspect</span> <span class="n">web</span>
 </pre></div>
 
 
-<h3 id="_16">启动一个挂载数据卷的容器</h3>
+<h3 id="_17">启动一个挂载数据卷的容器</h3>
 <ul>
 <li>使用 --mount 标记来将数据卷挂载到容器里</li>
 </ul>
@@ -354,7 +366,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 </pre></div>
 
 
-<h3 id="_17">挂载一个主机目录作为数据卷</h3>
+<h3 id="_18">挂载一个主机目录作为数据卷</h3>
 <ul>
 <li>使用 --mount 标记可以指定挂载一个本地主机的目录到容器中去。</li>
 </ul>
@@ -379,7 +391,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 </pre></div>
 
 
-<h3 id="_18">挂载一个本地主机文件作为数据卷</h3>
+<h3 id="_19">挂载一个本地主机文件作为数据卷</h3>
 <ul>
 <li>--mount 标记也可以从主机挂载单个文件到容器中</li>
 </ul>
@@ -395,7 +407,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 </pre></div>
 
 
-<h3 id="_19">删除数据卷</h3>
+<h3 id="_20">删除数据卷</h3>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">docker</span> <span class="n">volume</span> <span class="n">rm</span> <span class="n">my</span><span class="o">-</span><span class="n">vol</span>
 </pre></div>
 
@@ -419,7 +431,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 <ul>
 <li>Docker Machine 是 Docker 官方编排（Orchestration）项目之一，负责在多种平台上快速安装 Docker 环境。</li>
 </ul>
-<h3 id="_20">安装</h3>
+<h3 id="_21">安装</h3>
 <h4 id="macoswindows">macOS、Windows</h4>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">docker</span><span class="o">-</span><span class="n">machine</span> <span class="o">-</span><span class="n">v</span>
 <span class="n">docker</span><span class="o">-</span><span class="n">machine</span> <span class="n">version</span> <span class="mf">0.13.0</span><span class="p">,</span> <span class="n">build</span> <span class="mi">9</span><span class="n">ba6da9</span>
@@ -445,7 +457,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 <ul>
 <li>Docker Machine 支持多种后端驱动，包括虚拟机、本地主机和云平台等。</li>
 </ul>
-<h4 id="_21">本地主机实例</h4>
+<h4 id="_22">本地主机实例</h4>
 <ul>
 <li>使用 virtualbox 类型的驱动，创建一台 Docker 主机，命名为 test。</li>
 </ul>
@@ -484,7 +496,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 <ul>
 <li>etcd 基于 Go 语言实现，因此，用户可以从 项目主页 下载源代码自行编译，也可以下载编译好的二进制文件，甚至直接使用制作好的 Docker 镜像文件来体验。</li>
 </ul>
-<h4 id="_22">二进制文件方式下载</h4>
+<h4 id="_23">二进制文件方式下载</h4>
 <ul>
 <li>编译好的二进制文件都在 github.com/coreos/etcd/releases 页面，用户可以选择需要的版本，或通过下载工具下载</li>
 </ul>
@@ -567,7 +579,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 <ul>
 <li>etcdctl 是一个命令行客户端，它能提供一些简洁的命令，供用户直接跟 etcd 服务打交道，而无需基于 HTTP API 方式。这在某些情况下将很方便，例如用户对服务进行测试或者手动修改数据库内容。我们也推荐在刚接触 etcd 时通过 etcdctl 命令来熟悉相关的操作，这些操作跟 HTTP API 实际上是对应的。</li>
 </ul>
-<h5 id="_23">数据库操作</h5>
+<h5 id="_24">数据库操作</h5>
 <ul>
 <li>数据库操作围绕对键值和目录的 CRUD （符合 REST 风格的一套操作：Create）完整生命周期的管理。<br />
   etcd 在键的组织上采用了层次化的空间结构（类似于文件系统中目录的概念），用户指定的键可以为单独的名字，如 testkey，此时实际上放在根目录 / 下面，也可以为指定目录结构，如 cluster1/node2/testkey，则将创建相应的目录结构。</li>
@@ -702,7 +714,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 </pre></div>
 
 
-<h5 id="_24">非数据库操作</h5>
+<h5 id="_25">非数据库操作</h5>
 <div class="hlcode"><pre><span class="n">backup</span>
 
 <span class="err">备份</span> <span class="n">etcd</span> <span class="err">的数据。</span>
@@ -753,7 +765,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 </pre></div>
 
 
-<h5 id="_25">命令选项</h5>
+<h5 id="_26">命令选项</h5>
 <div class="hlcode"><pre><span class="o">--</span><span class="n">debug</span> <span class="err">输出</span> <span class="n">cURL</span> <span class="err">命令，显示执行命令的时候发起的请求</span>
 <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">sync</span> <span class="err">发出请求之前不同步集群信息</span>
 <span class="o">--</span><span class="n">output</span><span class="p">,</span> <span class="o">-</span><span class="n">o</span> <span class="err">&#39;</span><span class="n">simple</span><span class="err">&#39;</span> <span class="err">输出内容的格式</span> <span class="p">(</span><span class="n">simple</span> <span class="err">为原始信息，</span><span class="n">json</span> <span class="err">为进行</span><span class="n">json</span><span class="err">格式解码，易读性好一些</span><span class="p">)</span>
@@ -801,7 +813,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 
 
 <h3 id="coreos_2">CoreOS 工具介绍</h3>
-<h4 id="_26">服务发现</h4>
+<h4 id="_27">服务发现</h4>
 <ul>
 <li>
 <p>CoreOS 的第一个重要组件就是使用 etcd 来实现的服务发现。</p>
@@ -827,7 +839,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 </pre></div>
 
 
-<h4 id="_27">容器管理</h4>
+<h4 id="_28">容器管理</h4>
 <ul>
 <li>第二个组件就是 Docker，它用来运行你的代码和应用。CoreOS 内置 Docker</li>
 </ul>
@@ -836,11 +848,11 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 <ul>
 <li>建于 Docker 之上的 Kubernetes 可以构建一个容器的调度服务，其目的是让用户透过 Kubernetes 集群来进行云端容器集群的管理，而无需用户进行复杂的设置工作。系统会自动选取合适的工作节点来执行具体的容器集群调度处理工作。其核心概念是 Container Pod。一个 Pod 由一组工作于同一物理工作节点的容器构成。这些组容器拥有相同的网络命名空间、IP以及存储配额，也可以根据实际情况对每一个 Pod 进行端口映射。此外，Kubernetes 工作节点会由主系统进行管理，节点包含了能够运行 Docker 容器所用到的服务。</li>
 </ul>
-<h3 id="_28">项目简介</h3>
+<h3 id="_29">项目简介</h3>
 <ul>
 <li>Kubernetes 是 Google 团队发起的开源项目，它的目标是管理跨多个主机的容器，提供基本的部署，维护以及运用伸缩，主要实现语言为 Go 语言。</li>
 </ul>
-<h4 id="_29">快速上手</h4>
+<h4 id="_30">快速上手</h4>
 <ul>
 <li>Kubernetes 依赖 Etcd 服务来维护所有主节点的状态。 </li>
 </ul>
@@ -849,17 +861,17 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 </pre></div>
 
 
-<h5 id="_30">启动主节点</h5>
+<h5 id="_31">启动主节点</h5>
 <div class="hlcode"><pre><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">net</span><span class="o">=</span><span class="n">host</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="p">.</span><span class="n">sock</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="p">.</span><span class="n">sock</span>  <span class="n">gcr</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">google_containers</span><span class="o">/</span><span class="n">hyperkube</span><span class="o">:</span><span class="n">v1</span><span class="mf">.17.11</span> <span class="o">/</span><span class="n">hyperkube</span> <span class="n">kubelet</span> <span class="o">--</span><span class="n">api_servers</span><span class="o">=</span><span class="n">http</span><span class="o">:</span><span class="c1">//localhost:8080 --v=2 --address=0.0.0.0 --enable_server --hostname_override=127.0.0.1 --config=/etc/kubernetes/manifests</span>
 </pre></div>
 
 
-<h5 id="_31">启动服务代理</h5>
+<h5 id="_32">启动服务代理</h5>
 <div class="hlcode"><pre><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">net</span><span class="o">=</span><span class="n">host</span> <span class="o">--</span><span class="n">privileged</span> <span class="n">gcr</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">google_containers</span><span class="o">/</span><span class="n">hyperkube</span><span class="o">:</span><span class="n">v1</span><span class="mf">.17.11</span> <span class="o">/</span><span class="n">hyperkube</span> <span class="n">proxy</span> <span class="o">--</span><span class="n">master</span><span class="o">=</span><span class="n">http</span><span class="o">:</span><span class="c1">//127.0.0.1:8080 --v=2</span>
 </pre></div>
 
 
-<h5 id="_32">测试状态</h5>
+<h5 id="_33">测试状态</h5>
 <div class="hlcode"><pre><span class="err">$</span> <span class="nt">curl</span> <span class="nt">127</span><span class="nc">.0.0.1</span><span class="nd">:8080</span>
 <span class="p">{</span>
   <span class="s2">&quot;paths&quot;</span><span class="o">:</span> <span class="cp">[</span>
@@ -884,7 +896,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-21 11:54:09</p>
+        <p>Site Generated 2019-02-24 13:42:28</p>
       </span>
     </div>
 

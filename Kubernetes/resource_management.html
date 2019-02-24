@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>resource_management 资源管理 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Kubernetes">Kubernetes</a>&nbsp;&#187;&nbsp;resource_management 资源管理
+    <span class="updated">Page Updated&nbsp;
+      2019-02-23 23:05
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">resource_management 资源管理</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">资源管理</a><ul>
+<li><a href="#_2">功能分类</a><ul>
+<li><a href="#workload-pod">工作负载 Workload （也称Pod控制器）</a><ul>
+<li><a href="#replicationcontroller">ReplicationController 无状态 （废弃）</a></li>
+<li><a href="#replicaset">ReplicaSet 无状态</a></li>
+<li><a href="#deployment">Deployment  无状态</a></li>
+<li><a href="#statefulset">StatefulSet 有状态</a></li>
+<li><a href="#daemonset">DaemonSet</a></li>
+<li><a href="#job">Job</a></li>
+</ul>
+</li>
+<li><a href="#discovery-lb">发现和负载均衡 Discovery &amp; LB</a></li>
+<li><a href="#config-storage">配置和存储 Config &amp; Storage</a></li>
+<li><a href="#cluster">集群级资源 Cluster</a><ul>
+<li><a href="#namespace">Namespace</a></li>
+<li><a href="#node">Node</a></li>
+<li><a href="#role">Role</a></li>
+<li><a href="#clusterrole">ClusterRole</a></li>
+<li><a href="#rolebinding">RoleBinding</a></li>
+<li><a href="#clusterrolebinding">ClusterRoleBinding</a></li>
+</ul>
+</li>
+<li><a href="#metadata">元数据 Metadata</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">资源管理</h1>
+<h2 id="_2">功能分类</h2>
+<p>更好的运行和丰富Pod资源，从而为容器化应用提供更灵活，更完善的操作与管理组件为核心设计</p>
+<h3 id="workload-pod">工作负载 Workload （也称Pod控制器）</h3>
+<p>Pod 为此基础资源，负责运行容器</p>
+<p>当Pod非正常中止，重建工作由此控制器完成</p>
+<h4 id="replicationcontroller">ReplicationController 无状态 （废弃）</h4>
+<p>负责无状态应用，上一代应用控制器</p>
+<p>保证每个容器或者容器组运行并且可以被访问</p>
+<h4 id="replicaset">ReplicaSet 无状态</h4>
+<p>负责无状态应用，新一代ReplicationController</p>
+<p>比上一代支持基于集合的选择器</p>
+<h4 id="deployment">Deployment  无状态</h4>
+<p>负责无状态应用</p>
+<p>用于管理无状态持久化的应用，如HTTP</p>
+<p>构建在ReplicaSet之上</p>
+<h4 id="statefulset">StatefulSet 有状态</h4>
+<p>负责有状态应用</p>
+<p>用于管理有状态的持久化应用，如database</p>
+<p>比Deployment会为每个Pod创建一个独有的持久性标识符，并确保Pod之间的顺序性</p>
+<h4 id="daemonset">DaemonSet</h4>
+<p>常用于运行集群存储的守护进程，如glusterd，ceph，</p>
+<p>日志收集进程如fluentd，logstash，</p>
+<p>监控进程，如prometheus的Node Explorter，collected，datadog agent， Ganglia的gmond</p>
+<p>确保每个节点都运行Pod的副本</p>
+<h4 id="job">Job</h4>
+<p>用于管理运行完成后可以终止的应用，如批处理任务</p>
+<h3 id="discovery-lb">发现和负载均衡 Discovery &amp; LB</h3>
+<p>确保Pod资源被外部及集群内部访问，要为同一种工作负载的访问流量进行负载均衡</p>
+<h3 id="config-storage">配置和存储 Config &amp; Storage</h3>
+<p>支持多种存储确保存储资源持久化，如GlusterFS，ceph RBD， Flocker</p>
+<p>使用ConfigMap资源能够以环境变量或存储卷的方式接入到Pod中，还可以被同类Pod共享，不适合存储密钥等敏感数据</p>
+<h3 id="cluster">集群级资源 Cluster</h3>
+<h4 id="namespace">Namespace</h4>
+<p>资源对象名称的作用范围，默认隶属default</p>
+<h4 id="node">Node</h4>
+<p>Kubernetes集群工作节点，其标识符在当前集群唯一</p>
+<h4 id="role">Role</h4>
+<p>名称空间级别有规则组成的权限集合</p>
+<p>被RoleBinding 引用</p>
+<h4 id="clusterrole">ClusterRole</h4>
+<p>Cluster 级别的 </p>
+<p>规则组成的权限集合</p>
+<p>被RoleBinding，ClusterRole Binding 引用</p>
+<h4 id="rolebinding">RoleBinding</h4>
+<p>将Role权限绑定在一个或一组用户上，</p>
+<p>可以引用同一名称空间的Role，或全局名称的ClusterRole</p>
+<h4 id="clusterrolebinding">ClusterRoleBinding</h4>
+<p>将ClusterRole中定义的许可权限绑定在一个或一组用户上，引用ClusterRole</p>
+<h3 id="metadata">元数据 Metadata</h3>
+<p>用于为集群内部的其他资源配置其行为或特征，如HorizontalPodAutoscaler用于自动伸缩工作负载类型的资源对象的规模</p>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-02-24 13:42:28</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

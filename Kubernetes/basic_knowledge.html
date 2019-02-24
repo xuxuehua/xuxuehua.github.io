@@ -40,6 +40,8 @@
 </li>
 <li><a href="#kubernetes_2">Kubernetes 功能</a><ul>
 <li><a href="#pod">Pod 容器集</a><ul>
+<li><a href="#pod-ip">Pod IP</a></li>
+<li><a href="#_2">存储卷</a></li>
 <li><a href="#pod-template">Pod template</a></li>
 </ul>
 </li>
@@ -47,12 +49,13 @@
 <li><a href="#label-selector">Label Selector</a></li>
 </ul>
 </li>
-<li><a href="#pod_1">Pod 控制器</a><ul>
+<li><a href="#pod-controller">Pod 控制器 Controller</a><ul>
 <li><a href="#replication-controller">Replication Controller</a></li>
 <li><a href="#replicaset">ReplicaSet</a></li>
-<li><a href="#deployment">Deployment</a></li>
+<li><a href="#deployment">Deployment （常用）</a></li>
 <li><a href="#statefulset">StatefulSet</a></li>
 <li><a href="#job">Job</a></li>
+<li><a href="#daemonset">DaemonSet</a></li>
 </ul>
 </li>
 <li><a href="#volume">Volume 存储卷</a></li>
@@ -64,6 +67,8 @@
 </ul>
 </li>
 <li><a href="#service">Service 服务资源</a><ul>
+<li><a href="#service-ip-cluster-ip">Service IP (Cluster IP)</a></li>
+<li><a href="#service_1">Service 类型</a></li>
 <li><a href="#endpoint">Endpoint</a></li>
 </ul>
 </li>
@@ -71,14 +76,14 @@
 </li>
 <li><a href="#kubernetes_3">Kubernetes 集群组件</a><ul>
 <li><a href="#master">Master</a><ul>
-<li><a href="#api-server">API server</a></li>
+<li><a href="#api-server">API server  集群的网关</a></li>
 <li><a href="#controller-manager">controller-manager</a></li>
 <li><a href="#scheduler">scheduler</a></li>
+<li><a href="#etcd">etcd 集群状态存储系统</a></li>
 </ul>
 </li>
-<li><a href="#etcd">etcd 集群状态存储系统</a></li>
 <li><a href="#node">Node</a><ul>
-<li><a href="#kubelet">kubelet</a></li>
+<li><a href="#kubelet">kubelet 代理组件</a></li>
 <li><a href="#container-runtime">Container Runtime</a></li>
 <li><a href="#kube-proxy">kube-proxy</a></li>
 </ul>
@@ -93,16 +98,19 @@
 </ul>
 </li>
 <li><a href="#kubernetes_4">Kubernetes 网络模型</a><ul>
-<li><a href="#_2">实现策略</a></li>
+<li><a href="#_3">实现策略</a></li>
 </ul>
 </li>
 <li><a href="#kubernetes_5">Kubernetes 服务发现机制</a><ul>
-<li><a href="#_3">环境变量</a></li>
+<li><a href="#_4">环境变量</a></li>
 <li><a href="#dns">DNS</a></li>
-<li><a href="#service_1">外部系统访问service问题</a></li>
-<li><a href="#_4">服务类型</a></li>
+<li><a href="#service_2">外部系统访问service问题</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a href="#_5">术语</a><ul>
+<li><a href="#hpa">HPA</a></li>
 </ul>
 </li>
 </ul>
@@ -134,6 +142,14 @@
 <h3 id="pod">Pod 容器集</h3>
 <p>Pod 是Kubernetes中可以创建的最小部署单元， Pod是一组容器的集合</p>
 <p>同一Pod中的容器共享网络名称空间和存储资源，这些容器可以通过loopback直接通信，同时又在Mount，User， PID等名称空间保持了隔离</p>
+<p>Pod 代表着Kubernetes的部署单元以及原子运行单元，即一个应用程序的单一运行实例，通常由共享资源且关系紧密的一个或者多个应用容器组成</p>
+<p>集群中Pod 对象的IP地址需在同一平面（网段）内进行通信</p>
+<h4 id="pod-ip">Pod IP</h4>
+<p>Pod 对象被分配的一个集群内专用的IP，Pod内部所有容器共享Pod对象的Network和UTS名称空间，容器间通过回环地址通信</p>
+<p>Pod外的其他组件通信需要使用Service资源对象的Cluster IP</p>
+<h4 id="_2">存储卷</h4>
+<p>Pod对象可以配置一组存储卷，给其内部所有容器使用，完成容器间数据共享</p>
+<p>同时也保证容器重启后，数据不丢失</p>
 <h4 id="pod-template">Pod template</h4>
 <p>(Resource)[https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/]</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
@@ -164,17 +180,18 @@
 </li>
 </ul>
 <p>e.g.<code>kubectl get pods -l 'environment=production,tier=frontend' $ kubectl get pods -l 'environment in (production), tier in (frontend)'</code></p>
-<h3 id="pod_1">Pod 控制器</h3>
-<p>借助Controller 对Pod进行管理</p>
+<h3 id="pod-controller">Pod 控制器 Controller</h3>
+<p>借助Controller 对Pod进行管理，实现一次性的Pod对象管理</p>
 <p>包括以下多种调度器</p>
 <h4 id="replication-controller">Replication Controller</h4>
 <p>定义了一个期望的场景，声明某种pod的副本数量在任意时刻都符合某个预期值</p>
 <p>e.g. <code>apiVersion: extensions/v1beat1 kind: Replication metadata: name: frontend</code></p>
 <h4 id="replicaset">ReplicaSet</h4>
-<h4 id="deployment">Deployment</h4>
+<h4 id="deployment">Deployment （常用）</h4>
 <p>Deployment 为Pod和ReplicaSet提供一个声明方法，用来替代Replication Controller 来方便管理</p>
 <h4 id="statefulset">StatefulSet</h4>
 <h4 id="job">Job</h4>
+<h4 id="daemonset">DaemonSet</h4>
 <h3 id="volume">Volume 存储卷</h3>
 <p>独立于容器文件系统之外的存储空间，常用于扩展容器的存储空间并为其提供存储能力。</p>
 <p>临时卷和本地卷位于Node本地，一旦Pod被调度到其他Node，这类存储卷将无法访问</p>
@@ -235,22 +252,34 @@
        - protocol: TCP
          port: 80
          targetPort: 9376</code></p>
+<h4 id="service-ip-cluster-ip">Service IP (Cluster IP)</h4>
+<p>一种虚拟IP，也称Cluster IP， 专用于集群内通信</p>
+<h4 id="service_1">Service 类型</h4>
+<div class="hlcode"><pre><span class="mf">1.</span> <span class="err">仅用于集群内部通信的</span><span class="n">ClusterIP</span><span class="err">类型</span>
+<span class="mf">2.</span> <span class="err">接入集群外部请求的</span><span class="n">NodePort</span><span class="err">类型，</span> <span class="err">工作于每个节点的主机</span><span class="n">IP</span><span class="err">之上</span>
+<span class="mf">3.</span> <span class="n">LoadBalance</span><span class="err">类型，可以把外部请求负载均衡至多个</span><span class="n">Node</span><span class="err">主机</span><span class="n">IP</span><span class="err">的</span><span class="n">NodePort</span><span class="err">之上</span>
+</pre></div>
+
+
+<blockquote>
+<p>每一种都以前一种为基础才能实现</p>
+</blockquote>
 <h4 id="endpoint">Endpoint</h4>
 <p>Endpoint: Pod IP + Container Port </p>
 <h2 id="kubernetes_3">Kubernetes 集群组件</h2>
 <h3 id="master">Master</h3>
 <p>集群管理，集群接口管理，监控，编排</p>
-<h4 id="api-server">API server</h4>
+<h4 id="api-server">API server  集群的网关</h4>
 <p>负责输出RESTful API输出</p>
 <p>接受响应所有REST请求，结果状态被持久存储于etcd中</p>
 <p>即集群的网关</p>
 <h4 id="controller-manager">controller-manager</h4>
 <h4 id="scheduler">scheduler</h4>
-<h3 id="etcd">etcd 集群状态存储系统</h3>
+<h4 id="etcd">etcd 集群状态存储系统</h4>
 <p>独立的服务组件，不隶属于Kubernetes集群自身</p>
 <h3 id="node">Node</h3>
 <p>负责提供容器的各种依赖环境，并接受master管理</p>
-<h4 id="kubelet">kubelet</h4>
+<h4 id="kubelet">kubelet 代理组件</h4>
 <p>代理程序</p>
 <p>在API Server上注册当前工作节点，定期向Master汇报节点资源使用情况</p>
 <p>通过cAdvistor 监控容器和节点的资源占用情况</p>
@@ -279,7 +308,7 @@
 </pre></div>
 
 
-<h3 id="_2">实现策略</h3>
+<h3 id="_3">实现策略</h3>
 <p>所有Pod间均可不经过NAT而直接通信</p>
 <p>所有节点均可不经过NAT而直接与所有容器通信</p>
 <p>容器自己使用的IP也是其他容器或节点直接看到的地址，即Pod自身的地址直接通信</p>
@@ -287,38 +316,27 @@
 <p>Service IP是一个虚拟IP地址，没有任何设备配置此地址，由iptables或ipvs重新定向到本地端口，再调度到后端Pod 对象，即Cluster IP</p>
 <p>​    </p>
 <h2 id="kubernetes_5">Kubernetes 服务发现机制</h2>
-<blockquote>
 <p>支持两种服务发现模式 - 环境变量和DNS</p>
-</blockquote>
-<h3 id="_3">环境变量</h3>
-<blockquote>
+<h3 id="_4">环境变量</h3>
 <p>当Pod运行在Node上，Kubelet会为每个活跃的Service添加一组环境变量</p>
-</blockquote>
 <h3 id="dns">DNS</h3>
-<blockquote>
 <p>Kubernetes 通过Add on 方式引入DNS，把服务名称作为DNS域名，这样，程序就可以直接使用服务名来建立通信连接，目前大部分应用都采用DNS这种机制</p>
-</blockquote>
-<h3 id="service_1">外部系统访问service问题</h3>
+<h3 id="service_2">外部系统访问service问题</h3>
 <ul>
 <li>Node IP： node物理节点的IP</li>
 <li>Pod IP：Pod的IP</li>
 <li>Cluster IP：Service 的IP （不可以ping测试）</li>
 </ul>
-<h3 id="_4">服务类型</h3>
-<ul>
-<li>Cluster IP:  通过集群内部IP暴露服务，服务之能够在集群内部访问，默认是ServiceType</li>
-<li>Node Pord：每个</li>
-<li></li>
-</ul>
-<p>​    </p>
-<p>​    </p>
+<h1 id="_5">术语</h1>
+<h2 id="hpa">HPA</h2>
+<p>Horizontal Pod Autoscaler    </p>
 <p>​    </p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-21 11:54:09</p>
+        <p>Site Generated 2019-02-24 13:42:28</p>
       </span>
     </div>
 
