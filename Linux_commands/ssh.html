@@ -45,7 +45,10 @@
 <li><a href="#-n">-N</a></li>
 <li><a href="#-o-option">-o option 配置选项</a><ul>
 <li><a href="#stricthostkeychecking">StrictHostKeyChecking</a></li>
-<li><a href="#proxycommand-case-sensitive">ProxyCommand (Case sensitive)</a></li>
+<li><a href="#proxycommand-case-sensitive">ProxyCommand (Case sensitive)</a><ul>
+<li><a href="#connect">connect</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#-p">-p</a></li>
@@ -141,6 +144,19 @@
 </pre></div>
 
 
+<h4 id="connect">connect</h4>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="o">:</span><span class="c1">//github.com/ghostlyman/connect-proxy.git</span>
+<span class="n">cd</span> <span class="n">connect</span> 
+<span class="n">make</span> 
+<span class="n">gcc</span> <span class="n">connect</span><span class="p">.</span><span class="n">c</span> <span class="o">-</span><span class="n">o</span> <span class="n">connect</span> 
+<span class="n">cp</span> <span class="n">connect</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">ssh</span> <span class="o">-</span><span class="n">o</span> <span class="err">&#39;</span><span class="n">ProxyCommand</span> <span class="n">connect</span> <span class="o">-</span><span class="n">S</span> <span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">1080</span> <span class="o">%</span><span class="n">h</span> <span class="o">%</span><span class="n">p</span><span class="err">&#39;</span> <span class="n">user</span><span class="err">@</span><span class="n">host</span>
+</pre></div>
+
+
 <h2 id="-p">-p</h2>
 <p>指定远程服务器上的端口</p>
 <h2 id="-q">-q</h2>
@@ -167,7 +183,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-24 13:42:28</p>
+        <p>Site Generated 2019-02-26 21:36:50</p>
       </span>
     </div>
 

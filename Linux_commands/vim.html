@@ -35,6 +35,7 @@
 <li><a href="#_6">宏录制</a></li>
 </ul>
 </li>
+<li><a href="#vimrc">vimrc</a></li>
 </ul>
 </li>
 </ul>
@@ -91,12 +92,45 @@
 <span class="err">@</span><span class="nx">a</span> <span class="err">会</span><span class="nx">replay</span><span class="err">被录制的宏。</span>
 <span class="err">@@</span> <span class="err">是一个快捷键用来</span><span class="nx">replay</span><span class="err">最新录制的宏。</span>
 </pre></div>
+
+
+<h2 id="vimrc">vimrc</h2>
+<div class="hlcode"><pre><span class="cp"># 然后在  set backspace=2下面一行插入如下代码</span>
+<span class="n">set</span> <span class="n">ai</span>                  <span class="s">&quot; auto indenting</span>
+<span class="n">set</span> <span class="n">ruler</span>               <span class="s">&quot; show the cursor position</span>
+<span class="n">set</span> <span class="n">hlsearch</span>            <span class="s">&quot; highlight the last searched term</span>
+<span class="n">set</span> <span class="n">history</span><span class="o">=</span><span class="mi">1000</span>        <span class="s">&quot; keep 1000 lines of history</span>
+<span class="n">syntax</span> <span class="n">on</span>               <span class="s">&quot; syntax highlighting</span>
+<span class="n">filetype</span> <span class="n">plugin</span> <span class="n">on</span>      <span class="s">&quot; use the file type plugins</span>
+
+<span class="cp"># 其它选项</span>
+<span class="n">set</span> <span class="n">nocompatible</span>                 <span class="s">&quot;去掉有关vi一致性模式，避免以前版本的bug和局限    </span>
+<span class="n">set</span> <span class="n">nu</span><span class="o">!</span>                          <span class="s">&quot;显示行号</span>
+<span class="n">set</span> <span class="n">guifont</span><span class="o">=</span><span class="n">Luxi</span><span class="o">/</span> <span class="n">Mono</span><span class="o">/</span> <span class="mi">9</span>        <span class="s">&quot;设置字体，字体名称和字号</span>
+<span class="n">filetype</span> <span class="n">on</span>                      <span class="s">&quot;检测文件的类型     </span>
+<span class="n">set</span> <span class="n">history</span><span class="o">=</span><span class="mi">1000</span>                 <span class="s">&quot;记录历史的行数</span>
+<span class="n">set</span> <span class="n">background</span><span class="o">=</span><span class="n">dark</span>              <span class="s">&quot;背景使用黑色</span>
+<span class="n">syntax</span> <span class="n">on</span>                        <span class="s">&quot;语法高亮度显示</span>
+<span class="n">set</span> <span class="n">autoindent</span>                   <span class="s">&quot;vim使用自动对齐，也就是把当前行的对齐格式应用到下一行(自动缩进）</span>
+<span class="n">set</span> <span class="n">cindent</span>                      <span class="s">&quot;（cindent是特别针对 C语言语法自动缩进）</span>
+<span class="n">set</span> <span class="n">smartindent</span>                  <span class="s">&quot;依据上面的对齐格式，智能的选择对齐方式，对于类似C语言编写上有用   </span>
+<span class="n">set</span> <span class="n">tabstop</span><span class="o">=</span><span class="mi">4</span>                    <span class="s">&quot;设置tab键为4个空格，</span>
+<span class="n">set</span> <span class="n">shiftwidth</span> <span class="o">=</span><span class="mi">4</span>                <span class="s">&quot;设置当行之间交错时使用4个空格     </span>
+<span class="n">set</span> <span class="n">ai</span><span class="o">!</span>                          <span class="s">&quot;设置自动缩进 </span>
+<span class="n">set</span> <span class="n">showmatch</span>                    <span class="s">&quot;设置匹配模式，类似当输入一个左括号时会匹配相应的右括号      </span>
+<span class="n">set</span> <span class="n">guioptions</span><span class="o">-=</span><span class="n">T</span>                <span class="s">&quot;去除vim的GUI版本中得toolbar   </span>
+<span class="n">set</span> <span class="n">vb</span> <span class="n">t_vb</span><span class="o">=</span>                     <span class="s">&quot;当vim进行编辑时，如果命令错误，会发出警报，该设置去掉警报       </span>
+<span class="n">set</span> <span class="n">ruler</span>                        <span class="s">&quot;在编辑过程中，在右下角显示光标位置的状态行     </span>
+<span class="n">set</span> <span class="n">nohls</span>                        <span class="s">&quot;默认情况下，寻找匹配是高亮度显示，该设置关闭高亮显示     </span>
+<span class="n">set</span> <span class="n">backspace</span><span class="o">=</span><span class="mi">2</span>                  <span class="s">&quot;设置退格键可用</span>
+<span class="n">set</span> <span class="n">incsearch</span>                    <span class="s">&quot;在程序中查询一单词，自动匹配单词的位置；如查询desk单词，当输到/d时， </span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-24 13:42:28</p>
+        <p>Site Generated 2019-02-26 21:36:50</p>
       </span>
     </div>
 

@@ -49,6 +49,7 @@
 <li><a href="#uninstall">uninstall 卸载</a></li>
 </ul>
 </li>
+<li><a href="#jenkins">Jenkins 配置</a></li>
 </ul>
 </li>
 </ul>
@@ -192,12 +193,34 @@
 <h3 id="uninstall">uninstall 卸载</h3>
 <div class="hlcode"><pre><span class="n">pyenv</span> <span class="n">uninstall</span> <span class="n">my</span><span class="o">-</span><span class="n">virtual</span><span class="o">-</span><span class="n">env</span>
 </pre></div>
+
+
+<h2 id="jenkins">Jenkins 配置</h2>
+<p>选择<code>Execute shell</code>，添加构建代码</p>
+<div class="hlcode"><pre><span class="n">PROJECT_NAME</span><span class="o">=</span><span class="n">testproject</span>
+<span class="n">PYENV_HOME</span><span class="o">=</span><span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">pyenv</span>
+<span class="n">PROJECT_ENV</span><span class="o">=</span><span class="err">$</span><span class="n">PYENV_HOME</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="err">$</span><span class="n">PROJECT_NAME</span>
+<span class="n">PYTHON_VER_FILE</span><span class="o">=</span><span class="err">$</span><span class="n">WORKSPACE</span><span class="o">/</span><span class="p">.</span><span class="n">python</span><span class="o">-</span><span class="n">version</span>
+<span class="n">export</span> <span class="n">PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PYENV_HOME</span><span class="o">/</span><span class="n">bin</span><span class="o">/:</span><span class="err">$</span><span class="n">PYENV_HOME</span><span class="o">/</span><span class="n">shims</span><span class="o">:</span><span class="err">$</span><span class="n">PATH</span>
+
+<span class="cp">#Delete previously built virtualenv</span>
+<span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">d</span> <span class="err">$</span><span class="n">PROJECT_ENV</span> <span class="p">];</span> <span class="n">then</span>
+    <span class="n">pyenv</span> <span class="n">uninstall</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="n">PROJECT_NAME</span>
+    <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="n">PYTHON_VER_FILE</span> <span class="p">];</span> <span class="n">then</span>
+        <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="n">PYTHON_VER_FILE</span>
+    <span class="n">fi</span>
+<span class="n">fi</span>
+
+<span class="n">pyenv</span> <span class="n">virtualenv</span> <span class="mf">3.6.0</span> <span class="err">$</span><span class="n">PROJECT_NAME</span>
+<span class="n">pyenv</span> <span class="n">local</span> <span class="err">$</span><span class="n">PROJECT_NAME</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">quiet</span> <span class="n">nosexcover</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-24 13:42:28</p>
+        <p>Site Generated 2019-02-26 21:36:50</p>
       </span>
     </div>
 

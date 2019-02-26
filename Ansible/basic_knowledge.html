@@ -32,7 +32,10 @@
 </ul>
 </li>
 <li><a href="#_2">配置文件</a></li>
-<li><a href="#inventory">定义Inventory</a></li>
+<li><a href="#inventory">定义Inventory</a><ul>
+<li><a href="#ssh">跳过SSH 认证</a></li>
+</ul>
+</li>
 <li><a href="#_3">使用秘钥方式连接</a></li>
 <li><a href="#_4">使用帮助</a></li>
 <li><a href="#ansible_1">Ansible命令</a><ul>
@@ -76,6 +79,29 @@
 </pre></div>
 
 
+<h3 id="ssh">跳过SSH 认证</h3>
+<p>What you can do at the inventory level is add</p>
+<div class="hlcode"><pre><span class="n">ansible_ssh_common_args</span><span class="o">=</span><span class="err">&#39;</span><span class="o">-</span><span class="n">o</span> <span class="n">StrictHostKeyChecking</span><span class="o">=</span><span class="n">no</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<p>or</p>
+<div class="hlcode"><pre><span class="n">ansible_ssh_extra_args</span><span class="o">=</span><span class="err">&#39;</span><span class="o">-</span><span class="n">o</span> <span class="n">StrictHostKeyChecking</span><span class="o">=</span><span class="n">no</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<p>to your host definition (see <a href="https://docs.ansible.com/ansible/intro_inventory.html#list-of-behavioral-inventory-parameters">Ansible Behavioral Inventory Parameters</a>).</p>
+<p>This will work provided you use the <code>ssh</code> connection type, not <code>paramiko</code> or something else).</p>
+<p>For example, a Vagrant host definition would look like…</p>
+<div class="hlcode"><pre><span class="n">vagrant</span> <span class="n">ansible_port</span><span class="o">=</span><span class="mi">2222</span> <span class="n">ansible_host</span><span class="o">=</span><span class="mf">127.0.0.1</span> <span class="n">ansible_ssh_common_args</span><span class="o">=</span><span class="err">&#39;</span><span class="o">-</span><span class="n">o</span> <span class="n">StrictHostKeyChecking</span><span class="o">=</span><span class="n">no</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<p>or</p>
+<div class="hlcode"><pre><span class="n">vagrant</span> <span class="n">ansible_port</span><span class="o">=</span><span class="mi">2222</span> <span class="n">ansible_host</span><span class="o">=</span><span class="mf">127.0.0.1</span> <span class="n">ansible_ssh_extra_args</span><span class="o">=</span><span class="err">&#39;</span><span class="o">-</span><span class="n">o</span> <span class="n">StrictHostKeyChecking</span><span class="o">=</span><span class="n">no</span><span class="err">&#39;</span>
+</pre></div>
+
+
 <h2 id="_3">使用秘钥方式连接</h2>
 <div class="hlcode"><pre><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span> 
 <span class="n">ssh</span><span class="o">-</span><span class="n">copy</span><span class="o">-</span><span class="n">id</span> <span class="o">-</span><span class="n">i</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="p">.</span><span class="n">pub</span> <span class="n">root</span><span class="err">@</span><span class="mf">192.168.10.149</span>
@@ -113,7 +139,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-24 13:42:28</p>
+        <p>Site Generated 2019-02-26 21:36:50</p>
       </span>
     </div>
 
