@@ -51,6 +51,11 @@
 <li><a href="#metadata">元数据 Metadata</a></li>
 </ul>
 </li>
+<li><a href="#api">API 群组</a><ul>
+<li><a href="#core-group">核心群组 core group</a></li>
+<li><a href="#named-group">命名群组 named group</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -106,12 +111,20 @@
 <p>将ClusterRole中定义的许可权限绑定在一个或一组用户上，引用ClusterRole</p>
 <h3 id="metadata">元数据 Metadata</h3>
 <p>用于为集群内部的其他资源配置其行为或特征，如HorizontalPodAutoscaler用于自动伸缩工作负载类型的资源对象的规模</p>
+<h2 id="api">API 群组</h2>
+<h3 id="core-group">核心群组 core group</h3>
+<p>REST 路径为<code>/api/v1</code>，在资源配置信息apiVersion 字段中引用时可以不指定路径，而仅给出版本</p>
+<p>如 <code>apiVersion:v1</code></p>
+<h3 id="named-group">命名群组 named group</h3>
+<p>REST 路径为<code>/apis/$GROUP_NAME/$VERSION</code> </p>
+<p>如 <code>/apis/apps/v1</code>  在apiVersion字段中引用的格式为<code>apiVersion:$GROUP_NAME/$VERSION</code> </p>
+<p>如<code>apiVersion:apps/v1</code></p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-26 21:36:50</p>
+        <p>Site Generated 2019-03-01 00:35:55</p>
       </span>
     </div>
 

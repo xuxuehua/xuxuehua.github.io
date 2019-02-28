@@ -61,17 +61,19 @@
 
 
 <p>Select the channel to use:</p>
-<ul>
-<li>Stable</li>
-</ul>
-<p><code>echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list</code></p>
-<ul>
-<li>Dev</li>
-</ul>
-<p><code>echo "deb https://download.sublimetext.com/ apt/dev/" | sudo tee /etc/apt/sources.list.d/sublime-text.list</code></p>
+<p>Stable</p>
+<div class="hlcode"><pre><span class="n">echo</span> <span class="s">&quot;deb https://download.sublimetext.com/ apt/stable/&quot;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">sublime</span><span class="o">-</span><span class="n">text</span><span class="p">.</span><span class="n">list</span> 
+</pre></div>
+
+
+<p>Dev</p>
+<div class="hlcode"><pre><span class="n">echo</span> <span class="s">&quot;deb https://download.sublimetext.com/ apt/dev/&quot;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">sublime</span><span class="o">-</span><span class="n">text</span><span class="p">.</span><span class="n">list</span>
+</pre></div>
+
+
 <p>Update apt sources and install Sublime Text</p>
-<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
-<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">sublime</span><span class="o">-</span><span class="n">text</span>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">update</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">sublime</span><span class="o">-</span><span class="n">text</span>
 </pre></div>
 
 
@@ -82,14 +84,16 @@
 
 
 <p>Select the channel to use:</p>
-<ul>
-<li>Stable</li>
-</ul>
-<p><code>sudo yum-config-manager --add-repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo</code></p>
-<ul>
-<li>Dev</li>
-</ul>
-<p><code>sudo yum-config-manager --add-repo https://download.sublimetext.com/rpm/dev/x86_64/sublime-text.repo</code></p>
+<p>Stable</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">yum</span><span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">manager</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">repo</span> <span class="n">https</span><span class="o">:</span><span class="c1">//download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo</span>
+</pre></div>
+
+
+<p>Dev</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">yum</span><span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">manager</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">repo</span> <span class="n">https</span><span class="o">:</span><span class="c1">//download.sublimetext.com/rpm/dev/x86_64/sublime-text.repo</span>
+</pre></div>
+
+
 <p>Update yum and install Sublime Text</p>
 <div class="hlcode"><pre><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">sublime</span><span class="o">-</span><span class="n">text</span>
 </pre></div>
@@ -98,7 +102,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-26 21:36:50</p>
+        <p>Site Generated 2019-03-01 00:35:55</p>
       </span>
     </div>
 

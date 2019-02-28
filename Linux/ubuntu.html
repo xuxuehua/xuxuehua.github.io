@@ -29,6 +29,7 @@
 <li><a href="#ubuntu">Ubuntu</a><ul>
 <li><a href="#basic-development-tools">Basic development tools</a></li>
 <li><a href="#aptsourcelist-for-18041">apt/source.list for 18.04.1</a></li>
+<li><a href="#guest-additions-copypaste">Guest additions (copy&amp;paste)</a></li>
 <li><a href="#ubuntu-chinese-setup">Ubuntu Chinese Setup</a><ul>
 <li><a href="#chinese-china-input-methods">Chinese (China) input methods</a></li>
 <li><a href="#chinese-hong-kong-input-methods">Chinese (Hong Kong) input methods</a></li>
@@ -49,9 +50,10 @@
 </div>
 <h1 id="ubuntu">Ubuntu</h1>
 <h2 id="basic-development-tools">Basic development tools</h2>
-<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="o">&amp;&amp;</span> \
-<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">libpcre</span><span class="o">*</span> <span class="o">&amp;&amp;</span> <span class="err">\</span> 
-<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">libz</span><span class="o">*</span>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="o">&amp;&amp;</span> \
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">libpcre3</span><span class="o">*</span> <span class="o">&amp;&amp;</span> <span class="err">\</span> 
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">libzip4</span><span class="o">*</span> <span class="o">&amp;&amp;</span> <span class="err">\</span> 
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">git</span> <span class="n">vim</span> <span class="n">curl</span> <span class="n">wget</span> <span class="n">screen</span> <span class="n">proxychains</span>
 </pre></div>
 
 
@@ -108,9 +110,20 @@
 </pre></div>
 
 
+<h2 id="guest-additions-copypaste">Guest additions (copy&amp;paste)</h2>
+<p>install the package <strong>virtualbox-guest-additions-iso</strong> in the <strong>host</strong> Ubuntu.</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">virtualbox</span><span class="o">-</span><span class="n">guest</span><span class="o">-</span><span class="n">additions</span><span class="o">-</span><span class="n">iso</span>
+</pre></div>
+
+
+<p>The .iso file with an image of the OSE edition of the guest additions CD will install in the host directory <code>/usr/share/virtualbox/VBoxGuestAdditions.iso</code>. Mount this .iso file as a CD in your virtual machine's settings. In the guest you will then have access to a CD-ROM with the installer.</p>
+<p>In case the Guest Additions fail to build we may have to install the Linux kernel headers (see <a href="https://askubuntu.com/q/75709/88802">How do I install kernel header files?</a>) or <a href="https://apps.ubuntu.com/cat/applications/build-essential"><strong>build-essential</strong> <img alt="Install build-essential" src="https://i.imgur.com/uRtxs.png" /></a> tools in addition. It is also recommended to have <a href="https://apps.ubuntu.com/cat/applications/dkms"><strong>dkms</strong> <img alt="Install dkms" src="https://i.imgur.com/uRtxs.png" /></a> installed (see below - Note 4). You can run this command in a terminal to install both:</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">dkms</span>
+</pre></div>
+
+
+<p>Selecting <em>Devices -&gt; Install Guest Additions</em> (or press Host+D from the Virtual Box Manager) the Guest Additions CD .iso will be loaded but <strong>not installed</strong> in your guest OS. To install we need to run the installer script <code>VBoxLinuxAdditions.run</code> as root or from the Autorun Prompt (see below).</p>
 <h2 id="ubuntu-chinese-setup">Ubuntu Chinese Setup</h2>
-<p><em>A Quick Start Guide toChinese Setup, Input Methods, Fonts, and Other Features inUbuntu 18.04 (Bionic Beaver) and the new GNOME</em></p>
-<p>[Looking for other versions of Ubuntu? Please see the menu above.]</p>
 <p>This page describes how to install Chinese features in non-Chinese versions of Ubuntu 18.04. The preview version of this new GNOME-based interface,<a href="https://www.pinyinjoe.com/faq/ubuntu-1710-ibus-fcitx.htm"> Ubuntu 17.10,</a> required its own FAQ page. If you need an earlier version, see the setup pages for <a href="https://www.pinyinjoe.com/linux/ubuntu-12-chinese-setup.htm">Ubuntu 12.04-17.04</a>, <a href="https://www.pinyinjoe.com/linux/ubuntu-11-chinese-setup.htm">Ubuntu 11</a>, and <a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-setup.htm">Ubuntu 10</a>(they share the same <a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-input-pinyin-chewing.htm">input methods</a> and <a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-fonts-openoffice-language-features.htm">fonts</a>) or <a href="https://www.pinyinjoe.com/linux/ubuntu-chinese-setup.htm">Ubuntu 9</a>.</p>
 <p>Canonical has dropped the Unity interface and returned to GNOME. The basic installation includes the <a href="https://en.wikipedia.org/wiki/Intelligent_Input_Bus">IBus input framework <img alt="Open new window" src="https://www.pinyinjoe.com/images/arrow-new-site.jpg" /></a> — which may or may not have everything you need — and many users will want to manually install the <a href="https://en.wikipedia.org/wiki/Fcitx">fcitx framework <img alt="Open new window" src="https://www.pinyinjoe.com/images/arrow-new-site.jpg" /></a> which is now the standard in China.</p>
 <p><img alt="No need to install a fully localized Chinese Ubuntu desktop. Just click English" src="https://www.pinyinjoe.com/images/ubuntu/1710/ubuntu-17-install-english-display.jpg" /></p>
@@ -141,7 +154,10 @@ After logging in, click again on "Activities" at the upper left or tap the Super
 <p><img alt="img" src="https://www.pinyinjoe.com/images/ubuntu/1804/gear-intelligent-pinyin.jpg" /></p>
 <p><em>Note that the Traditional characters produced by this IME will be in mainland GB encoding.</em> If you are sharing messages or documents with anyone using a system set to Taiwan/HK/Macau Big5 encoding, your text could be corrupted into unrecoverable garbage characters. For most situations requiring Traditional characters, it is best to use the China (Hong Kong) IME.</p>
 <p>Other input methods are available via manual install, including the (Simplified character only) SunPinyin which in some ways offers a superior candidate list algorithm. I have not yet played with this, but as an example to install SunPinyin you would drop into Terminal and enter this:</p>
-<p><strong>sudo apt-get install ibus-sunpinyin</strong></p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">ibus</span><span class="o">-</span><span class="n">sunpinyin</span>
+</pre></div>
+
+
 <h3 id="chinese-hong-kong-input-methods">Chinese (Hong Kong) input methods</h3>
 <p>If you select Chinese (Hong Kong) you'll find that the basic install offers no phonetic input at all, unless Chewing was carried over from a previous install during an upgrade...and if it still works. QuickClassic is a version of the non-phonetic Quick (簡易) input method popular with people in Hong Kong, but I need Chewing (as in "Zhuyin", though it supports both Bopomofo and Pinyin). </p>
 <p><img alt="img" src="https://www.pinyinjoe.com/images/ubuntu/1710/add-an-input-source-3.jpg" /></p>
@@ -152,19 +168,6 @@ After logging in, click again on "Activities" at the upper left or tap the Super
 <p>Maybe IBus just doesn't take you where you need to go. Fcitx has been the standard in China for Ubuntu Kylin for quite some time now, and if you'd like to install it see this article posted by a member of the fcitx team when this problem presented itself in 17.10:</p>
 <p><a href="https://www.csslayer.info/wordpress/fcitx-dev/how-to-use-fcitx-on-ubuntu-17-10/">https://www.csslayer.info/wordpress/fcitx-dev/how-to-use-fcitx-on-ubuntu-17-10/ <img alt="open new site in new window" src="https://www.pinyinjoe.com/images/arrow-new-site.jpg" /></a></p>
 <p>For either framework, to learn more about input methods, fonts, or OpenOffice/LibreOffice features see the next steps below.</p>
-<p><strong>Next steps:</strong></p>
-<blockquote>
-<p><a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-input-pinyin-chewing.htm"><img alt="Ubuntu Chinese IMEs" src="https://www.pinyinjoe.com/images/ubuntu/1010/IME-icons-7.jpg" /></a></p>
-</blockquote>
-<ul>
-<li>
-<p><a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-input-pinyin-chewing.htm">A summary of available Ubuntu Chinese Input Methods</a></p>
-</li>
-<li>
-<p><a href="https://www.pinyinjoe.com/linux/ubuntu-10-chinese-fonts-openoffice-language-features.htm">Chinese Fonts in Ubuntu, and LibreOffice Asian Language Features</a></p>
-</li>
-</ul>
-<p>As always, feel free to <a href="https://www.pinyinjoe.com/contact.htm">contact me</a> with any questions, comments and suggestions.</p>
 <h2 id="bashrc">新用户 启动.bashrc</h2>
 <h3 id="profile">.profile</h3>
 <div class="hlcode"><pre><span class="cp"># ~/.profile: executed by Bourne-compatible login shells.</span>
@@ -317,7 +320,7 @@ fi
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-26 21:36:50</p>
+        <p>Site Generated 2019-03-01 00:35:55</p>
       </span>
     </div>
 

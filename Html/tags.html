@@ -27,7 +27,7 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#_1">标签</a><ul>
-<li><a href="#doctype">&lt;!DOCTYPE&gt;</a></li>
+<li><a href="#doctype-html-html5">&lt;!DOCTYPE html&gt; html5版本</a></li>
 <li><a href="#html">&lt;html&gt;</a><ul>
 <li><a href="#html-langen">&lt;html lang="en"&gt;</a></li>
 </ul>
@@ -135,7 +135,7 @@
 </ul>
 </div>
 <h1 id="_1">标签</h1>
-<h2 id="doctype"><code>&lt;!DOCTYPE&gt;</code></h2>
+<h2 id="doctype-html-html5"><code>&lt;!DOCTYPE html&gt;</code> html5版本</h2>
 <p>标签位于文档的最前面，用于向浏览器说明当前文档使用哪种HTML或XHTML标准规范</p>
 <p>主要用于浏览器解析文档标签的依据</p>
 <p>其与浏览器兼容性有关，若删除，将由浏览器决定展示权利</p>
@@ -148,7 +148,10 @@
 <h3 id="title"><code>&lt;title&gt;</code></h3>
 <p>设置浏览器的标题文字</p>
 <h3 id="meta"><code>&lt;meta&gt;</code></h3>
-<p><code>&lt;meta charset="UTF-8"&gt;</code></p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">meta</span> <span class="n">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
 <p>字符集设定，当前文档的编码格式是UTF-8</p>
 <h2 id="body"><code>&lt;body&gt;</code></h2>
 <p>包括实际内容</p>
@@ -156,6 +159,7 @@
 <h2 id="_2">呈现标签</h2>
 <h3 id="h1h6"><code>&lt;h1&gt;~&lt;h6&gt;</code>标题</h3>
 <h3 id="p"><code>&lt;p&gt;</code>段落</h3>
+<p>用来定义一段文字</p>
 <h3 id="-"><code>&lt;!-- --&gt;</code>注释</h3>
 <h3 id="br"><code>&lt;br&gt;</code>换行</h3>
 <h3 id="hr"><code>&lt;hr&gt;</code>水平线</h3>
@@ -206,12 +210,12 @@
 
 
 <h3 id="target">target 属性</h3>
-<p>_blank 在新页面</p>
+<p><code>_blank</code> 在新页面</p>
 <div class="hlcode"><pre><span class="nt">&lt;a</span> <span class="na">target=</span><span class="s">&quot;_blank&quot;</span> <span class="na">href=</span><span class="s">&quot;http://xuxuehua.com&quot;</span><span class="nt">&gt;</span>xuxuehua<span class="nt">&lt;/a&gt;</span>
 </pre></div>
 
 
-<p>_self 在当前页面打开</p>
+<p><code>_self</code> 在当前页面打开</p>
 <div class="hlcode"><pre><span class="nt">&lt;a</span> <span class="na">target=</span><span class="s">&quot;_self&quot;</span> <span class="na">href=</span><span class="s">&quot;http://xuxuehua.com&quot;</span><span class="nt">&gt;</span>xuxuehua<span class="nt">&lt;/a&gt;</span>
 </pre></div>
 
@@ -619,7 +623,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-26 21:36:50</p>
+        <p>Site Generated 2019-03-01 00:35:55</p>
       </span>
     </div>
 

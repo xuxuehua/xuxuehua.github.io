@@ -27,6 +27,19 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#kubectl">kubectl</a><ul>
+<li><a href="#syntax">syntax</a></li>
+<li><a href="#installation">installation</a><ul>
+<li><a href="#mac-osx">mac osx</a><ul>
+<li><a href="#binary">binary</a></li>
+<li><a href="#brew">brew</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#minikube">minikube</a><ul>
+<li><a href="#mac-osx_1">mac osx</a></li>
+</ul>
+</li>
 <li><a href="#run">run</a></li>
 <li><a href="#expose">expose 暴露服务</a></li>
 <li><a href="#create">create</a></li>
@@ -50,12 +63,48 @@
 </ul>
 </li>
 <li><a href="#scale">scale 扩容/缩容</a></li>
+<li><a href="#api-versions">api-versions</a></li>
+<li><a href="#explain">explain</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <h1 id="kubectl">kubectl</h1>
 <p>Kubernetes API Server最常用的客户端程序之一，功能强大，能够几乎完成除了安装部署之外的所有管理操作</p>
+<h2 id="syntax">syntax</h2>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="p">[</span><span class="n">command</span><span class="p">]</span> <span class="p">[</span><span class="n">TYPE</span><span class="p">]</span> <span class="p">[</span><span class="n">NAME</span><span class="p">]</span> <span class="p">[</span><span class="n">flags</span><span class="p">]</span>
+</pre></div>
+
+
+<h2 id="installation">installation</h2>
+<h3 id="mac-osx">mac osx</h3>
+<h4 id="binary">binary</h4>
+<p>Download the latest release:</p>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">LO</span> <span class="n">https</span><span class="o">:</span><span class="c1">//storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl</span>
+</pre></div>
+
+
+<p>Make the kubectl binary executable.</p>
+<div class="hlcode"><pre><span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="p">.</span><span class="o">/</span><span class="n">kubectl</span>
+</pre></div>
+
+
+<p>Move the binary in to your PATH.</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">mv</span> <span class="p">.</span><span class="o">/</span><span class="n">kubectl</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">kubectl</span>
+</pre></div>
+
+
+<h4 id="brew">brew</h4>
+<div class="hlcode"><pre><span class="n">brew</span> <span class="n">install</span> <span class="n">kubernetes</span><span class="o">-</span><span class="n">cli</span>
+</pre></div>
+
+
+<h2 id="minikube">minikube</h2>
+<h3 id="mac-osx_1">mac osx</h3>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">Lo</span> <span class="n">minikube</span> <span class="n">https</span><span class="o">:</span><span class="c1">//storage.googleapis.com/minikube/releases/v0.34.1/minikube-darwin-amd64 &amp;&amp; chmod +x minikube &amp;&amp; sudo cp minikube /usr/local/bin/ &amp;&amp; rm minikube</span>
+</pre></div>
+
+
 <h2 id="run">run</h2>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">run</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deploy</span> <span class="o">--</span><span class="n">image</span><span class="o">=</span><span class="n">nginx</span><span class="o">:</span><span class="mf">1.12</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">2</span>
 </pre></div>
@@ -168,12 +217,26 @@
 </blockquote>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">scale</span> <span class="n">deployments</span><span class="o">/</span><span class="n">myapp</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">2</span>
 </pre></div>
+
+
+<h2 id="api-versions">api-versions</h2>
+<p>获取api server 上的相关信息</p>
+<h2 id="explain">explain</h2>
+<p>获取相关帮助</p>
+<p>解释Pod资源的一级字段</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">explain</span> <span class="n">pods</span>
+</pre></div>
+
+
+<p>某对象下的二级字段, 三四级依此类推</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">explain</span> <span class="n">pods</span><span class="p">.</span><span class="n">spec</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-26 21:36:50</p>
+        <p>Site Generated 2019-03-01 00:35:55</p>
       </span>
     </div>
 

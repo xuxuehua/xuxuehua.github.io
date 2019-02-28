@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
-    <title>nodejs - Xu XueHua</title>
+    <title>basic_knowledge - Xu XueHua</title>
     <meta name="keywords" content="Xu XueHua"/>
     <meta name="description" content="Xu XueHua's public notes"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -16,26 +16,37 @@
     <div id="container">
       
 <div id="header">
-  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Nodejs">Nodejs</a>&nbsp;&#187;&nbsp;nodejs
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Nodejs">Nodejs</a>&nbsp;&#187;&nbsp;basic_knowledge
     <span class="updated">Page Updated&nbsp;
       2018-07-29 16:36
     </span></div>
 </div>
 <div class="clearfix"></div>
 
-<div class="page_title">nodejs</div>
+<div class="page_title">basic_knowledge</div>
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
-<li><a href="#nodejs">nodejs</a><ul>
-<li><a href="#_1">特点</a></li>
-<li><a href="#_2">安装</a></li>
+<li><a href="#web-developing">Web developing</a><ul>
+<li><a href="#_1">基本概念</a><ul>
+<li><a href="#nodejs">Node.js开发优势</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#nodejs_1">nodejs</a><ul>
+<li><a href="#_2">特点</a></li>
+<li><a href="#_3">安装</a><ul>
+<li><a href="#nvm">NVM</a></li>
+<li><a href="#npm">npm</a></li>
+</ul>
+</li>
 <li><a href="#npm-vs-cnpm">npm VS cnpm</a><ul>
 <li><a href="#proxy">proxy 配置</a></li>
 <li><a href="#cnpm">cnpm 使用</a></li>
 </ul>
 </li>
 <li><a href="#hello-world">hello world</a></li>
-<li><a href="#_3">全局对象</a><ul>
+<li><a href="#_4">全局对象</a><ul>
 <li><a href="#process">process 对象</a><ul>
 <li><a href="#process_1">process 响应</a></li>
 </ul>
@@ -43,9 +54,9 @@
 </ul>
 </li>
 <li><a href="#strict">全局strict 模式</a></li>
-<li><a href="#_4">模块</a><ul>
-<li><a href="#_5">导出模块</a></li>
-<li><a href="#_6">调用模块</a></li>
+<li><a href="#_5">模块</a><ul>
+<li><a href="#_6">导出模块</a></li>
+<li><a href="#_7">调用模块</a></li>
 </ul>
 </li>
 <li><a href="#javascript">判断JavaScript执行环境</a></li>
@@ -53,11 +64,31 @@
 </li>
 </ul>
 </div>
-<h1 id="nodejs">nodejs</h1>
-<h2 id="_1">特点</h2>
+<h1 id="web-developing">Web developing</h1>
+<h2 id="_1">基本概念</h2>
+<p>MVC：为了解决直接用脚本语言嵌入HTML导致的可维护性差的问题，Web应用也引入了Model-View-Controller的模式，来简化Web开发。ASP发展为ASP.Net，JSP和PHP也有一大堆MVC框架。</p>
+<p>目前，Web开发技术仍在快速发展中，异步开发、新的MVVM前端技术层出不穷。</p>
+<p>由于Node.js把JavaScript引入了服务器端，因此，原来必须使用PHP/Java/C#/Python/Ruby等其他语言来开发服务器端程序，现在可以使用Node.js开发了！</p>
+<h3 id="nodejs">Node.js开发优势</h3>
+<p>一是后端语言也是JavaScript，以前掌握了前端JavaScript的开发人员，现在可以同时编写后端代码；</p>
+<p>二是前后端统一使用JavaScript，就没有切换语言的障碍了；</p>
+<p>三是速度快，非常快！这得益于Node.js天生是异步的。</p>
+<h1 id="nodejs_1">nodejs</h1>
+<h2 id="_2">特点</h2>
 <p>借助JavaScript天生的事件驱动机制加V8高性能引擎，使编写高性能Web服务轻而易举。</p>
-<h2 id="_2">安装</h2>
+<h2 id="_3">安装</h2>
 <p>https://nodejs.org/en/</p>
+<h3 id="nvm">NVM</h3>
+<p>Node Version Manager</p>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">o</span><span class="o">-</span> <span class="n">https</span><span class="o">:</span><span class="c1">//raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash</span>
+</pre></div>
+
+
+<h3 id="npm">npm</h3>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="n">https</span><span class="o">:</span><span class="c1">//www.npmjs.com/install.sh | sh</span>
+</pre></div>
+
+
 <h2 id="npm-vs-cnpm">npm VS cnpm</h2>
 <p>npm其实是Node.js的包管理工具（package manager）</p>
 <p>因为npm安装插件是从国外服务器下载，受网络影响大，可能出现异常，如果npm的服务器在中国就好了，所以我们乐于分享的淘宝团队干了cnpm这事。</p>
@@ -78,7 +109,7 @@
 </pre></div>
 
 
-<h2 id="_3">全局对象</h2>
+<h2 id="_4">全局对象</h2>
 <p>JavaScript有且仅有一个全局对象，在浏览器中，叫<code>window</code>对象。而在Node.js环境中，也有唯一的全局对象，叫<code>global</code>，</p>
 <p>进入Node.js交互环境，可以直接输入：</p>
 <div class="hlcode"><pre><span class="o">&gt;</span> <span class="n">global</span><span class="p">.</span><span class="n">console</span>
@@ -149,8 +180,8 @@
 </pre></div>
 
 
-<h2 id="_4">模块</h2>
-<h3 id="_5">导出模块</h3>
+<h2 id="_5">模块</h2>
+<h3 id="_6">导出模块</h3>
 <p><code>var ref = require('module_name');</code></p>
 <ul>
 <li>暴露变量也是<code>module.exports = variable;</code></li>
@@ -167,7 +198,7 @@
 </pre></div>
 
 
-<h3 id="_6">调用模块</h3>
+<h3 id="_7">调用模块</h3>
 <div class="hlcode"><pre><span class="n">var</span> <span class="n">greet</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="err">&#39;</span><span class="p">.</span><span class="o">/</span><span class="n">hello</span><span class="err">&#39;</span><span class="p">);</span>
 
 <span class="n">var</span> <span class="n">s</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">;</span>
@@ -192,7 +223,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-26 21:36:50</p>
+        <p>Site Generated 2019-03-01 00:35:55</p>
       </span>
     </div>
 

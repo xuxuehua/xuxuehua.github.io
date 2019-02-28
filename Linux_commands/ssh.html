@@ -54,6 +54,7 @@
 <li><a href="#-p">-p</a></li>
 <li><a href="#-q">-q</a></li>
 <li><a href="#-r">-R 远程转发</a></li>
+<li><a href="#-t-tty">-t tty</a></li>
 <li><a href="#-x">-X</a></li>
 <li><a href="#-x_1">-x</a></li>
 <li><a href="#-y">-y</a></li>
@@ -172,6 +173,10 @@
 <blockquote>
 <p>这条命令将<code>host2</code>的80端口映射到待登录主机host1的8080端口，前提是本地主机可以正常连接<code>host2</code>的80端口。</p>
 </blockquote>
+<h2 id="-t-tty">-t tty</h2>
+<p>Force pseudo-tty allocation</p>
+<p>This can be used to execute arbitrary screen-based programs on a remote machine, which can be very useful</p>
+<p>Multiple -t options force tty allocation, even if ssh has no local tty</p>
 <h2 id="-x">-X</h2>
 <p>开启X11转发功能</p>
 <h2 id="-x_1">-x</h2>
@@ -183,7 +188,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-02-26 21:36:50</p>
+        <p>Site Generated 2019-03-01 00:35:55</p>
       </span>
     </div>
 
