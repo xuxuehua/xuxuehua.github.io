@@ -37,7 +37,10 @@
 <li><a href="#meta">&lt;meta&gt;</a></li>
 </ul>
 </li>
-<li><a href="#body">&lt;body&gt;</a></li>
+<li><a href="#body">&lt;body&gt;</a><ul>
+<li><a href="#bgcolor">bgcolor</a></li>
+</ul>
+</li>
 <li><a href="#_2">呈现标签</a><ul>
 <li><a href="#h1h6">&lt;h1&gt;~&lt;h6&gt;标题</a></li>
 <li><a href="#p">&lt;p&gt;段落</a></li>
@@ -47,81 +50,61 @@
 </ul>
 </li>
 <li><a href="#_3">文本编辑标签</a><ul>
+<li><a href="#b">&lt;b&gt; 粗体</a></li>
+<li><a href="#big">&lt;big&gt; 大号字</a></li>
 <li><a href="#span">&lt;span&gt;文本节</a></li>
 <li><a href="#em">&lt;em&gt;倾斜</a></li>
 <li><a href="#strong">&lt;strong&gt;加粗</a></li>
 <li><a href="#sup">&lt;sup&gt;上标</a></li>
 <li><a href="#sub">&lt;sub&gt;下标</a></li>
+<li><a href="#ins">&lt;ins&gt; 插入字</a></li>
 <li><a href="#del">&lt;del&gt;删除字</a></li>
-</ul>
-</li>
-<li><a href="#_4">列表</a><ul>
-<li><a href="#ul">&lt;ul&gt;无序</a></li>
-<li><a href="#ol">&lt;ol&gt;有序</a></li>
-<li><a href="#li">&lt;li&gt;列表内的项</a></li>
-</ul>
-</li>
-<li><a href="#ol_1">&lt;ol&gt; 有序列表</a></li>
-<li><a href="#dl">&lt;dl&gt; 自定义列表</a><ul>
-<li><a href="#dt-title">&lt;dt&gt; title</a></li>
-<li><a href="#dd-data">&lt;dd&gt; data</a></li>
-<li><a href="#_5">列表嵌套</a></li>
-</ul>
-</li>
-<li><a href="#table">&lt;table&gt; 表格</a><ul>
-<li><a href="#thead">&lt;thead&gt; 表头</a><ul>
-<li><a href="#th">&lt;th&gt;  头部数据</a></li>
-</ul>
-</li>
-<li><a href="#tbody">&lt;tbody&gt; 表内容</a><ul>
-<li><a href="#tr-row">&lt;tr&gt;  row 行</a></li>
-<li><a href="#td-data">&lt;td&gt; data 内容</a></li>
-</ul>
-</li>
-<li><a href="#_6">单元格合并</a></li>
 </ul>
 </li>
 <li><a href="#div">&lt;div&gt; 块标签</a></li>
 <li><a href="#a">&lt;a&gt;  超链接</a><ul>
+<li><a href="#name">name</a></li>
+<li><a href="#href">href</a></li>
 <li><a href="#target">target 属性</a></li>
-<li><a href="#_7">锚点链接</a></li>
+<li><a href="#_4">锚点链接</a></li>
 </ul>
 </li>
 <li><a href="#img">&lt;img&gt; 图片标记</a><ul>
-<li><a href="#_8">属性</a></li>
+<li><a href="#_5">属性</a></li>
 </ul>
 </li>
 <li><a href="#form">&lt;form&gt; 表单</a><ul>
-<li><a href="#_9">属性</a></li>
+<li><a href="#_6">属性</a></li>
 </ul>
 </li>
 <li><a href="#textarea">&lt;textarea&gt; 文本控件</a><ul>
-<li><a href="#_10">属性</a></li>
+<li><a href="#_7">属性</a></li>
 </ul>
 </li>
 <li><a href="#select">&lt;select&gt; 下拉菜单</a></li>
 <li><a href="#fieldset">&lt;fieldset&gt; 组合表单</a></li>
-<li><a href="#_11">表单练习</a></li>
+<li><a href="#_8">表单练习</a></li>
 <li><a href="#iframe">&lt;iframe&gt; 内联框架 （不常用）</a></li>
 <li><a href="#link">&lt;link&gt; 头部标签</a></li>
+<li><a href="#style">&lt;style&gt; 样式</a></li>
 <li><a href="#meta_1">&lt;meta&gt;</a></li>
-<li><a href="#_12">特殊标记</a></li>
+<li><a href="#_9">特殊标记</a></li>
 <li><a href="#html-5">HTML 5新的语义标签</a><ul>
-<li><a href="#_13">智能表单标签</a></li>
+<li><a href="#_10">智能表单标签</a></li>
 <li><a href="#audio">&lt;audio&gt; 音频</a></li>
 <li><a href="#video">&lt;video&gt; 视频</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_14">通用属性</a><ul>
-<li><a href="#_15">行内元素</a><ul>
-<li><a href="#_16">块元素</a></li>
+<li><a href="#_11">通用属性</a><ul>
+<li><a href="#_12">行内元素</a><ul>
+<li><a href="#_13">块元素</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_17">不常用语义标签</a><ul>
+<li><a href="#_14">不常用语义标签</a><ul>
 <li><a href="#code">&lt;code&gt;</a></li>
 <li><a href="#var">&lt;var&gt;</a></li>
 <li><a href="#pre">&lt;pre&gt;</a></li>
@@ -156,6 +139,13 @@
 <h2 id="body"><code>&lt;body&gt;</code></h2>
 <p>包括实际内容</p>
 <p>一个html中只能有一对body</p>
+<h3 id="bgcolor">bgcolor</h3>
+<p>背景颜色</p>
+<div class="hlcode"><pre><span class="nt">&lt;body</span> <span class="na">bgcolor=</span><span class="s">&quot;#000000&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</pre></div>
+
+
 <h2 id="_2">呈现标签</h2>
 <h3 id="h1h6"><code>&lt;h1&gt;~&lt;h6&gt;</code>标题</h3>
 <h3 id="p"><code>&lt;p&gt;</code>段落</h3>
@@ -164,8 +154,12 @@
 <h3 id="br"><code>&lt;br&gt;</code>换行</h3>
 <h3 id="hr"><code>&lt;hr&gt;</code>水平线</h3>
 <h2 id="_3">文本编辑标签</h2>
+<h3 id="b"><code>&lt;b&gt;</code> 粗体</h3>
+<p>定义粗体文本</p>
+<h3 id="big"><code>&lt;big&gt;</code> 大号字</h3>
 <h3 id="span"><code>&lt;span&gt;</code>文本节</h3>
 <p>行内标签</p>
+<p>内联元素，可以作为文本的容器，而且只是文本的容器</p>
 <h3 id="em"><code>&lt;em&gt;</code>倾斜</h3>
 <h3 id="strong"><code>&lt;strong&gt;</code>加粗</h3>
 <h3 id="sup"><code>&lt;sup&gt;</code>上标</h3>
@@ -173,39 +167,29 @@
 <p><code>2&lt;sup&gt;3&lt;/sup&gt;</code></p>
 <h3 id="sub"><code>&lt;sub&gt;</code>下标</h3>
 <p>水分子</p>
-<p><code>H&lt;sub&gt;2&lt;/sub&gt;O</code></p>
-<h3 id="del"><code>&lt;del&gt;</code>删除字</h3>
-<h2 id="_4">列表</h2>
-<h3 id="ul"><code>&lt;ul&gt;</code>无序</h3>
-<h3 id="ol"><code>&lt;ol&gt;</code>有序</h3>
-<h3 id="li"><code>&lt;li&gt;</code>列表内的项</h3>
-<p>li -&gt; List Item</p>
-<h2 id="ol_1"><code>&lt;ol&gt;</code> 有序列表</h2>
-<p>会生成序号</p>
-<h2 id="dl"><code>&lt;dl&gt;</code> 自定义列表</h2>
-<h3 id="dt-title"><code>&lt;dt&gt;</code> title</h3>
-<h3 id="dd-data"><code>&lt;dd&gt;</code> data</h3>
-<h3 id="_5">列表嵌套</h3>
-<p>li 中可以嵌套其他的子ul ol dl等</p>
-<p>自定义列表中的dd也可以嵌套其他ul dl ol</p>
-<h2 id="table"><code>&lt;table&gt;</code> 表格</h2>
-<p>boder="1" 添加表格外框</p>
-<h3 id="thead"><code>&lt;thead&gt;</code> 表头</h3>
-<h4 id="th"><code>&lt;th&gt;</code>  头部数据</h4>
-<h3 id="tbody"><code>&lt;tbody&gt;</code> 表内容</h3>
-<h4 id="tr-row"><code>&lt;tr&gt;</code>  row 行</h4>
-<h4 id="td-data"><code>&lt;td&gt;</code> data 内容</h4>
-<h3 id="_6">单元格合并</h3>
-<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">td</span> <span class="n">colspan</span><span class="o">=</span><span class="s">&quot;2&quot;</span><span class="o">&gt;</span> <span class="err">合并</span><span class="mi">2</span><span class="err">列</span> <span class="err">（横向）</span>
-
-<span class="o">&lt;</span><span class="n">td</span> <span class="n">rowspan</span><span class="o">=</span><span class="s">&quot;2&quot;</span><span class="o">&gt;</span>  <span class="err">合并</span><span class="mi">2</span><span class="err">行</span> <span class="err">（纵向）</span>
+<div class="hlcode"><pre><span class="nx">H</span><span class="o">&lt;</span><span class="nb">sub</span><span class="o">&gt;</span><span class="mi">2</span><span class="o">&lt;/</span><span class="nb">sub</span><span class="o">&gt;</span><span class="nx">O</span>
 </pre></div>
 
 
+<h3 id="ins"><code>&lt;ins&gt;</code> 插入字</h3>
+<h3 id="del"><code>&lt;del&gt;</code>删除字</h3>
 <h2 id="div"><code>&lt;div&gt;</code> 块标签</h2>
-<p>网页块的包裹</p>
+<p>网页块的包裹，与CSS 样式配合使用</p>
+<p>块元素，用于组合HTML元素的容器</p>
 <h2 id="a"><code>&lt;a&gt;</code>  超链接</h2>
 <div class="hlcode"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://www.xuxuehua.com&quot;</span><span class="nt">&gt;</span>content<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+
+<h3 id="name">name</h3>
+<p>文档内的的链接，可以用作跳转</p>
+<div class="hlcode"><pre><span class="nt">&lt;a</span> <span class="na">name=</span><span class="s">&quot;#h1&quot;</span><span class="nt">&gt;&lt;/a&gt;</span>
+</pre></div>
+
+
+<h3 id="href">href</h3>
+<p>指向另一个文档链接</p>
+<div class="hlcode"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://xuxuehua.com&quot;</span> <span class="nt">&gt;</span>hello<span class="nt">&lt;/a&gt;</span>
 </pre></div>
 
 
@@ -220,7 +204,7 @@
 </pre></div>
 
 
-<h3 id="_7">锚点链接</h3>
+<h3 id="_4">锚点链接</h3>
 <p>在当前页面滚动到指定位置</p>
 <p>href 为标签的id</p>
 <div class="hlcode"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
@@ -304,7 +288,7 @@
 </pre></div>
 
 
-<h3 id="_8">属性</h3>
+<h3 id="_5">属性</h3>
 <p>src 属性: 指定文件路径</p>
 <p>alt属性: 指定不能显示图片时替换的文本</p>
 <p>title: 鼠标悬停的时候显示的内容</p>
@@ -336,7 +320,7 @@
 </pre></div>
 
 
-<h3 id="_9">属性</h3>
+<h3 id="_6">属性</h3>
 <p>type: text 文本框</p>
 <p>​   password 密码框</p>
 <p>​   radio 单选</p>
@@ -374,7 +358,7 @@
 <p>action:  路径， #表示当前页面</p>
 <h2 id="textarea"><code>&lt;textarea&gt;</code> 文本控件</h2>
 <p>需要输入大量的信息是来处理</p>
-<h3 id="_10">属性</h3>
+<h3 id="_7">属性</h3>
 <p>rows -&gt; rows="4"</p>
 <p>cols -&gt; cols="20"</p>
 <h2 id="select"><code>&lt;select&gt;</code> 下拉菜单</h2>
@@ -409,7 +393,7 @@
 </pre></div>
 
 
-<h2 id="_11">表单练习</h2>
+<h2 id="_8">表单练习</h2>
 <p><img alt="img" src="https://cdn.pbrd.co/images/HMlCTG1.png" /></p>
 <div class="hlcode"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
@@ -486,25 +470,35 @@
 <p>包含另一个页面的内容</p>
 <h2 id="link"><code>&lt;link&gt;</code> 头部标签</h2>
 <p>属于头部标签，需要放入到head标签中</p>
-<ul>
-<li>引入dns预解析 (网站优化的一种方式)</li>
-</ul>
+<p>引入dns预解析 (网站优化的一种方式)</p>
 <p>提前解析域名</p>
 <div class="hlcode"><pre><span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s">&quot;dns-prefetch&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;http://tce.taobao.com&quot;</span><span class="o">&gt;</span>
 </pre></div>
 
 
-<ul>
-<li>引入网站icon 图标</li>
-</ul>
+<p>引入网站icon 图标</p>
 <div class="hlcode"><pre><span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s">&quot;shortcut icon&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;http://www.my.com/info.ico&quot;</span><span class="o">&gt;</span>
 </pre></div>
 
 
-<ul>
-<li>引入css样式</li>
-</ul>
+<p>引入css样式</p>
 <div class="hlcode"><pre><span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;css/bg.css&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h2 id="style"><code>&lt;style&gt;</code> 样式</h2>
+<p>外部样式标</p>
+<div class="hlcode"><pre><span class="n">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span>
+</pre></div>
+
+
+<p>引入文档的类型</p>
+<div class="hlcode"><pre><span class="n">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span>
+</pre></div>
+
+
+<p>边距</p>
+<div class="hlcode"><pre><span class="n">margin</span><span class="o">-</span><span class="n">left</span>
 </pre></div>
 
 
@@ -539,7 +533,7 @@
 </pre></div>
 
 
-<h2 id="_12">特殊标记</h2>
+<h2 id="_9">特殊标记</h2>
 <p>html为特殊符号准备了专门的替代码</p>
 <p>如空格 <code>&amp;nbsp</code>; 小于 <code>&amp;lt</code> ； 大于 <code>&amp;gt</code>;</p>
 <h2 id="html-5">HTML 5新的语义标签</h2>
@@ -564,7 +558,7 @@
 </pre></div>
 
 
-<h3 id="_13">智能表单标签</h3>
+<h3 id="_10">智能表单标签</h3>
 <p><img alt="img" src="https://cdn.pbrd.co/images/HMmH0Z2.png" /></p>
 <ul>
 <li>隐藏域</li>
@@ -586,22 +580,22 @@
 </pre></div>
 
 
-<h1 id="_14">通用属性</h1>
+<h1 id="_11">通用属性</h1>
 <p>id：唯一表识元素，在同一页面不能重复</p>
 <p>name：用于定义一组标签，可以重复</p>
 <p>style：定义标签的样式</p>
 <p>class：定义标签的样式类</p>
 <p>id，class，都是css选择器和js的dom都是开发的必备基础</p>
 <p>img标签和a标签一般都会有title属性</p>
-<h2 id="_15">行内元素</h2>
+<h2 id="_12">行内元素</h2>
 <p>不占有独立的区域，仅仅靠自身的字体大小和图像尺寸来支持结构。</p>
 <p>一般不可以设置宽度，高度，对齐等属性</p>
 <p>strong, b, em, i, del, s, ins, u, a, span</p>
 <p>span最典型</p>
-<h3 id="_16">块元素</h3>
+<h3 id="_13">块元素</h3>
 <p>通常独自占据一整行或者多整行，可以对其设置高度，宽度，对齐等属性</p>
 <p>h1~h6, p, div, ul, ol, li</p>
-<h1 id="_17">不常用语义标签</h1>
+<h1 id="_14">不常用语义标签</h1>
 <h2 id="code"><code>&lt;code&gt;</code></h2>
 <p>标注计算机代码</p>
 <h2 id="var"><code>&lt;var&gt;</code></h2>
@@ -623,7 +617,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-01 00:35:55</p>
+        <p>Site Generated 2019-03-03 15:03:08</p>
       </span>
     </div>
 
