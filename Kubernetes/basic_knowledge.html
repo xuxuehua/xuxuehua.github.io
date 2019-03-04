@@ -118,9 +118,27 @@
 <li><a href="#service_2">外部系统访问service问题</a></li>
 </ul>
 </li>
+<li><a href="#kubernetes_6">Kubernetes 日志</a><ul>
+<li><a href="#logs">Logs 日志</a><ul>
+<li><a href="#_5">典型架构</a></li>
 </ul>
 </li>
-<li><a href="#_5">术语</a><ul>
+</ul>
+</li>
+<li><a href="#kubernetes_7">Kubernetes 监控</a><ul>
+<li><a href="#_6">监控指标</a></li>
+<li><a href="#_7">常用工具</a><ul>
+<li><a href="#cadvisor">cAdvisor</a></li>
+<li><a href="#heapster_1">Heapster</a></li>
+<li><a href="#prometheus">Prometheus</a></li>
+<li><a href="#grafana">Grafana</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_8">术语</a><ul>
 <li><a href="#hpa">HPA</a></li>
 </ul>
 </li>
@@ -214,7 +232,7 @@
 <h3 id="name">name</h3>
 <p>name 是kubernetes集群中资源对象的标识符，作用域为namespace</p>
 <h3 id="namespace">namespace</h3>
-<p>namespace用于实现项目资源隔离，形成逻辑分组</p>
+<p>namespace用于实现项目资源隔离，形成逻辑分组(如多个客户服务之间的区分)</p>
 <p>启动kubernetes，默认为default namespace， 开始时objects都在default namespace中</p>
 <h3 id="annotation">Annotation 注解</h3>
 <p>附加在对象之上的键值类型的数据，用于将各种非标识型元数据附加到对象之上，但不能用于标识和选择对象</p>
@@ -329,7 +347,26 @@
 <li>Pod IP：Pod的IP</li>
 <li>Cluster IP：Service 的IP （不可以ping测试）</li>
 </ul>
-<h1 id="_5">术语</h1>
+<h2 id="kubernetes_6">Kubernetes 日志</h2>
+<h3 id="logs">Logs 日志</h3>
+<h4 id="_5">典型架构</h4>
+<p><img alt="img" src="https://snag.gy/fTuwEB.jpg" /></p>
+<h2 id="kubernetes_7">Kubernetes 监控</h2>
+<h3 id="_6">监控指标</h3>
+<p>Node health</p>
+<p>Health of Kubernetes</p>
+<p>Application health (and metrics)</p>
+<h3 id="_7">常用工具</h3>
+<h4 id="cadvisor">cAdvisor</h4>
+<p>专用于containers的开源资源收集器，自动发现node并收集信息，以及主机全局的使用及分析</p>
+<h4 id="heapster_1">Heapster</h4>
+<p>以pod形式运行在cluster</p>
+<p><img alt="img" src="https://snag.gy/nvUobY.jpg" /></p>
+<h4 id="prometheus">Prometheus</h4>
+<p>时间序列数据库，通过query 语句发送应用以及metrics data</p>
+<h4 id="grafana">Grafana</h4>
+<p>将上述三种系统数据组合成显示图表</p>
+<h1 id="_8">术语</h1>
 <h2 id="hpa">HPA</h2>
 <p>Horizontal Pod Autoscaler    </p>
 <p>​    </p>
@@ -338,7 +375,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-03 15:03:08</p>
+        <p>Site Generated 2019-03-04 12:57:07</p>
       </span>
     </div>
 

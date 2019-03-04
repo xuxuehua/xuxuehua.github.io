@@ -40,47 +40,90 @@
 <li><a href="#mac-osx_1">mac osx</a></li>
 </ul>
 </li>
-<li><a href="#run">run</a></li>
-<li><a href="#expose">expose 暴露服务</a></li>
-<li><a href="#create">create</a></li>
-<li><a href="#apply">apply 实现声明</a></li>
-<li><a href="#get">get</a><ul>
-<li><a href="#-o-yaml-json">-o yaml | json</a></li>
-<li><a href="#-o-wide">-o wide</a></li>
-</ul>
-</li>
-<li><a href="#describe">describe 详细信息</a></li>
-<li><a href="#log">log 日志</a><ul>
-<li><a href="#-c">-c 指定容器名称</a></li>
-</ul>
-</li>
-<li><a href="#exec">exec 执行命令</a><ul>
-<li><a href="#-it-shell">-it 交互Shell</a></li>
-</ul>
-</li>
+<li><a href="#_1">基础命令</a><ul>
+<li><a href="#create">create 创建资源</a></li>
 <li><a href="#delete">delete 删除</a><ul>
 <li><a href="#-all">--all</a></li>
 </ul>
 </li>
+<li><a href="#edit">edit 编辑资源</a></li>
+<li><a href="#explain">explain 资源文档</a></li>
+<li><a href="#expose">expose 暴露服务</a></li>
+<li><a href="#get">get 显示资源</a><ul>
+<li><a href="#-o">-o 输出</a><ul>
+<li><a href="#yaml">yaml</a></li>
+<li><a href="#json">json</a></li>
+<li><a href="#wide">wide 额外信息</a></li>
+<li><a href="#name">name 名称</a></li>
+<li><a href="#go-template-go">go-template go 模版</a></li>
+<li><a href="#custom-columns">custom-columns 自定义输出</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#run">run 运行</a></li>
+<li><a href="#set">set 设置属性</a></li>
+</ul>
+</li>
+<li><a href="#_2">部署命令</a><ul>
+<li><a href="#autoscale">autoscale 自动伸缩</a></li>
 <li><a href="#scale">scale 扩容/缩容</a></li>
-<li><a href="#api-versions">api-versions</a></li>
-<li><a href="#explain">explain</a></li>
+<li><a href="#rollout">rollout 滚动更新</a></li>
+<li><a href="#rolling-update">rolling-update 滚动升级</a></li>
 </ul>
 </li>
-<li><a href="#example">example</a><ul>
-<li><a href="#hello-world">hello world</a><ul>
-<li><a href="#expose-it-as-service">expose it as service</a></li>
-<li><a href="#check-the-service">check the service</a></li>
-<li><a href="#scale-deploy">Scale deploy</a></li>
-<li><a href="#label-operation">label operation</a><ul>
-<li><a href="#add-delete">add &amp; delete</a></li>
-<li><a href="#searching">searching</a><ul>
-<li><a href="#single-label">single label</a></li>
-<li><a href="#multipe-labels">multipe labels</a></li>
+<li><a href="#_3">集群管理</a><ul>
+<li><a href="#certificate">certificate 数字证书</a></li>
+<li><a href="#cluster-info">cluster-info 集群信息</a></li>
+<li><a href="#cordon">cordon 不可用状态</a></li>
+<li><a href="#drain">drain 维护模式</a></li>
+<li><a href="#top">top 使用率</a></li>
+<li><a href="#taint">taint 声明污点</a></li>
+<li><a href="#uncordon">uncordon 可用状态</a></li>
 </ul>
 </li>
+<li><a href="#_4">排错调试</a><ul>
+<li><a href="#attach">attach 附加终端</a></li>
+<li><a href="#auth">auth 授权信息</a></li>
+<li><a href="#cp">cp 复制</a></li>
+<li><a href="#exec">exec 执行命令</a><ul>
+<li><a href="#-it-shell">-it 交互Shell</a></li>
 </ul>
 </li>
+<li><a href="#describe">describe 详细信息</a></li>
+<li><a href="#loglogs">log/logs 日志</a><ul>
+<li><a href="#-c">-c 指定容器名称</a></li>
+</ul>
+</li>
+<li><a href="#port-forward">port-forward 端口转发</a></li>
+<li><a href="#proxy-api-server">proxy API Server代理</a></li>
+</ul>
+</li>
+<li><a href="#_5">高级命令</a><ul>
+<li><a href="#apply">apply 实现声明</a></li>
+<li><a href="#convert-api">convert API转换</a></li>
+<li><a href="#patch">patch 补丁更新</a></li>
+<li><a href="#replace">replace 替换资源</a></li>
+</ul>
+</li>
+<li><a href="#_6">设置命令</a><ul>
+<li><a href="#annotate">annotate 更新注释</a></li>
+<li><a href="#completion">completion 补全码</a></li>
+<li><a href="#label">label 资源标签</a></li>
+</ul>
+</li>
+<li><a href="#_7">其他命令</a><ul>
+<li><a href="#api-versions-api">api-versions API版本信息</a></li>
+<li><a href="#config">config 配置内容</a></li>
+<li><a href="#help">help 帮助</a></li>
+<li><a href="#option">option 通用选项</a><ul>
+<li><a href="#-s-server-api-server">-s / --server 指定API Server</a></li>
+<li><a href="#-kubeconfig">--kubeconfig 文件路径</a></li>
+<li><a href="#-namespace">--namespace 名称空间</a></li>
+</ul>
+</li>
+<li><a href="#plugin">plugin 命令行插件</a></li>
+<li><a href="#version">version 版本信息</a></li>
 </ul>
 </li>
 </ul>
@@ -123,12 +166,51 @@
 </pre></div>
 
 
-<h2 id="run">run</h2>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">run</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deploy</span> <span class="o">--</span><span class="n">image</span><span class="o">=</span><span class="n">nginx</span><span class="o">:</span><span class="mf">1.12</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">2</span>
+<h2 id="_1">基础命令</h2>
+<h3 id="create">create 创建资源</h3>
+<p>通过文件或标准输入创建资源</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">nignx</span><span class="o">-</span><span class="n">deploy</span><span class="p">.</span><span class="n">yaml</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">svc</span><span class="p">.</span><span class="n">yaml</span>
 </pre></div>
 
 
-<h2 id="expose">expose 暴露服务</h2>
+<h3 id="delete">delete 删除</h3>
+<p>基于文件名，stdin，资源或名字，以及资源和选择器删除资源</p>
+<p>删除默认名称空间中ngnix-svc的Service 资源对象 </p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">delete</span> <span class="n">services</span> <span class="n">nginx</span><span class="o">-</span><span class="n">svc</span>
+</pre></div>
+
+
+<p>删除默认名称空间中所有的Deployment控制器</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">delete</span> <span class="n">deployment</span> <span class="o">--</span><span class="n">all</span>
+</pre></div>
+
+
+<h4 id="-all">--all</h4>
+<p>删除kube-public 名称空间中的所有pod对象</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">delete</span> <span class="n">pods</span> <span class="o">--</span><span class="n">all</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">public</span>
+</pre></div>
+
+
+<p>删除所有名称空间的所有资源</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">delete</span> <span class="n">all</span> <span class="o">--</span><span class="n">all</span>
+</pre></div>
+
+
+<h3 id="edit">edit 编辑资源</h3>
+<h3 id="explain">explain 资源文档</h3>
+<p>获取相关帮助</p>
+<p>解释Pod资源的一级字段</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">explain</span> <span class="n">pods</span>
+</pre></div>
+
+
+<p>某对象下的二级字段, 三四级依此类推</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">explain</span> <span class="n">pods</span><span class="p">.</span><span class="n">spec</span>
+</pre></div>
+
+
+<h3 id="expose">expose 暴露服务</h3>
+<p>基于rc，service，deployment或pod创建Service资源</p>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">expose</span> <span class="n">deployment</span><span class="o">/</span><span class="n">nginx</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">nginx</span><span class="o">-</span><span class="n">svc</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">80</span>
 </pre></div>
 
@@ -137,17 +219,7 @@
 </pre></div>
 
 
-<h2 id="create">create</h2>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">nignx</span><span class="o">-</span><span class="n">deploy</span><span class="p">.</span><span class="n">yaml</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">svc</span><span class="p">.</span><span class="n">yaml</span>
-</pre></div>
-
-
-<h2 id="apply">apply 实现声明</h2>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deploy</span><span class="p">.</span><span class="n">yaml</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">svc</span><span class="p">.</span><span class="n">yaml</span>
-</pre></div>
-
-
-<h2 id="get">get</h2>
+<h3 id="get">get 显示资源</h3>
 <p>列出所有资源</p>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">get</span> <span class="n">namespaces</span>
 </pre></div>
@@ -163,69 +235,37 @@
 </pre></div>
 
 
-<h3 id="-o-yaml-json">-o yaml | json</h3>
+<h4 id="-o">-o 输出</h4>
+<h5 id="yaml">yaml</h5>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="n">component</span><span class="o">=</span><span class="n">kube</span><span class="o">=</span><span class="n">apiserver</span> <span class="o">-</span><span class="n">o</span> <span class="n">yaml</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
 </pre></div>
 
 
-<h3 id="-o-wide">-o wide</h3>
+<h5 id="json">json</h5>
+<h5 id="wide">wide 额外信息</h5>
+<p>显示资源的额外信息</p>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">o</span> <span class="n">wide</span> 
 </pre></div>
 
 
-<h2 id="describe">describe 详细信息</h2>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">describe</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="n">component</span><span class="o">=</span><span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
+<h5 id="name">name 名称</h5>
+<p>仅仅打印资源名称</p>
+<h5 id="go-template-go">go-template go 模版</h5>
+<p>以自定义的go模版格式化输出API对象信息</p>
+<h5 id="custom-columns">custom-columns 自定义输出</h5>
+<p>自定义要输出的字段</p>
+<h3 id="run">run 运行</h3>
+<p>通过创建Deployment在集群中运行指定的镜像</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">run</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deploy</span> <span class="o">--</span><span class="n">image</span><span class="o">=</span><span class="n">nginx</span><span class="o">:</span><span class="mf">1.12</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">2</span>
 </pre></div>
 
 
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">describe</span> <span class="n">services</span> <span class="n">myapp</span><span class="o">-</span><span class="n">svc</span>
-</pre></div>
-
-
-<h2 id="log">log 日志</h2>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">log</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span><span class="p">]</span> <span class="p">(</span><span class="n">POD</span><span class="o">|</span><span class="n">TYPE</span><span class="o">/</span><span class="n">NAME</span><span class="p">)</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">CONTAINER</span><span class="p">]</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> 
-</pre></div>
-
-
-<blockquote>
-<p>-f 类似于tail -f</p>
-</blockquote>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">logs</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="n">master</span><span class="p">.</span><span class="n">xuxuehua</span><span class="p">.</span><span class="n">com</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
-</pre></div>
-
-
-<h3 id="-c">-c 指定容器名称</h3>
-<h2 id="exec">exec 执行命令</h2>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">exec</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="n">master</span><span class="p">.</span><span class="n">xuxuehua</span><span class="p">.</span><span class="n">com</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span> <span class="o">--</span><span class="n">ps</span>
-</pre></div>
-
-
-<blockquote>
-<p>Pod对象中的容器里面运行ps命令</p>
-</blockquote>
-<h3 id="-it-shell">-it 交互Shell</h3>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="err">$</span><span class="n">POD_NAME</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
-</pre></div>
-
-
-<h2 id="delete">delete 删除</h2>
-<p>删除默认名称空间中ngnix-svc的Service 资源对象 </p>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">delete</span> <span class="n">services</span> <span class="n">nginx</span><span class="o">-</span><span class="n">svc</span>
-</pre></div>
-
-
-<p>删除默认名称空间中所有的Deployment控制器</p>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">delete</span> <span class="n">deployment</span> <span class="o">--</span><span class="n">all</span>
-</pre></div>
-
-
-<h3 id="-all">--all</h3>
-<p>删除kube-public 名称空间中的所有pod对象</p>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">delete</span> <span class="n">pods</span> <span class="o">--</span><span class="n">all</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">public</span>
-</pre></div>
-
-
-<h2 id="scale">scale 扩容/缩容</h2>
+<h3 id="set">set 设置属性</h3>
+<p>设置指定资源的特定属性</p>
+<h2 id="_2">部署命令</h2>
+<h3 id="autoscale">autoscale 自动伸缩</h3>
+<p>对Deployment，ReplicaSet或RC进行自动伸缩</p>
+<h3 id="scale">scale 扩容/缩容</h3>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">scale</span> <span class="n">deployments</span><span class="o">/</span><span class="n">myapp</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">3</span> 
 </pre></div>
 
@@ -237,699 +277,118 @@
 </pre></div>
 
 
-<h2 id="api-versions">api-versions</h2>
-<p>获取api server 上的相关信息</p>
-<h2 id="explain">explain</h2>
-<p>获取相关帮助</p>
-<p>解释Pod资源的一级字段</p>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">explain</span> <span class="n">pods</span>
+<h3 id="rollout">rollout 滚动更新</h3>
+<p>管理资源的滚动更新</p>
+<h3 id="rolling-update">rolling-update 滚动升级</h3>
+<p>对ReplicationController执行滚动升级</p>
+<h2 id="_3">集群管理</h2>
+<h3 id="certificate">certificate 数字证书</h3>
+<p>配置数字证书资源</p>
+<h3 id="cluster-info">cluster-info 集群信息</h3>
+<p>打印集群信息</p>
+<h3 id="cordon">cordon 不可用状态</h3>
+<p>指定node 设定为不可用（unschedulable）状态</p>
+<h3 id="drain">drain 维护模式</h3>
+<p>值得node的负载以进入维护模式</p>
+<h3 id="top">top 使用率</h3>
+<p>打印资源（cpu/memory/storage） 使用率</p>
+<h3 id="taint">taint 声明污点</h3>
+<p>为node声明污点及标准行为</p>
+<h3 id="uncordon">uncordon 可用状态</h3>
+<p>指定node 设定为可用（schedulable）状态</p>
+<h2 id="_4">排错调试</h2>
+<h3 id="attach">attach 附加终端</h3>
+<p>附加终端至一个运行中的容器</p>
+<h3 id="auth">auth 授权信息</h3>
+<p>打印授权信息</p>
+<h3 id="cp">cp 复制</h3>
+<p>在容器间复制文件或者目录</p>
+<h3 id="exec">exec 执行命令</h3>
+<p>容器内执行命令</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">exec</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="n">master</span><span class="p">.</span><span class="n">xuxuehua</span><span class="p">.</span><span class="n">com</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span> <span class="o">--</span><span class="n">ps</span>
 </pre></div>
 
 
-<p>某对象下的二级字段, 三四级依此类推</p>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">explain</span> <span class="n">pods</span><span class="p">.</span><span class="n">spec</span>
+<blockquote>
+<p>Pod对象中的容器里面运行ps命令</p>
+</blockquote>
+<h4 id="-it-shell">-it 交互Shell</h4>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="err">$</span><span class="n">POD_NAME</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
 </pre></div>
 
 
-<h1 id="example">example</h1>
-<h2 id="hello-world">hello world</h2>
-<div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">minikube</span> <span class="n">start</span>
-<span class="err">😄</span>  <span class="n">minikube</span> <span class="n">v0</span><span class="mf">.34.1</span> <span class="n">on</span> <span class="n">darwin</span> <span class="p">(</span><span class="n">amd64</span><span class="p">)</span>
-<span class="err">🔥</span>  <span class="n">Creating</span> <span class="n">virtualbox</span> <span class="n">VM</span> <span class="p">(</span><span class="n">CPUs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">Memory</span><span class="o">=</span><span class="mi">2048</span><span class="n">MB</span><span class="p">,</span> <span class="n">Disk</span><span class="o">=</span><span class="mi">20000</span><span class="n">MB</span><span class="p">)</span> <span class="p">...</span>
-<span class="err">📶</span>  <span class="s">&quot;minikube&quot;</span> <span class="n">IP</span> <span class="n">address</span> <span class="n">is</span> <span class="mf">192.168.99.104</span>
-<span class="err">🐳</span>  <span class="n">Configuring</span> <span class="n">Docker</span> <span class="n">as</span> <span class="n">the</span> <span class="n">container</span> <span class="n">runtime</span> <span class="p">...</span>
-<span class="err">✨</span>  <span class="n">Preparing</span> <span class="n">Kubernetes</span> <span class="n">environment</span> <span class="p">...</span>
-<span class="err">🚜</span>  <span class="n">Pulling</span> <span class="n">images</span> <span class="n">required</span> <span class="n">by</span> <span class="n">Kubernetes</span> <span class="n">v1</span><span class="mf">.13.3</span> <span class="p">...</span>
-<span class="err">🚀</span>  <span class="n">Launching</span> <span class="n">Kubernetes</span> <span class="n">v1</span><span class="mf">.13.3</span> <span class="n">using</span> <span class="n">kubeadm</span> <span class="p">...</span>
-<span class="err">🔑</span>  <span class="n">Configuring</span> <span class="n">cluster</span> <span class="n">permissions</span> <span class="p">...</span>
-<span class="err">🤔</span>  <span class="n">Verifying</span> <span class="n">component</span> <span class="n">health</span> <span class="p">.....</span>
-<span class="err">💗</span>  <span class="n">kubectl</span> <span class="n">is</span> <span class="n">now</span> <span class="n">configured</span> <span class="n">to</span> <span class="n">use</span> <span class="s">&quot;minikube&quot;</span>
-<span class="err">🏄</span>  <span class="n">Done</span><span class="o">!</span> <span class="n">Thank</span> <span class="n">you</span> <span class="k">for</span> <span class="n">using</span> <span class="n">minikube</span><span class="o">!</span>
-
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">nodes</span>
-<span class="n">NAME</span>       <span class="n">STATUS</span>    <span class="n">ROLES</span>     <span class="n">AGE</span>       <span class="n">VERSION</span>
-<span class="n">minikube</span>   <span class="n">Ready</span>     <span class="n">master</span>    <span class="mi">50</span><span class="n">m</span>       <span class="n">v1</span><span class="mf">.13.3</span>
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">run</span> <span class="n">hw</span> <span class="o">--</span><span class="n">image</span><span class="o">=</span><span class="n">karthequian</span><span class="o">/</span><span class="n">helloworld</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">80</span>
-<span class="n">deployment</span><span class="p">.</span><span class="n">apps</span> <span class="s">&quot;hw&quot;</span> <span class="n">created</span>
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">deployments</span>
-<span class="n">NAME</span>      <span class="n">DESIRED</span>   <span class="n">CURRENT</span>   <span class="n">UP</span><span class="o">-</span><span class="n">TO</span><span class="o">-</span><span class="n">DATE</span>   <span class="n">AVAILABLE</span>   <span class="n">AGE</span>
-<span class="n">hw</span>        <span class="mi">1</span>         <span class="mi">1</span>         <span class="mi">1</span>            <span class="mi">0</span>           <span class="mi">10</span><span class="n">s</span>
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">rs</span>
-<span class="n">NAME</span>            <span class="n">DESIRED</span>   <span class="n">CURRENT</span>   <span class="n">READY</span>     <span class="n">AGE</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span>   <span class="mi">1</span>         <span class="mi">1</span>         <span class="mi">0</span>         <span class="mi">16</span><span class="n">s</span>
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span>
-<span class="n">NAME</span>                  <span class="n">READY</span>     <span class="n">STATUS</span>              <span class="n">RESTARTS</span>   <span class="n">AGE</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="mi">7</span><span class="n">jmpl</span>   <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">24</span><span class="n">s</span>
+<h3 id="describe">describe 详细信息</h3>
+<p>显示指定的资源或者资源组的详细信息</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">describe</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="n">component</span><span class="o">=</span><span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
 </pre></div>
 
 
-<h3 id="expose-it-as-service">expose it as service</h3>
-<div class="hlcode"><pre><span class="nx">xhxu</span><span class="na">-mac</span><span class="p">:</span><span class="err">~</span> <span class="nx">xhxu</span><span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">expose</span> <span class="nx">deployment</span> <span class="nx">hw</span> <span class="o">--</span><span class="k">type</span><span class="o">=</span><span class="nx">NodePort</span>
-<span class="nx">service</span> <span class="s2">&quot;hw&quot;</span> <span class="nx">exposed</span>
-<span class="nx">xhxu</span><span class="na">-mac</span><span class="p">:</span><span class="err">~</span> <span class="nx">xhxu</span><span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">get</span> <span class="nx">services</span>
-<span class="nb">NAME</span>         <span class="k">TYPE</span>        <span class="nx">CLUSTER</span><span class="na">-IP</span>      <span class="nx">EXTERNAL</span><span class="na">-IP</span>   <span class="nb">PORT</span><span class="p">(</span><span class="nb">S</span><span class="p">)</span>        <span class="nx">AGE</span>
-<span class="nx">hw</span>           <span class="nx">NodePort</span>    <span class="mf">10.109.209.48</span>   <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>        <span class="mi">80</span><span class="p">:</span><span class="mi">30201</span><span class="p">/</span><span class="nx">TCP</span>   <span class="mi">9</span><span class="nb">s</span>
-<span class="nx">kubernetes</span>   <span class="nx">ClusterIP</span>   <span class="mf">10.96.0.1</span>       <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>        <span class="mi">443</span><span class="p">/</span><span class="nx">TCP</span>        <span class="mi">56</span><span class="nx">m</span>
-<span class="nx">xhxu</span><span class="na">-mac</span><span class="p">:</span><span class="err">~</span> <span class="nx">xhxu</span><span class="err">$</span> <span class="nx">minikube</span> <span class="nx">service</span> <span class="nx">hw</span>
-<span class="err">🎉</span>  <span class="nx">Opening</span> <span class="nx">kubernetes</span> <span class="nx">service</span> <span class="nb">default</span><span class="p">/</span><span class="nx">hw</span> <span class="k">in</span> <span class="nb">default</span> <span class="nx">browser...</span>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">describe</span> <span class="n">services</span> <span class="n">myapp</span><span class="o">-</span><span class="n">svc</span>
 </pre></div>
 
 
-<h3 id="check-the-service">check the service</h3>
-<div class="hlcode"><pre><span class="nx">xhxu</span><span class="na">-mac</span><span class="p">:</span><span class="err">~</span> <span class="nx">xhxu</span><span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">get</span> <span class="kc">all</span>
-<span class="nb">NAME</span>                      <span class="nb">READY</span>     <span class="nb">STATUS</span>    <span class="nx">RESTARTS</span>   <span class="nx">AGE</span>
-<span class="nx">pod</span><span class="p">/</span><span class="nx">hw</span><span class="o">-</span><span class="mi">747</span><span class="nx">fddfdb8</span><span class="o">-</span><span class="mi">7</span><span class="nx">jmpl</span>   <span class="mi">1</span><span class="p">/</span><span class="nx">1</span>       <span class="nb">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="nb">d</span>
-
-<span class="nb">NAME</span>                 <span class="k">TYPE</span>        <span class="nx">CLUSTER</span><span class="na">-IP</span>      <span class="nx">EXTERNAL</span><span class="na">-IP</span>   <span class="nb">PORT</span><span class="p">(</span><span class="nb">S</span><span class="p">)</span>        <span class="nx">AGE</span>
-<span class="nx">service</span><span class="p">/</span><span class="nx">hw</span>           <span class="nx">NodePort</span>    <span class="mf">10.109.209.48</span>   <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>        <span class="mi">80</span><span class="p">:</span><span class="mi">30201</span><span class="p">/</span><span class="nx">TCP</span>   <span class="mi">1</span><span class="nb">d</span>
-<span class="nx">service</span><span class="p">/</span><span class="nx">kubernetes</span>   <span class="nx">ClusterIP</span>   <span class="mf">10.96.0.1</span>       <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>        <span class="mi">443</span><span class="p">/</span><span class="nx">TCP</span>        <span class="mi">2</span><span class="nb">d</span>
-
-<span class="nb">NAME</span>                 <span class="nx">DESIRED</span>   <span class="nx">CURRENT</span>   <span class="nb">UP</span><span class="na">-TO-DATE</span>   <span class="nx">AVAILABLE</span>   <span class="nx">AGE</span>
-<span class="nx">deployment.apps</span><span class="p">/</span><span class="nx">hw</span>   <span class="mi">1</span>         <span class="mi">1</span>         <span class="mi">1</span>            <span class="mi">1</span>           <span class="mi">1</span><span class="nb">d</span>
-
-<span class="nb">NAME</span>                            <span class="nx">DESIRED</span>   <span class="nx">CURRENT</span>   <span class="nb">READY</span>     <span class="nx">AGE</span>
-<span class="nx">replicaset.apps</span><span class="p">/</span><span class="nx">hw</span><span class="o">-</span><span class="mi">747</span><span class="nx">fddfdb8</span>   <span class="mi">1</span>         <span class="mi">1</span>         <span class="mi">1</span>         <span class="mi">1</span><span class="nb">d</span>
-<span class="nx">xhxu</span><span class="na">-mac</span><span class="p">:</span><span class="err">~</span> <span class="nx">xhxu</span><span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">get</span> <span class="nx">deploy</span><span class="p">/</span><span class="nx">hw</span> <span class="na">-o</span> <span class="nx">yaml</span>
-<span class="nx">apiVersion</span><span class="p">:</span> <span class="nb">extensions</span><span class="p">/</span><span class="nx">v1beta1</span>
-<span class="nx">kind</span><span class="p">:</span> <span class="nx">Deployment</span>
-<span class="nx">metadata</span><span class="p">:</span>
-  <span class="nx">annotations</span><span class="p">:</span>
-    <span class="nx">deployment.kubernetes.io</span><span class="p">/</span><span class="nx">revision</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
-  <span class="nx">creationTimestamp</span><span class="p">:</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">01</span><span class="nx">T06</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">15</span><span class="nb">Z</span>
-  <span class="nx">generation</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">labels</span><span class="p">:</span>
-    <span class="nb">run</span><span class="p">:</span> <span class="nx">hw</span>
-  <span class="nb">name</span><span class="p">:</span> <span class="nx">hw</span>
-  <span class="nx">namespace</span><span class="p">:</span> <span class="nb">default</span>
-  <span class="nx">resourceVersion</span><span class="p">:</span> <span class="s2">&quot;4354&quot;</span>
-  <span class="nx">selfLink</span><span class="p">:</span> <span class="p">/</span><span class="nx">apis</span><span class="p">/</span><span class="nb">extensions</span><span class="p">/</span><span class="nx">v1beta1</span><span class="p">/</span><span class="nb">namespaces</span><span class="p">/</span><span class="nb">default</span><span class="p">/</span><span class="nx">deployments</span><span class="p">/</span><span class="nx">hw</span>
-  <span class="nx">uid</span><span class="p">:</span> <span class="mi">610</span><span class="nx">a81f5</span><span class="o">-</span><span class="mi">3</span><span class="nx">be9</span><span class="o">-</span><span class="mi">11</span><span class="nx">e9</span><span class="na">-b4d5</span><span class="o">-</span><span class="mi">0800273</span><span class="nx">e7607</span>
-<span class="nx">spec</span><span class="p">:</span>
-  <span class="nx">progressDeadlineSeconds</span><span class="p">:</span> <span class="mi">2147483647</span>
-  <span class="nx">replicas</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">revisionHistoryLimit</span><span class="p">:</span> <span class="mi">2147483647</span>
-  <span class="nx">selector</span><span class="p">:</span>
-    <span class="nx">matchLabels</span><span class="p">:</span>
-      <span class="nb">run</span><span class="p">:</span> <span class="nx">hw</span>
-  <span class="nx">strategy</span><span class="p">:</span>
-    <span class="nx">rollingUpdate</span><span class="p">:</span>
-      <span class="nx">maxSurge</span><span class="p">:</span> <span class="mi">1</span>
-      <span class="nx">maxUnavailable</span><span class="p">:</span> <span class="mi">1</span>
-    <span class="k">type</span><span class="p">:</span> <span class="nx">RollingUpdate</span>
-  <span class="nx">template</span><span class="p">:</span>
-    <span class="nx">metadata</span><span class="p">:</span>
-      <span class="nx">creationTimestamp</span><span class="p">:</span> <span class="kt">null</span>
-      <span class="nx">labels</span><span class="p">:</span>
-        <span class="nb">run</span><span class="p">:</span> <span class="nx">hw</span>
-    <span class="nx">spec</span><span class="p">:</span>
-      <span class="nx">containers</span><span class="p">:</span>
-      <span class="o">-</span> <span class="nb">image</span><span class="p">:</span> <span class="nx">karthequian</span><span class="p">/</span><span class="nx">helloworld</span>
-        <span class="nx">imagePullPolicy</span><span class="p">:</span> <span class="nx">Always</span>
-        <span class="nb">name</span><span class="p">:</span> <span class="nx">hw</span>
-        <span class="nx">ports</span><span class="p">:</span>
-        <span class="o">-</span> <span class="nx">containerPort</span><span class="p">:</span> <span class="mi">80</span>
-          <span class="nx">protocol</span><span class="p">:</span> <span class="nx">TCP</span>
-        <span class="nb">resources</span><span class="p">:</span> <span class="p">{}</span>
-        <span class="nx">terminationMessagePath</span><span class="p">:</span> <span class="p">/</span><span class="nx">dev</span><span class="p">/</span><span class="nx">termination</span><span class="na">-log</span>
-        <span class="nx">terminationMessagePolicy</span><span class="p">:</span> <span class="nb">File</span>
-      <span class="nx">dnsPolicy</span><span class="p">:</span> <span class="nx">ClusterFirst</span>
-      <span class="nx">restartPolicy</span><span class="p">:</span> <span class="nx">Always</span>
-      <span class="nx">schedulerName</span><span class="p">:</span> <span class="nb">default</span><span class="na">-scheduler</span>
-      <span class="nx">securityContext</span><span class="p">:</span> <span class="p">{}</span>
-      <span class="nx">terminationGracePeriodSeconds</span><span class="p">:</span> <span class="mi">30</span>
-<span class="nb">status</span><span class="p">:</span>
-  <span class="nx">availableReplicas</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">conditions</span><span class="p">:</span>
-  <span class="o">-</span> <span class="nx">lastTransitionTime</span><span class="p">:</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">01</span><span class="nx">T06</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">15</span><span class="nb">Z</span>
-    <span class="nx">lastUpdateTime</span><span class="p">:</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">01</span><span class="nx">T06</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">15</span><span class="nb">Z</span>
-    <span class="nx">message</span><span class="p">:</span> <span class="nx">Deployment</span> <span class="nx">has</span> <span class="nx">minimum</span> <span class="nx">availability.</span>
-    <span class="nx">reason</span><span class="p">:</span> <span class="nx">MinimumReplicasAvailable</span>
-    <span class="nb">status</span><span class="p">:</span> <span class="s2">&quot;True&quot;</span>
-    <span class="k">type</span><span class="p">:</span> <span class="nx">Available</span>
-  <span class="nx">observedGeneration</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">readyReplicas</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">replicas</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="nx">updatedReplicas</span><span class="p">:</span> <span class="mi">1</span>
+<h3 id="loglogs">log/logs 日志</h3>
+<p>pod内某容器的日志</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">log</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span><span class="p">]</span> <span class="p">(</span><span class="n">POD</span><span class="o">|</span><span class="n">TYPE</span><span class="o">/</span><span class="n">NAME</span><span class="p">)</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">CONTAINER</span><span class="p">]</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> 
 </pre></div>
 
 
-<h3 id="scale-deploy">Scale deploy</h3>
-<div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">deployments</span>
-<span class="n">NAME</span>      <span class="n">DESIRED</span>   <span class="n">CURRENT</span>   <span class="n">UP</span><span class="o">-</span><span class="n">TO</span><span class="o">-</span><span class="n">DATE</span>   <span class="n">AVAILABLE</span>   <span class="n">AGE</span>
-<span class="n">hw</span>        <span class="mi">1</span>         <span class="mi">1</span>         <span class="mi">1</span>            <span class="mi">1</span>           <span class="mi">2</span><span class="n">d</span>
-
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">scale</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">3</span> <span class="n">deploy</span><span class="o">/</span><span class="n">hw</span>
-<span class="n">deployment</span><span class="p">.</span><span class="n">extensions</span> <span class="s">&quot;hw&quot;</span> <span class="n">scaled</span>
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">deploy</span><span class="o">/</span><span class="n">hw</span>
-<span class="n">NAME</span>      <span class="n">DESIRED</span>   <span class="n">CURRENT</span>   <span class="n">UP</span><span class="o">-</span><span class="n">TO</span><span class="o">-</span><span class="n">DATE</span>   <span class="n">AVAILABLE</span>   <span class="n">AGE</span>
-<span class="n">hw</span>        <span class="mi">3</span>         <span class="mi">3</span>         <span class="mi">3</span>            <span class="mi">3</span>           <span class="mi">2</span><span class="n">d</span>
-
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span>
-<span class="n">NAME</span>                  <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="mi">7</span><span class="n">jmpl</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">c5lf6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">49</span><span class="n">s</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">tmrl6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">49</span><span class="n">s</span>
+<blockquote>
+<p>-f 类似于tail -f</p>
+</blockquote>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">logs</span> <span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="n">master</span><span class="p">.</span><span class="n">xuxuehua</span><span class="p">.</span><span class="n">com</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
 </pre></div>
 
 
-<h3 id="label-operation">label operation</h3>
-<div class="hlcode"><pre><span class="n">vim</span> <span class="n">helloworld</span><span class="o">-</span><span class="n">pod</span><span class="o">-</span><span class="n">with</span><span class="o">-</span><span class="n">lables</span><span class="p">.</span><span class="n">yml</span>
-
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">helloworld</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">production</span>
-    <span class="nl">author:</span> <span class="n">karthequian</span>
-    <span class="nl">application_type:</span> <span class="n">ui</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;1.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">helloworld</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">helloworld</span><span class="o">:</span><span class="n">latest</span>
+<h4 id="-c">-c 指定容器名称</h4>
+<h3 id="port-forward">port-forward 端口转发</h3>
+<p>将本地的一个或着多个端口转发至指定的pod</p>
+<h3 id="proxy-api-server">proxy API Server代理</h3>
+<p>能够访问Kubernetes API Server的代理</p>
+<h2 id="_5">高级命令</h2>
+<h3 id="apply">apply 实现声明</h3>
+<p>基于文件或者stdin 将配置应用于资源</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deploy</span><span class="p">.</span><span class="n">yaml</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">svc</span><span class="p">.</span><span class="n">yaml</span>
 </pre></div>
 
 
-<div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">helloworld</span><span class="o">-</span><span class="n">pod</span><span class="o">-</span><span class="n">with</span><span class="o">-</span><span class="n">lables</span><span class="p">.</span><span class="n">yml</span>
-<span class="n">pod</span> <span class="s">&quot;helloworld&quot;</span> <span class="n">created</span>
-
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span>
-<span class="n">NAME</span>                  <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
-<span class="n">helloworld</span>            <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">21</span><span class="n">s</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="mi">7</span><span class="n">jmpl</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">c5lf6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">19</span><span class="n">m</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">tmrl6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">19</span><span class="n">m</span>
-</pre></div>
-
-
-<h4 id="add-delete">add &amp; delete</h4>
-<div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">--</span><span class="n">show</span><span class="o">-</span><span class="n">labels</span>
-<span class="n">NAME</span>                  <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>       <span class="n">LABELS</span>
-<span class="n">helloworld</span>            <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">author</span><span class="o">=</span><span class="n">karthequian</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="mi">7</span><span class="n">jmpl</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>        <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">c5lf6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">20</span><span class="n">m</span>       <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">tmrl6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">20</span><span class="n">m</span>       <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">label</span> <span class="n">po</span><span class="o">/</span><span class="n">helloworld</span> <span class="n">app</span><span class="o">=</span><span class="n">helloworldapp</span> <span class="o">--</span><span class="n">overwrite</span>
-<span class="n">pod</span> <span class="s">&quot;helloworld&quot;</span> <span class="n">labeled</span>
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">--</span><span class="n">show</span><span class="o">-</span><span class="n">labels</span>
-<span class="n">NAME</span>                  <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>       <span class="n">LABELS</span>
-<span class="n">helloworld</span>            <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">app</span><span class="o">=</span><span class="n">helloworldapp</span><span class="p">,</span><span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">author</span><span class="o">=</span><span class="n">karthequian</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="mi">7</span><span class="n">jmpl</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>        <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">c5lf6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">20</span><span class="n">m</span>       <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">tmrl6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">20</span><span class="n">m</span>       <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">label</span> <span class="n">pod</span><span class="o">/</span><span class="n">helloworld</span> <span class="n">app</span><span class="o">-</span>
-<span class="n">pod</span> <span class="s">&quot;helloworld&quot;</span> <span class="n">labeled</span>
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">--</span><span class="n">show</span><span class="o">-</span><span class="n">labels</span>
-<span class="n">NAME</span>                  <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>       <span class="n">LABELS</span>
-<span class="n">helloworld</span>            <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">author</span><span class="o">=</span><span class="n">karthequian</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="mi">7</span><span class="n">jmpl</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>        <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">c5lf6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">21</span><span class="n">m</span>       <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">tmrl6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">21</span><span class="n">m</span>       <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-</pre></div>
-
-
-<h4 id="searching">searching</h4>
-<div class="hlcode"><pre><span class="n">vim</span> <span class="n">sample</span><span class="o">-</span><span class="n">infrastructure</span><span class="o">-</span><span class="n">with</span><span class="o">-</span><span class="n">labels</span><span class="p">.</span><span class="n">yml</span>
-
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">homepage</span><span class="o">-</span><span class="n">dev</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">development</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">karthik</span>
-    <span class="nl">team:</span> <span class="n">web</span>
-    <span class="nl">application_type:</span> <span class="n">ui</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;12.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">helloworld</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">helloworld</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">homepage</span><span class="o">-</span><span class="n">staging</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">staging</span>
-    <span class="nl">team:</span> <span class="n">web</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">karthik</span>
-    <span class="nl">application_type:</span> <span class="n">ui</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;12.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">helloworld</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">helloworld</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">homepage</span><span class="o">-</span><span class="n">prod</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">production</span>
-    <span class="nl">team:</span> <span class="n">web</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">karthik</span>
-    <span class="nl">application_type:</span> <span class="n">ui</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;12.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">helloworld</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">helloworld</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">login</span><span class="o">-</span><span class="n">dev</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">development</span>
-    <span class="nl">team:</span> <span class="n">auth</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">jim</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;1.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">login</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">login</span><span class="o">-</span><span class="n">staging</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">staging</span>
-    <span class="nl">team:</span> <span class="n">auth</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">jim</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;1.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">login</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">login</span><span class="o">-</span><span class="n">prod</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">production</span>
-    <span class="nl">team:</span> <span class="n">auth</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">jim</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;1.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">login</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">cart</span><span class="o">-</span><span class="n">dev</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">development</span>
-    <span class="nl">team:</span> <span class="n">ecommerce</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">carisa</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;1.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">cart</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">cart</span><span class="o">-</span><span class="n">staging</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">staging</span>
-    <span class="nl">team:</span> <span class="n">ecommerce</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">carisa</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;1.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">cart</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">cart</span><span class="o">-</span><span class="n">prod</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">production</span>
-    <span class="nl">team:</span> <span class="n">ecommerce</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">carisa</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;1.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">cart</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">social</span><span class="o">-</span><span class="n">dev</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">development</span>
-    <span class="nl">team:</span> <span class="n">marketing</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">carisa</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;2.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">social</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">social</span><span class="o">-</span><span class="n">staging</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">staging</span>
-    <span class="nl">team:</span> <span class="n">marketing</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">marketing</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;1.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">social</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">social</span><span class="o">-</span><span class="n">prod</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">production</span>
-    <span class="nl">team:</span> <span class="n">marketing</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">marketing</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;1.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">social</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">catalog</span><span class="o">-</span><span class="n">dev</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">development</span>
-    <span class="nl">team:</span> <span class="n">ecommerce</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">daniel</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;4.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">catalog</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">catalog</span><span class="o">-</span><span class="n">staging</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">staging</span>
-    <span class="nl">team:</span> <span class="n">ecommerce</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">daniel</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;4.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">catalog</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">catalog</span><span class="o">-</span><span class="n">prod</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">production</span>
-    <span class="nl">team:</span> <span class="n">ecommerce</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">daniel</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;4.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">catalog</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">quote</span><span class="o">-</span><span class="n">dev</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">development</span>
-    <span class="nl">team:</span> <span class="n">ecommerce</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">amy</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;2.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">quote</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">quote</span><span class="o">-</span><span class="n">staging</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">staging</span>
-    <span class="nl">team:</span> <span class="n">ecommerce</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">amy</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;2.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">quote</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">quote</span><span class="o">-</span><span class="n">prod</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">production</span>
-    <span class="nl">team:</span> <span class="n">ecommerce</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">amy</span>
-    <span class="nl">application_type:</span> <span class="n">api</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;1.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">quote</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">ordering</span><span class="o">-</span><span class="n">dev</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">development</span>
-    <span class="nl">team:</span> <span class="n">purchasing</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">chen</span>
-    <span class="nl">application_type:</span> <span class="n">backend</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;2.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">ordering</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">ordering</span><span class="o">-</span><span class="n">staging</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">staging</span>
-    <span class="nl">team:</span> <span class="n">purchasing</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">chen</span>
-    <span class="nl">application_type:</span> <span class="n">backend</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;2.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">ordering</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-<span class="nl">apiVersion:</span> <span class="n">v1</span>
-<span class="nl">kind:</span> <span class="n">Pod</span>
-<span class="nl">metadata:</span>
-  <span class="nl">name:</span> <span class="n">ordering</span><span class="o">-</span><span class="n">prod</span>
-  <span class="nl">labels:</span>
-    <span class="nl">env:</span> <span class="n">production</span>
-    <span class="nl">team:</span> <span class="n">purchasing</span>
-    <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">:</span> <span class="n">chen</span>
-    <span class="nl">application_type:</span> <span class="n">backend</span>
-    <span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">:</span> <span class="s">&quot;2.0&quot;</span>
-<span class="nl">spec:</span>
-  <span class="nl">containers:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">ordering</span>
-    <span class="nl">image:</span> <span class="n">karthequian</span><span class="o">/</span><span class="n">ruby</span><span class="o">:</span><span class="n">latest</span>
-<span class="o">---</span>
-</pre></div>
-
-
-<div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">sample</span><span class="o">-</span><span class="n">infrastructure</span><span class="o">-</span><span class="n">with</span><span class="o">-</span><span class="n">labels</span><span class="p">.</span><span class="n">yml</span>
-<span class="n">pod</span> <span class="s">&quot;homepage-dev&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;homepage-staging&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;homepage-prod&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;login-dev&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;login-staging&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;login-prod&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;cart-dev&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;cart-staging&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;cart-prod&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;social-dev&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;social-staging&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;social-prod&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;catalog-dev&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;catalog-staging&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;catalog-prod&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;quote-dev&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;quote-staging&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;quote-prod&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;ordering-dev&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;ordering-staging&quot;</span> <span class="n">created</span>
-<span class="n">pod</span> <span class="s">&quot;ordering-prod&quot;</span> <span class="n">created</span>
-
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">--</span><span class="n">show</span><span class="o">-</span><span class="n">labels</span>
-<span class="n">NAME</span>                  <span class="n">READY</span>     <span class="n">STATUS</span>              <span class="n">RESTARTS</span>   <span class="n">AGE</span>       <span class="n">LABELS</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">dev</span>              <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">carisa</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">prod</span>             <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">carisa</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">staging</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">carisa</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">catalog</span><span class="o">-</span><span class="n">dev</span>           <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">daniel</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">catalog</span><span class="o">-</span><span class="n">prod</span>          <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">daniel</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">catalog</span><span class="o">-</span><span class="n">staging</span>       <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">daniel</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">helloworld</span>            <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">8</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">author</span><span class="o">=</span><span class="n">karthequian</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span>
-<span class="n">homepage</span><span class="o">-</span><span class="n">dev</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">karthik</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">web</span>
-<span class="n">homepage</span><span class="o">-</span><span class="n">prod</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">karthik</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">web</span>
-<span class="n">homepage</span><span class="o">-</span><span class="n">staging</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">karthik</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">web</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="mi">7</span><span class="n">jmpl</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>        <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">c5lf6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">27</span><span class="n">m</span>       <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">tmrl6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">27</span><span class="n">m</span>       <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">login</span><span class="o">-</span><span class="n">dev</span>             <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">jim</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">auth</span>
-<span class="n">login</span><span class="o">-</span><span class="n">prod</span>            <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">jim</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">auth</span>
-<span class="n">login</span><span class="o">-</span><span class="n">staging</span>         <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">jim</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">auth</span>
-<span class="n">ordering</span><span class="o">-</span><span class="n">dev</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">chen</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">purchasing</span>
-<span class="n">ordering</span><span class="o">-</span><span class="n">prod</span>         <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">chen</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">purchasing</span>
-<span class="n">ordering</span><span class="o">-</span><span class="n">staging</span>      <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">chen</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">purchasing</span>
-<span class="n">quote</span><span class="o">-</span><span class="n">dev</span>             <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">amy</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">quote</span><span class="o">-</span><span class="n">prod</span>            <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">amy</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">quote</span><span class="o">-</span><span class="n">staging</span>         <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">amy</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">social</span><span class="o">-</span><span class="n">dev</span>            <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">carisa</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">marketing</span>
-<span class="n">social</span><span class="o">-</span><span class="n">prod</span>           <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">marketing</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">marketing</span>
-<span class="n">social</span><span class="o">-</span><span class="n">staging</span>        <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">marketing</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">marketing</span>
-</pre></div>
-
-
-<h5 id="single-label">single label</h5>
-<div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">--</span><span class="n">selector</span> <span class="n">env</span><span class="o">=</span><span class="n">production</span>
-<span class="n">NAME</span>            <span class="n">READY</span>     <span class="n">STATUS</span>              <span class="n">RESTARTS</span>   <span class="n">AGE</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">prod</span>       <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>
-<span class="n">catalog</span><span class="o">-</span><span class="n">prod</span>    <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>
-<span class="n">helloworld</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">9</span><span class="n">m</span>
-<span class="n">homepage</span><span class="o">-</span><span class="n">prod</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>
-<span class="n">login</span><span class="o">-</span><span class="n">prod</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>
-<span class="n">ordering</span><span class="o">-</span><span class="n">prod</span>   <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>
-<span class="n">quote</span><span class="o">-</span><span class="n">prod</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>
-<span class="n">social</span><span class="o">-</span><span class="n">prod</span>     <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">--</span><span class="n">selector</span> <span class="n">env</span><span class="o">=</span><span class="n">production</span> <span class="o">--</span><span class="n">show</span><span class="o">-</span><span class="n">labels</span>
-<span class="n">NAME</span>            <span class="n">READY</span>     <span class="n">STATUS</span>              <span class="n">RESTARTS</span>   <span class="n">AGE</span>       <span class="n">LABELS</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">prod</span>       <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">carisa</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">catalog</span><span class="o">-</span><span class="n">prod</span>    <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">daniel</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">helloworld</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">9</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">author</span><span class="o">=</span><span class="n">karthequian</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span>
-<span class="n">homepage</span><span class="o">-</span><span class="n">prod</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">karthik</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">web</span>
-<span class="n">login</span><span class="o">-</span><span class="n">prod</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">jim</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">auth</span>
-<span class="n">ordering</span><span class="o">-</span><span class="n">prod</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">chen</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">purchasing</span>
-<span class="n">quote</span><span class="o">-</span><span class="n">prod</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">amy</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">social</span><span class="o">-</span><span class="n">prod</span>     <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">marketing</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">marketing</span>
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">--</span><span class="n">selector</span> <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">carisa</span>
-<span class="n">NAME</span>           <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">dev</span>       <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">m</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">prod</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">m</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">staging</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">m</span>
-<span class="n">social</span><span class="o">-</span><span class="n">dev</span>     <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">m</span>
-</pre></div>
-
-
-<div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="err">&#39;</span><span class="n">release</span><span class="o">-</span><span class="n">version</span> <span class="n">in</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">)</span><span class="err">&#39;</span>
-<span class="n">NAME</span>               <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">dev</span>           <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">prod</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">staging</span>       <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">helloworld</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">12</span><span class="n">m</span>
-<span class="n">login</span><span class="o">-</span><span class="n">dev</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">login</span><span class="o">-</span><span class="n">prod</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">login</span><span class="o">-</span><span class="n">staging</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">ordering</span><span class="o">-</span><span class="n">dev</span>       <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">ordering</span><span class="o">-</span><span class="n">prod</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">ordering</span><span class="o">-</span><span class="n">staging</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">quote</span><span class="o">-</span><span class="n">dev</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">quote</span><span class="o">-</span><span class="n">prod</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">quote</span><span class="o">-</span><span class="n">staging</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">social</span><span class="o">-</span><span class="n">dev</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">social</span><span class="o">-</span><span class="n">prod</span>        <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-<span class="n">social</span><span class="o">-</span><span class="n">staging</span>     <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
-
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="err">&#39;</span><span class="n">release</span><span class="o">-</span><span class="n">version</span> <span class="n">in</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">)</span><span class="err">&#39;</span> <span class="o">--</span><span class="n">show</span><span class="o">-</span><span class="n">labels</span>
-<span class="n">NAME</span>               <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>       <span class="n">LABELS</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">dev</span>           <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">carisa</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">prod</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">carisa</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">cart</span><span class="o">-</span><span class="n">staging</span>       <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">carisa</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">helloworld</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">13</span><span class="n">m</span>       <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">author</span><span class="o">=</span><span class="n">karthequian</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span>
-<span class="n">login</span><span class="o">-</span><span class="n">dev</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">jim</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">auth</span>
-<span class="n">login</span><span class="o">-</span><span class="n">prod</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">jim</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">auth</span>
-<span class="n">login</span><span class="o">-</span><span class="n">staging</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">jim</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">auth</span>
-<span class="n">ordering</span><span class="o">-</span><span class="n">dev</span>       <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">chen</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">purchasing</span>
-<span class="n">ordering</span><span class="o">-</span><span class="n">prod</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">chen</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">purchasing</span>
-<span class="n">ordering</span><span class="o">-</span><span class="n">staging</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">chen</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">purchasing</span>
-<span class="n">quote</span><span class="o">-</span><span class="n">dev</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">amy</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">quote</span><span class="o">-</span><span class="n">prod</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">amy</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">quote</span><span class="o">-</span><span class="n">staging</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">amy</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">social</span><span class="o">-</span><span class="n">dev</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">carisa</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">marketing</span>
-<span class="n">social</span><span class="o">-</span><span class="n">prod</span>        <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">marketing</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">marketing</span>
-<span class="n">social</span><span class="o">-</span><span class="n">staging</span>     <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">marketing</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">marketing</span>
-
-<span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="err">&#39;</span><span class="n">release</span><span class="o">-</span><span class="n">version</span> <span class="n">notin</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">)</span><span class="err">&#39;</span> <span class="o">--</span><span class="n">show</span><span class="o">-</span><span class="n">labels</span>
-<span class="n">NAME</span>                  <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>       <span class="n">LABELS</span>
-<span class="n">catalog</span><span class="o">-</span><span class="n">dev</span>           <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">daniel</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">catalog</span><span class="o">-</span><span class="n">prod</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">daniel</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">catalog</span><span class="o">-</span><span class="n">staging</span>       <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">api</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">daniel</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">ecommerce</span>
-<span class="n">homepage</span><span class="o">-</span><span class="n">dev</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">karthik</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">development</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">web</span>
-<span class="n">homepage</span><span class="o">-</span><span class="n">prod</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">karthik</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">production</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">web</span>
-<span class="n">homepage</span><span class="o">-</span><span class="n">staging</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>        <span class="n">application_type</span><span class="o">=</span><span class="n">ui</span><span class="p">,</span><span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">karthik</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span><span class="p">,</span><span class="n">release</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span><span class="n">team</span><span class="o">=</span><span class="n">web</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="mi">7</span><span class="n">jmpl</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>        <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">c5lf6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">32</span><span class="n">m</span>       <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-<span class="n">hw</span><span class="o">-</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="o">-</span><span class="n">tmrl6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">32</span><span class="n">m</span>       <span class="n">pod</span><span class="o">-</span><span class="n">template</span><span class="o">-</span><span class="n">hash</span><span class="o">=</span><span class="mf">747f</span><span class="n">ddfdb8</span><span class="p">,</span><span class="n">run</span><span class="o">=</span><span class="n">hw</span>
-</pre></div>
-
-
-<h5 id="multipe-labels">multipe labels</h5>
-<div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">--</span><span class="n">selector</span> <span class="n">dev</span><span class="o">-</span><span class="n">lead</span><span class="o">=</span><span class="n">karthik</span><span class="p">,</span><span class="n">env</span><span class="o">=</span><span class="n">staging</span>
-<span class="n">NAME</span>               <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
-<span class="n">homepage</span><span class="o">-</span><span class="n">staging</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">3</span><span class="n">m</span>
-</pre></div>
-
-
-<p>取反</p>
-<pre>
-xhxu-mac:test xhxu$ kubectl get pods --selector dev-lead!=karthik,env=staging
-NAME               READY     STATUS    RESTARTS   AGE
-cart-staging       1/1       Running   0          3m
-catalog-staging    1/1       Running   0          3m
-login-staging      1/1       Running   0          3m
-ordering-staging   1/1       Running   0          3m
-quote-staging      1/1       Running   0          3m
-social-staging     1/1       Running   0          3m
-</pre>
+<h3 id="convert-api">convert API转换</h3>
+<p>为不通的API版本转换配置文件</p>
+<h3 id="patch">patch 补丁更新</h3>
+<p>使用策略合并补丁更新资源字段</p>
+<h3 id="replace">replace 替换资源</h3>
+<p>基于文件或者stdin替换一个资源</p>
+<h2 id="_6">设置命令</h2>
+<h3 id="annotate">annotate 更新注释</h3>
+<p>更新资源注释</p>
+<h3 id="completion">completion 补全码</h3>
+<p>输出指定的shell （bash） 的补全码</p>
+<h3 id="label">label 资源标签</h3>
+<p>更新指定资源标签</p>
+<h2 id="_7">其他命令</h2>
+<h3 id="api-versions-api">api-versions API版本信息</h3>
+<p>以group/version格式打印服务器支持的API版本信息</p>
+<h3 id="config">config 配置内容</h3>
+<p>配置kubeconfig文件的内容</p>
+<h3 id="help">help 帮助</h3>
+<p>打印任意命令的帮助信息</p>
+<h3 id="option">option 通用选项</h3>
+<h4 id="-s-server-api-server">-s / --server 指定API Server</h4>
+<p>指定API Server的地址和端口</p>
+<h4 id="-kubeconfig">--kubeconfig 文件路径</h4>
+<p>是用kubeconfig 文件路径，默认为<code>~/.kube/config</code></p>
+<h4 id="-namespace">--namespace 名称空间</h4>
+<p>命令执行的目标名称空间</p>
+<h3 id="plugin">plugin 命令行插件</h3>
+<p>运行命令行插件</p>
+<h3 id="version">version 版本信息</h3>
+<p>打印Kubernetes的服务器端和客户端版本信息</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-03 15:03:08</p>
+        <p>Site Generated 2019-03-04 12:57:07</p>
       </span>
     </div>
 

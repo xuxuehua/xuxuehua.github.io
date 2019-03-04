@@ -32,6 +32,7 @@
 <li><a href="#system">system</a></li>
 </ul>
 </li>
+<li><a href="#proxy">proxy</a></li>
 </ul>
 </li>
 </ul>
@@ -95,12 +96,18 @@
 <p>System configs are available for all the users/projects and stored in /etc/gitconfig.</p>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">system</span> <span class="n">user</span><span class="p">.</span><span class="n">name</span> <span class="s">&quot;John Doe&quot;</span> 
 </pre></div>
+
+
+<h2 id="proxy">proxy</h2>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">local</span> <span class="n">http</span><span class="p">.</span><span class="n">proxy</span> <span class="err">&#39;</span><span class="n">socks5</span><span class="o">:</span><span class="c1">//127.0.0.1:1080&#39;</span>
+<span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">local</span> <span class="n">https</span><span class="p">.</span><span class="n">proxy</span> <span class="err">&#39;</span><span class="n">socks5</span><span class="o">:</span><span class="c1">//127.0.0.1:1080&#39;</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-03 15:03:08</p>
+        <p>Site Generated 2019-03-04 12:57:07</p>
       </span>
     </div>
 
