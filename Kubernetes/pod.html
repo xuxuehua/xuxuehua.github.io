@@ -27,7 +27,14 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#pod">Pod</a><ul>
-<li><a href="#_1">状态信息</a><ul>
+<li><a href="#_1">设计</a></li>
+<li><a href="#_2">分布式模型</a><ul>
+<li><a href="#sidercar-pattern">sidercar pattern</a></li>
+<li><a href="#ambassador-pattern">Ambassador pattern</a></li>
+<li><a href="#adapter-pattern">Adapter pattern</a></li>
+</ul>
+</li>
+<li><a href="#_3">状态信息</a><ul>
 <li><a href="#pending">Pending</a></li>
 <li><a href="#running">Running</a></li>
 <li><a href="#succeeded">Succeeded</a></li>
@@ -49,10 +56,44 @@
 </li>
 </ul>
 </li>
+<li><a href="#yaml">yaml 定义</a><ul>
+<li><a href="#command">command</a><ul>
+<li><a href="#example">example</a></li>
+</ul>
+</li>
+<li><a href="#ports">ports</a><ul>
+<li><a href="#example_1">example</a></li>
+</ul>
+</li>
+<li><a href="#imagepullpolicy">imagePullPolicy</a><ul>
+<li><a href="#example_2">example</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="pod">Pod</h1>
-<h2 id="_1">状态信息</h2>
+<p>标准的Kubernetes API资源，在yaml中使用kind，apiVersion，metadata和spec字段定义</p>
+<p>status字段在对象创建后由系统自行维护</p>
+<p>通过在spec字段中嵌套containers，将容器对象启动</p>
+<h2 id="_1">设计</h2>
+<p>通常应该一个容器中仅运行一个进程，而日志信息通过输出至容器的标准输出，用户通过kubectl log 进行获取</p>
+<p>省去了用户手动分摙日志信息</p>
+<h2 id="_2">分布式模型</h2>
+<h3 id="sidercar-pattern">sidercar pattern</h3>
+<p>边车模型或跨斗模型</p>
+<p>即pod的主应用容器提供协同的辅助应用容器，每个应用独立运行</p>
+<p>如主应用容器中的日志使用agent收集到日志服务器中，可以将agent运行为辅助应用容器，即sidecar</p>
+<p>还如主应用容器中启动database 缓存，sidecar启动Redis Cache</p>
+<h3 id="ambassador-pattern">Ambassador pattern</h3>
+<p>大使模型</p>
+<p>即远程服务器创建本地代理，主容器应用通过代理容器访问远程服务</p>
+<h3 id="adapter-pattern">Adapter pattern</h3>
+<p>适配器模式</p>
+<p>将主应用容器中的内容进行标准化输出</p>
+<p>如日志数据或者指标数据的输出，</p>
+<h2 id="_3">状态信息</h2>
 <h3 id="pending">Pending</h3>
 <h3 id="running">Running</h3>
 <h3 id="succeeded">Succeeded</h3>
@@ -101,12 +142,78 @@
 <p>类似于cronjob</p>
 <h3 id="daemonset">DaemonSet</h3>
 <p>确保所有nodes 运行同一个指定类型的pod</p>
+<h1 id="yaml">yaml 定义</h1>
+<h2 id="command">command</h2>
+<p>指定不同于镜像默认运行的应用程序，可以同时使用args字段进行参数传递，将覆盖镜像中的默认定义</p>
+<p>自定义args 是向容器中的应用程序传递配置信息的常用方式</p>
+<h3 id="example">example</h3>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">custom</span><span class="o">-</span><span class="n">command</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+      <span class="n">image</span><span class="o">:</span> <span class="n">alpine</span><span class="o">:</span><span class="n">latest</span>
+      <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;/bin/sh&quot;</span><span class="o">]</span>
+      <span class="n">args</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;-c&quot;</span><span class="o">,</span> <span class="s2">&quot;while true; do sleep 30; done&quot;</span><span class="o">]</span>
+</pre></div>
+
+
+<h2 id="ports">ports</h2>
+<p>显示指定容器端口，为其赋予一个名称方便调用</p>
+<p>其值为一个列表，有一个到多个端口对象组成，且嵌套以下字段</p>
+<div class="hlcode"><pre><span class="nx">containerPort</span> <span class="o">&lt;</span><span class="kt">integer</span><span class="o">&gt;</span> <span class="nx">必选字段</span><span class="err">，</span><span class="nx">指定Pod的IP地址暴露的容器端口</span> <span class="mi">0</span><span class="o">-</span><span class="mi">65536</span>
+<span class="nb">name</span> <span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">当前容器端口名称</span><span class="err">，</span><span class="nx">在当前pod内需要唯一</span><span class="err">，</span><span class="nx">此端口名可以被Service资源调用</span>
+<span class="nx">protocol</span> <span class="nx">可以为TCP或UDP</span><span class="err">，</span><span class="nx">默认为TCP</span>
+</pre></div>
+
+
+<h3 id="example_1">example</h3>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="n">example</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+      <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+      <span class="n">ports</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">http</span>
+          <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+          <span class="n">protocol</span><span class="o">:</span> <span class="n">TCP</span>
+</pre></div>
+
+
+<h2 id="imagepullpolicy">imagePullPolicy</h2>
+<div class="hlcode"><pre><span class="n">Always</span> <span class="err">镜像标签为</span><span class="n">latest</span><span class="err">，或镜像不存在时总是从指定的仓库中获取镜像</span>
+<span class="n">IfNotPresent</span>  <span class="err">仅当本地镜像缺失时方才从目标仓库中下载镜像</span>
+<span class="n">Never</span> <span class="err">禁止从仓库中下载镜像，仅仅使用本地镜像</span>
+</pre></div>
+
+
+<h3 id="example_2">example</h3>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span><span class="o">-</span><span class="n">pod</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+      <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span><span class="o">:</span><span class="n">latest</span>
+        <span class="n">imagePullPolicy</span><span class="o">:</span> <span class="n">Always</span>
+</pre></div>
+
+
+<blockquote>
+<p>总是从镜像仓库中获取最新的nginx 镜像</p>
+</blockquote>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-04 12:57:07</p>
+        <p>Site Generated 2019-03-06 00:05:01</p>
       </span>
     </div>
 

@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>k8s_in_aws - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Kubernetes">Kubernetes</a>&nbsp;&#187;&nbsp;k8s_in_aws
+    <span class="updated">Page Updated&nbsp;
+      2019-03-05 11:28
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">k8s_in_aws</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#eks">EKS</a><ul>
+<li><a href="#iam-configuration">IAM configuration</a><ul>
+<li><a href="#policies">Policies</a></li>
+<li><a href="#roles">Roles</a></li>
+<li><a href="#users">Users</a></li>
+</ul>
+</li>
+<li><a href="#vpc-created-for-eks-use">VPC created for EKS use</a></li>
+<li><a href="#install-kubectl-for-eks-auth">Install kubectl for EKS auth</a><ul>
+<li><a href="#kubectl">kubectl</a></li>
+<li><a href="#aws-iam-authenticator">aws-iam-authenticator</a></li>
+<li><a href="#aws-cli">AWS CLI</a></li>
+</ul>
+</li>
+<li><a href="#create-cluster-control-plane">Create cluster control plane</a></li>
+<li><a href="#establish-kubectl-credentials">Establish Kubectl credentials</a></li>
+<li><a href="#create-worker-nodes">Create worker nodes</a></li>
+<li><a href="#create-an-aws-auth-configmap-to-allow-the-nodes-to-register">Create an aws-auth configmap to allow the nodes to register</a></li>
+<li><a href="#wait-for-the-nodes-to-register">Wait for the nodes to register</a></li>
+<li><a href="#ensure-you-can-create-an-elb">Ensure you can create an ELB</a></li>
+<li><a href="#use-your-kubernetes-environment">Use your Kubernetes environment!</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="eks">EKS</h1>
+<p>Kubernetes on AWS</p>
+<p><img alt="img" src="https://snag.gy/FPMuN5.jpg" /></p>
+<h2 id="iam-configuration">IAM configuration</h2>
+<h3 id="policies">Policies</h3>
+<p>In order to access the EKS cluster services an IAM policy is needed.  The following, while "open" only allows eks service access, and is appropriate for most users who need to manipulate the EKS service.</p>
+<p>https://console.aws.amazon.com/iam/<br />
+Create a Policy with the following JSON object, and name it AdminEKSPolicy</p>
+<p>iam_eks_policy.json</p>
+<div class="hlcode"><pre><span class="p">{</span>
+    <span class="s2">&quot;Version&quot;</span><span class="o">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;Statement&quot;</span><span class="o">:</span> <span class="cp">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="err">[</span>
+                <span class="s2">&quot;eks:*&quot;</span>
+            <span class="cp">]</span><span class="o">,</span>
+            <span class="s2">&quot;Resource&quot;</span><span class="o">:</span> <span class="s2">&quot;*&quot;</span>
+        <span class="p">}</span>
+    <span class="o">]</span>
+<span class="err">}</span>
+</pre></div>
+
+
+<p>We also need CloudFormation access which we can call AdminCloudFormationPolicy<br />
+iam_cf_policy.json</p>
+<div class="hlcode"><pre><span class="p">{</span>
+    <span class="s2">&quot;Version&quot;</span><span class="o">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;Statement&quot;</span><span class="o">:</span> <span class="cp">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span>
+        <span class="p">}</span>
+    <span class="cp">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3 id="roles">Roles</h3>
+<p>Create and then select <code>AWS service</code> , <code>ESK</code></p>
+<p>Click next until the <code>Role name</code> with <code>ClusterEksRole</code></p>
+<p>This will have two Amazon defined policies:</p>
+<p>AmazonEKSServicePolicy <br />
+AmazonEKSClusterPolicy </p>
+<p>View the role in details and copy <code>Role ARN</code></p>
+<h3 id="users">Users</h3>
+<p>create two users, an admin user and a second eks system user.</p>
+<p>User 1:<br />
+ clusterAdmin </p>
+<ul>
+<li>eks admin policy</li>
+<li>k8s admin "system:master" group<br />
+   the following policies (at Review section):<br />
+   AdminEKSPolicy<br />
+   AdminCloudFormationPolicy<br />
+   AmazonEKSServicePolicy <br />
+   AmazonEKSClusterPolicy </li>
+</ul>
+<p>User 2:<br />
+ clusterUser</p>
+<ul>
+<li>
+<p>no IAM policies</p>
+</li>
+<li>
+<p>k8s admin "system:master" group</p>
+</li>
+</ul>
+<p>the following policies (at Review section):</p>
+<p>​       AdminEKSPolicy</p>
+<p>For both users, create programmatic credentials, and for the admin user, create a password credential as well.</p>
+<h2 id="vpc-created-for-eks-use">VPC created for EKS use</h2>
+<p>Signout and login as clusterAdmin user with below regions</p>
+<p>EKS is only supported in three regions:<br />
+us-east-1 (Northern VA)<br />
+us-west-2 (Oregon)<br />
+eu-west-1 (Ireland)</p>
+<p>Make sure you are in one of those regions when launching your VPC template</p>
+<p>https://console.aws.amazon.com/cloudformation/</p>
+<p>Then <code>Create Stack</code>  and specify below template</p>
+<p>From S3 template<br />
+https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2018-08-30/amazon-eks-vpc-sample.yaml</p>
+<p>and specify the stack name <code>classEKSVPS</code></p>
+<p>Capture (into an outputs file):<br />
+VPC-ID:<br />
+SECURITY-GROUP-ID:<br />
+SUBNET-IDS:</p>
+<p>So EKS will deploy into this specific region which not impact other env.</p>
+<h2 id="install-kubectl-for-eks-auth">Install kubectl for EKS auth</h2>
+<h3 id="kubectl">kubectl</h3>
+<p>Install kubectl as normal from the instructions found here:<br />
+https://kubernetes.io/docs/tasks/tools/install-kubectl/</p>
+<p>Linux:<br />
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl</p>
+<p>MacOS:<br />
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl</p>
+<p>Windows:<br />
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/windows/amd64/kubectl.exe</p>
+<h3 id="aws-iam-authenticator">aws-iam-authenticator</h3>
+<p>We also need the aws-iam-authenticator binary:<br />
+https://docs.aws.amazon.com/eks/latest/userguide/configure-kubectl.html</p>
+<p>You need the binary appropriate to your OS:<br />
+Linux:<br />
+curl -sLO https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator</p>
+<p>MacOS:<br />
+curl -sLO https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/darwin/amd64/aws-iam-authenticator</p>
+<p>Windows:<br />
+curl -sLO https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/windows/amd64/aws-iam-authenticator.exe</p>
+<p>In both cases, make the binary executable if necessary (chmod +x), and copy it to a directory in the command PATH (/usr/local/bin or %system32%/)</p>
+<h3 id="aws-cli">AWS CLI</h3>
+<p>Install the AWS CLI if you don't already have it<br />
+https://docs.aws.amazon.com/cli/latest/userguide/installing.html<br />
+(note, if you are on a Mac and don't have pip installed: sudo easy_install pip)</p>
+<p>Install the awscli tool via python pip:<br />
+pip install awscli --upgrade --user</p>
+<h2 id="create-cluster-control-plane">Create cluster control plane</h2>
+<p>https://us-west-2.console.aws.amazon.com/eks</p>
+<h2 id="establish-kubectl-credentials">Establish Kubectl credentials</h2>
+<p>(install aws-iam-authenticator and kubec###l)</p>
+<p>aws eks update-kubeconfig --name cluster_name</p>
+<h2 id="create-worker-nodes">Create worker nodes</h2>
+<p>Create an autoscaling group of nodes with cloudformation</p>
+<h2 id="create-an-aws-auth-configmap-to-allow-the-nodes-to-register">Create an aws-auth configmap to allow the nodes to register</h2>
+<p>kubectl apply -f aws-auth-cm.yaml</p>
+<h2 id="wait-for-the-nodes-to-register">Wait for the nodes to register</h2>
+<p>kubectl get nodes -w</p>
+<h2 id="ensure-you-can-create-an-elb">Ensure you can create an ELB</h2>
+<p>aws iam create-service-linked-role --aws-service-name elasticloadbalancing.amazonaws.com</p>
+<h2 id="use-your-kubernetes-environment">Use your Kubernetes environment!</h2>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-03-06 00:05:01</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

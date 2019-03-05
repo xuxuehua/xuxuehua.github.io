@@ -44,6 +44,7 @@
 <li><a href="#create">create 创建资源</a></li>
 <li><a href="#delete">delete 删除</a><ul>
 <li><a href="#-all">--all</a></li>
+<li><a href="#-f">-f 指定配置</a></li>
 </ul>
 </li>
 <li><a href="#edit">edit 编辑资源</a></li>
@@ -196,6 +197,11 @@
 </pre></div>
 
 
+<h4 id="-f">-f 指定配置</h4>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">delete</span> <span class="o">-</span><span class="n">f</span> <span class="n">pod</span><span class="o">-</span><span class="n">example</span><span class="p">.</span><span class="n">yaml</span>
+</pre></div>
+
+
 <h3 id="edit">edit 编辑资源</h3>
 <h3 id="explain">explain 资源文档</h3>
 <p>获取相关帮助</p>
@@ -318,6 +324,10 @@
 
 
 <h3 id="describe">describe 详细信息</h3>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">describe</span> <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="n">FILENAME</span> <span class="o">|</span> <span class="n">TYPE</span> <span class="p">[</span><span class="n">NAME_PREFIX</span> <span class="o">|</span> <span class="o">-</span><span class="n">l</span> <span class="n">label</span><span class="p">]</span> <span class="o">|</span> <span class="n">TYPE</span><span class="o">/</span><span class="n">NAME</span><span class="p">)</span>
+</pre></div>
+
+
 <p>显示指定的资源或者资源组的详细信息</p>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">describe</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="n">component</span><span class="o">=</span><span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
 </pre></div>
@@ -388,7 +398,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-04 12:57:07</p>
+        <p>Site Generated 2019-03-06 00:05:01</p>
       </span>
     </div>
 
