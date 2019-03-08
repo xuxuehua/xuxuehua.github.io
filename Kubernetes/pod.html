@@ -28,6 +28,14 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#pod">Pod</a><ul>
 <li><a href="#_1">设计</a></li>
+<li><a href="#pod_1">pod 生命周期</a><ul>
+<li><a href="#pending">Pending</a></li>
+<li><a href="#running">Running</a></li>
+<li><a href="#succeeded">Succeeded</a></li>
+<li><a href="#failed">Failed</a></li>
+<li><a href="#unknown">Unknown</a></li>
+</ul>
+</li>
 <li><a href="#_2">分布式模型</a><ul>
 <li><a href="#sidercar-pattern">sidercar pattern</a></li>
 <li><a href="#ambassador-pattern">Ambassador pattern</a></li>
@@ -35,10 +43,10 @@
 </ul>
 </li>
 <li><a href="#_3">状态信息</a><ul>
-<li><a href="#pending">Pending</a></li>
-<li><a href="#running">Running</a></li>
-<li><a href="#succeeded">Succeeded</a></li>
-<li><a href="#failed">Failed</a></li>
+<li><a href="#pending_1">Pending</a></li>
+<li><a href="#running_1">Running</a></li>
+<li><a href="#succeeded_1">Succeeded</a></li>
+<li><a href="#failed_1">Failed</a></li>
 <li><a href="#crashloopbackoff">CrashLoopBackOff</a></li>
 </ul>
 </li>
@@ -54,21 +62,38 @@
 <li><a href="#daemonset">DaemonSet</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#yaml">yaml 定义</a><ul>
-<li><a href="#command">command</a><ul>
+<li><a href="#_4">环境变量</a><ul>
+<li><a href="#env">env</a><ul>
 <li><a href="#example">example</a></li>
 </ul>
 </li>
-<li><a href="#ports">ports</a><ul>
+<li><a href="#envfrom">envFrom</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#yaml">yaml 定义</a><ul>
+<li><a href="#apiversion">apiVersion</a></li>
+<li><a href="#command">command</a><ul>
 <li><a href="#example_1">example</a></li>
 </ul>
 </li>
-<li><a href="#imagepullpolicy">imagePullPolicy</a><ul>
+<li><a href="#ports">ports</a><ul>
 <li><a href="#example_2">example</a></li>
 </ul>
 </li>
+<li><a href="#imagepullpolicy">imagePullPolicy</a><ul>
+<li><a href="#example_3">example</a></li>
+</ul>
+</li>
+<li><a href="#labels">labels</a></li>
+<li><a href="#selector">selector</a><ul>
+<li><a href="#matchlabels">matchLabels</a></li>
+<li><a href="#matchexpressions">matchExpressions</a></li>
+</ul>
+</li>
+<li><a href="#nodeselector">nodeSelector</a></li>
+<li><a href="#annotations">annotations</a></li>
 </ul>
 </li>
 </ul>
@@ -79,7 +104,18 @@
 <p>通过在spec字段中嵌套containers，将容器对象启动</p>
 <h2 id="_1">设计</h2>
 <p>通常应该一个容器中仅运行一个进程，而日志信息通过输出至容器的标准输出，用户通过kubectl log 进行获取</p>
-<p>省去了用户手动分摙日志信息</p>
+<p>省去了用户手动分拣日志信息</p>
+<h2 id="pod_1">pod 生命周期</h2>
+<h3 id="pending">Pending</h3>
+<p>API Server 创建了Pod资源对象并已存储etcd中，但未被调度完成，或着仍然处于从仓库下载镜像的过程中</p>
+<h3 id="running">Running</h3>
+<p>Pod已经被调度至某节点，并且所有容器都已经被kubelet创建完成</p>
+<h3 id="succeeded">Succeeded</h3>
+<p>Pod 中的所有容器都已经成功终止并且不会被重启</p>
+<h3 id="failed">Failed</h3>
+<p>所有容器都已经终止，但至少有一个容器终止失败，即容器返回了非0值的退出状态或已经被系统终止</p>
+<h3 id="unknown">Unknown</h3>
+<p>API Server 无法正常获取到Pod对象的状态信息，通常是由于无法与所在工作节点的kubelet通信</p>
 <h2 id="_2">分布式模型</h2>
 <h3 id="sidercar-pattern">sidercar pattern</h3>
 <p>边车模型或跨斗模型</p>
@@ -94,10 +130,10 @@
 <p>将主应用容器中的内容进行标准化输出</p>
 <p>如日志数据或者指标数据的输出，</p>
 <h2 id="_3">状态信息</h2>
-<h3 id="pending">Pending</h3>
-<h3 id="running">Running</h3>
-<h3 id="succeeded">Succeeded</h3>
-<h3 id="failed">Failed</h3>
+<h3 id="pending_1">Pending</h3>
+<h3 id="running_1">Running</h3>
+<h3 id="succeeded_1">Succeeded</h3>
+<h3 id="failed_1">Failed</h3>
 <h3 id="crashloopbackoff">CrashLoopBackOff</h3>
 <p>Kubernetes. 尝试一次又一次的重启Pod</p>
 <h2 id="pod-controller">Pod 控制器 Controller</h2>
@@ -142,11 +178,39 @@
 <p>类似于cronjob</p>
 <h3 id="daemonset">DaemonSet</h3>
 <p>确保所有nodes 运行同一个指定类型的pod</p>
+<h2 id="_4">环境变量</h2>
+<p>通过环境变量在容器启动时传递配置信息</p>
+<h3 id="env">env</h3>
+<p>在容器配置段中嵌套env字段，值是环境变量构成的列表</p>
+<div class="hlcode"><pre><span class="nb">name</span> <span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span>  <span class="nx">环境变量名称</span><span class="err">，</span><span class="nx">必须字段</span>
+<span class="nb">value</span> <span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span>  <span class="nx">传递值</span><span class="err">，</span><span class="nx">通过</span><span class="err">$</span><span class="p">(</span><span class="nx">VAR_NAME</span><span class="p">)</span> <span class="nx">引用</span>
+</pre></div>
+
+
+<h4 id="example">example</h4>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">env</span>
+<span class="n">spec</span><span class="o">:</span> 
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">filebeat</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">filebeat</span><span class="o">:</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">5</span><span class="o">-</span><span class="n">alpine</span>
+    <span class="n">env</span><span class="o">:</span> 
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">REDIS_HOST</span>
+      <span class="n">value</span><span class="o">:</span> <span class="n">db</span><span class="o">.</span><span class="na">xurick</span><span class="o">.</span><span class="na">com</span><span class="o">:</span><span class="mi">6379</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">LOG_LEVEL</span>
+      <span class="n">value</span><span class="o">:</span> <span class="n">info</span>
+</pre></div>
+
+
+<h3 id="envfrom">envFrom</h3>
 <h1 id="yaml">yaml 定义</h1>
+<h2 id="apiversion">apiVersion</h2>
 <h2 id="command">command</h2>
 <p>指定不同于镜像默认运行的应用程序，可以同时使用args字段进行参数传递，将覆盖镜像中的默认定义</p>
 <p>自定义args 是向容器中的应用程序传递配置信息的常用方式</p>
-<h3 id="example">example</h3>
+<h3 id="example_1">example</h3>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
 <span class="n">metadata</span><span class="o">:</span>
@@ -169,7 +233,7 @@
 </pre></div>
 
 
-<h3 id="example_1">example</h3>
+<h3 id="example_2">example</h3>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
 <span class="n">metadata</span><span class="o">:</span>
@@ -192,7 +256,7 @@
 </pre></div>
 
 
-<h3 id="example_2">example</h3>
+<h3 id="example_3">example</h3>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
 <span class="n">metadata</span><span class="o">:</span>
@@ -208,12 +272,77 @@
 <blockquote>
 <p>总是从镜像仓库中获取最新的nginx 镜像</p>
 </blockquote>
+<h2 id="labels">labels</h2>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">labels</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">env</span><span class="o">:</span> <span class="n">qa</span>
+    <span class="n">tier</span><span class="o">:</span> <span class="n">frontend</span>
+<span class="n">spec</span><span class="o">:</span> 
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+</pre></div>
+
+
+<h2 id="selector">selector</h2>
+<h3 id="matchlabels">matchLabels</h3>
+<p>通过直接给定键值来指定标签选择器</p>
+<div class="hlcode"><pre><span class="n">selector</span><span class="o">:</span>
+  <span class="n">matchLabels</span><span class="o">:</span>
+    <span class="n">component</span><span class="o">:</span> <span class="n">redis</span>
+</pre></div>
+
+
+<h3 id="matchexpressions">matchExpressions</h3>
+<p>基于表达式指定的标签选择器列表，每个选择器都形如</p>
+<div class="hlcode"><pre><span class="p">{</span><span class="n">key</span><span class="o">:</span> <span class="n">KEY_NAME</span><span class="p">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">OPERATOR</span><span class="p">,</span> <span class="n">values</span><span class="o">:</span> <span class="p">[</span><span class="n">VALUE1</span><span class="p">,</span> <span class="n">VALUE2</span><span class="p">,</span> <span class="p">...]}</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">selector</span><span class="o">:</span>
+  <span class="n">matchExpressions</span><span class="o">:</span>
+    <span class="o">-</span> <span class="o">{</span><span class="n">key</span><span class="o">:</span> <span class="n">tier</span><span class="o">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">In</span><span class="o">,</span> <span class="n">values</span><span class="o">:</span> <span class="o">[</span><span class="n">cache</span><span class="o">]}</span>
+    <span class="o">-</span> <span class="o">{</span><span class="n">key</span><span class="o">:</span> <span class="n">environment</span><span class="o">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">Exists</span><span class="o">,</span> <span class="n">values</span><span class="o">:}</span>
+</pre></div>
+
+
+<h2 id="nodeselector">nodeSelector</h2>
+<p>调度某些资源至指定设备节点，使用nodeSelector选择器</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">nodeselector</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">env</span><span class="o">:</span> <span class="n">testing</span>
+<span class="n">spec</span><span class="o">:</span> 
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+  <span class="n">nodeSelector</span><span class="o">:</span>
+    <span class="n">disktype</span><span class="o">:</span> <span class="n">ssd</span>
+</pre></div>
+
+
+<h2 id="annotations">annotations</h2>
+<p>生成资源注解</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">nodeselector</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">ilinux</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">created</span><span class="o">-</span><span class="n">by</span><span class="o">:</span> <span class="n">cluster</span> <span class="n">admin</span>
+<span class="n">spec</span><span class="o">:</span> 
+<span class="o">....</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-06 00:05:01</p>
+        <p>Site Generated 2019-03-08 11:31:33</p>
       </span>
     </div>
 

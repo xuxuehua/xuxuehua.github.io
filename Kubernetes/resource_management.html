@@ -33,8 +33,8 @@
 <li><a href="#replicaset">ReplicaSet 无状态</a></li>
 <li><a href="#deployment">Deployment  无状态</a></li>
 <li><a href="#statefulset">StatefulSet 有状态</a></li>
-<li><a href="#daemonset">DaemonSet</a></li>
-<li><a href="#job">Job</a></li>
+<li><a href="#daemonset">DaemonSet 守护进程</a></li>
+<li><a href="#job">Job 完成后终止</a></li>
 </ul>
 </li>
 <li><a href="#discovery-lb">发现和负载均衡 Discovery &amp; LB</a></li>
@@ -80,12 +80,12 @@
 <p>负责有状态应用</p>
 <p>用于管理有状态的持久化应用，如database</p>
 <p>比Deployment会为每个Pod创建一个独有的持久性标识符，并确保Pod之间的顺序性</p>
-<h4 id="daemonset">DaemonSet</h4>
+<h4 id="daemonset">DaemonSet 守护进程</h4>
 <p>常用于运行集群存储的守护进程，如glusterd，ceph，</p>
 <p>日志收集进程如fluentd，logstash，</p>
 <p>监控进程，如prometheus的Node Explorter，collected，datadog agent， Ganglia的gmond</p>
 <p>确保每个节点都运行Pod的副本</p>
-<h4 id="job">Job</h4>
+<h4 id="job">Job 完成后终止</h4>
 <p>用于管理运行完成后可以终止的应用，如批处理任务</p>
 <h3 id="discovery-lb">发现和负载均衡 Discovery &amp; LB</h3>
 <p>确保Pod资源被外部及集群内部访问，要为同一种工作负载的访问流量进行负载均衡</p>
@@ -124,7 +124,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-06 00:05:01</p>
+        <p>Site Generated 2019-03-08 11:31:33</p>
       </span>
     </div>
 

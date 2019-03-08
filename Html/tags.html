@@ -39,6 +39,7 @@
 </li>
 <li><a href="#body">&lt;body&gt;</a><ul>
 <li><a href="#bgcolor">bgcolor</a></li>
+<li><a href="#background">background</a></li>
 </ul>
 </li>
 <li><a href="#_2">呈现标签</a><ul>
@@ -77,7 +78,7 @@
 <li><a href="#_6">属性</a></li>
 </ul>
 </li>
-<li><a href="#textarea">&lt;textarea&gt; 文本控件</a><ul>
+<li><a href="#textarea">&lt;textarea&gt; 文本域</a><ul>
 <li><a href="#_7">属性</a></li>
 </ul>
 </li>
@@ -88,23 +89,28 @@
 <li><a href="#link">&lt;link&gt; 头部标签</a></li>
 <li><a href="#style">&lt;style&gt; 样式</a></li>
 <li><a href="#meta_1">&lt;meta&gt;</a></li>
-<li><a href="#_9">特殊标记</a></li>
+<li><a href="#html_1">HTML 实体名称 特殊标记</a><ul>
+<li><a href="#nbsp">空格 &amp;nbsp</a></li>
+<li><a href="#lt">小于 &amp;lt</a></li>
+<li><a href="#gt">大于 &amp;gt;</a></li>
+</ul>
+</li>
 <li><a href="#html-5">HTML 5新的语义标签</a><ul>
-<li><a href="#_10">智能表单标签</a></li>
+<li><a href="#_9">智能表单标签</a></li>
 <li><a href="#audio">&lt;audio&gt; 音频</a></li>
 <li><a href="#video">&lt;video&gt; 视频</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_11">通用属性</a><ul>
-<li><a href="#_12">行内元素</a><ul>
-<li><a href="#_13">块元素</a></li>
+<li><a href="#_10">通用属性</a><ul>
+<li><a href="#_11">行内元素</a><ul>
+<li><a href="#_12">块元素</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_14">不常用语义标签</a><ul>
+<li><a href="#_13">不常用语义标签</a><ul>
 <li><a href="#code">&lt;code&gt;</a></li>
 <li><a href="#var">&lt;var&gt;</a></li>
 <li><a href="#pre">&lt;pre&gt;</a></li>
@@ -143,6 +149,12 @@
 <p>背景颜色</p>
 <div class="hlcode"><pre><span class="nt">&lt;body</span> <span class="na">bgcolor=</span><span class="s">&quot;#000000&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
+</pre></div>
+
+
+<h3 id="background">background</h3>
+<p>设置背景图片</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">body</span> <span class="n">background</span><span class="o">=</span><span class="s">&quot;cat.jpg&quot;</span><span class="o">&gt;</span>
 </pre></div>
 
 
@@ -356,11 +368,15 @@
 <p>checked：默认被选中项</p>
 <p>maxlength：控件允许的最多字符数</p>
 <p>action:  路径， #表示当前页面</p>
-<h2 id="textarea"><code>&lt;textarea&gt;</code> 文本控件</h2>
+<h2 id="textarea"><code>&lt;textarea&gt;</code> 文本域</h2>
 <p>需要输入大量的信息是来处理</p>
 <h3 id="_7">属性</h3>
 <p>rows -&gt; rows="4"</p>
 <p>cols -&gt; cols="20"</p>
+<div class="hlcode"><pre><span class="nt">&lt;textarea</span> <span class="na">cols=</span><span class="s">&quot;30&quot;</span> <span class="na">rows=</span><span class="s">&quot;30&quot;</span><span class="nt">&gt;</span>填写大量信息<span class="nt">&lt;/textarea&gt;</span>
+</pre></div>
+
+
 <h2 id="select"><code>&lt;select&gt;</code> 下拉菜单</h2>
 <div class="hlcode"><pre>    <span class="nt">&lt;select</span> <span class="na">name=</span><span class="s">&quot;&quot;</span> <span class="na">id=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;option</span> <span class="na">value=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>value1<span class="nt">&lt;/option&gt;</span>
@@ -533,9 +549,11 @@
 </pre></div>
 
 
-<h2 id="_9">特殊标记</h2>
+<h2 id="html_1">HTML 实体名称 特殊标记</h2>
 <p>html为特殊符号准备了专门的替代码</p>
-<p>如空格 <code>&amp;nbsp</code>; 小于 <code>&amp;lt</code> ； 大于 <code>&amp;gt</code>;</p>
+<h3 id="nbsp">空格 <code>&amp;nbsp</code></h3>
+<h3 id="lt">小于 <code>&amp;lt</code></h3>
+<h3 id="gt">大于 <code>&amp;gt</code>;</h3>
 <h2 id="html-5">HTML 5新的语义标签</h2>
 <p><img alt="img" src="https://cdn.pbrd.co/images/HMmFjz8.png" /></p>
 <p>常用 nav, header, footer, section, article, aside</p>
@@ -558,7 +576,7 @@
 </pre></div>
 
 
-<h3 id="_10">智能表单标签</h3>
+<h3 id="_9">智能表单标签</h3>
 <p><img alt="img" src="https://cdn.pbrd.co/images/HMmH0Z2.png" /></p>
 <ul>
 <li>隐藏域</li>
@@ -580,22 +598,22 @@
 </pre></div>
 
 
-<h1 id="_11">通用属性</h1>
+<h1 id="_10">通用属性</h1>
 <p>id：唯一表识元素，在同一页面不能重复</p>
 <p>name：用于定义一组标签，可以重复</p>
 <p>style：定义标签的样式</p>
 <p>class：定义标签的样式类</p>
 <p>id，class，都是css选择器和js的dom都是开发的必备基础</p>
 <p>img标签和a标签一般都会有title属性</p>
-<h2 id="_12">行内元素</h2>
+<h2 id="_11">行内元素</h2>
 <p>不占有独立的区域，仅仅靠自身的字体大小和图像尺寸来支持结构。</p>
 <p>一般不可以设置宽度，高度，对齐等属性</p>
 <p>strong, b, em, i, del, s, ins, u, a, span</p>
 <p>span最典型</p>
-<h3 id="_13">块元素</h3>
+<h3 id="_12">块元素</h3>
 <p>通常独自占据一整行或者多整行，可以对其设置高度，宽度，对齐等属性</p>
 <p>h1~h6, p, div, ul, ol, li</p>
-<h1 id="_14">不常用语义标签</h1>
+<h1 id="_13">不常用语义标签</h1>
 <h2 id="code"><code>&lt;code&gt;</code></h2>
 <p>标注计算机代码</p>
 <h2 id="var"><code>&lt;var&gt;</code></h2>
@@ -617,7 +635,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-06 00:05:01</p>
+        <p>Site Generated 2019-03-08 11:31:33</p>
       </span>
     </div>
 
