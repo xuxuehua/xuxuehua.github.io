@@ -133,6 +133,7 @@
 </li>
 <li><a href="#_8">术语</a><ul>
 <li><a href="#hpa">HPA</a></li>
+<li><a href="#cncf">CNCF</a></li>
 </ul>
 </li>
 </ul>
@@ -155,25 +156,30 @@
 <p><img alt="alt" src="https://snag.gy/xikmph.jpg" /></p>
 <p><img alt="img" src="https://snag.gy/XTBSJr.jpg" /></p>
 <p><img alt="img" src="https://snag.gy/FPMuN5.jpg" /></p>
+<p><img alt="img" src="https://snag.gy/Ht860F.jpg" /></p>
 <h3 id="master-node">Master node</h3>
 <p>集群的网关和中枢，负责为用户和客户端暴露API，跟踪其他服务器的健康状态，以最优的方式调度工作负载，已经编排其他组件之间的通信等任务。</p>
 <p>包含3个进程</p>
 <h4 id="api-server">API Server</h4>
 <p>提供资源统一的入口</p>
+<p>负责API服务</p>
 <h4 id="controller-manager">Controller manager</h4>
-<p>资源的管理和调度（pod调度）</p>
+<p>资源的管理和调度（pod调度），即容器编排</p>
 <h4 id="scheduler">Scheduler</h4>
 <p>调度的队列，观察node的列表</p>
 <h3 id="worker-node">Worker node</h3>
 <h4 id="kubelet">Kubelet</h4>
 <p>与Master node通信的代理</p>
-<p>负责pod对应的容器创建，启动停止等任务， 与master 节点协作，实现集群管理， 与Master node协同工作</p>
+<p>负责pod对应的容器创建，启动停止等任务，  与Master node协同工作, 实现集群管理，实现容器运行时的交互，称CRI (Container  Runtime Interface)</p>
+<p>还通过gRPC协议，同Device Plugin的插件进行交互，这个插件时kubernetes用来管理GPU等宿主机物理设备的主要组件</p>
+<p>也是基于Kubernetes项目进行机器学习训练，高性能作业支持等工作必须关注的功能</p>
+<p>另是调用网络插件和存储插件为容器配置网络和数据持久化，即CNI (Container Networking Interface), CSI (Container Storage Interface)</p>
 <h4 id="kube-proxy">Kube proxy</h4>
 <p>实现kubernetes service 的通信和负载均衡机制的重要组件，缓存代理，通过iptables的nat表实现</p>
 <h4 id="docker-engine">Docker Engine</h4>
 <p>Docker 引擎，负责本机的容器创建和管理工作</p>
 <h3 id="etcd">etcd</h3>
-<p>使用etcd进行存储, 简单的key-value 存储</p>
+<p>使用etcd进行存储, 简单的key-value 存储，即整个集群的持久化数据</p>
 <h3 id="kubectl">kubectl</h3>
 <p>与master node交互</p>
 <h4 id="kubeconfig">kubeconfig</h4>
@@ -355,12 +361,14 @@
 <h2 id="hpa">HPA</h2>
 <p>Horizontal Pod Autoscaler    </p>
 <p>​    </p>
+<h2 id="cncf">CNCF</h2>
+<p>Cloud Native Computing Foundation</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-08 11:31:33</p>
+        <p>Site Generated 2019-03-10 12:49:28</p>
       </span>
     </div>
 

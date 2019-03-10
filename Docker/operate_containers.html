@@ -27,7 +27,7 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#operate_containers">operate_containers</a><ul>
-<li><a href="#docker-run">docker run 运行容器</a><ul>
+<li><a href="#run">run 运行容器</a><ul>
 <li><a href="#-t">-t 伪终端</a></li>
 <li><a href="#-i">-i 标准输入</a></li>
 <li><a href="#-d">-d 后台运行</a></li>
@@ -35,8 +35,13 @@
 <li><a href="#-rm">--rm 容器退出后删除</a></li>
 </ul>
 </li>
+<li><a href="#volume">volume 查看卷</a><ul>
+<li><a href="#ls-id">ls 查看卷ID</a></li>
+</ul>
+</li>
 <li><a href="#stop">stop 终止容器</a></li>
 <li><a href="#restart">restart 重启容器</a></li>
+<li><a href="#inspect">inspect 查看容器</a></li>
 <li><a href="#_1">进入容器</a><ul>
 <li><a href="#attach">attach 命令</a></li>
 <li><a href="#nsenter">nsenter 命令</a><ul>
@@ -62,7 +67,7 @@
 </div>
 <h1 id="operate_containers">operate_containers</h1>
 <p>在 Docker 1.13+ 推荐使用 docker container 子命令来管理 Docker 容器。</p>
-<h2 id="docker-run">docker run 运行容器</h2>
+<h2 id="run">run 运行容器</h2>
 <p>docker run 就是运行容器的命令</p>
 <div class="hlcode"><pre><span class="n">docker</span> <span class="n">run</span> <span class="n">ubuntu</span><span class="o">:</span><span class="mf">14.04</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">echo</span> <span class="err">&#39;</span><span class="n">Hello</span> <span class="n">World</span><span class="o">!</span><span class="err">&#39;</span>
 </pre></div>
@@ -90,14 +95,63 @@
 <p>容器是否会长久运行，是和 docker run 指定的命令有关</p>
 </blockquote>
 <h3 id="-v-volumn">-v volumn</h3>
-<p>指定本地卷信息</p>
+<p>进程在容器对被挂载目录（如test）进行的所有操作，都实际发生在宿主机的对应目录，（如home，或者/var/lib/docker/volumes/[VOLUME_ID]/_data，里面不会影响容器容器镜像</p>
+<p>其本质，是将/test目录的入口，重定向到/home目录的inode上，实际修改的是/home目录的inode</p>
 <p>默认容器对这个目录有可读写权限，可以通过指定ro，将权限改为只读（readonly）</p>
 <div class="hlcode"><pre><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="n">some</span><span class="o">-</span><span class="n">nginx</span> <span class="o">-</span><span class="n">p</span> <span class="mi">80</span><span class="o">:</span><span class="mi">80</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">some</span><span class="o">/</span><span class="n">content</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">html</span><span class="o">:</span><span class="n">ro</span> <span class="o">-</span><span class="n">d</span> <span class="n">nginx</span>
 </pre></div>
 
 
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">test</span> 
+</pre></div>
+
+
+<blockquote>
+<p>由于没有显式指定宿主机目录，默认在宿主机上创建临时目录</p>
+<p>/var/lib/docker/volumes/[VOLUME_ID]/_data </p>
+</blockquote>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">home</span><span class="o">:/</span><span class="n">test</span>
+</pre></div>
+
+
+<blockquote>
+<p>将宿主机目录/home 挂载进容器的/test 目录当中</p>
+</blockquote>
 <h3 id="-rm">--rm 容器退出后删除</h3>
 <p>这个参数是说容器退出后随之将其删除。默认情况下，为了排障需求，退出的容器并不会立即删除，除非手动 docker rm。我们这里只是随便执行个命令，看看结果，不需要排障和保留结果，因此使用 --rm 可以避免浪费空间。</p>
+<h2 id="volume">volume 查看卷</h2>
+<h3 id="ls-id">ls 查看卷ID</h3>
+<div class="hlcode"><pre><span class="cp"># docker run -d -v /test helloworld</span>
+<span class="mi">40</span><span class="n">a9cbd61d78451c74be1034ddaa1079e3e687ba4f7b557aff96f15bea5303cb</span>
+
+<span class="cp"># docker volume ls</span>
+<span class="n">DRIVER</span>              <span class="n">VOLUME</span> <span class="n">NAME</span>
+<span class="n">local</span>               <span class="n">c0dbc7dc970abb3ab332cf956b823e60286e4be5ecaa38faa2e7bf04a3d53677</span>
+</pre></div>
+
+
+<p>可以查看到该目录</p>
+<div class="hlcode"><pre><span class="cp"># ls -lah /var/lib/docker/volumes/c0dbc7dc970abb3ab332cf956b823e60286e4be5ecaa38faa2e7bf04a3d53677/_data/</span>
+<span class="n">total</span> <span class="mf">8.0</span><span class="n">K</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span> <span class="mf">4.0</span><span class="n">K</span> <span class="n">Mar</span>  <span class="mi">9</span> <span class="mi">16</span><span class="o">:</span><span class="mi">54</span> <span class="p">.</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">3</span> <span class="n">root</span> <span class="n">root</span> <span class="mf">4.0</span><span class="n">K</span> <span class="n">Mar</span>  <span class="mi">9</span> <span class="mi">16</span><span class="o">:</span><span class="mi">54</span> <span class="p">..</span>
+</pre></div>
+
+
+<p>进入容器创建文件，可以看到文本被创建了</p>
+<div class="hlcode"><pre><span class="cp"># docker exec -it loving_davinci /bin/bash</span>
+<span class="n">root</span><span class="err">@</span><span class="mi">40</span><span class="n">a9cbd61d78</span><span class="o">:/</span><span class="n">test</span><span class="err">#</span> <span class="n">touch</span> <span class="n">text</span><span class="p">.</span><span class="n">txt</span>
+<span class="n">root</span><span class="err">@</span><span class="mi">40</span><span class="n">a9cbd61d78</span><span class="o">:/</span><span class="n">test</span><span class="err">#</span> <span class="n">exit</span>
+<span class="n">root</span><span class="err">@</span><span class="mi">119</span><span class="o">:~</span><span class="err">#</span> <span class="n">ls</span>
+<span class="mi">1</span>  <span class="mf">1.</span><span class="n">sh</span>  <span class="n">Dockerfile</span>  <span class="n">app</span><span class="p">.</span><span class="n">py</span>  <span class="n">cc</span>  <span class="n">requirements</span><span class="p">.</span><span class="n">txt</span>
+<span class="n">root</span><span class="err">@</span><span class="mi">119</span><span class="o">:~</span><span class="err">#</span> <span class="n">ls</span> <span class="o">-</span><span class="n">lah</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">docker</span><span class="o">/</span><span class="n">volumes</span><span class="o">/</span><span class="n">c0dbc7dc970abb3ab332cf956b823e60286e4be5ecaa38faa2e7bf04a3d53677</span><span class="o">/</span><span class="n">_data</span><span class="o">/</span>
+<span class="n">total</span> <span class="mf">8.0</span><span class="n">K</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span> <span class="mf">4.0</span><span class="n">K</span> <span class="n">Mar</span>  <span class="mi">9</span> <span class="mi">16</span><span class="o">:</span><span class="mi">59</span> <span class="p">.</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">3</span> <span class="n">root</span> <span class="n">root</span> <span class="mf">4.0</span><span class="n">K</span> <span class="n">Mar</span>  <span class="mi">9</span> <span class="mi">16</span><span class="o">:</span><span class="mi">54</span> <span class="p">..</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">0</span> <span class="n">Mar</span>  <span class="mi">9</span> <span class="mi">16</span><span class="o">:</span><span class="mi">59</span> <span class="n">text</span><span class="p">.</span><span class="n">txt</span>
+</pre></div>
+
+
 <h2 id="stop">stop 终止容器</h2>
 <p>docker stop container_id 来终止一个运行中的容器。</p>
 <p>Stop all running containers</p>
@@ -107,6 +161,11 @@
 
 <h2 id="restart">restart 重启容器</h2>
 <p>docker restart container_id 命令会将一个运行态的容器终止，然后再重新启动它</p>
+<h2 id="inspect">inspect 查看容器</h2>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">inspect</span> <span class="o">--</span><span class="n">format</span> <span class="err">&#39;</span><span class="p">{{</span> <span class="p">.</span><span class="n">State</span><span class="p">.</span><span class="n">Pid</span> <span class="p">}}</span><span class="err">&#39;</span> <span class="n">af3f3c9d2428</span>
+</pre></div>
+
+
 <h2 id="_1">进入容器</h2>
 <ul>
 <li>使用 docker attach 命令或 nsenter 工具等。</li>
@@ -185,6 +244,7 @@
 
 
 <h3 id="exec">exec 命令</h3>
+<p>一个进程，可以选择加入到某个进程已有的Namespace当中，从而达到进入这个进程所在的容器，这就是docker exec的实现原理</p>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">sudo</span> <span class="n">docker</span> <span class="n">ps</span>  
 <span class="err">$</span> <span class="n">sudo</span> <span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="mi">775</span><span class="n">c7c9ee1e1</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>  
 </pre></div>
@@ -233,7 +293,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-08 11:31:33</p>
+        <p>Site Generated 2019-03-10 12:49:28</p>
       </span>
     </div>
 

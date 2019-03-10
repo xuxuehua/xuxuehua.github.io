@@ -174,8 +174,37 @@ p &gt; strong {
 <h2 id="_11">层级选择器</h2>
 <h2 id="_12">分组选择器</h2>
 <h2 id="_13">属性选择器</h2>
+<p>属性和属性值必须完全匹配</p>
 <p><img alt="img" src="https://snag.gy/PCwbiW.jpg" /></p>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="p">{</span>
+    <span class="nl">color:</span> <span class="n">aqua</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="p">[</span><span class="n">href</span><span class="p">]</span> <span class="p">{</span>
+    <span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="o">:</span> <span class="mi">30</span><span class="n">px</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
 <h2 id="_14">相邻兄弟选择器</h2>
+<p>可选择紧接在另一个元素后的元素，且二者有相同的父元素</p>
+<div class="hlcode"><pre><span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;</span>item1<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>item2<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>item3<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+
+li+li {
+    font-size: 30px;
+}
+</pre></div>
+
+
+<blockquote>
+<p>item2和item3会变大，后的概念</p>
+</blockquote>
 <h2 id="_15">伪类选择器</h2>
 <p><code>:link</code></p>
 <p>伪类讲应用于未被访问过的链接，解决此问题，请使用a标签</p>
@@ -269,7 +298,7 @@ p &gt; strong {
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-08 11:31:33</p>
+        <p>Site Generated 2019-03-10 12:49:28</p>
       </span>
     </div>
 
