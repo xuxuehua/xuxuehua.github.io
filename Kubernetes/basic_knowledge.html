@@ -76,9 +76,10 @@
 <li><a href="#endpoint">Endpoint</a></li>
 </ul>
 </li>
+<li><a href="#kubernetes_3">Kubernetes 证书</a></li>
 </ul>
 </li>
-<li><a href="#kubernetes_3">Kubernetes 集群组件</a><ul>
+<li><a href="#kubernetes_4">Kubernetes 集群组件</a><ul>
 <li><a href="#master">Master</a><ul>
 <li><a href="#api-server_1">API server  集群的网关</a></li>
 <li><a href="#controller-manager_1">controller-manager</a></li>
@@ -101,24 +102,24 @@
 </li>
 </ul>
 </li>
-<li><a href="#kubernetes_4">Kubernetes 网络模型</a><ul>
+<li><a href="#kubernetes_5">Kubernetes 网络模型</a><ul>
 <li><a href="#_3">实现策略</a></li>
 </ul>
 </li>
-<li><a href="#kubernetes_5">Kubernetes 服务发现机制</a><ul>
+<li><a href="#kubernetes_6">Kubernetes 服务发现机制</a><ul>
 <li><a href="#_4">环境变量</a></li>
 <li><a href="#dns">DNS</a></li>
 <li><a href="#service_2">外部系统访问service问题</a></li>
 </ul>
 </li>
-<li><a href="#kubernetes_6">Kubernetes 日志</a><ul>
+<li><a href="#kubernetes_7">Kubernetes 日志</a><ul>
 <li><a href="#logs">Logs 日志</a><ul>
 <li><a href="#_5">典型架构</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#kubernetes_7">Kubernetes 监控</a><ul>
+<li><a href="#kubernetes_8">Kubernetes 监控</a><ul>
 <li><a href="#_6">监控指标</a></li>
 <li><a href="#_7">常用工具</a><ul>
 <li><a href="#cadvisor">cAdvisor</a></li>
@@ -277,7 +278,11 @@
 </blockquote>
 <h4 id="endpoint">Endpoint</h4>
 <p>Endpoint: Pod IP + Container Port </p>
-<h2 id="kubernetes_3">Kubernetes 集群组件</h2>
+<h3 id="kubernetes_3">Kubernetes 证书</h3>
+<p>除非开启不安全模式，否则默认都是通过https访问kube-apiserver</p>
+<p>kubeadm 为Kubernetes 项目生成的证书文件都放在master节点的<code>/etc/kubernetes/pki</code> 下面，最主要的是<code>ca.crt</code> 和私钥<code>ca.key</code></p>
+<p>kubectl获取容器日志等streaming操作时，需要通过kube-apiserver向kubelet发起请求，这个连接也必须是安全的，kubeadm为这一步生成的是<code>apiserver-kubelet-client.crt</code>文件，对应私钥为<code>apiserver-kubelet-client.key</code></p>
+<h2 id="kubernetes_4">Kubernetes 集群组件</h2>
 <h3 id="master">Master</h3>
 <p>集群管理，集群接口管理，监控，编排</p>
 <h4 id="api-server_1">API server  集群的网关</h4>
@@ -310,7 +315,7 @@
 <p>逐渐有Prometheus结合其他组件替代</p>
 <h4 id="ingress-controller">Ingress Controller</h4>
 <p>实现应用层HTTP(s)的负载均衡</p>
-<h2 id="kubernetes_4">Kubernetes 网络模型</h2>
+<h2 id="kubernetes_5">Kubernetes 网络模型</h2>
 <p>主要的通信</p>
 <div class="hlcode"><pre><span class="err">同一</span><span class="n">Pod</span><span class="err">内</span>
 <span class="n">Pod</span><span class="err">之间</span>
@@ -326,7 +331,7 @@
 <p>Pod IP可以存在于某个网卡，或者虚拟设备</p>
 <p>Service IP是一个虚拟IP地址，没有任何设备配置此地址，由iptables或ipvs重新定向到本地端口，再调度到后端Pod 对象，即Cluster IP</p>
 <p>​    </p>
-<h2 id="kubernetes_5">Kubernetes 服务发现机制</h2>
+<h2 id="kubernetes_6">Kubernetes 服务发现机制</h2>
 <p>支持两种服务发现模式 - 环境变量和DNS</p>
 <h3 id="_4">环境变量</h3>
 <p>当Pod运行在Node上，Kubelet会为每个活跃的Service添加一组环境变量</p>
@@ -338,11 +343,11 @@
 <li>Pod IP：Pod的IP</li>
 <li>Cluster IP：Service 的IP （不可以ping测试）</li>
 </ul>
-<h2 id="kubernetes_6">Kubernetes 日志</h2>
+<h2 id="kubernetes_7">Kubernetes 日志</h2>
 <h3 id="logs">Logs 日志</h3>
 <h4 id="_5">典型架构</h4>
 <p><img alt="img" src="https://snag.gy/fTuwEB.jpg" /></p>
-<h2 id="kubernetes_7">Kubernetes 监控</h2>
+<h2 id="kubernetes_8">Kubernetes 监控</h2>
 <h3 id="_6">监控指标</h3>
 <p>Node health</p>
 <p>Health of Kubernetes</p>
@@ -368,7 +373,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-10 12:49:28</p>
+        <p>Site Generated 2019-03-12 23:04:43</p>
       </span>
     </div>
 

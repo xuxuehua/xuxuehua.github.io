@@ -28,7 +28,14 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#imagemagick">imagemagick</a><ul>
 <li><a href="#_1">安装</a></li>
-<li><a href="#convert">convert</a></li>
+<li><a href="#convert">convert</a><ul>
+<li><a href="#-thumnail">-thumnail</a></li>
+<li><a href="#-resize">-resize</a></li>
+<li><a href="#-sample">-sample</a></li>
+<li><a href="#-rotate">-rotate</a></li>
+<li><a href="#-draw">-draw</a></li>
+</ul>
+</li>
 <li><a href="#script">script</a></li>
 </ul>
 </li>
@@ -43,10 +50,35 @@
 
 
 <h2 id="convert">convert</h2>
+<h3 id="-thumnail">-thumnail</h3>
 <p>So to create a thumbnail of the abc.png image with 200px width, you need to type:<br />
 <code>$ convert -thumbnail 200 abc.png thumb.abc.png</code></p>
 <p>To create a thumbnail of the abc.png image with 200px height, you need to type:<br />
 <code>$ convert -thumbnail x200 abc.png thumb.abc.png</code></p>
+<h3 id="-resize">-resize</h3>
+<p>将图像的像素改为1024*768，注意1024与768之间是小写字母x</p>
+<div class="hlcode"><pre><span class="n">convert</span> <span class="o">-</span><span class="n">resize</span> <span class="mi">1024</span><span class="n">x768</span>  <span class="n">xxx</span><span class="p">.</span><span class="n">jpg</span>   <span class="n">xxx1</span><span class="p">.</span><span class="n">jpg</span>    
+</pre></div>
+
+
+<h3 id="-sample">-sample</h3>
+<p>将图像的缩减为原来的50%*50%</p>
+<div class="hlcode"><pre><span class="n">convert</span> <span class="o">-</span><span class="n">sample</span> <span class="mi">50</span><span class="o">%</span><span class="n">x50</span><span class="o">%</span>  <span class="n">xxx</span><span class="p">.</span><span class="n">jpg</span>  <span class="n">xxx1</span><span class="p">.</span><span class="n">jpg</span>   
+</pre></div>
+
+
+<h3 id="-rotate">-rotate</h3>
+<p>将图像顺时针旋转270度</p>
+<div class="hlcode"><pre><span class="n">convert</span> <span class="o">-</span><span class="n">rotate</span> <span class="mi">270</span> <span class="n">sky</span><span class="p">.</span><span class="n">jpg</span> <span class="n">sky</span><span class="o">-</span><span class="n">final</span><span class="p">.</span><span class="n">jpg</span>      
+</pre></div>
+
+
+<h3 id="-draw">-draw</h3>
+<p>使用-draw选项还可以在图像里面添加文字：</p>
+<div class="hlcode"><pre><span class="n">convert</span> <span class="o">-</span><span class="n">fill</span> <span class="n">black</span> <span class="o">-</span><span class="n">pointsize</span> <span class="mi">60</span> <span class="o">-</span><span class="n">font</span> <span class="n">helvetica</span> <span class="o">-</span><span class="n">draw</span> <span class="err">&#39;</span><span class="n">text</span> <span class="mi">10</span><span class="p">,</span><span class="mi">80</span> <span class="s">&quot;Hello, World!&quot;</span> <span class="err">‘</span>  <span class="n">hello</span><span class="p">.</span><span class="n">jpg</span>  <span class="n">helloworld</span><span class="p">.</span><span class="n">jpg</span>
+</pre></div>
+
+
 <h2 id="script">script</h2>
 <table class="hlcodetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
@@ -68,7 +100,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-10 12:49:28</p>
+        <p>Site Generated 2019-03-12 23:04:43</p>
       </span>
     </div>
 

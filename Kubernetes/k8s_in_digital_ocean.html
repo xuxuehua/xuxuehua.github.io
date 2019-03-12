@@ -1,0 +1,375 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>k8s_in_digital_ocean - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Kubernetes">Kubernetes</a>&nbsp;&#187;&nbsp;k8s_in_digital_ocean
+    <span class="updated">Page Updated&nbsp;
+      2019-03-10 21:15
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">k8s_in_digital_ocean</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#master">Master 节点</a><ul>
+<li><a href="#ubuntu">Ubuntu</a></li>
+<li><a href="#kubeadm">kubeadm</a><ul>
+<li><a href="#yaml">编写 yaml</a><ul>
+<li><a href="#v1130">v1.13.0</a></li>
+</ul>
+</li>
+<li><a href="#_1">执行</a></li>
+</ul>
+</li>
+<li><a href="#_2">查看部署信息</a><ul>
+<li><a href="#pod">查看节点Pod信息</a></li>
+</ul>
+</li>
+<li><a href="#_3">部署网络插件</a><ul>
+<li><a href="#kubectl-apply">kubectl apply</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#worker">Worker 节点</a><ul>
+<li><a href="#ubuntu_1">Ubuntu</a></li>
+<li><a href="#kubeadm-join">Kubeadm join</a></li>
+</ul>
+</li>
+<li><a href="#worker-master">Worker 节点（与Master在一台主机）</a><ul>
+<li><a href="#pod_1">声明Pod</a></li>
+<li><a href="#mastertaint">master节点的Taint</a></li>
+<li><a href="#dashboard">Dashboard 可视化插件</a></li>
+<li><a href="#_4">容器持久化插件</a><ul>
+<li><a href="#_5">持久化</a></li>
+<li><a href="#rook-no-prod">Rook （No PROD）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_6">部署应用</a><ul>
+<li><a href="#nginx">nginx</a></li>
+</ul>
+</li>
+<li><a href="#faq">FAQ</a><ul>
+<li><a href="#token">token 过期</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="master">Master 节点</h1>
+<h2 id="ubuntu">Ubuntu</h2>
+<p>16.04, 2 CPU, 7.5G mem, 30G HDD</p>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="o">:</span><span class="c1">//packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -</span>
+
+<span class="n">cat</span> <span class="o">&lt;&lt;</span><span class="n">EOF</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">list</span>
+<span class="n">deb</span> <span class="n">http</span><span class="o">:</span><span class="c1">//apt.kubernetes.io/ kubernetes-xenial main</span>
+<span class="n">EOF</span>
+
+<span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">update</span>
+
+<span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">kubelet</span><span class="o">=</span><span class="mf">1.11.3</span><span class="o">-</span><span class="mo">00</span>
+<span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">kubectl</span><span class="o">=</span><span class="mf">1.11.3</span><span class="o">-</span><span class="mo">00</span>
+<span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">kubeadm</span><span class="o">=</span><span class="mf">1.11.3</span><span class="o">-</span><span class="mo">00</span>
+</pre></div>
+
+
+<h2 id="kubeadm">kubeadm</h2>
+<h3 id="yaml">编写 yaml</h3>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">kubeadm</span><span class="o">.</span><span class="na">k8s</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">v1alpha1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">MasterConfiguration</span>
+<span class="n">controllerManagerExtraArgs</span><span class="o">:</span>
+  <span class="n">horizontal</span><span class="o">-</span><span class="n">pod</span><span class="o">-</span><span class="n">autoscaler</span><span class="o">-</span><span class="n">use</span><span class="o">-</span><span class="n">rest</span><span class="o">-</span><span class="n">clients</span><span class="o">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="n">horizontal</span><span class="o">-</span><span class="n">pod</span><span class="o">-</span><span class="n">autoscaler</span><span class="o">-</span><span class="n">sync</span><span class="o">-</span><span class="n">period</span><span class="o">:</span> <span class="s2">&quot;10s&quot;</span>
+  <span class="n">node</span><span class="o">-</span><span class="n">monitor</span><span class="o">-</span><span class="n">grace</span><span class="o">-</span><span class="n">period</span><span class="o">:</span> <span class="s2">&quot;10s&quot;</span>
+<span class="n">apiServerExtraArgs</span><span class="o">:</span>
+  <span class="n">runtime</span><span class="o">-</span><span class="n">config</span><span class="o">:</span> <span class="s2">&quot;api/all=true&quot;</span>
+<span class="n">kubernetesVersion</span><span class="o">:</span> <span class="s2">&quot;stable-1.11&quot;</span>
+</pre></div>
+
+
+<blockquote>
+<p>这里的controller-manager 配置了<code>horizontal-pod-autoscaler-use-rest-clients: "true"</code></p>
+</blockquote>
+<p>这样能够使用自定义资源(Custom Metrics) 进行水平扩展</p>
+<h4 id="v1130">v1.13.0</h4>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">kubeadm</span><span class="o">.</span><span class="na">k8s</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">InitConfiguration</span>
+<span class="n">controllerManager</span><span class="o">:</span>
+  <span class="n">horizontal</span><span class="o">-</span><span class="n">pod</span><span class="o">-</span><span class="n">autoscaler</span><span class="o">-</span><span class="n">use</span><span class="o">-</span><span class="n">rest</span><span class="o">-</span><span class="n">clients</span><span class="o">:</span> <span class="s2">&quot;true&quot;</span>
+  <span class="n">horizontal</span><span class="o">-</span><span class="n">pod</span><span class="o">-</span><span class="n">autoscaler</span><span class="o">-</span><span class="n">sync</span><span class="o">-</span><span class="n">period</span><span class="o">:</span> <span class="s2">&quot;10s&quot;</span>
+  <span class="n">node</span><span class="o">-</span><span class="n">monitor</span><span class="o">-</span><span class="n">grace</span><span class="o">-</span><span class="n">period</span><span class="o">:</span> <span class="s2">&quot;10s&quot;</span>
+<span class="n">apiServer</span><span class="o">:</span>
+  <span class="n">runtime</span><span class="o">-</span><span class="n">config</span><span class="o">:</span> <span class="s2">&quot;api/all=true&quot;</span>
+<span class="n">kubernetesVersion</span><span class="o">:</span> <span class="s2">&quot;v1.13.0&quot;</span>
+</pre></div>
+
+
+<h3 id="_1">执行</h3>
+<div class="hlcode"><pre><span class="n">kubeadm</span> <span class="n">init</span> <span class="o">--</span><span class="n">config</span> <span class="n">kubeadm</span><span class="p">.</span><span class="n">yaml</span>
+</pre></div>
+
+
+<p>部署完成后</p>
+<div class="hlcode"><pre><span class="n">Your</span> <span class="n">Kubernetes</span> <span class="n">master</span> <span class="n">has</span> <span class="n">initialized</span> <span class="n">successfully</span><span class="o">!</span>
+
+<span class="n">To</span> <span class="n">start</span> <span class="n">using</span> <span class="n">your</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">you</span> <span class="n">need</span> <span class="n">to</span> <span class="n">run</span> <span class="n">the</span> <span class="n">following</span> <span class="n">as</span> <span class="n">a</span> <span class="n">regular</span> <span class="n">user</span><span class="o">:</span>
+
+  <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">kube</span>
+  <span class="n">sudo</span> <span class="n">cp</span> <span class="o">-</span><span class="n">i</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">kubernetes</span><span class="o">/</span><span class="n">admin</span><span class="p">.</span><span class="n">conf</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">kube</span><span class="o">/</span><span class="n">config</span>
+  <span class="n">sudo</span> <span class="n">chown</span> <span class="err">$</span><span class="p">(</span><span class="n">id</span> <span class="o">-</span><span class="n">u</span><span class="p">)</span><span class="o">:</span><span class="err">$</span><span class="p">(</span><span class="n">id</span> <span class="o">-</span><span class="n">g</span><span class="p">)</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">kube</span><span class="o">/</span><span class="n">config</span>
+
+<span class="n">You</span> <span class="n">should</span> <span class="n">now</span> <span class="n">deploy</span> <span class="n">a</span> <span class="n">pod</span> <span class="n">network</span> <span class="n">to</span> <span class="n">the</span> <span class="n">cluster</span><span class="p">.</span>
+<span class="n">Run</span> <span class="s">&quot;kubectl apply -f [podnetwork].yaml&quot;</span> <span class="n">with</span> <span class="n">one</span> <span class="n">of</span> <span class="n">the</span> <span class="n">options</span> <span class="n">listed</span> <span class="n">at</span><span class="o">:</span>
+  <span class="nl">https:</span><span class="c1">//kubernetes.io/docs/concepts/cluster-administration/addons/</span>
+
+<span class="n">You</span> <span class="n">can</span> <span class="n">now</span> <span class="n">join</span> <span class="n">any</span> <span class="n">number</span> <span class="n">of</span> <span class="n">machines</span> <span class="n">by</span> <span class="n">running</span> <span class="n">the</span> <span class="n">following</span> <span class="n">on</span> <span class="n">each</span> <span class="n">node</span>
+<span class="n">as</span> <span class="n">root</span><span class="o">:</span>
+
+  <span class="n">kubeadm</span> <span class="n">join</span> <span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="o">:</span><span class="mi">6443</span> <span class="o">--</span><span class="n">token</span> <span class="n">h7t5zp</span><span class="mf">.0</span><span class="n">atym3rlxb7oa9vu</span> <span class="o">--</span><span class="n">discovery</span><span class="o">-</span><span class="n">token</span><span class="o">-</span><span class="n">ca</span><span class="o">-</span><span class="n">cert</span><span class="o">-</span><span class="n">hash</span> <span class="n">sha256</span><span class="o">:</span><span class="mf">3f</span><span class="mi">9</span><span class="n">b2fac0cdf760f6b03ccb0934743e97c182e127eca99a516716010275cc046</span>
+</pre></div>
+
+
+<h2 id="_2">查看部署信息</h2>
+<p>可以查看到当前唯一的节点</p>
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span>  <span class="n">get</span> <span class="n">nodes</span>
+<span class="n">NAME</span>      <span class="n">STATUS</span>     <span class="n">ROLES</span>     <span class="n">AGE</span>       <span class="n">VERSION</span>
+<span class="mi">111</span>       <span class="n">NotReady</span>   <span class="n">master</span>    <span class="mi">3</span><span class="n">m</span>        <span class="n">v1</span><span class="mf">.11.3</span>
+</pre></div>
+
+
+<p>Master节点状态是NotReady，因为KubeletNotReady </p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">describe</span> <span class="n">node</span> <span class="mi">111</span>
+</pre></div>
+
+
+<blockquote>
+<p>在condition里面会有这个信息 KubeletNotReady</p>
+</blockquote>
+<h3 id="pod">查看节点Pod信息</h3>
+<p>kube-system是Kubernetes项目预留的系统Pod工作空间(Namespace, 只是Kubernetes 划分不同工作空间的单位)</p>
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
+<span class="n">NAME</span>                          <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">coredns</span><span class="o">-</span><span class="mf">78f</span><span class="n">cdf6894</span><span class="o">-</span><span class="mi">46</span><span class="n">p7z</span>      <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Pending</span>   <span class="mi">0</span>          <span class="mi">43</span><span class="n">m</span>
+<span class="n">coredns</span><span class="o">-</span><span class="mf">78f</span><span class="n">cdf6894</span><span class="o">-</span><span class="n">scs85</span>      <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Pending</span>   <span class="mi">0</span>          <span class="mi">43</span><span class="n">m</span>
+<span class="n">etcd</span><span class="o">-</span><span class="mi">111</span>                      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">43</span><span class="n">m</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="mi">111</span>            <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">42</span><span class="n">m</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">controller</span><span class="o">-</span><span class="n">manager</span><span class="o">-</span><span class="mi">111</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">43</span><span class="n">m</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">proxy</span><span class="o">-</span><span class="n">stblp</span>              <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">43</span><span class="n">m</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">scheduler</span><span class="o">-</span><span class="mi">111</span>            <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">42</span><span class="n">m</span>
+</pre></div>
+
+
+<p>这里可以看到CoreDNS等依赖网络的Pod都是pending</p>
+<h2 id="_3">部署网络插件</h2>
+<h3 id="kubectl-apply">kubectl apply</h3>
+<p>部署weave插件</p>
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">https</span><span class="o">:</span><span class="c1">//git.io/weave-kube-1.6</span>
+<span class="n">serviceaccount</span><span class="o">/</span><span class="n">weave</span><span class="o">-</span><span class="n">net</span> <span class="n">created</span>
+<span class="n">clusterrole</span><span class="p">.</span><span class="n">rbac</span><span class="p">.</span><span class="n">authorization</span><span class="p">.</span><span class="n">k8s</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">weave</span><span class="o">-</span><span class="n">net</span> <span class="n">created</span>
+<span class="n">clusterrolebinding</span><span class="p">.</span><span class="n">rbac</span><span class="p">.</span><span class="n">authorization</span><span class="p">.</span><span class="n">k8s</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">weave</span><span class="o">-</span><span class="n">net</span> <span class="n">created</span>
+<span class="n">role</span><span class="p">.</span><span class="n">rbac</span><span class="p">.</span><span class="n">authorization</span><span class="p">.</span><span class="n">k8s</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">weave</span><span class="o">-</span><span class="n">net</span> <span class="n">created</span>
+<span class="n">rolebinding</span><span class="p">.</span><span class="n">rbac</span><span class="p">.</span><span class="n">authorization</span><span class="p">.</span><span class="n">k8s</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">weave</span><span class="o">-</span><span class="n">net</span> <span class="n">created</span>
+<span class="n">daemonset</span><span class="p">.</span><span class="n">extensions</span><span class="o">/</span><span class="n">weave</span><span class="o">-</span><span class="n">net</span> <span class="n">created</span>
+</pre></div>
+
+
+<p>这样所有系统的Pod都启动了</p>
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
+<span class="n">NAME</span>                          <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">coredns</span><span class="o">-</span><span class="mf">78f</span><span class="n">cdf6894</span><span class="o">-</span><span class="mi">46</span><span class="n">p7z</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">47</span><span class="n">m</span>
+<span class="n">coredns</span><span class="o">-</span><span class="mf">78f</span><span class="n">cdf6894</span><span class="o">-</span><span class="n">scs85</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">47</span><span class="n">m</span>
+<span class="n">etcd</span><span class="o">-</span><span class="mi">111</span>                      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">46</span><span class="n">m</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="mi">111</span>            <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">46</span><span class="n">m</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">controller</span><span class="o">-</span><span class="n">manager</span><span class="o">-</span><span class="mi">111</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">46</span><span class="n">m</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">proxy</span><span class="o">-</span><span class="n">stblp</span>              <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">47</span><span class="n">m</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">scheduler</span><span class="o">-</span><span class="mi">111</span>            <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">46</span><span class="n">m</span>
+<span class="n">weave</span><span class="o">-</span><span class="n">net</span><span class="o">-</span><span class="n">mkhhs</span>               <span class="mi">2</span><span class="o">/</span><span class="mi">2</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">25</span><span class="n">s</span>
+</pre></div>
+
+
+<h1 id="worker">Worker 节点</h1>
+<p>Worker 节点和Master节点几乎是相同的， 运行着都是一个kubelet 组件</p>
+<p>唯一区别在kubeadm init的过程中，kubelet 启动后，Master节点上还会自动运行kube-apiserver，kube-scheduler， kube-controller-manager 着三个系统Pod</p>
+<h2 id="ubuntu_1">Ubuntu</h2>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="o">:</span><span class="c1">//packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -</span>
+
+<span class="n">cat</span> <span class="o">&lt;&lt;</span><span class="n">EOF</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">list</span>
+<span class="n">deb</span> <span class="n">http</span><span class="o">:</span><span class="c1">//apt.kubernetes.io/ kubernetes-xenial main</span>
+<span class="n">EOF</span>
+
+<span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">update</span>
+
+<span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">kubelet</span><span class="o">=</span><span class="mf">1.11.3</span><span class="o">-</span><span class="mo">00</span>
+<span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">kubectl</span><span class="o">=</span><span class="mf">1.11.3</span><span class="o">-</span><span class="mo">00</span>
+<span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">kubeadm</span><span class="o">=</span><span class="mf">1.11.3</span><span class="o">-</span><span class="mo">00</span>
+</pre></div>
+
+
+<h2 id="kubeadm-join">Kubeadm join</h2>
+<p>运行master node init之后生成的token指令即可</p>
+<h1 id="worker-master">Worker 节点（与Master在一台主机）</h1>
+<p>默认Master节点是不允许运行用户的Pod，但可以Kubernetes的Taint/Toleration机制就可以</p>
+<p>即某节点被加上一个Taint，那么所有的Pod就不能在这个节点上运行</p>
+<p>除非有个别的Pod声明可以容忍这个污点，显式声明Toleration</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">taint</span> <span class="n">nodes</span> <span class="n">node1</span> <span class="n">foo</span><span class="o">=</span><span class="n">bar</span><span class="o">:</span><span class="n">NoSchedule</span>
+</pre></div>
+
+
+<blockquote>
+<p>NoScheduler 意味着Taint只会在调度新Pod时产生作用，不会影响已经在node1上运行的Pod</p>
+</blockquote>
+<h2 id="pod_1">声明Pod</h2>
+<p>为了实现Toleration，需要在Pod的yaml文件中 spec加入tolerations字段即可</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="o">...</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">tolerations</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">key</span><span class="o">:</span> <span class="s2">&quot;foo&quot;</span>
+    <span class="n">operator</span><span class="o">:</span> <span class="s2">&quot;Equal&quot;</span>
+    <span class="n">value</span><span class="o">:</span> <span class="s2">&quot;bar&quot;</span>
+    <span class="n">effect</span><span class="o">:</span> <span class="s2">&quot;NoSchedule&quot;</span>
+</pre></div>
+
+
+<blockquote>
+<p>这个 Toleration 的含义是，这个 Pod 能“容忍”所有键值对为 foo=bar 的 Taint（ operator: “Equal”，“等于”操作）。</p>
+</blockquote>
+<h2 id="mastertaint">master节点的Taint</h2>
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span>  <span class="n">describe</span> <span class="n">node</span> <span class="mi">111</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">Taints</span>
+<span class="nl">Taints:</span>             <span class="n">node</span><span class="o">-</span><span class="n">role</span><span class="p">.</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">master</span><span class="o">:</span><span class="n">NoSchedule</span>
+</pre></div>
+
+
+<blockquote>
+<p>可以看到，Master 节点默认被加上了node-role.kubernetes.io/master:NoSchedule</p>
+<p>这样一个“污点”，其中“键”是node-role.kubernetes.io/master，而没有提供“值”。</p>
+</blockquote>
+<p>若想要一个单节点的Kubernetes，删除这个Taint即可</p>
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">taint</span> <span class="n">nodes</span> <span class="o">--</span><span class="n">all</span> <span class="n">node</span><span class="o">-</span><span class="n">role</span><span class="p">.</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">master</span><span class="o">-</span>
+<span class="n">node</span><span class="o">/</span><span class="mi">111</span> <span class="n">untainted</span>
+</pre></div>
+
+
+<blockquote>
+<p>结尾的短线dash表示，移除所有以node-role.kubernetes.io/master为键的taint</p>
+</blockquote>
+<h2 id="dashboard">Dashboard 可视化插件</h2>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">https</span><span class="o">:</span><span class="c1">//raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml</span>
+</pre></div>
+
+
+<p>查看dashboard 对应的pod</p>
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
+<span class="n">NAME</span>                                    <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">coredns</span><span class="o">-</span><span class="mf">78f</span><span class="n">cdf6894</span><span class="o">-</span><span class="mi">46</span><span class="n">p7z</span>                <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">h</span>
+<span class="n">coredns</span><span class="o">-</span><span class="mf">78f</span><span class="n">cdf6894</span><span class="o">-</span><span class="n">scs85</span>                <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">h</span>
+<span class="n">etcd</span><span class="o">-</span><span class="mi">111</span>                                <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">h</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="mi">111</span>                      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">h</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">controller</span><span class="o">-</span><span class="n">manager</span><span class="o">-</span><span class="mi">111</span>             <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">h</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">proxy</span><span class="o">-</span><span class="n">stblp</span>                        <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">h</span>
+<span class="n">kube</span><span class="o">-</span><span class="n">scheduler</span><span class="o">-</span><span class="mi">111</span>                      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">h</span>
+<span class="n">kubernetes</span><span class="o">-</span><span class="n">dashboard</span><span class="o">-</span><span class="mi">5</span><span class="n">dd89b9875</span><span class="o">-</span><span class="n">sbct6</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">22</span><span class="n">s</span>
+<span class="n">weave</span><span class="o">-</span><span class="n">net</span><span class="o">-</span><span class="n">mkhhs</span>                         <span class="mi">2</span><span class="o">/</span><span class="mi">2</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">44</span><span class="n">m</span>
+</pre></div>
+
+
+<p>需要注意的是，由于 Dashboard 是一个 Web Server，很多人经常会在自己的公有云上无意地暴露 Dashboard 的端口，从而造成安全隐患。所以，1.7 版本之后的 Dashboard 项目部署完成后，默认只能通过 Proxy 的方式在本地访问。具体的操作，你可以查看 Dashboard 项目的文档</p>
+<h2 id="_4">容器持久化插件</h2>
+<h3 id="_5">持久化</h3>
+<p>很多时候我们需要用数据卷（Volume）把外面宿主机上的目录或者文件挂载进容器的 Mount Namespace 中，从而达到容器和宿主机共享这些目录或者文件的目的。容器里的应用，也就可以在这些数据卷中新建和写入文件。</p>
+<p>可是，如果你在某一台机器上启动的一个容器，显然无法看到其他机器上的容器在它们的数据卷里写入的文件。</p>
+<p>而容器的持久化存储，就是用来保存容器存储状态的重要手段：存储插件会在容器里挂载一个基于网络或者其他机制的远程数据卷，使得在容器里创建的文件，实际上是保存在远程存储服务器上，或者以分布式的方式保存在多个节点上，而与当前宿主机没有任何绑定关系。这样，无论你在其他哪个宿主机上启动新的容器，都可以请求挂载指定的持久化存储卷，从而访问到数据卷里保存的内容。这就是持久化</p>
+<p>由于 Kubernetes 本身的松耦合设计，绝大多数存储项目，比如 Ceph、GlusterFS、NFS 等，都可以为 Kubernetes 提供持久化存储能力。在这次选择部署一个很重要的 Kubernetes 存储插件项目：Rook。</p>
+<h3 id="rook-no-prod">Rook （No PROD）</h3>
+<p>Rook 项目是一个基于 Ceph 的 Kubernetes 存储插件（它后期也在加入对更多存储实现的支持）。不过，不同于对 Ceph 的简单封装，Rook 在自己的实现中加入了水平扩展、迁移、灾难备份、监控等大量的企业级功能，使得这个项目变成了一个完整的、生产级别可用的容器存储插件。</p>
+<p>现在rook ceph版本还是beta，不能用于生产环境</p>
+<p>得益于容器化技术，用两条指令，Rook 就可以把复杂的 Ceph 存储后端部署起来：</p>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">https</span><span class="o">:</span><span class="c1">//raw.githubusercontent.com/rook/rook/master/cluster/examples/kubernetes/ceph/operator.yaml</span>
+
+<span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">https</span><span class="o">:</span><span class="c1">//raw.githubusercontent.com/rook/rook/master/cluster/examples/kubernetes/ceph/cluster.yaml</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span>  <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">rook</span><span class="o">-</span><span class="n">ceph</span>
+<span class="n">NAME</span>                               <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">mon</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="mi">6</span><span class="n">c66975</span><span class="o">-</span><span class="mi">5</span><span class="n">kgxt</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">22</span><span class="n">s</span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">mon</span><span class="o">-</span><span class="n">b</span><span class="o">-</span><span class="n">b955c6b59</span><span class="o">-</span><span class="mi">9</span><span class="n">r9kk</span>    <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">16</span><span class="n">s</span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">mon</span><span class="o">-</span><span class="n">c</span><span class="o">-</span><span class="mi">585</span><span class="n">b9dbff9</span><span class="o">-</span><span class="n">h92wq</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">6</span><span class="n">s</span>
+<span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span>  <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">system</span>
+<span class="n">NAME</span>                                  <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">agent</span><span class="o">-</span><span class="n">njf9n</span>                 <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">operator</span><span class="o">-</span><span class="mi">5496</span><span class="n">d44d7c</span><span class="o">-</span><span class="n">mgplk</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>
+<span class="n">rook</span><span class="o">-</span><span class="n">discover</span><span class="o">-</span><span class="mi">66</span><span class="n">m7x</span>                   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="n">m</span>
+</pre></div>
+
+
+<p>这样，一个基于 Rook 持久化存储集群就以容器的方式运行起来了，而接下来在 Kubernetes 项目上创建的所有 Pod 就能够通过 Persistent Volume（PV）和 Persistent Volume Claim（PVC）的方式，在容器里挂载由 Ceph 提供的数据卷了。</p>
+<h1 id="_6">部署应用</h1>
+<h2 id="nginx">nginx</h2>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Deployment</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">selector</span><span class="o">:</span>
+    <span class="n">matchLabels</span><span class="o">:</span>
+      <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+  <span class="n">replicas</span><span class="o">:</span> <span class="mi">2</span>
+  <span class="n">template</span><span class="o">:</span>
+    <span class="n">metadata</span><span class="o">:</span>
+      <span class="n">labels</span><span class="o">:</span>
+        <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">containers</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+        <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span><span class="o">:</span><span class="mf">1.7</span><span class="o">.</span><span class="mi">9</span>
+        <span class="n">ports</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h1 id="faq">FAQ</h1>
+<h2 id="token">token 过期</h2>
+<p>Kubeadm的token 23小时后过期，所以如果你worker端和master 端不是在同一天做的，有可能会出现如下错误:<br />
+[kubelet] Downloading configuration for the kubelet from the "kubelet-config-1.11" ConfigMap in the kube-system namespace<br />
+Unauthorized</p>
+<p>Stackoverflow上有这个解:<br />
+https://stackoverflow.com/questions/52823871/unable-to-join-the-worker-node-to-k8-master-node</p>
+<p>简单来说，在master 上重新kubeadm token create一下，替换原来的token 就好了</p>
+<p>另外，如果出现<br />
+[preflight] Some fatal errors occurred:<br />
+        [ERROR FileAvailable--etc-kubernetes-pki-ca.crt]: /etc/kubernetes/pki/ca.crt already exists<br />
+        [ERROR FileAvailable--etc-kubernetes-bootstrap-kubelet.conf]: /etc/kubernetes/bootstrap-kubelet.conf already exists<br />
+[preflight] If you know what you are doing, you can make a check non-fatal with <code>--ignore-preflight-errors=...</code></p>
+<p>把那2个文件mv挪走就好了</p>
+<p>如果token过期了，不建议设置ttl=0，使用<code>kubeadm upgrade</code></p>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-03-12 23:04:43</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

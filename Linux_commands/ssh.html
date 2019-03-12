@@ -43,7 +43,8 @@
 <li><a href="#-l">-l</a></li>
 <li><a href="#-l_1">-L 本地转发</a></li>
 <li><a href="#-n">-N</a></li>
-<li><a href="#-o-option">-o option 配置选项</a><ul>
+<li><a href="#-o-option">-o option 配置选项</a></li>
+<li><a href="#serveraliveinterval">ServerAliveInterval</a><ul>
 <li><a href="#stricthostkeychecking">StrictHostKeyChecking</a></li>
 <li><a href="#proxycommand-case-sensitive">ProxyCommand (Case sensitive)</a><ul>
 <li><a href="#connect">connect</a></li>
@@ -58,6 +59,7 @@
 <li><a href="#-x">-X</a></li>
 <li><a href="#-x_1">-x</a></li>
 <li><a href="#-y">-y</a></li>
+<li><a href="#config">config 文件</a></li>
 </ul>
 </li>
 </ul>
@@ -112,6 +114,12 @@
 <h2 id="-o-option">-o option 配置选项</h2>
 <p>指定配置选项</p>
 <p>Can be used to give options in the format used in the configuration file.  This is useful for specifying options for which there is no separate command-line flag</p>
+<h2 id="serveraliveinterval">ServerAliveInterval</h2>
+<p>指定ssh 超时时间</p>
+<div class="hlcode"><pre><span class="n">ssh</span> <span class="o">-</span><span class="n">o</span> <span class="n">ServerAliveInterval</span><span class="o">=</span><span class="mi">30</span> <span class="n">user</span><span class="err">@</span><span class="n">host</span>
+</pre></div>
+
+
 <h3 id="stricthostkeychecking">StrictHostKeyChecking</h3>
 <p>Automatically accept keys</p>
 <div class="hlcode"><pre><span class="n">ssh</span> <span class="o">-</span><span class="n">oStrictHostKeyChecking</span><span class="o">=</span><span class="n">no</span> <span class="err">$</span><span class="n">h</span> 
@@ -183,12 +191,21 @@
 <p>关闭X11转发功能</p>
 <h2 id="-y">-y</h2>
 <p>开启信任X11转发功能</p>
+<h2 id="config">config 文件</h2>
+<div class="hlcode"><pre><span class="n">Host</span> <span class="o">*</span>
+    <span class="n">ServerAliveInterval</span> <span class="mi">60</span>
+</pre></div>
+
+
+<p><code>Host *</code> #表示需要启用该规则的服务端（域名或ip）<br />
+<code>ServerAliveInterval 60</code> #表示没60秒去给服务端发起一次请求消息（这个设置好就行了）<br />
+<code>ServerAliveCountMax 3</code> #表示最大连续尝试连接次数（这个基本不用设置）</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-10 12:49:28</p>
+        <p>Site Generated 2019-03-12 23:04:43</p>
       </span>
     </div>
 
