@@ -95,7 +95,10 @@
 <li><a href="#-it-shell">-it 交互Shell</a></li>
 </ul>
 </li>
-<li><a href="#describe">describe 详细信息</a></li>
+<li><a href="#describe">describe 详细信息</a><ul>
+<li><a href="#pod">pod</a></li>
+</ul>
+</li>
 <li><a href="#loglogs">log/logs 日志</a><ul>
 <li><a href="#-c">-c 指定容器名称</a></li>
 </ul>
@@ -238,6 +241,7 @@
 
 
 <h3 id="get">get 显示资源</h3>
+<p>即从Kubernetes里面获取指定的API对象</p>
 <p>列出所有资源</p>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">get</span> <span class="n">namespaces</span>
 </pre></div>
@@ -352,6 +356,8 @@
 </pre></div>
 
 
+<h4 id="pod">pod</h4>
+<p>指定pod查看一个API对象的细节</p>
 <p>显示指定的资源或者资源组的详细信息</p>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">describe</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="n">component</span><span class="o">=</span><span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
 </pre></div>
@@ -453,7 +459,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-12 23:04:43</p>
+        <p>Site Generated 2019-03-14 12:47:41</p>
       </span>
     </div>
 

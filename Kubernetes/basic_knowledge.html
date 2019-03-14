@@ -27,6 +27,7 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#_1">基础知识</a><ul>
+<li><a href="#_2">容器本质</a></li>
 <li><a href="#kubernetes">Kubernetes 特性</a><ul>
 <li><a href="#auto-scaling">自动的调度 Auto Scaling</a></li>
 <li><a href="#service-discovery">服务的自动发现 Service Discovery</a></li>
@@ -56,7 +57,7 @@
 <li><a href="#kubernetes_2">Kubernetes 功能</a><ul>
 <li><a href="#pod">Pod 容器集</a><ul>
 <li><a href="#pod-ip">Pod IP</a></li>
-<li><a href="#_2">存储卷</a></li>
+<li><a href="#_3">存储卷</a></li>
 <li><a href="#pod-template">Pod template</a></li>
 </ul>
 </li>
@@ -103,25 +104,25 @@
 </ul>
 </li>
 <li><a href="#kubernetes_5">Kubernetes 网络模型</a><ul>
-<li><a href="#_3">实现策略</a></li>
+<li><a href="#_4">实现策略</a></li>
 </ul>
 </li>
 <li><a href="#kubernetes_6">Kubernetes 服务发现机制</a><ul>
-<li><a href="#_4">环境变量</a></li>
+<li><a href="#_5">环境变量</a></li>
 <li><a href="#dns">DNS</a></li>
 <li><a href="#service_2">外部系统访问service问题</a></li>
 </ul>
 </li>
 <li><a href="#kubernetes_7">Kubernetes 日志</a><ul>
 <li><a href="#logs">Logs 日志</a><ul>
-<li><a href="#_5">典型架构</a></li>
+<li><a href="#_6">典型架构</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a href="#kubernetes_8">Kubernetes 监控</a><ul>
-<li><a href="#_6">监控指标</a></li>
-<li><a href="#_7">常用工具</a><ul>
+<li><a href="#_7">监控指标</a></li>
+<li><a href="#_8">常用工具</a><ul>
 <li><a href="#cadvisor">cAdvisor</a></li>
 <li><a href="#heapster_1">Heapster</a></li>
 <li><a href="#prometheus">Prometheus</a></li>
@@ -132,7 +133,7 @@
 </li>
 </ul>
 </li>
-<li><a href="#_8">术语</a><ul>
+<li><a href="#_9">术语</a><ul>
 <li><a href="#hpa">HPA</a></li>
 <li><a href="#cncf">CNCF</a></li>
 </ul>
@@ -141,6 +142,9 @@
 </div>
 <h1 id="_1">基础知识</h1>
 <p><img alt="alt" src="https://cdn.pbrd.co/images/HocvM1f.png" /></p>
+<h2 id="_2">容器本质</h2>
+<p>对与容器而已，一个容器永远只能管理一个进程，</p>
+<p>而一个容器就是一个进程</p>
 <h2 id="kubernetes">Kubernetes 特性</h2>
 <p>How do you manage all these containers running on a single host, and across your whol infrastructure?</p>
 <p>Kubernetes is an open source project that enables software teams of all sizes, from a small startup to a Fortune 100 company, to automate deploying, scaling, and manging applications on a group of cluster of server machines. </p>
@@ -196,7 +200,7 @@
 <h4 id="pod-ip">Pod IP</h4>
 <p>Pod 对象被分配的一个集群内专用的IP，Pod内部所有容器共享Pod对象的Network和UTS名称空间，容器间通过回环地址通信</p>
 <p>Pod外的其他组件通信需要使用Service资源对象的Cluster IP</p>
-<h4 id="_2">存储卷</h4>
+<h4 id="_3">存储卷</h4>
 <p>Pod对象可以配置一组存储卷，给其内部所有容器使用，完成容器间数据共享</p>
 <p>同时也保证容器重启后，数据不丢失</p>
 <h4 id="pod-template">Pod template</h4>
@@ -324,7 +328,7 @@
 </pre></div>
 
 
-<h3 id="_3">实现策略</h3>
+<h3 id="_4">实现策略</h3>
 <p>所有Pod间均可不经过NAT而直接通信</p>
 <p>所有节点均可不经过NAT而直接与所有容器通信</p>
 <p>容器自己使用的IP也是其他容器或节点直接看到的地址，即Pod自身的地址直接通信</p>
@@ -333,7 +337,7 @@
 <p>​    </p>
 <h2 id="kubernetes_6">Kubernetes 服务发现机制</h2>
 <p>支持两种服务发现模式 - 环境变量和DNS</p>
-<h3 id="_4">环境变量</h3>
+<h3 id="_5">环境变量</h3>
 <p>当Pod运行在Node上，Kubelet会为每个活跃的Service添加一组环境变量</p>
 <h3 id="dns">DNS</h3>
 <p>Kubernetes 通过Add on 方式引入DNS，把服务名称作为DNS域名，这样，程序就可以直接使用服务名来建立通信连接，目前大部分应用都采用DNS这种机制</p>
@@ -345,14 +349,14 @@
 </ul>
 <h2 id="kubernetes_7">Kubernetes 日志</h2>
 <h3 id="logs">Logs 日志</h3>
-<h4 id="_5">典型架构</h4>
+<h4 id="_6">典型架构</h4>
 <p><img alt="img" src="https://snag.gy/fTuwEB.jpg" /></p>
 <h2 id="kubernetes_8">Kubernetes 监控</h2>
-<h3 id="_6">监控指标</h3>
+<h3 id="_7">监控指标</h3>
 <p>Node health</p>
 <p>Health of Kubernetes</p>
 <p>Application health (and metrics)</p>
-<h3 id="_7">常用工具</h3>
+<h3 id="_8">常用工具</h3>
 <h4 id="cadvisor">cAdvisor</h4>
 <p>专用于containers的开源资源收集器，自动发现node并收集信息，以及主机全局的使用及分析</p>
 <h4 id="heapster_1">Heapster</h4>
@@ -362,7 +366,7 @@
 <p>时间序列数据库，通过query 语句发送应用以及metrics data</p>
 <h4 id="grafana">Grafana</h4>
 <p>将上述三种系统数据组合成显示图表</p>
-<h1 id="_8">术语</h1>
+<h1 id="_9">术语</h1>
 <h2 id="hpa">HPA</h2>
 <p>Horizontal Pod Autoscaler    </p>
 <p>​    </p>
@@ -373,7 +377,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-12 23:04:43</p>
+        <p>Site Generated 2019-03-14 12:47:41</p>
       </span>
     </div>
 

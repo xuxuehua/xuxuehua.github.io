@@ -27,7 +27,11 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#pod">Pod</a><ul>
-<li><a href="#_1">设计</a></li>
+<li><a href="#_1">实现</a><ul>
+<li><a href="#infra">infra 容器</a></li>
+</ul>
+</li>
+<li><a href="#_2">设计</a></li>
 <li><a href="#pod-phase">pod 相位（phase）</a><ul>
 <li><a href="#pending">Pending</a></li>
 <li><a href="#running">Running</a></li>
@@ -36,7 +40,7 @@
 <li><a href="#unknown">Unknown</a></li>
 </ul>
 </li>
-<li><a href="#_2">容器重启策略</a><ul>
+<li><a href="#_3">容器重启策略</a><ul>
 <li><a href="#always">Always</a></li>
 <li><a href="#onfailure">OnFailure</a></li>
 <li><a href="#never">Never</a></li>
@@ -46,13 +50,13 @@
 <li><a href="#limits">limits 资源限制</a></li>
 </ul>
 </li>
-<li><a href="#_3">分布式模型</a><ul>
+<li><a href="#_4">分布式模型</a><ul>
 <li><a href="#sidercar-pattern">sidercar pattern</a></li>
 <li><a href="#ambassador-pattern">Ambassador pattern</a></li>
 <li><a href="#adapter-pattern">Adapter pattern</a></li>
 </ul>
 </li>
-<li><a href="#_4">状态信息</a><ul>
+<li><a href="#_5">状态信息</a><ul>
 <li><a href="#pending_1">Pending</a></li>
 <li><a href="#running_1">Running</a></li>
 <li><a href="#succeeded_1">Succeeded</a></li>
@@ -72,7 +76,7 @@
 <li><a href="#daemonset">DaemonSet</a></li>
 </ul>
 </li>
-<li><a href="#_5">环境变量</a><ul>
+<li><a href="#_6">环境变量</a><ul>
 <li><a href="#env">env</a><ul>
 <li><a href="#example">example</a></li>
 </ul>
@@ -90,7 +94,17 @@
 <p>status字段在对象创建后由系统自行维护</p>
 <p>通过在spec字段中嵌套containers，将容器对象启动</p>
 <p>Pod 里面的容器共享同一个Network Namespace，同一组数据卷，而达到高效率的交换信息，即保证了容器间的紧密协作关系</p>
-<h2 id="_1">设计</h2>
+<p>Pod类似于传统基础设置里面的虚拟机角色，而容器，就是虚拟机里面运行的用户程序</p>
+<h2 id="_1">实现</h2>
+<p>Pod其实是一组共享了某些资源的容器</p>
+<p>Pod里面所有容器，共享的是同一个Network Namespace，并且可以声明共享同一个Volume</p>
+<h3 id="infra">infra 容器</h3>
+<p>在Kubernetes 中，Pod的实现需要使用一个中间容器称为Infra容器，在Pod中，与Infra容器关联在一起</p>
+<p>而Pod的生命周期和Infra容器是一致的，与容器A和B无关</p>
+<p><img alt="img" src="https://snag.gy/m59fG6.jpg" /></p>
+<p>Infra 容器使用一个特殊的镜像 (k8s.gcr.io/pause)，占用资源极少， Infra 容器Hold住Network Namespace后，用户容器就可以加入到Infra 容器的Network Namespace中，所以在查看容器在宿主机的Namespace文件的时候，指向的值是完全一样的</p>
+<p>这样，容器A和容器B可以直接通过localhost 进行通信，由于一个Pod值可以有一个IP地址，而这个地址就是Network Namespace 对应的IP地址</p>
+<h2 id="_2">设计</h2>
 <p>通常应该一个容器中仅运行一个进程，而日志信息通过输出至容器的标准输出，用户通过kubectl log 进行获取</p>
 <p>省去了用户手动分拣日志信息</p>
 <h2 id="pod-phase">pod 相位（phase）</h2>
@@ -104,7 +118,7 @@
 <p>所有容器都已经终止，但至少有一个容器终止失败，即容器返回了非0值的退出状态或已经被系统终止</p>
 <h3 id="unknown">Unknown</h3>
 <p>API Server 无法正常获取到Pod对象的状态信息，通常是由于无法与所在工作节点的kubelet通信</p>
-<h2 id="_2">容器重启策略</h2>
+<h2 id="_3">容器重启策略</h2>
 <h3 id="always">Always</h3>
 <p>pod对象终止就将其重启，默认设定</p>
 <h3 id="onfailure">OnFailure</h3>
@@ -163,7 +177,7 @@
 </pre></div>
 
 
-<h2 id="_3">分布式模型</h2>
+<h2 id="_4">分布式模型</h2>
 <h3 id="sidercar-pattern">sidercar pattern</h3>
 <p>边车模型或跨斗模型</p>
 <p>即pod的主应用容器提供协同的辅助应用容器，每个应用独立运行</p>
@@ -176,7 +190,7 @@
 <p>适配器模式</p>
 <p>将主应用容器中的内容进行标准化输出</p>
 <p>如日志数据或者指标数据的输出，</p>
-<h2 id="_4">状态信息</h2>
+<h2 id="_5">状态信息</h2>
 <h3 id="pending_1">Pending</h3>
 <h3 id="running_1">Running</h3>
 <h3 id="succeeded_1">Succeeded</h3>
@@ -225,7 +239,7 @@
 <p>类似于cronjob</p>
 <h3 id="daemonset">DaemonSet</h3>
 <p>确保所有nodes 运行同一个指定类型的pod</p>
-<h2 id="_5">环境变量</h2>
+<h2 id="_6">环境变量</h2>
 <p>通过环境变量在容器启动时传递配置信息</p>
 <h3 id="env">env</h3>
 <p>在容器配置段中嵌套env字段，值是环境变量构成的列表</p>
@@ -257,7 +271,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-12 23:04:43</p>
+        <p>Site Generated 2019-03-14 12:47:41</p>
       </span>
     </div>
 

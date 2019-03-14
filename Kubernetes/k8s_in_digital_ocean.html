@@ -60,10 +60,18 @@
 <li><a href="#rook-no-prod">Rook （No PROD）</a></li>
 </ul>
 </li>
+<li><a href="#nginx">nginx 部署</a><ul>
+<li><a href="#nginx-18">升级 nginx 1.8</a></li>
 </ul>
 </li>
-<li><a href="#_6">部署应用</a><ul>
-<li><a href="#nginx">nginx</a></li>
+<li><a href="#volume">声明Volume</a><ul>
+<li><a href="#volume_1">共享Volume</a><ul>
+<li><a href="#sidecar">Sidecar 组合</a></li>
+<li><a href="#_6">容器的日志收集</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#faq">FAQ</a><ul>
@@ -75,13 +83,17 @@
 <h1 id="master">Master 节点</h1>
 <h2 id="ubuntu">Ubuntu</h2>
 <p>16.04, 2 CPU, 7.5G mem, 30G HDD</p>
-<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="o">:</span><span class="c1">//packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -</span>
+<p>先部署docker</p>
+<div class="hlcode"><pre><span class="n">export</span> <span class="n">VERSION</span><span class="o">=</span><span class="mf">17.03</span> <span class="o">&amp;&amp;</span> <span class="n">curl</span> <span class="o">-</span><span class="n">sSL</span> <span class="n">get</span><span class="p">.</span><span class="n">docker</span><span class="p">.</span><span class="n">com</span> <span class="o">|</span> <span class="n">sh</span>
+</pre></div>
 
-<span class="n">cat</span> <span class="o">&lt;&lt;</span><span class="n">EOF</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">list</span>
-<span class="n">deb</span> <span class="n">http</span><span class="o">:</span><span class="c1">//apt.kubernetes.io/ kubernetes-xenial main</span>
+
+<div class="hlcode"><pre><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">apt</span><span class="o">-</span><span class="n">transport</span><span class="o">-</span><span class="n">https</span> <span class="n">curl</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="o">:</span><span class="c1">//packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -</span>
+<span class="n">cat</span> <span class="o">&lt;&lt;</span><span class="n">EOF</span> <span class="o">&gt;/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">list</span>
+<span class="n">deb</span> <span class="n">https</span><span class="o">:</span><span class="c1">//apt.kubernetes.io/ kubernetes-xenial main</span>
 <span class="n">EOF</span>
-
-<span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">update</span>
+<span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
 
 <span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">kubelet</span><span class="o">=</span><span class="mf">1.11.3</span><span class="o">-</span><span class="mo">00</span>
 <span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">kubectl</span><span class="o">=</span><span class="mf">1.11.3</span><span class="o">-</span><span class="mo">00</span>
@@ -91,6 +103,7 @@
 
 <h2 id="kubeadm">kubeadm</h2>
 <h3 id="yaml">编写 yaml</h3>
+<p>kubeadm.yaml</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">kubeadm</span><span class="o">.</span><span class="na">k8s</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">v1alpha1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">MasterConfiguration</span>
 <span class="n">controllerManagerExtraArgs</span><span class="o">:</span>
@@ -142,6 +155,13 @@
 <span class="n">as</span> <span class="n">root</span><span class="o">:</span>
 
   <span class="n">kubeadm</span> <span class="n">join</span> <span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="o">:</span><span class="mi">6443</span> <span class="o">--</span><span class="n">token</span> <span class="n">h7t5zp</span><span class="mf">.0</span><span class="n">atym3rlxb7oa9vu</span> <span class="o">--</span><span class="n">discovery</span><span class="o">-</span><span class="n">token</span><span class="o">-</span><span class="n">ca</span><span class="o">-</span><span class="n">cert</span><span class="o">-</span><span class="n">hash</span> <span class="n">sha256</span><span class="o">:</span><span class="mf">3f</span><span class="mi">9</span><span class="n">b2fac0cdf760f6b03ccb0934743e97c182e127eca99a516716010275cc046</span>
+</pre></div>
+
+
+<p>执行部署信息</p>
+<div class="hlcode"><pre>  <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">kube</span>
+  <span class="n">sudo</span> <span class="n">cp</span> <span class="o">-</span><span class="n">i</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">kubernetes</span><span class="o">/</span><span class="n">admin</span><span class="p">.</span><span class="n">conf</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">kube</span><span class="o">/</span><span class="n">config</span>
+  <span class="n">sudo</span> <span class="n">chown</span> <span class="err">$</span><span class="p">(</span><span class="n">id</span> <span class="o">-</span><span class="n">u</span><span class="p">)</span><span class="o">:</span><span class="err">$</span><span class="p">(</span><span class="n">id</span> <span class="o">-</span><span class="n">g</span><span class="p">)</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">kube</span><span class="o">/</span><span class="n">config</span>
 </pre></div>
 
 
@@ -321,8 +341,8 @@
 
 
 <p>这样，一个基于 Rook 持久化存储集群就以容器的方式运行起来了，而接下来在 Kubernetes 项目上创建的所有 Pod 就能够通过 Persistent Volume（PV）和 Persistent Volume Claim（PVC）的方式，在容器里挂载由 Ceph 提供的数据卷了。</p>
-<h1 id="_6">部署应用</h1>
-<h2 id="nginx">nginx</h2>
+<h2 id="nginx">nginx 部署</h2>
+<p>nginx-deployment.yaml</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Deployment</span>
 <span class="n">metadata</span><span class="o">:</span>
@@ -345,6 +365,240 @@
 </pre></div>
 
 
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="p">.</span><span class="n">yaml</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="n">app</span><span class="o">=</span><span class="n">nginx</span>
+<span class="n">NAME</span>                                <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">67594</span><span class="n">d6bf6</span><span class="o">-</span><span class="n">hjgf2</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">18</span><span class="n">s</span>
+<span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">67594</span><span class="n">d6bf6</span><span class="o">-</span><span class="n">xjtlr</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">18</span><span class="n">s</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="nb">root</span><span class="p">@</span><span class="mi">111</span><span class="p">:</span><span class="err">~#</span> <span class="nx">kubectl</span> <span class="nb">describe</span> <span class="nx">pod</span> <span class="nx">nginx</span><span class="na">-deployment</span><span class="o">-</span><span class="mi">67594</span><span class="nx">d6bf6</span><span class="na">-hjgf2</span>
+<span class="nb">Name</span><span class="p">:</span>               <span class="nx">nginx</span><span class="na">-deployment</span><span class="o">-</span><span class="mi">67594</span><span class="nx">d6bf6</span><span class="na">-hjgf2</span>
+<span class="nx">Namespace</span><span class="p">:</span>          <span class="nb">default</span>
+<span class="nx">Priority</span><span class="p">:</span>           <span class="mi">0</span>
+<span class="nx">PriorityClassName</span><span class="p">:</span>  <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>
+<span class="nx">Node</span><span class="p">:</span>               <span class="mi">111</span><span class="p">/</span><span class="nx">178.128.110.131</span>
+<span class="nb">Start</span> <span class="nb">Time</span><span class="p">:</span>         <span class="nx">Wed</span><span class="p">,</span> <span class="mi">13</span> <span class="nx">Mar</span> <span class="mi">2019</span> <span class="mi">06</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">14</span> <span class="o">+</span><span class="mi">0000</span>
+<span class="nx">Labels</span><span class="p">:</span>             <span class="n">app</span><span class="o">=</span><span class="nx">nginx</span>
+                    <span class="nx">pod</span><span class="na">-template-hash</span><span class="o">=</span><span class="mi">2315082692</span>
+<span class="nx">Annotations</span><span class="p">:</span>        <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>
+<span class="nb">Status</span><span class="p">:</span>             <span class="nb">Running</span>
+<span class="nx">IP</span><span class="p">:</span>                 <span class="mf">10.32.0.13</span>
+<span class="nx">Controlled</span> <span class="k">By</span><span class="p">:</span>      <span class="nx">ReplicaSet</span><span class="p">/</span><span class="nx">nginx</span><span class="na">-deployment</span><span class="o">-</span><span class="mi">67594</span><span class="nx">d6bf6</span>
+<span class="nx">Containers</span><span class="p">:</span>
+  <span class="nx">nginx</span><span class="p">:</span>
+    <span class="nx">Container</span> <span class="nb">ID</span><span class="p">:</span>   <span class="nx">docker</span><span class="p">:</span><span class="c1">//fab3aadd7695c7505d463decce821d5e40e7cc15a1760375e63b16ef13d5ae77</span>
+    <span class="nb">Image</span><span class="p">:</span>          <span class="nx">nginx</span><span class="p">:</span><span class="mf">1.7.9</span>
+    <span class="nb">Image</span> <span class="nb">ID</span><span class="p">:</span>       <span class="nx">docker</span><span class="na">-pullable</span><span class="p">:</span><span class="c1">//nginx@sha256:e3456c851a152494c3e4ff5fcc26f240206abac0c9d794affb40e0714846c451</span>
+    <span class="nb">Port</span><span class="p">:</span>           <span class="mi">80</span><span class="p">/</span><span class="nx">TCP</span>
+    <span class="nb">Host</span> <span class="nb">Port</span><span class="p">:</span>      <span class="mi">0</span><span class="p">/</span><span class="nx">TCP</span>
+    <span class="nx">State</span><span class="p">:</span>          <span class="nb">Running</span>
+      <span class="nx">Started</span><span class="p">:</span>      <span class="nx">Wed</span><span class="p">,</span> <span class="mi">13</span> <span class="nx">Mar</span> <span class="mi">2019</span> <span class="mi">06</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">23</span> <span class="o">+</span><span class="mi">0000</span>
+    <span class="nb">Ready</span><span class="p">:</span>          <span class="kc">True</span>
+    <span class="nb">Restart</span> <span class="nb">Count</span><span class="p">:</span>  <span class="mi">0</span>
+    <span class="nx">Environment</span><span class="p">:</span>    <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>
+    <span class="nx">Mounts</span><span class="p">:</span>
+      <span class="p">/</span><span class="nb">var</span><span class="p">/</span><span class="nb">run</span><span class="p">/</span><span class="nx">secrets</span><span class="p">/</span><span class="nx">kubernetes.io</span><span class="p">/</span><span class="nx">serviceaccount</span> <span class="nb">from</span> <span class="nb">default</span><span class="na">-token-bzv7k</span> <span class="p">(</span><span class="nx">ro</span><span class="p">)</span>
+<span class="nx">Conditions</span><span class="p">:</span>
+  <span class="k">Type</span>              <span class="nb">Status</span>
+  <span class="nx">Initialized</span>       <span class="kc">True</span>
+  <span class="nb">Ready</span>             <span class="kc">True</span>
+  <span class="nx">ContainersReady</span>   <span class="kc">True</span>
+  <span class="nx">PodScheduled</span>      <span class="kc">True</span>
+<span class="nx">Volumes</span><span class="p">:</span>
+  <span class="nb">default</span><span class="na">-token-bzv7k</span><span class="p">:</span>
+    <span class="k">Type</span><span class="p">:</span>        <span class="nx">Secret</span> <span class="p">(</span><span class="nx">a</span> <span class="nx">volume</span> <span class="nx">populated</span> <span class="k">by</span> <span class="nx">a</span> <span class="nx">Secret</span><span class="p">)</span>
+    <span class="nx">SecretName</span><span class="p">:</span>  <span class="nb">default</span><span class="na">-token-bzv7k</span>
+    <span class="nx">Optional</span><span class="p">:</span>    <span class="kc">false</span>
+<span class="nx">QoS</span> <span class="nb">Class</span><span class="p">:</span>       <span class="nx">BestEffort</span>
+<span class="nx">Node</span><span class="na">-Selectors</span><span class="p">:</span>  <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>
+<span class="nx">Tolerations</span><span class="p">:</span>     <span class="nx">node.kubernetes.io</span><span class="p">/</span><span class="nb">not</span><span class="na">-ready</span><span class="p">:</span><span class="nx">NoExecute</span> <span class="nb">for</span> <span class="mi">300</span><span class="nb">s</span>
+                 <span class="nx">node.kubernetes.io</span><span class="p">/</span><span class="nx">unreachable</span><span class="p">:</span><span class="nx">NoExecute</span> <span class="nb">for</span> <span class="mi">300</span><span class="nb">s</span>
+<span class="nb">Events</span><span class="p">:</span>
+  <span class="k">Type</span>    <span class="nx">Reason</span>     <span class="nx">Age</span>   <span class="nb">From</span>               <span class="nx">Message</span>
+  <span class="o">----</span>    <span class="o">------</span>     <span class="o">----</span>  <span class="o">----</span>               <span class="o">-------</span>
+  <span class="nx">Normal</span>  <span class="nx">Scheduled</span>  <span class="mi">38</span><span class="nb">s</span>   <span class="nb">default</span><span class="na">-scheduler</span>  <span class="nx">Successfully</span> <span class="nx">assigned</span> <span class="nb">default</span><span class="p">/</span><span class="nx">nginx</span><span class="na">-deployment</span><span class="o">-</span><span class="mi">67594</span><span class="nx">d6bf6</span><span class="na">-hjgf2</span> <span class="k">to</span> <span class="mi">111</span>
+  <span class="nx">Normal</span>  <span class="nx">Pulling</span>    <span class="mi">37</span><span class="nb">s</span>   <span class="nx">kubelet</span><span class="p">,</span> <span class="mi">111</span>       <span class="nx">pulling</span> <span class="nb">image</span> <span class="s2">&quot;nginx:1.7.9&quot;</span>
+  <span class="nx">Normal</span>  <span class="nx">Pulled</span>     <span class="mi">29</span><span class="nb">s</span>   <span class="nx">kubelet</span><span class="p">,</span> <span class="mi">111</span>       <span class="nx">Successfully</span> <span class="nx">pulled</span> <span class="nb">image</span> <span class="s2">&quot;nginx:1.7.9&quot;</span>
+  <span class="nx">Normal</span>  <span class="nx">Created</span>    <span class="mi">29</span><span class="nb">s</span>   <span class="nx">kubelet</span><span class="p">,</span> <span class="mi">111</span>       <span class="nx">Created</span> <span class="nx">container</span>
+  <span class="nx">Normal</span>  <span class="nx">Started</span>    <span class="mi">29</span><span class="nb">s</span>   <span class="nx">kubelet</span><span class="p">,</span> <span class="mi">111</span>       <span class="nx">Started</span> <span class="nx">container</span>
+</pre></div>
+
+
+<blockquote>
+<p>这里的Events信息表示对API对象所有重要操作，都会被记录在这个对象的Events里面</p>
+</blockquote>
+<h3 id="nginx-18">升级 nginx 1.8</h3>
+<div class="hlcode"><pre><span class="p">...</span>    
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="nl">containers:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+        <span class="nl">image:</span> <span class="n">nginx</span><span class="o">:</span><span class="mf">1.8</span> <span class="err">#</span> <span class="err">这里被从</span> <span class="mf">1.7.9</span> <span class="err">修改为</span> <span class="mf">1.8</span>
+        <span class="nl">ports:</span>
+      <span class="o">-</span> <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<p>更新</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="p">.</span><span class="n">yaml</span>
+
+<span class="cp"># 修改 nginx-deployment.yaml 的内容</span>
+
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="p">.</span><span class="n">yaml</span>
+</pre></div>
+
+
+<h2 id="volume">声明Volume</h2>
+<p>仅需要修改yaml文件即可</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Deployment</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">selector</span><span class="o">:</span>
+    <span class="n">matchLabels</span><span class="o">:</span>
+      <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+  <span class="n">replicas</span><span class="o">:</span> <span class="mi">2</span>
+  <span class="n">template</span><span class="o">:</span>
+    <span class="n">metadata</span><span class="o">:</span>
+      <span class="n">labels</span><span class="o">:</span>
+        <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">containers</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+        <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span><span class="o">:</span><span class="mf">1.8</span>
+        <span class="n">ports</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+        <span class="n">volumeMounts</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">mountPath</span><span class="o">:</span> <span class="s2">&quot;/usr/share/nginx/html&quot;</span>
+          <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span><span class="o">-</span><span class="n">vol</span>
+      <span class="n">volumes</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span><span class="o">-</span><span class="n">vol</span>
+        <span class="n">emptyDir</span><span class="o">:</span> <span class="o">{}</span>
+</pre></div>
+
+
+<blockquote>
+<p>emptyDir 就是Docker的隐式Volume 参数，即不显式声明宿主机目录的Volume</p>
+</blockquote>
+<p>Kubernetes会为此在宿主就创建一个临时目录，这个目录将来会被绑定挂载到容器所声明的Volume目录上</p>
+<p>若是显式的Volume定义，叫做hostPath</p>
+<div class="hlcode"><pre><span class="nl">volumes:</span>
+     <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span><span class="o">-</span><span class="n">vol</span>
+       <span class="nl">hostPath:</span>
+         <span class="nl">path:</span> <span class="s">&quot;/home/vagrant/mykube/firstapp/html&quot;</span>
+</pre></div>
+
+
+<p>更新yaml</p>
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="p">.</span><span class="n">yaml</span>
+<span class="n">deployment</span><span class="p">.</span><span class="n">apps</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span> <span class="n">configured</span>
+</pre></div>
+
+
+<p>可以看到Volumes 的信息</p>
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span>
+<span class="n">NAME</span>                                <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">5</span><span class="n">c678cfb6d</span><span class="o">-</span><span class="n">jzknn</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>
+<span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">5</span><span class="n">c678cfb6d</span><span class="o">-</span><span class="n">t785g</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">5</span><span class="n">m</span>
+
+
+<span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">describe</span> <span class="n">pod</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">5</span><span class="n">c678cfb6d</span><span class="o">-</span><span class="n">jzknn</span>
+<span class="p">....</span>
+    <span class="nl">Mounts:</span>
+      <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">html</span> <span class="n">from</span> <span class="n">nginx</span><span class="o">-</span><span class="n">vol</span> <span class="p">(</span><span class="n">rw</span><span class="p">)</span>
+      <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">secrets</span><span class="o">/</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">serviceaccount</span> <span class="n">from</span> <span class="k">default</span><span class="o">-</span><span class="n">token</span><span class="o">-</span><span class="n">bzv7k</span> <span class="p">(</span><span class="n">ro</span><span class="p">)</span>
+
+<span class="nl">Volumes:</span>
+  <span class="n">nginx</span><span class="o">-</span><span class="n">vol</span><span class="o">:</span>
+    <span class="nl">Type:</span>    <span class="n">EmptyDir</span> <span class="p">(</span><span class="n">a</span> <span class="n">temporary</span> <span class="n">directory</span> <span class="n">that</span> <span class="n">shares</span> <span class="n">a</span> <span class="n">pod</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">lifetime</span><span class="p">)</span>
+    <span class="nl">Medium:</span>
+</pre></div>
+
+
+<p>可以切进去查看目录信息</p>
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="mi">111</span><span class="o">:~</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">5</span><span class="n">c678cfb6d</span><span class="o">-</span><span class="n">jzknn</span> <span class="o">--</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+
+<span class="n">root</span><span class="err">@</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">5</span><span class="n">c678cfb6d</span><span class="o">-</span><span class="n">jzknn</span><span class="o">:/</span><span class="err">#</span> <span class="n">ls</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">html</span><span class="o">/</span>
+</pre></div>
+
+
+<h3 id="volume_1">共享Volume</h3>
+<p>nginx-container 读取 debian-container中的index.html</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">two</span><span class="o">-</span><span class="n">containers</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">restartPolicy</span><span class="o">:</span> <span class="n">Never</span>
+  <span class="n">volumes</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">shared</span><span class="o">-</span><span class="n">data</span>
+    <span class="n">hostPath</span><span class="o">:</span>      
+      <span class="n">path</span><span class="o">:</span> <span class="o">/</span><span class="n">data</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span><span class="o">-</span><span class="n">container</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span>
+    <span class="n">volumeMounts</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">shared</span><span class="o">-</span><span class="n">data</span>
+      <span class="n">mountPath</span><span class="o">:</span> <span class="sr">/usr/share/nginx/</span><span class="n">html</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">debian</span><span class="o">-</span><span class="n">container</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">debian</span>
+    <span class="n">volumeMounts</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">shared</span><span class="o">-</span><span class="n">data</span>
+      <span class="n">mountPath</span><span class="o">:</span> <span class="o">/</span><span class="n">pod</span><span class="o">-</span><span class="n">data</span>
+    <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;/bin/sh&quot;</span><span class="o">]</span>
+    <span class="n">args</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;-c&quot;</span><span class="o">,</span> <span class="s2">&quot;echo Hello from the debian container &gt; /pod-data/index.html&quot;</span><span class="o">]</span>
+</pre></div>
+
+
+<blockquote>
+<p>shared-data 是hostPath类型，而对应在宿主机上的目录就是/data ，而这个目录，其实同时绑定挂载进上述两个容器中</p>
+</blockquote>
+<h4 id="sidecar">Sidecar 组合</h4>
+<p>指在一个Pod中，启动一个辅助容器，完成一些独立与主进程(主容器)之外的工作</p>
+<p>这里，Tomcat就是主容器，而initContainer优先运行WAR包容器，扮演了sidecar 角色</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">javaweb</span><span class="o">-</span><span class="mi">2</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">initContainers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">image</span><span class="o">:</span> <span class="n">geektime</span><span class="o">/</span><span class="n">sample</span><span class="o">:</span><span class="n">v2</span>
+    <span class="n">name</span><span class="o">:</span> <span class="n">war</span>
+    <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;cp&quot;</span><span class="o">,</span> <span class="s2">&quot;/sample.war&quot;</span><span class="o">,</span> <span class="s2">&quot;/app&quot;</span><span class="o">]</span>
+    <span class="n">volumeMounts</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">mountPath</span><span class="o">:</span> <span class="o">/</span><span class="n">app</span>
+      <span class="n">name</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">volume</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">image</span><span class="o">:</span> <span class="n">geektime</span><span class="o">/</span><span class="n">tomcat</span><span class="o">:</span><span class="mf">7.0</span>
+    <span class="n">name</span><span class="o">:</span> <span class="n">tomcat</span>
+    <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;sh&quot;</span><span class="o">,</span><span class="s2">&quot;-c&quot;</span><span class="o">,</span><span class="s2">&quot;/root/apache-tomcat-7.0.42-v2/bin/start.sh&quot;</span><span class="o">]</span>
+    <span class="n">volumeMounts</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">mountPath</span><span class="o">:</span> <span class="sr">/root/apache-tomcat-7.0.42-v2/</span><span class="n">webapps</span>
+      <span class="n">name</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">volume</span>
+    <span class="n">ports</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">containerPort</span><span class="o">:</span> <span class="mi">8080</span>
+      <span class="n">hostPort</span><span class="o">:</span> <span class="mi">8001</span> 
+  <span class="n">volumes</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">volume</span>
+    <span class="n">emptyDir</span><span class="o">:</span> <span class="o">{}</span>
+</pre></div>
+
+
+<blockquote>
+<p>WAR 包容器是一个initContainers，会比所有spec.containers 优先启动，initContainer 容器也会按照顺序启动</p>
+<p>通过命令将WAR包复制到/app目录下然后退出</p>
+<p>/app 目录挂载了名叫app-volume 的Volume</p>
+<p>Tomcat也同样声明挂载了app-volume到自己的/webapps下面</p>
+</blockquote>
+<h4 id="_6">容器的日志收集</h4>
+<p>将实现不断把日志文件输出到容器的/var/log目录中</p>
+<p>可以将一个Pod里面的Volume挂载到应用容器的/var/log目录上，然后pod里面运行sidecar容器声明挂载同一个Volume到自己的/var/log目录上</p>
+<p>sidecar不断的从自己的/var/log目录中读取日志文件，转发到mongoDB或者ElasticSearch中</p>
 <h1 id="faq">FAQ</h1>
 <h2 id="token">token 过期</h2>
 <p>Kubeadm的token 23小时后过期，所以如果你worker端和master 端不是在同一天做的，有可能会出现如下错误:<br />
@@ -365,7 +619,7 @@ https://stackoverflow.com/questions/52823871/unable-to-join-the-worker-node-to-k
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-12 23:04:43</p>
+        <p>Site Generated 2019-03-14 12:47:41</p>
       </span>
     </div>
 

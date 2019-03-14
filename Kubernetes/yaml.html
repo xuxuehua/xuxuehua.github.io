@@ -29,6 +29,8 @@
 <li><a href="#yaml">yaml 定义</a><ul>
 <li><a href="#apiversion">apiVersion</a></li>
 <li><a href="#kind">kind</a></li>
+<li><a href="#metadata">Metadata</a></li>
+<li><a href="#spec">Spec</a></li>
 <li><a href="#command">command</a><ul>
 <li><a href="#example">example</a></li>
 </ul>
@@ -69,6 +71,11 @@
 <h2 id="apiversion">apiVersion</h2>
 <h2 id="kind">kind</h2>
 <p>定义了这个API对象的类型</p>
+<h2 id="metadata">Metadata</h2>
+<p>API对象的“标识”，即元数据，也是从Kubernetes里找到这个对象的主要依据，对所有API对象来说，这一部分的格式和字段基本是一致的</p>
+<p>其中最主要使用到的字段是Labels</p>
+<h2 id="spec">Spec</h2>
+<p>存放属于这个对象独有的定义，用来描述它要表达的功能</p>
 <h2 id="command">command</h2>
 <p>指定不同于镜像默认运行的应用程序，可以同时使用args字段进行参数传递，将覆盖镜像中的默认定义</p>
 <p>自定义args 是向容器中的应用程序传递配置信息的常用方式</p>
@@ -314,7 +321,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-12 23:04:43</p>
+        <p>Site Generated 2019-03-14 12:47:41</p>
       </span>
     </div>
 
