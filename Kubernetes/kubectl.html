@@ -333,6 +333,26 @@
 <h2 id="_4">排错调试</h2>
 <h3 id="attach">attach 附加终端</h3>
 <p>附加终端至一个运行中的容器</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">shareProcessNamespace</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">shell</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">busybox</span>
+    <span class="n">stdin</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="n">tty</span><span class="o">:</span> <span class="kc">true</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">attach</span> <span class="o">-</span><span class="n">it</span> <span class="n">nginx</span> <span class="o">-</span><span class="n">c</span> <span class="n">shell</span>
+</pre></div>
+
+
 <h3 id="auth">auth 授权信息</h3>
 <p>打印授权信息</p>
 <h3 id="cp">cp 复制</h3>
@@ -459,7 +479,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-14 12:47:41</p>
+        <p>Site Generated 2019-03-16 02:13:38</p>
       </span>
     </div>
 

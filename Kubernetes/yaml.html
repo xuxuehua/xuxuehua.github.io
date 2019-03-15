@@ -30,29 +30,35 @@
 <li><a href="#apiversion">apiVersion</a></li>
 <li><a href="#kind">kind</a></li>
 <li><a href="#metadata">Metadata</a></li>
-<li><a href="#spec">Spec</a></li>
-<li><a href="#command">command</a><ul>
-<li><a href="#example">example</a></li>
+<li><a href="#spec">Spec</a><ul>
+<li><a href="#_1">仔细阅读</a></li>
 </ul>
 </li>
-<li><a href="#ports">ports</a><ul>
-<li><a href="#example_1">example</a></li>
-</ul>
-</li>
-<li><a href="#imagepullpolicy">imagePullPolicy</a><ul>
-<li><a href="#example_2">example</a></li>
-</ul>
-</li>
+<li><a href="#command">command</a></li>
+<li><a href="#imagepullpolicy">imagePullPolicy</a></li>
+<li><a href="#ports">ports</a></li>
 <li><a href="#labels">labels</a></li>
+<li><a href="#containers">containers</a><ul>
+<li><a href="#lifecycle">Lifecycle</a></li>
+</ul>
+</li>
 <li><a href="#selector">selector</a><ul>
 <li><a href="#matchlabels">matchLabels</a></li>
 <li><a href="#matchexpressions">matchExpressions</a></li>
 </ul>
 </li>
-<li><a href="#nodeselector">nodeSelector</a></li>
+<li><a href="#nodeselector">nodeSelector</a><ul>
+<li><a href="#nodename">NodeName</a></li>
+</ul>
+</li>
+<li><a href="#hostaliases">hostAliases</a><ul>
+<li><a href="#hostnetworkhostipchostpid">hostNetwork/hostIPC/hostPID</a></li>
+</ul>
+</li>
+<li><a href="#shareprocessnamespace">shareProcessNamespace</a></li>
 <li><a href="#annotations">annotations</a></li>
 <li><a href="#initcontainers">initContainers</a></li>
-<li><a href="#lifecycle">lifecycle</a><ul>
+<li><a href="#lifecycle_1">lifecycle</a><ul>
 <li><a href="#poststart">postStart</a></li>
 <li><a href="#prestop">preStop</a></li>
 </ul>
@@ -76,10 +82,11 @@
 <p>其中最主要使用到的字段是Labels</p>
 <h2 id="spec">Spec</h2>
 <p>存放属于这个对象独有的定义，用来描述它要表达的功能</p>
+<h3 id="_1">仔细阅读</h3>
+<p>仔细阅读 $GOPATH/src/k8s.io/kubernetes/vendor/k8s.io/api/core/v1/types.go 里，type Pod struct ，尤其是 PodSpec 部分的内容。争取做到下次看到一个 Pod 的 YAML 文件时，不再需要查阅文档，就能做到把常用字段及其作用信手拈来。</p>
 <h2 id="command">command</h2>
 <p>指定不同于镜像默认运行的应用程序，可以同时使用args字段进行参数传递，将覆盖镜像中的默认定义</p>
 <p>自定义args 是向容器中的应用程序传递配置信息的常用方式</p>
-<h3 id="example">example</h3>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
 <span class="n">metadata</span><span class="o">:</span>
@@ -93,39 +100,11 @@
 </pre></div>
 
 
-<h2 id="ports">ports</h2>
-<p>显示指定容器端口，为其赋予一个名称方便调用</p>
-<p>其值为一个列表，有一个到多个端口对象组成，且嵌套以下字段</p>
-<div class="hlcode"><pre><span class="nx">containerPort</span> <span class="o">&lt;</span><span class="kt">integer</span><span class="o">&gt;</span> <span class="nx">必选字段</span><span class="err">，</span><span class="nx">指定Pod的IP地址暴露的容器端口</span> <span class="mi">0</span><span class="o">-</span><span class="mi">65536</span>
-<span class="nb">name</span> <span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">当前容器端口名称</span><span class="err">，</span><span class="nx">在当前pod内需要唯一</span><span class="err">，</span><span class="nx">此端口名可以被Service资源调用</span>
-<span class="nx">protocol</span> <span class="nx">可以为TCP或UDP</span><span class="err">，</span><span class="nx">默认为TCP</span>
-</pre></div>
-
-
-<h3 id="example_1">example</h3>
-<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
-<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
-<span class="n">metadata</span><span class="o">:</span>
-  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="n">example</span>
-<span class="n">spec</span><span class="o">:</span>
-  <span class="n">containers</span><span class="o">:</span>
-    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
-      <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
-      <span class="n">ports</span><span class="o">:</span>
-        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">http</span>
-          <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
-          <span class="n">protocol</span><span class="o">:</span> <span class="n">TCP</span>
-</pre></div>
-
-
 <h2 id="imagepullpolicy">imagePullPolicy</h2>
-<div class="hlcode"><pre><span class="n">Always</span> <span class="err">镜像标签为</span><span class="n">latest</span><span class="err">，或镜像不存在时总是从指定的仓库中获取镜像</span>
-<span class="n">IfNotPresent</span>  <span class="err">仅当本地镜像缺失时方才从目标仓库中下载镜像</span>
-<span class="n">Never</span> <span class="err">禁止从仓库中下载镜像，仅仅使用本地镜像</span>
-</pre></div>
-
-
-<h3 id="example_2">example</h3>
+<p>定义了拉取镜像的策略</p>
+<p>默认策略为Always，即每次创建Pod的时候会重新拉取一次镜像</p>
+<p>IfNotPresent  仅当本地镜像缺失时方才从目标仓库中下载镜像<br />
+Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
 <span class="n">metadata</span><span class="o">:</span>
@@ -141,6 +120,30 @@
 <blockquote>
 <p>总是从镜像仓库中获取最新的nginx 镜像</p>
 </blockquote>
+<h2 id="ports">ports</h2>
+<p>显示指定容器端口，为其赋予一个名称方便调用</p>
+<p>其值为一个列表，有一个到多个端口对象组成，且嵌套以下字段</p>
+<div class="hlcode"><pre><span class="nx">containerPort</span> <span class="o">&lt;</span><span class="kt">integer</span><span class="o">&gt;</span> <span class="nx">必选字段</span><span class="err">，</span><span class="nx">指定Pod的IP地址暴露的容器端口</span> <span class="mi">0</span><span class="o">-</span><span class="mi">65536</span>
+<span class="nb">name</span> <span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">当前容器端口名称</span><span class="err">，</span><span class="nx">在当前pod内需要唯一</span><span class="err">，</span><span class="nx">此端口名可以被Service资源调用</span>
+<span class="nx">protocol</span> <span class="nx">可以为TCP或UDP</span><span class="err">，</span><span class="nx">默认为TCP</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="n">example</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+      <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+      <span class="n">ports</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">http</span>
+          <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+          <span class="n">protocol</span><span class="o">:</span> <span class="n">TCP</span>
+</pre></div>
+
+
 <h2 id="labels">labels</h2>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
@@ -156,6 +159,33 @@
 </pre></div>
 
 
+<h2 id="containers">containers</h2>
+<h3 id="lifecycle">Lifecycle</h3>
+<p>定义了Container Lifecycle Hooks，即容器状态发生变化时触发的一系列钩子</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">lifecycle</span><span class="o">-</span><span class="n">demo</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">lifecycle</span><span class="o">-</span><span class="n">demo</span><span class="o">-</span><span class="n">container</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span>
+    <span class="n">lifecycle</span><span class="o">:</span>
+      <span class="n">postStart</span><span class="o">:</span>
+        <span class="n">exec</span><span class="o">:</span>
+          <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;/bin/sh&quot;</span><span class="o">,</span> <span class="s2">&quot;-c&quot;</span><span class="o">,</span> <span class="s2">&quot;echo Hello from the postStart handler &gt; /usr/share/message&quot;</span><span class="o">]</span>
+      <span class="n">preStop</span><span class="o">:</span>
+        <span class="n">exec</span><span class="o">:</span>
+          <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;/usr/sbin/nginx&quot;</span><span class="o">,</span><span class="s2">&quot;-s&quot;</span><span class="o">,</span><span class="s2">&quot;quit&quot;</span><span class="o">]</span>
+</pre></div>
+
+
+<blockquote>
+<p>postStart 指在容器启动后，立刻执行一个指定的操作</p>
+<p>若postStart执行超时或者错误，Kubernetes会在该Pod的Events中报出该容器启动失败的错误信息，导致Pod也处于失败的状态</p>
+<p>postStop 指容器被杀死之前，执行的操作</p>
+<p>由于是同步的，会阻塞之前的容器杀死流程，直到这个Hook定义的操作完成之后，才允许容器被杀死</p>
+</blockquote>
 <h2 id="selector">selector</h2>
 <h3 id="matchlabels">matchLabels</h3>
 <p>通过直接给定键值来指定标签选择器</p>
@@ -179,6 +209,19 @@
 
 
 <h2 id="nodeselector">nodeSelector</h2>
+<p>供用户将Pod与Node进行绑定的字段</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="o">...</span>
+<span class="n">spec</span><span class="o">:</span>
+ <span class="n">nodeSelector</span><span class="o">:</span>
+   <span class="n">disktype</span><span class="o">:</span> <span class="n">ssd</span>
+</pre></div>
+
+
+<blockquote>
+<p>这样意味着Pod只能运行在携带disktype： ssd标签的节点上，否则将调度失败</p>
+</blockquote>
 <p>调度某些资源至指定设备节点，使用nodeSelector选择器</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
@@ -195,6 +238,77 @@
 </pre></div>
 
 
+<h3 id="nodename">NodeName</h3>
+<p>一旦 Pod 的这个字段被赋值，Kubernetes 项目就会被认为这个 Pod 已经经过了调度，调度的结果就是赋值的节点名字。所以，这个字段一般由调度器负责设置，但用户也可以设置它来“骗过”调度器，当然这个做法一般是在测试或者调试的时候才会用到。</p>
+<h2 id="hostaliases">hostAliases</h2>
+<p>定义了 Pod 的 hosts 文件（比如 /etc/hosts）里的内容</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="o">...</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">hostAliases</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">ip</span><span class="o">:</span> <span class="s2">&quot;10.1.2.3&quot;</span>
+    <span class="n">hostnames</span><span class="o">:</span>
+    <span class="o">-</span> <span class="s2">&quot;foo.remote&quot;</span>
+    <span class="o">-</span> <span class="s2">&quot;bar.remote&quot;</span>
+<span class="o">...</span>
+</pre></div>
+
+
+<p>以上面的配置，Pod启动后，/etc/hosts文件会如下</p>
+<div class="hlcode"><pre><span class="n">cat</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">hosts</span>
+<span class="cp"># Kubernetes-managed hosts file.</span>
+<span class="mf">127.0.0.1</span> <span class="n">localhost</span>
+<span class="p">...</span>
+<span class="mf">10.244.135.10</span> <span class="n">hostaliases</span><span class="o">-</span><span class="n">pod</span>
+<span class="mf">10.1.2.3</span> <span class="n">foo</span><span class="p">.</span><span class="n">remote</span>
+<span class="mf">10.1.2.3</span> <span class="n">bar</span><span class="p">.</span><span class="n">remote</span>
+</pre></div>
+
+
+<p>在 Kubernetes 项目中，如果要设置 hosts 文件里的内容，一定要通过这种方法。否则，如果直接修改了 hosts 文件的话，在 Pod 被删除重建之后，kubelet 会自动覆盖掉被修改的内容。</p>
+<h3 id="hostnetworkhostipchostpid">hostNetwork/hostIPC/hostPID</h3>
+<p>在Pod中的容器要共享宿主机的Namespace，也一定是pod级别定义的</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">hostNetwork</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="n">hostIPC</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="n">hostPID</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">shell</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">busybox</span>
+    <span class="n">stdin</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="n">tty</span><span class="o">:</span> <span class="kc">true</span>
+</pre></div>
+
+
+<blockquote>
+<p>这个Pod里面的所有容器，都会直接使用宿主机的网络，直接与IPC进行通信，以及看到宿主机正在运行的所有进程</p>
+</blockquote>
+<h2 id="shareprocessnamespace">shareProcessNamespace</h2>
+<p>Pod 里面的容器要共享PID Namespace</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">shareProcessNamespace</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">shell</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">busybox</span>
+    <span class="n">stdin</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="n">tty</span><span class="o">:</span> <span class="kc">true</span>
+</pre></div>
+
+
+<p>这个 Pod 被创建后，可以使用 shell 容器的 tty 跟这个容器进行交互了。</p>
 <h2 id="annotations">annotations</h2>
 <p>生成资源注解</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
@@ -227,7 +341,7 @@
 </pre></div>
 
 
-<h2 id="lifecycle">lifecycle</h2>
+<h2 id="lifecycle_1">lifecycle</h2>
 <h3 id="poststart">postStart</h3>
 <p>于容器创建完成之后立即运行钩子处理器handler</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
@@ -321,7 +435,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-14 12:47:41</p>
+        <p>Site Generated 2019-03-16 02:13:38</p>
       </span>
     </div>
 

@@ -32,15 +32,21 @@
 </ul>
 </li>
 <li><a href="#_2">设计</a></li>
-<li><a href="#pod-phase">pod 相位（phase）</a><ul>
-<li><a href="#pending">Pending</a></li>
-<li><a href="#running">Running</a></li>
+<li><a href="#pod-phase">Pod 声明周期（phase）</a><ul>
+<li><a href="#pending">Pending</a><ul>
+<li><a href="#condition-unschedulable">Condition: Unschedulable</a></li>
+</ul>
+</li>
+<li><a href="#running">Running</a><ul>
+<li><a href="#_3">异常情况</a></li>
+</ul>
+</li>
 <li><a href="#succeeded">Succeeded</a></li>
 <li><a href="#failed">Failed</a></li>
 <li><a href="#unknown">Unknown</a></li>
 </ul>
 </li>
-<li><a href="#_3">容器重启策略</a><ul>
+<li><a href="#_4">容器重启策略</a><ul>
 <li><a href="#always">Always</a></li>
 <li><a href="#onfailure">OnFailure</a></li>
 <li><a href="#never">Never</a></li>
@@ -50,13 +56,13 @@
 <li><a href="#limits">limits 资源限制</a></li>
 </ul>
 </li>
-<li><a href="#_4">分布式模型</a><ul>
+<li><a href="#_5">分布式模型</a><ul>
 <li><a href="#sidercar-pattern">sidercar pattern</a></li>
 <li><a href="#ambassador-pattern">Ambassador pattern</a></li>
 <li><a href="#adapter-pattern">Adapter pattern</a></li>
 </ul>
 </li>
-<li><a href="#_5">状态信息</a><ul>
+<li><a href="#_6">状态信息</a><ul>
 <li><a href="#pending_1">Pending</a></li>
 <li><a href="#running_1">Running</a></li>
 <li><a href="#succeeded_1">Succeeded</a></li>
@@ -76,7 +82,7 @@
 <li><a href="#daemonset">DaemonSet</a></li>
 </ul>
 </li>
-<li><a href="#_6">环境变量</a><ul>
+<li><a href="#_7">环境变量</a><ul>
 <li><a href="#env">env</a><ul>
 <li><a href="#example">example</a></li>
 </ul>
@@ -107,18 +113,33 @@
 <h2 id="_2">设计</h2>
 <p>通常应该一个容器中仅运行一个进程，而日志信息通过输出至容器的标准输出，用户通过kubectl log 进行获取</p>
 <p>省去了用户手动分拣日志信息</p>
-<h2 id="pod-phase">pod 相位（phase）</h2>
+<h2 id="pod-phase">Pod 声明周期（phase）</h2>
+<p>pod.status.phase 表示当前Pod的状态</p>
 <h3 id="pending">Pending</h3>
-<p>API Server 创建了Pod资源对象并已存储etcd中，但未被调度完成，或着仍然处于从仓库下载镜像的过程中</p>
+<p>Pod的YAML文件已经提交给Kubernetes，API Server 创建了Pod资源对象并已存储etcd中，但未被调度完成，或着仍然处于从仓库下载镜像的过程中</p>
+<p>如调度失败的情况</p>
+<h4 id="condition-unschedulable">Condition: Unschedulable</h4>
+<p>调度出现问题</p>
 <h3 id="running">Running</h3>
-<p>Pod已经被调度至某节点，并且所有容器都已经被kubelet创建完成</p>
+<p>Pod已经被调度至一个具体节点绑定，并且所有容器都已经被kubelet创建完成</p>
+<h4 id="_3">异常情况</h4>
+<p>Pod（即容器）的状态是 Running，但是应用其实已经停止服务的例子</p>
+<div class="hlcode"><pre><span class="mf">1.</span> <span class="err">程序本身有</span> <span class="n">bug</span><span class="err">，本来应该返回</span> <span class="mi">200</span><span class="err">，但因为代码问题，返回的是</span><span class="mi">500</span><span class="err">；</span>
+<span class="mf">2.</span> <span class="err">程序因为内存问题，已经僵死，但进程还在，但无响应；</span>
+<span class="mf">3.</span> <span class="n">Dockerfile</span> <span class="err">写的不规范，应用程序不是主进程，那么主进程出了什么问题都无法发现；</span>
+<span class="mf">4.</span> <span class="err">程序出现死循环。</span>
+</pre></div>
+
+
 <h3 id="succeeded">Succeeded</h3>
-<p>Pod 中的所有容器都已经成功终止并且不会被重启</p>
+<p>Pod 中的所有容器都已经成功运行完成并终止，且不会被重启</p>
+<p>常见于一次性任务</p>
 <h3 id="failed">Failed</h3>
 <p>所有容器都已经终止，但至少有一个容器终止失败，即容器返回了非0值的退出状态或已经被系统终止</p>
+<p>此时需要debug这个容器的应用，如查看Pod的Events和日志</p>
 <h3 id="unknown">Unknown</h3>
-<p>API Server 无法正常获取到Pod对象的状态信息，通常是由于无法与所在工作节点的kubelet通信</p>
-<h2 id="_3">容器重启策略</h2>
+<p>Pod的状态不能持续地被kubelet汇报给kube-apiserver，很可能是主从节点间通信出现问题</p>
+<h2 id="_4">容器重启策略</h2>
 <h3 id="always">Always</h3>
 <p>pod对象终止就将其重启，默认设定</p>
 <h3 id="onfailure">OnFailure</h3>
@@ -177,7 +198,7 @@
 </pre></div>
 
 
-<h2 id="_4">分布式模型</h2>
+<h2 id="_5">分布式模型</h2>
 <h3 id="sidercar-pattern">sidercar pattern</h3>
 <p>边车模型或跨斗模型</p>
 <p>即pod的主应用容器提供协同的辅助应用容器，每个应用独立运行</p>
@@ -190,7 +211,7 @@
 <p>适配器模式</p>
 <p>将主应用容器中的内容进行标准化输出</p>
 <p>如日志数据或者指标数据的输出，</p>
-<h2 id="_5">状态信息</h2>
+<h2 id="_6">状态信息</h2>
 <h3 id="pending_1">Pending</h3>
 <h3 id="running_1">Running</h3>
 <h3 id="succeeded_1">Succeeded</h3>
@@ -239,7 +260,7 @@
 <p>类似于cronjob</p>
 <h3 id="daemonset">DaemonSet</h3>
 <p>确保所有nodes 运行同一个指定类型的pod</p>
-<h2 id="_6">环境变量</h2>
+<h2 id="_7">环境变量</h2>
 <p>通过环境变量在容器启动时传递配置信息</p>
 <h3 id="env">env</h3>
 <p>在容器配置段中嵌套env字段，值是环境变量构成的列表</p>
@@ -271,7 +292,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-14 12:47:41</p>
+        <p>Site Generated 2019-03-16 02:13:38</p>
       </span>
     </div>
 

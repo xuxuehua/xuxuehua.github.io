@@ -1,0 +1,265 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>volume - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Kubernetes">Kubernetes</a>&nbsp;&#187;&nbsp;volume
+    <span class="updated">Page Updated&nbsp;
+      2019-03-14 16:12
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">volume</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#volume">Volume</a><ul>
+<li><a href="#projected-volume">Projected Volume</a><ul>
+<li><a href="#secret">Secret</a><ul>
+<li><a href="#credential">存放Credential</a></li>
+<li><a href="#credential_1">查看Credential</a></li>
+<li><a href="#secret_1">创建Secret</a></li>
+</ul>
+</li>
+<li><a href="#configmap">ConfigMap</a></li>
+<li><a href="#downward-api">Downward API</a><ul>
+<li><a href="#_1">支持字段</a></li>
+</ul>
+</li>
+<li><a href="#serviceaccounttoken">ServiceAccountToken</a><ul>
+<li><a href="#_2">实现原理</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="volume">Volume</h1>
+<h2 id="projected-volume">Projected Volume</h2>
+<p>特殊的volume</p>
+<p>为容器提供预先定义好的数据，即volume里面的信息仿佛是被Kubernetes 投射进入容器当中</p>
+<h3 id="secret">Secret</h3>
+<p>帮助Pod访问加密的数据，存放到Etcd中，然后可以通过Pod的容器里面挂载Volume的方式，访问懂啊这些Secret里面的保存的信息</p>
+<h4 id="credential">存放Credential</h4>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">test</span><span class="o">-</span><span class="n">projected</span><span class="o">-</span><span class="n">volume</span> 
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">test</span><span class="o">-</span><span class="n">secret</span><span class="o">-</span><span class="n">volume</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">busybox</span>
+    <span class="n">args</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">sleep</span>
+    <span class="o">-</span> <span class="s2">&quot;86400&quot;</span>
+    <span class="n">volumeMounts</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">mysql</span><span class="o">-</span><span class="n">cred</span>
+      <span class="n">mountPath</span><span class="o">:</span> <span class="s2">&quot;/projected-volume&quot;</span>
+      <span class="n">readOnly</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="n">volumes</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">mysql</span><span class="o">-</span><span class="n">cred</span>
+    <span class="n">projected</span><span class="o">:</span>
+      <span class="n">sources</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">secret</span><span class="o">:</span>
+          <span class="n">name</span><span class="o">:</span> <span class="n">user</span>
+      <span class="o">-</span> <span class="n">secret</span><span class="o">:</span>
+          <span class="n">name</span><span class="o">:</span> <span class="n">pass</span>
+</pre></div>
+
+
+<blockquote>
+<p>这里的Volume类型为projected， 而source是user和pass</p>
+</blockquote>
+<p>用到的数据库的用户名、密码，正是以 Secret 对象的方式交给 Kubernetes 保存的。完成这个操作的指令</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">cat</span> <span class="p">.</span><span class="o">/</span><span class="n">username</span><span class="p">.</span><span class="n">txt</span>
+<span class="n">admin</span>
+<span class="err">$</span> <span class="n">cat</span> <span class="p">.</span><span class="o">/</span><span class="n">password</span><span class="p">.</span><span class="n">txt</span>
+<span class="n">c1oudc0w</span><span class="o">!</span>
+
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="n">secret</span> <span class="n">generic</span> <span class="n">user</span> <span class="o">--</span><span class="n">from</span><span class="o">-</span><span class="n">file</span><span class="o">=</span><span class="p">.</span><span class="o">/</span><span class="n">username</span><span class="p">.</span><span class="n">txt</span>
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="n">secret</span> <span class="n">generic</span> <span class="n">pass</span> <span class="o">--</span><span class="n">from</span><span class="o">-</span><span class="n">file</span><span class="o">=</span><span class="p">.</span><span class="o">/</span><span class="n">password</span><span class="p">.</span><span class="n">txt</span>
+</pre></div>
+
+
+<h4 id="credential_1">查看Credential</h4>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">secrets</span>
+<span class="n">NAME</span>           <span class="n">TYPE</span>                                <span class="n">DATA</span>      <span class="n">AGE</span>
+<span class="n">user</span>          <span class="n">Opaque</span>                                <span class="mi">1</span>         <span class="mi">51</span><span class="n">s</span>
+<span class="n">pass</span>          <span class="n">Opaque</span>                                <span class="mi">1</span>         <span class="mi">51</span><span class="n">s</span>
+</pre></div>
+
+
+<h4 id="secret_1">创建Secret</h4>
+<p>Secret对象要求数据必须经过Base64转码操作</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">echo</span> <span class="o">-</span><span class="n">n</span> <span class="err">&#39;</span><span class="n">admin</span><span class="err">&#39;</span> <span class="o">|</span> <span class="n">base64</span>
+<span class="n">YWRtaW4</span><span class="o">=</span>
+<span class="err">$</span> <span class="n">echo</span> <span class="o">-</span><span class="n">n</span> <span class="err">&#39;</span><span class="mf">1f</span><span class="mi">2</span><span class="n">d1e2e67df</span><span class="err">&#39;</span> <span class="o">|</span> <span class="n">base64</span>
+<span class="n">MWYyZDFlMmU2N2Rm</span>
+</pre></div>
+
+
+<p>创建这个yaml 文件</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Secret</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">mysecret</span>
+<span class="n">type</span><span class="o">:</span> <span class="n">Opaque</span>
+<span class="n">data</span><span class="o">:</span>
+  <span class="n">user</span><span class="o">:</span> <span class="n">YWRtaW4</span><span class="o">=</span>
+  <span class="n">pass</span><span class="o">:</span> <span class="n">MWYyZDFlMmU2N2Rm</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">test</span><span class="o">-</span><span class="n">projected</span><span class="o">-</span><span class="n">volume</span><span class="p">.</span><span class="n">yaml</span>
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">test</span><span class="o">-</span><span class="n">projected</span><span class="o">-</span><span class="n">volume</span> <span class="o">--</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+<span class="err">$</span> <span class="n">ls</span> <span class="o">/</span><span class="n">projected</span><span class="o">-</span><span class="n">volume</span><span class="o">/</span>
+<span class="n">user</span>
+<span class="n">pass</span>
+<span class="err">$</span> <span class="n">cat</span> <span class="o">/</span><span class="n">projected</span><span class="o">-</span><span class="n">volume</span><span class="o">/</span><span class="n">user</span>
+<span class="n">root</span>
+<span class="err">$</span> <span class="n">cat</span> <span class="o">/</span><span class="n">projected</span><span class="o">-</span><span class="n">volume</span><span class="o">/</span><span class="n">pass</span>
+<span class="mf">1f</span><span class="mi">2</span><span class="n">d1e2e67df</span>
+</pre></div>
+
+
+<p>更重要的是，像这样通过挂载方式进入到容器里的 Secret，一旦其对应的 Etcd 里的数据被更新，这些 Volume 里的文件内容，同样也会被更新。这是 kubelet 组件在定时维护这些 Volume。</p>
+<p>需要注意的是，这个更新可能会有一定的延时。所以在编写应用程序时，在发起数据库连接的代码处写好重试和超时的逻辑，绝对是个好习惯。</p>
+<h3 id="configmap">ConfigMap</h3>
+<p>保存的是不需要加密的信息，如配置信息</p>
+<div class="hlcode"><pre><span class="cp"># .properties 文件的内容</span>
+<span class="err">$</span> <span class="n">cat</span> <span class="n">example</span><span class="o">/</span><span class="n">ui</span><span class="p">.</span><span class="n">properties</span>
+<span class="n">color</span><span class="p">.</span><span class="n">good</span><span class="o">=</span><span class="n">purple</span>
+<span class="n">color</span><span class="p">.</span><span class="n">bad</span><span class="o">=</span><span class="n">yellow</span>
+<span class="n">allow</span><span class="p">.</span><span class="n">textmode</span><span class="o">=</span><span class="nb">true</span>
+<span class="n">how</span><span class="p">.</span><span class="n">nice</span><span class="p">.</span><span class="n">to</span><span class="p">.</span><span class="n">look</span><span class="o">=</span><span class="n">fairlyNice</span>
+
+<span class="cp"># 从.properties 文件创建 ConfigMap</span>
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="n">configmap</span> <span class="n">ui</span><span class="o">-</span><span class="n">config</span> <span class="o">--</span><span class="n">from</span><span class="o">-</span><span class="n">file</span><span class="o">=</span><span class="n">example</span><span class="o">/</span><span class="n">ui</span><span class="p">.</span><span class="n">properties</span>
+
+<span class="cp"># 查看这个 ConfigMap 里保存的信息 (data)</span>
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">configmaps</span> <span class="n">ui</span><span class="o">-</span><span class="n">config</span> <span class="o">-</span><span class="n">o</span> <span class="n">yaml</span>
+<span class="nl">apiVersion:</span> <span class="n">v1</span>
+<span class="nl">data:</span>
+  <span class="n">ui</span><span class="p">.</span><span class="n">properties</span><span class="o">:</span> <span class="o">|</span>
+    <span class="n">color</span><span class="p">.</span><span class="n">good</span><span class="o">=</span><span class="n">purple</span>
+    <span class="n">color</span><span class="p">.</span><span class="n">bad</span><span class="o">=</span><span class="n">yellow</span>
+    <span class="n">allow</span><span class="p">.</span><span class="n">textmode</span><span class="o">=</span><span class="nb">true</span>
+    <span class="n">how</span><span class="p">.</span><span class="n">nice</span><span class="p">.</span><span class="n">to</span><span class="p">.</span><span class="n">look</span><span class="o">=</span><span class="n">fairlyNice</span>
+<span class="nl">kind:</span> <span class="n">ConfigMap</span>
+<span class="nl">metadata:</span>
+  <span class="nl">name:</span> <span class="n">ui</span><span class="o">-</span><span class="n">config</span>
+  <span class="p">...</span>
+</pre></div>
+
+
+<blockquote>
+<p>kubectl get -o yaml 这样的参数，会将指定Pod API对象以YAML的方式显示出来</p>
+</blockquote>
+<h3 id="downward-api">Downward API</h3>
+<p>让Pod里面的容器能够直接获取到这个Pod API对象本身</p>
+<p>而这些信息，一定是Pod里面的容器进程启动之前就能确定下来的信息</p>
+<p>若要获取Pod运行后的信息，如进程PID，需要定义sidecar容器</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">test</span><span class="o">-</span><span class="n">downwardapi</span><span class="o">-</span><span class="n">volume</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">zone</span><span class="o">:</span> <span class="n">us</span><span class="o">-</span><span class="n">est</span><span class="o">-</span><span class="n">coast</span>
+    <span class="n">cluster</span><span class="o">:</span> <span class="n">test</span><span class="o">-</span><span class="n">cluster1</span>
+    <span class="n">rack</span><span class="o">:</span> <span class="n">rack</span><span class="o">-</span><span class="mi">22</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">client</span><span class="o">-</span><span class="n">container</span>
+      <span class="n">image</span><span class="o">:</span> <span class="n">k8s</span><span class="o">.</span><span class="na">gcr</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">busybox</span>
+      <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;sh&quot;</span><span class="o">,</span> <span class="s2">&quot;-c&quot;</span><span class="o">]</span>
+      <span class="n">args</span><span class="o">:</span>
+      <span class="o">-</span> <span class="k">while</span> <span class="kc">true</span><span class="o">;</span> <span class="k">do</span>
+          <span class="k">if</span> <span class="o">[[</span> <span class="o">-</span><span class="n">e</span> <span class="sr">/etc/podinfo/</span><span class="n">labels</span> <span class="o">]];</span> <span class="n">then</span>
+            <span class="n">echo</span> <span class="o">-</span><span class="n">en</span> <span class="s1">&#39;\n\n&#39;</span><span class="o">;</span> <span class="n">cat</span> <span class="sr">/etc/podinfo/</span><span class="n">labels</span><span class="o">;</span> <span class="n">fi</span><span class="o">;</span>
+          <span class="n">sleep</span> <span class="mi">5</span><span class="o">;</span>
+        <span class="n">done</span><span class="o">;</span>
+      <span class="n">volumeMounts</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">podinfo</span>
+          <span class="n">mountPath</span><span class="o">:</span> <span class="sr">/etc/</span><span class="n">podinfo</span>
+          <span class="n">readOnly</span><span class="o">:</span> <span class="kc">false</span>
+  <span class="n">volumes</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">podinfo</span>
+      <span class="n">projected</span><span class="o">:</span>
+        <span class="n">sources</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">downwardAPI</span><span class="o">:</span>
+            <span class="n">items</span><span class="o">:</span>
+              <span class="o">-</span> <span class="n">path</span><span class="o">:</span> <span class="s2">&quot;labels&quot;</span>
+                <span class="n">fieldRef</span><span class="o">:</span>
+                  <span class="n">fieldPath</span><span class="o">:</span> <span class="n">metadata</span><span class="o">.</span><span class="na">labels</span>
+</pre></div>
+
+
+<blockquote>
+<p>声明要暴露Pod的metadata.labels信息给容器</p>
+<p>这样当前Pod的labels字段值，就会被Kubernetes 自动挂载称为容器里的/etc/podinfo/labels</p>
+</blockquote>
+<p>上面的操作，会不断打印出labels里面的内容</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">dapi</span><span class="o">-</span><span class="n">volume</span><span class="p">.</span><span class="n">yaml</span>
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">logs</span> <span class="n">test</span><span class="o">-</span><span class="n">downwardapi</span><span class="o">-</span><span class="n">volume</span>
+<span class="n">cluster</span><span class="o">=</span><span class="s">&quot;test-cluster1&quot;</span>
+<span class="n">rack</span><span class="o">=</span><span class="s">&quot;rack-22&quot;</span>
+<span class="n">zone</span><span class="o">=</span><span class="s">&quot;us-est-coast&quot;</span>
+</pre></div>
+
+
+<h4 id="_1">支持字段</h4>
+<div class="hlcode"><pre><span class="mi">1</span><span class="nx">.</span> <span class="nx">使用</span> <span class="nx">fieldRef</span> <span class="nx">可以声明使用</span><span class="p">:</span>
+<span class="nx">spec.nodeName</span> <span class="o">-</span> <span class="nx">宿主机名字</span>
+<span class="nx">status.hostIP</span> <span class="o">-</span> <span class="nx">宿主机</span> <span class="nx">IP</span>
+<span class="nx">metadata.name</span> <span class="o">-</span> <span class="nx">Pod</span> <span class="nx">的名字</span>
+<span class="nx">metadata.namespace</span> <span class="o">-</span> <span class="nx">Pod</span> <span class="nx">的</span> <span class="nx">Namespace</span>
+<span class="nx">status.podIP</span> <span class="o">-</span> <span class="nx">Pod</span> <span class="nx">的</span> <span class="nx">IP</span>
+<span class="nx">spec.serviceAccountName</span> <span class="o">-</span> <span class="nx">Pod</span> <span class="nx">的</span> <span class="nx">Service</span> <span class="nx">Account</span> <span class="nx">的名字</span>
+<span class="nx">metadata.uid</span> <span class="o">-</span> <span class="nx">Pod</span> <span class="nx">的</span> <span class="nx">UID</span>
+<span class="nx">metadata.labels</span><span class="err">[</span><span class="s1">&#39;&lt;KEY&gt;&#39;</span><span class="cp">]</span> - 指定 <span class="nt">&lt;KEY&gt;</span> 的 Label 值
+metadata.annotations<span class="cp">[</span><span class="s1">&#39;&lt;KEY&gt;&#39;</span><span class="cp">]</span> - 指定 <span class="nt">&lt;KEY&gt;</span> 的 Annotation 值
+metadata.labels - Pod 的所有 Label
+metadata.annotations - Pod 的所有 Annotation
+
+2. 使用 resourceFieldRef 可以声明使用:
+容器的 CPU limit
+容器的 CPU request
+容器的 memory limit
+容器的 memory request
+</pre></div>
+
+
+<h3 id="serviceaccounttoken">ServiceAccountToken</h3>
+<p>Service Account 对象的作用，就是 Kubernetes 系统内置的一种“服务账户”，它是 Kubernetes 进行权限分配的对象。比如，Service Account A，可以只被允许对 Kubernetes API 进行 GET 操作，而 Service Account B，则可以有 Kubernetes API 的所有操作的权限。</p>
+<p>像这样的 Service Account 的授权信息和文件，实际上保存在它所绑定的一个特殊的 Secret 对象里的。这个特殊的 Secret 对象，就叫作ServiceAccountToken</p>
+<p>任何Kubernetes上的应用，必须使用这个ServiceAccountToken里面保存的授权token，才能合法的访问API Server</p>
+<p>另外，为了方便使用，Kubernetes 已经为你提供了一个的默认“服务账户”（default Service Account）。并且，任何一个运行在 Kubernetes 里的 Pod，都可以直接使用这个默认的 Service Account，而无需显示地声明挂载它。</p>
+<h4 id="_2">实现原理</h4>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-03-16 02:13:38</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

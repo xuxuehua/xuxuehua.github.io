@@ -29,7 +29,7 @@
 <li><a href="#jenkins">jenkins</a><ul>
 <li><a href="#requirements">requirements</a></li>
 <li><a href="#_1">安装</a><ul>
-<li><a href="#docker">docker</a></li>
+<li><a href="#docker-not-recommended">docker (not recommended)</a></li>
 <li><a href="#ubuntu">Ubuntu</a></li>
 <li><a href="#centos">CentOS</a></li>
 </ul>
@@ -121,11 +121,33 @@
 
 
 <h2 id="_1">安装</h2>
-<h3 id="docker">docker</h3>
-<div class="hlcode"><pre><span class="n">docker</span> <span class="n">pull</span> <span class="n">jenkins</span><span class="o">/</span><span class="n">jenkins</span><span class="o">:</span><span class="n">lts</span>
-<span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">detach</span> <span class="o">--</span><span class="n">publish</span> <span class="mi">8080</span><span class="o">:</span><span class="mi">8080</span><span class="o">:</span> <span class="o">--</span><span class="n">volumn</span> <span class="n">jenkins_home</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">jenkins_home</span> <span class="o">--</span><span class="n">name</span> <span class="n">jenkins</span> <span class="n">jenkins</span><span class="o">/</span><span class="n">jenkins</span><span class="o">:</span><span class="n">lts</span>
+<h3 id="docker-not-recommended">docker (not recommended)</h3>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">run</span> \
+  <span class="o">-</span><span class="n">u</span> <span class="n">root</span> \
+  <span class="o">--</span><span class="n">restart</span><span class="o">=</span><span class="n">always</span> \
+  <span class="o">-</span><span class="n">d</span> \
+  <span class="o">--</span><span class="n">name</span> <span class="n">jenkins</span> \
+  <span class="o">-</span><span class="n">p</span> <span class="mi">8080</span><span class="o">:</span><span class="mi">8080</span> \
+  <span class="o">-</span><span class="n">p</span> <span class="mi">50000</span><span class="o">:</span><span class="mi">50000</span> \
+  <span class="o">-</span><span class="n">v</span> <span class="n">jenkins</span><span class="o">-</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">jenkins_home</span> \
+  <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="p">.</span><span class="n">sock</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="p">.</span><span class="n">sock</span> \
+  <span class="n">jenkinsci</span><span class="o">/</span><span class="n">blueocean</span>
+</pre></div>
 
-<span class="n">docker</span> <span class="n">exec</span> <span class="n">jenkins</span> <span class="n">cat</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">jenkins_home</span><span class="o">/</span><span class="n">secrets</span><span class="o">?</span><span class="n">initialAdminPassword</span>
+
+<div class="hlcode"><pre><span class="c1"># vim /etc/default/docker</span>
+ExecStart<span class="o">=/</span>usr<span class="o">/</span>bin<span class="o">/</span>dockerd <span class="o">-</span>H fd<span class="o">://</span> <span class="o">-</span>H tcp<span class="o">://</span><span class="m">0.0.0.0</span><span class="o">:</span><span class="m">2375</span>
+
+<span class="c1"># vim /lib/systemd/system/docker.service</span>
+ExecStart<span class="o">=/</span>usr<span class="o">/</span>bin<span class="o">/</span>dockerd <span class="o">-</span>H fd<span class="o">://</span>                <span class="o">&lt;---</span> before
+ExecStart<span class="o">=/</span>usr<span class="o">/</span>bin<span class="o">/</span>dockerd <span class="o">-</span>H fd<span class="o">://</span> <span class="o">-</span>H tcp<span class="o">://</span><span class="m">0.0.0.0</span><span class="o">:</span><span class="m">2375</span>    <span class="o">&lt;---</span> After
+
+<span class="c1"># systemctl daemon-reload</span>
+<span class="c1"># systemctl restart docker</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">exec</span> <span class="n">jenkins</span> <span class="n">cat</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">jenkins_home</span><span class="o">/</span><span class="n">secrets</span><span class="o">/</span><span class="n">initialAdminPassword</span>
 </pre></div>
 
 
@@ -1046,7 +1068,7 @@ node {
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-14 12:47:41</p>
+        <p>Site Generated 2019-03-16 02:13:38</p>
       </span>
     </div>
 
