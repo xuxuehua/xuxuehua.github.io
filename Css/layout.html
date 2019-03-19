@@ -44,6 +44,7 @@
 <li><a href="#_7">常用布局案例</a></li>
 </ul>
 </li>
+<li><a href="#_8">瀑布流</a></li>
 </ul>
 </li>
 </ul>
@@ -175,7 +176,7 @@
 
 
 <h4 id="_7">常用布局案例</h4>
-<p><img alt="img" src="https://cdn.pbrd.co/images/HPHVFKP.png" /></p>
+<p><img alt="img" src="https://snag.gy/od7icm.jpg" /></p>
 <div class="hlcode"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;head&gt;</span>
@@ -247,7 +248,7 @@
 </pre></div>
 
 
-<p><img alt="img" src="https://cdn.pbrd.co/images/HPHYkrm.png" /></p>
+<p><img alt="img" src="https://snag.gy/kRrgib.jpg" /></p>
 <div class="hlcode"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;head&gt;</span>
@@ -311,7 +312,7 @@
 </pre></div>
 
 
-<p><img alt="img" src="https://cdn.pbrd.co/images/HPItfrE.png" /></p>
+<p><img alt="img" src="https://snag.gy/K9QTVd.jpg" /></p>
 <div class="hlcode"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;head&gt;</span>
@@ -366,7 +367,7 @@
 </pre></div>
 
 
-<p><img alt="img" src="https://cdn.pbrd.co/images/HPIywhh.png" /></p>
+<p><img alt="img" src="https://snag.gy/nagURi.jpg" /></p>
 <div class="hlcode"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;head&gt;</span>
@@ -419,12 +420,46 @@
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
+
+
+<h3 id="_8">瀑布流</h3>
+<div class="hlcode"><pre><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div&gt;</span>
+            <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;1.jpg&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+                <span class="nt">&lt;div&gt;</span>
+            <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;2.jpg&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+                <span class="nt">&lt;div&gt;</span>
+            <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;3.jpg&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+                <span class="nt">&lt;div&gt;</span>
+            <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;4.jpg&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="p">.</span><span class="n">container</span><span class="p">{</span>
+    <span class="n">column</span><span class="o">-</span><span class="n">width</span><span class="o">:</span> <span class="mi">250</span><span class="n">px</span><span class="p">;</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">column</span><span class="o">-</span><span class="n">width</span><span class="o">:</span> <span class="mi">250</span><span class="n">px</span><span class="p">;</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">column</span><span class="o">-</span><span class="n">gap</span><span class="o">:</span> <span class="mi">5</span><span class="n">px</span><span class="p">;</span>
+    <span class="n">column</span><span class="o">-</span><span class="n">gap</span><span class="o">:</span> <span class="mi">5</span><span class="n">px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="n">container</span> <span class="n">div</span><span class="p">{</span>
+    <span class="nl">width:</span> <span class="mi">250</span><span class="n">px</span><span class="p">;</span>
+    <span class="nl">margin:</span> <span class="mi">5</span><span class="n">px</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-16 02:13:38</p>
+        <p>Site Generated 2019-03-19 08:45:58</p>
       </span>
     </div>
 

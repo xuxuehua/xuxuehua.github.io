@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>animation - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Css">Css</a>&nbsp;&#187;&nbsp;animation
+    <span class="updated">Page Updated&nbsp;
+      2019-03-16 20:06
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">animation</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">动画</a><ul>
+<li><a href="#2d">2D</a><ul>
+<li><a href="#translate">translate() 移动</a></li>
+<li><a href="#rotate">rotate() 旋转</a></li>
+<li><a href="#scale">scale() 缩放</a></li>
+<li><a href="#skew">skew() 倾斜</a></li>
+<li><a href="#matrix">matrix() 矩阵效果</a></li>
+</ul>
+</li>
+<li><a href="#3d">3D</a><ul>
+<li><a href="#rotatex">rotateX()</a></li>
+<li><a href="#rotatey">rotateY()</a></li>
+</ul>
+</li>
+<li><a href="#_2">过渡过程</a><ul>
+<li><a href="#transition">transition 过渡属性</a><ul>
+<li><a href="#transition-property">transition-property 过渡名称</a></li>
+<li><a href="#transition-duration">transition-duration 效果时间</a></li>
+<li><a href="#transition-timing-function">transition-timing-function 效果的时间曲线</a></li>
+<li><a href="#transition-dely">transition-dely 延时开始时间</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#animation">animation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">动画</h1>
+<h2 id="2d">2D</h2>
+<h3 id="translate">translate() 移动</h3>
+<div class="hlcode"><pre><span class="p">.</span><span class="n">div2</span> <span class="p">{</span>
+    <span class="nl">transform:</span> <span class="n">translate</span><span class="p">(</span><span class="mi">100</span><span class="n">px</span><span class="p">,</span><span class="mi">100</span><span class="n">px</span><span class="p">);</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">translate</span><span class="p">(</span><span class="mi">100</span><span class="n">px</span><span class="p">,</span><span class="mi">100</span><span class="n">px</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>-webkit-transform 是chrome safari支持的方式<br />
+-ms-transform 是IE</p>
+<p>-o-transform 是Opera</p>
+<p>-moz-transform 是Firefox</p>
+<h3 id="rotate">rotate() 旋转</h3>
+<p>旋转的角度</p>
+<div class="hlcode"><pre><span class="p">.</span><span class="n">div2</span><span class="p">{</span>
+    <span class="nl">transform:</span> <span class="n">rotate</span><span class="p">(</span><span class="mi">180</span><span class="n">deg</span><span class="p">);</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="mi">180</span><span class="n">deg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>需要指定浏览器</p>
+</blockquote>
+<h3 id="scale">scale() 缩放</h3>
+<div class="hlcode"><pre><span class="p">.</span><span class="n">div2</span><span class="p">{</span>
+    <span class="nl">transform:</span> <span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span> 
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>参数1为宽度</p>
+<p>参数2位倍数</p>
+</blockquote>
+<h3 id="skew">skew() 倾斜</h3>
+<div class="hlcode"><pre><span class="p">.</span><span class="n">div2</span><span class="p">{</span>
+    <span class="nl">transform:</span> <span class="n">skew</span><span class="p">(</span><span class="mi">20</span><span class="n">deg</span><span class="p">,</span><span class="mi">20</span><span class="n">deg</span><span class="p">);</span> 
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">skew</span><span class="p">(</span><span class="mi">20</span><span class="n">deg</span><span class="p">,</span><span class="mi">20</span><span class="n">deg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>参数1为X轴</p>
+<p>参数2位Y轴</p>
+</blockquote>
+<h3 id="matrix">matrix() 矩阵效果</h3>
+<h2 id="3d">3D</h2>
+<h3 id="rotatex">rotateX()</h3>
+<div class="hlcode"><pre><span class="p">.</span><span class="n">div2</span><span class="p">{</span>
+    <span class="nl">transform:</span> <span class="n">rotateX</span><span class="p">(</span><span class="mi">120</span><span class="n">deg</span><span class="p">);</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">rotateX</span><span class="p">(</span><span class="mi">120</span><span class="n">deg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3 id="rotatey">rotateY()</h3>
+<div class="hlcode"><pre><span class="p">.</span><span class="n">div2</span><span class="p">{</span>
+    <span class="nl">transform:</span> <span class="n">rotateY</span><span class="p">(</span><span class="mi">120</span><span class="n">deg</span><span class="p">);</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">rotateY</span><span class="p">(</span><span class="mi">120</span><span class="n">deg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2 id="_2">过渡过程</h2>
+<h3 id="transition">transition 过渡属性</h3>
+<div class="hlcode"><pre><span class="n">div</span><span class="p">{</span>
+    <span class="nl">width:</span> <span class="mi">100</span><span class="n">px</span><span class="p">;</span>
+    <span class="nl">height:</span> <span class="mi">100</span><span class="n">px</span><span class="p">;</span>
+    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="o">:</span> <span class="n">blue</span><span class="p">;</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">width</span> <span class="mi">2</span><span class="n">s</span><span class="p">,</span><span class="n">height</span> <span class="mi">2</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span> <span class="mi">2</span><span class="n">s</span><span class="p">;</span>
+    <span class="nl">transition:</span><span class="n">width</span> <span class="mi">2</span><span class="n">s</span><span class="p">,</span> <span class="n">height</span> <span class="mi">2</span><span class="n">s</span><span class="p">,</span> <span class="n">transform</span> <span class="mi">2</span><span class="n">s</span><span class="p">;</span>    
+<span class="p">}</span>
+
+<span class="nl">div:</span><span class="n">hover</span><span class="p">{</span>
+    <span class="nl">width:</span><span class="mi">200</span><span class="n">px</span><span class="p">;</span>
+    <span class="nl">height:</span><span class="mi">200</span><span class="n">px</span><span class="p">;</span>
+    <span class="nl">transform:</span><span class="n">rotate</span><span class="p">(</span><span class="mi">360</span><span class="n">deg</span><span class="p">);</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span><span class="n">rotate</span><span class="p">;</span>    
+<span class="p">}</span>
+</pre></div>
+
+
+<h4 id="transition-property">transition-property 过渡名称</h4>
+<h4 id="transition-duration">transition-duration 效果时间</h4>
+<h4 id="transition-timing-function">transition-timing-function 效果的时间曲线</h4>
+<h4 id="transition-dely">transition-dely 延时开始时间</h4>
+<h2 id="animation">animation</h2>
+<div class="hlcode"><pre><span class="n">div</span><span class="p">{</span>
+    <span class="nl">width:</span> <span class="mi">100</span><span class="n">px</span><span class="p">;</span>
+    <span class="nl">height:</span> <span class="mi">100</span><span class="n">px</span><span class="p">;</span>
+    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="o">:</span> <span class="n">blue</span><span class="p">;</span>
+    <span class="nl">position:</span> <span class="n">relative</span><span class="p">;</span>
+    <span class="nl">animation:</span> <span class="n">anim</span> <span class="mi">5</span><span class="n">s</span> <span class="n">infinite</span> <span class="n">alternate</span><span class="p">;</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">animation</span><span class="o">:</span> <span class="n">anim</span> <span class="mi">5</span><span class="n">s</span> <span class="n">infinite</span> <span class="n">alternate</span><span class="p">;</span>  
+<span class="p">}</span>
+
+<span class="err">@</span><span class="n">keyframes</span> <span class="n">anim</span><span class="p">{</span>
+    <span class="mi">0</span><span class="o">%</span><span class="p">{</span><span class="n">background</span><span class="o">:</span><span class="n">red</span><span class="p">;</span> <span class="n">left</span><span class="o">:</span><span class="mi">0</span><span class="n">px</span><span class="p">;</span> <span class="n">top</span><span class="o">:</span><span class="mi">0</span><span class="n">px</span><span class="p">}</span>
+    <span class="mi">25</span><span class="o">%</span><span class="p">{</span><span class="n">background</span><span class="o">:</span><span class="n">blue</span><span class="p">;</span> <span class="n">left</span><span class="o">:</span><span class="mi">200</span><span class="n">px</span><span class="p">;</span> <span class="n">top</span><span class="o">:</span><span class="mi">0</span><span class="n">px</span><span class="p">}</span>
+    <span class="mi">50</span><span class="o">%</span><span class="p">{</span><span class="n">background</span><span class="o">:</span> <span class="err">#</span><span class="n">ccffcc</span><span class="p">;</span> <span class="n">left</span><span class="o">:</span> <span class="mi">200</span><span class="n">px</span><span class="p">;</span> <span class="n">top</span><span class="o">:</span> <span class="mi">200</span><span class="n">px</span><span class="p">}</span>
+    <span class="mi">75</span><span class="o">%</span><span class="p">{</span><span class="n">background</span><span class="o">:</span> <span class="err">#</span><span class="mf">00ff</span><span class="n">ff</span><span class="p">;</span> <span class="n">left</span><span class="o">:</span> <span class="mi">0</span><span class="n">px</span><span class="p">;</span> <span class="n">top</span><span class="o">:</span> <span class="mi">200</span><span class="n">px</span><span class="p">}</span>
+    <span class="mi">100</span><span class="o">%</span><span class="p">{</span><span class="n">background</span><span class="o">:</span> <span class="n">red</span><span class="p">;</span> <span class="n">left</span><span class="o">:</span> <span class="mi">0</span><span class="n">px</span><span class="p">;</span> <span class="n">top</span><span class="o">:</span> <span class="mi">0</span><span class="n">px</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="err">@</span><span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">keyframes</span> <span class="n">anim</span><span class="p">{</span>
+    <span class="mi">0</span><span class="o">%</span><span class="p">{</span><span class="n">background</span><span class="o">:</span><span class="n">red</span><span class="p">;</span> <span class="n">left</span><span class="o">:</span><span class="mi">0</span><span class="n">px</span><span class="p">;</span> <span class="n">top</span><span class="o">:</span><span class="mi">0</span><span class="n">px</span><span class="p">}</span>
+    <span class="mi">25</span><span class="o">%</span><span class="p">{</span><span class="n">background</span><span class="o">:</span><span class="n">blue</span><span class="p">;</span> <span class="n">left</span><span class="o">:</span><span class="mi">200</span><span class="n">px</span><span class="p">;</span> <span class="n">top</span><span class="o">:</span><span class="mi">0</span><span class="n">px</span><span class="p">}</span>
+    <span class="mi">50</span><span class="o">%</span><span class="p">{</span><span class="n">background</span><span class="o">:</span> <span class="err">#</span><span class="n">ccffcc</span><span class="p">;</span> <span class="n">left</span><span class="o">:</span> <span class="mi">200</span><span class="n">px</span><span class="p">;</span> <span class="n">top</span><span class="o">:</span> <span class="mi">200</span><span class="n">px</span><span class="p">}</span>
+    <span class="mi">75</span><span class="o">%</span><span class="p">{</span><span class="n">background</span><span class="o">:</span> <span class="err">#</span><span class="mf">00ff</span><span class="n">ff</span><span class="p">;</span> <span class="n">left</span><span class="o">:</span> <span class="mi">0</span><span class="n">px</span><span class="p">;</span> <span class="n">top</span><span class="o">:</span> <span class="mi">200</span><span class="n">px</span><span class="p">}</span>
+    <span class="mi">100</span><span class="o">%</span><span class="p">{</span><span class="n">background</span><span class="o">:</span> <span class="n">red</span><span class="p">;</span> <span class="n">left</span><span class="o">:</span> <span class="mi">0</span><span class="n">px</span><span class="p">;</span> <span class="n">top</span><span class="o">:</span> <span class="mi">0</span><span class="n">px</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-03-19 08:45:58</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>
