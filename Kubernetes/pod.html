@@ -90,6 +90,7 @@
 <li><a href="#envfrom">envFrom</a></li>
 </ul>
 </li>
+<li><a href="#pod-probe">Pod Probe 探针</a></li>
 </ul>
 </li>
 </ul>
@@ -287,12 +288,68 @@
 
 
 <h3 id="envfrom">envFrom</h3>
+<h2 id="pod-probe">Pod Probe 探针</h2>
+<p>健康检查探针，kubelet会根据Probe返回值来决定这个容器的状态</p>
+<p>test-liveness-exec.yaml</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">test</span><span class="o">:</span> <span class="n">liveness</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">test</span><span class="o">-</span><span class="n">liveness</span><span class="o">-</span><span class="n">exec</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">liveness</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">busybox</span>
+    <span class="n">args</span><span class="o">:</span>
+    <span class="o">-</span> <span class="sr">/bin/s</span><span class="n">h</span>
+    <span class="o">-</span> <span class="o">-</span><span class="n">c</span>
+    <span class="o">-</span> <span class="n">touch</span> <span class="sr">/tmp/healthy; sleep 30; rm -rf /tmp/</span><span class="n">healthy</span><span class="o">;</span> <span class="n">sleep</span> <span class="mi">600</span>
+    <span class="n">livenessProbe</span><span class="o">:</span>
+      <span class="n">exec</span><span class="o">:</span>
+        <span class="n">command</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">cat</span>
+        <span class="o">-</span> <span class="sr">/tmp/</span><span class="n">healthy</span>
+      <span class="n">initialDelaySeconds</span><span class="o">:</span> <span class="mi">5</span>
+      <span class="n">periodSeconds</span><span class="o">:</span> <span class="mi">5</span>
+</pre></div>
+
+
+<blockquote>
+<p>与此同时，我们定义了一个这样的 livenessProbe（健康检查）。它的类型是 exec，这意味着，它会在容器启动后，在容器里面执行一句我们指定的命令，比如：“cat /tmp/healthy”。这时，如果这个文件存在，这条命令的返回值就是 0，Pod 就会认为这个容器不仅已经启动，而且是健康的。这个健康检查，在容器启动 5 s 后开始执行（initialDelaySeconds: 5），每 5 s 执行一次（periodSeconds: 5）。</p>
+</blockquote>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">test</span><span class="o">-</span><span class="n">liveness</span><span class="o">-</span><span class="n">exec</span><span class="p">.</span><span class="n">yaml</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pod</span>
+<span class="n">NAME</span>                <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">test</span><span class="o">-</span><span class="n">liveness</span><span class="o">-</span><span class="n">exec</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">10</span><span class="n">s</span>
+</pre></div>
+
+
+<p>30s 之后查看</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">describe</span> <span class="n">pod</span> <span class="n">test</span><span class="o">-</span><span class="n">liveness</span><span class="o">-</span><span class="n">exec</span>
+</pre></div>
+
+
+<div class="hlcode"><pre>FirstSeen LastSeen    Count   From            SubobjectPath           Type        Reason      Message
+--------- --------    -----   ----            -------------           --------    ------      -------
+2s        2s      1   {kubelet worker0}   spec.containers{liveness}   Warning     Unhealthy   Liveness probe failed: cat: can&#39;t open &#39;/tmp/healthy&#39;: No such file or directory
+</pre></div>
+
+
+<blockquote>
+<p>这里报错，表示文件已经不存在了</p>
+</blockquote>
+<p>然而pod并没有Fail，而是进入了running 状态，是因为Pod的恢复机制，即restartPolicy</p>
+<p>Pod的恢复过程永远发生在当前节点(Node), 除非pod.spec.node字段被更改</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-19 08:45:58</p>
+        <p>Site Generated 2019-03-21 02:43:19</p>
       </span>
     </div>
 

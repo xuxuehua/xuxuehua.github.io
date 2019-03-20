@@ -30,18 +30,18 @@
 <li><a href="#settimeout">setTimeout()</a><ul>
 <li><a href="#_2">语法</a></li>
 <li><a href="#_3">无限循环</a></li>
-<li><a href="#cleartimeout">clearTimeout()</a><ul>
-<li><a href="#_4">语法</a></li>
 </ul>
 </li>
+<li><a href="#cleartimeout">clearTimeout()</a><ul>
+<li><a href="#_4">语法</a></li>
 </ul>
 </li>
 <li><a href="#setimmediate">setImmediate()</a></li>
 <li><a href="#setinterval">setInterval()</a><ul>
 <li><a href="#_5">语法</a></li>
-<li><a href="#clearinterval">clearInterval()</a></li>
 </ul>
 </li>
+<li><a href="#clearinterval">clearInterval()</a></li>
 <li><a href="#_6">区别</a></li>
 </ul>
 </li>
@@ -49,7 +49,7 @@
 </div>
 <h1 id="_1">计时器</h1>
 <h2 id="settimeout">setTimeout()</h2>
-<p>setTimeout()方法用于在指定的毫秒数后调用函数或计算表达式。</p>
+<p>暂停指定的毫秒数后执行指定代码</p>
 <h3 id="_2">语法</h3>
 <p><code>setTimeout(code,millisec)</code>　</p>
 <p><strong>参数：</strong> code （必需）：要调用的函数后要执行的 JavaScript 代码串。millisec（必需）：在执行代码前需等待的毫秒数。 　</p>
@@ -111,8 +111,9 @@ t=setTimeout(&quot;timedCount()&quot;,1000)
 </pre></div>
 
 
-<h3 id="cleartimeout">clearTimeout()</h3>
-<h4 id="_4">语法</h4>
+<h2 id="cleartimeout">clearTimeout()</h2>
+<p>用于停止执行setTimeout()方法的函数代码</p>
+<h3 id="_4">语法</h3>
 <p>clearTimeout(timeoutID)</p>
 <p>要使用 clearTimeout( ), 我们设定 setTimeout( ) 时 , 要给予这 setTimout( ) 一个名称 , 这名称就是 timeoutID , 我们叫停时 , 就是用这 timeoutID 来叫停 , 这是一个自定义名称 , 但很多人就以 timeoutID 为名。</p>
 <div class="hlcode"><pre><span class="k">const</span> <span class="n">timeoutObj</span> <span class="o">=</span> <span class="n">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -164,7 +165,6 @@ function stopCount()
 
 
 <h2 id="setinterval">setInterval()</h2>
-<p>setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。</p>
 <p>setInterval() 方法会不停地调用函数，直到 clearInterval() 被调用或窗口被关闭。由 setInterval() 返回的 ID 值可用作 clearInterval() 方法的参数。</p>
 <h3 id="_5">语法</h3>
 <p><strong>语法:</strong> setInterval(code,millisec[,"lang"])</p>
@@ -176,7 +176,8 @@ function stopCount()
 </pre></div>
 
 
-<h3 id="clearinterval">clearInterval()</h3>
+<h2 id="clearinterval">clearInterval()</h2>
+<p>停止setInterval() 方法执行的函数代码</p>
 <div class="hlcode"><pre><span class="k">const</span> <span class="n">intervalObj</span> <span class="o">=</span> <span class="n">setInterval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Interval</span> <span class="n">timeout</span><span class="p">);</span>
 <span class="p">});</span>
@@ -195,7 +196,7 @@ function stopCount()
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-19 08:45:58</p>
+        <p>Site Generated 2019-03-21 02:43:19</p>
       </span>
     </div>
 

@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
-    <title>web_browser 浏览器 - Xu XueHua</title>
+    <title>web_browser 浏览器对象 - Xu XueHua</title>
     <meta name="keywords" content="Xu XueHua"/>
     <meta name="description" content="Xu XueHua's public notes"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -16,26 +16,36 @@
     <div id="container">
       
 <div id="header">
-  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#JavaScript">JavaScript</a>&nbsp;&#187;&nbsp;web_browser 浏览器
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#JavaScript">JavaScript</a>&nbsp;&#187;&nbsp;web_browser 浏览器对象
     <span class="updated">Page Updated&nbsp;
       2018-06-23 01:45
     </span></div>
 </div>
 <div class="clearfix"></div>
 
-<div class="page_title">web_browser 浏览器</div>
+<div class="page_title">web_browser 浏览器对象</div>
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#_1">浏览器</a><ul>
-<li><a href="#window">window</a></li>
+<li><a href="#window">window 对象</a></li>
 <li><a href="#_2">浏览器对象</a><ul>
-<li><a href="#window_1">window</a></li>
+<li><a href="#window_1">window 方法</a><ul>
+<li><a href="#windowopen">window.open()</a></li>
+<li><a href="#windowclose">window.close()</a></li>
+</ul>
+</li>
 <li><a href="#navigator">navigator</a><ul>
 <li><a href="#_3">判断浏览器版本</a></li>
 </ul>
 </li>
-<li><a href="#screen">screen</a></li>
-<li><a href="#location">location</a></li>
+<li><a href="#screen">screen 对象</a><ul>
+<li><a href="#_4">属性</a></li>
+</ul>
+</li>
+<li><a href="#location">location 对象</a><ul>
+<li><a href="#_5">属性</a></li>
+</ul>
+</li>
 <li><a href="#document">document</a><ul>
 <li><a href="#cookie">cookie</a><ul>
 <li><a href="#cookie_1">创建和存储 cookie</a></li>
@@ -43,17 +53,21 @@
 </li>
 </ul>
 </li>
-<li><a href="#history">history</a></li>
+<li><a href="#history">history 对象</a><ul>
+<li><a href="#historyback">history.back()</a></li>
+<li><a href="#historyforward">history.forward()</a></li>
+<li><a href="#historygo">history.go()</a></li>
 </ul>
 </li>
-<li><a href="#_4"></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 <h1 id="_1">浏览器</h1>
 <p>JavaScript可以获取浏览器提供的很多对象，并进行操作。</p>
-<h2 id="window">window</h2>
+<h2 id="window">window 对象</h2>
 <p><code>window</code>对象不但充当全局作用域，而且表示浏览器窗口。</p>
 <p><code>window</code>对象有<code>innerWidth</code>和<code>innerHeight</code>属性，可以获取浏览器窗口的内部宽度和高度。内部宽高是指除去菜单栏、工具栏、边框等占位元素后，用于显示网页的净宽高。</p>
 <div class="hlcode"><pre><span class="err">&#39;</span><span class="n">use</span> <span class="n">strict</span><span class="err">&#39;</span><span class="p">;</span>
@@ -62,16 +76,19 @@
 
 
 <p>对应的，还有一个<code>outerWidth</code>和<code>outerHeight</code>属性，可以获取浏览器窗口的整个宽高</p>
+<p>因此全局变量是window对象的属性，全局函数是window对象的方法</p>
 <h2 id="_2">浏览器对象</h2>
-<p>阅读: 115242</p>
-<hr />
 <p>JavaScript可以获取浏览器提供的很多对象，并进行操作。所有浏览器都支持 <em>window</em> 对象。</p>
-<h3 id="window_1">window</h3>
+<h3 id="window_1">window 方法</h3>
 <p><code>window</code>对象不但充当全局作用域，而且表示浏览器窗口。</p>
 <p><code>window</code>对象有<code>innerWidth</code>和<code>innerHeight</code>属性，可以获取浏览器窗口的内部宽度和高度。内部宽高是指除去菜单栏、工具栏、边框等占位元素后，用于显示网页的净宽高。</p>
 <p>兼容性：IE&lt;=8不支持。</p>
 <p><code>'use strict';</code> Runwindow inner size: 1281 x 664</p>
 <p>对应的，还有一个<code>outerWidth</code>和<code>outerHeight</code>属性，可以获取浏览器窗口的整个宽高。</p>
+<h4 id="windowopen">window.open()</h4>
+<p>打开新窗口</p>
+<h4 id="windowclose">window.close()</h4>
+<p>关闭当前窗口</p>
 <h3 id="navigator">navigator</h3>
 <p><code>navigator</code>对象表示浏览器的信息，最常用的属性包括：</p>
 <ul>
@@ -94,7 +111,9 @@
 </pre></div>
 
 
-<h3 id="screen">screen</h3>
+<h3 id="screen">screen 对象</h3>
+<p>包含用户屏幕的信息</p>
+<h4 id="_4">属性</h4>
 <p><code>screen</code>对象表示屏幕的信息，常用的属性有：</p>
 <ul>
 <li>screen.width：屏幕宽度，以像素为单位；</li>
@@ -103,12 +122,14 @@
 <li>screen.availWidth - 可用的屏幕宽度</li>
 <li>screen.availHeight - 可用的屏幕高度</li>
 </ul>
-<h3 id="location">location</h3>
+<h3 id="location">location 对象</h3>
+<p>用于获取当前页面的地址(URL), 并把浏览器重新定向到新的页面</p>
 <p><code>location</code>对象表示当前页面的URL信息。例如，一个完整的URL：</p>
 <div class="hlcode"><pre><span class="nl">http:</span><span class="c1">//www.example.com:8080/path/index.html?a=1&amp;b=2#TOP</span>
 </pre></div>
 
 
+<h4 id="_5">属性</h4>
 <p>可以用<code>location.href</code>获取。要获得URL各个部分的值，可以这么写：</p>
 <div class="hlcode"><pre><span class="n">location</span><span class="p">.</span><span class="n">hostname</span> <span class="c1">//返回 web 主机的域名 www.example.com</span>
 <span class="n">location</span><span class="p">.</span><span class="n">protocol</span><span class="p">;</span> <span class="c1">// &#39;http&#39;</span>
@@ -247,18 +268,23 @@
 </pre></div>
 
 
-<h3 id="history">history</h3>
-<p><code>history</code>对象保存了浏览器的历史记录，JavaScript可以调用<code>history</code>对象的<code>back()</code>或<code>forward ()</code>，相当于用户点击了浏览器的“后退”或“前进”按钮。</p>
+<h3 id="history">history 对象</h3>
+<p><code>history</code>对象保存了浏览器的历史记录</p>
+<h4 id="historyback">history.back()</h4>
+<p>用户点击了浏览器的“后退”</p>
 <p>这个对象属于历史遗留对象，对于现代Web页面来说，由于大量使用AJAX和页面交互，简单粗暴地调用<code>history.back()</code>可能会让用户感到非常愤怒。</p>
 <p>新手开始设计Web页面时喜欢在登录页登录成功时调用<code>history.back()</code>，试图回到登录前的页面。这是一种错误的方法。</p>
 <p>任何情况，你都不应该使用<code>history</code>这个对象了。</p>
-<h2 id="_4"></h2>
+<h4 id="historyforward">history.forward()</h4>
+<p>用户点击了浏览器的“前进”</p>
+<h4 id="historygo">history.go()</h4>
+<p>进入历史中某个页面</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-19 08:45:58</p>
+        <p>Site Generated 2019-03-21 02:43:19</p>
       </span>
     </div>
 

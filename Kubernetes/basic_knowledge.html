@@ -31,7 +31,8 @@
 <li><a href="#kubernetes">Kubernetes 特性</a><ul>
 <li><a href="#auto-scaling">自动的调度 Auto Scaling</a></li>
 <li><a href="#service-discovery">服务的自动发现 Service Discovery</a></li>
-<li><a href="#app-deployment">灰度发布 App Deployment</a></li>
+<li><a href="#canary-deployment">金丝雀发布/灰度发布 Canary Deployment</a></li>
+<li><a href="#blue-green-deployment">蓝绿部署 Blue-Green Deployment</a></li>
 </ul>
 </li>
 <li><a href="#kubernetes_1">Kubernetes 架构</a><ul>
@@ -153,9 +154,12 @@
 <p>对资源默认的调度</p>
 <p>Pods can be horizontally scaled via API</p>
 <h3 id="service-discovery">服务的自动发现 Service Discovery</h3>
-<h3 id="app-deployment">灰度发布 App Deployment</h3>
+<h3 id="canary-deployment">金丝雀发布/灰度发布 Canary Deployment</h3>
 <p>灰度发布（又名金丝雀发布）是指在黑与白之间，能够平滑过渡的一种发布方式。在其上可以进行A/B testing，即让一部分用户继续用产品特性A，一部分用户开始用产品特性B，如果用户对B没有什么反对意见，那么逐步扩大范围，把所有用户都迁移到B上面来。灰度发布可以保证整体系统的稳定，在初始灰度的时候就可以发现、调整问题，以保证其影响度。</p>
 <p>一旦有故障发生，会立即自动执行回滚操作。</p>
+<p>优先发布一台或少量机器升级，等验证无误后再更新其他机器。优点是用户影响范围小，不足之处是要额外控制如何做自动更新。</p>
+<h3 id="blue-green-deployment">蓝绿部署 Blue-Green Deployment</h3>
+<p>2组机器，蓝代表当前的V1版本，绿代表已经升级完成的V2版本。通过LB将流量全部导入V2完成升级部署。优点是切换快速，缺点是影响全部用户。</p>
 <h2 id="kubernetes_1">Kubernetes 架构</h2>
 <p><img alt="alt" src="https://cdn.pbrd.co/images/HocwGKR.png" /></p>
 <p><img alt="alt" src="https://snag.gy/xikmph.jpg" /></p>
@@ -377,7 +381,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-19 08:45:58</p>
+        <p>Site Generated 2019-03-21 02:43:19</p>
       </span>
     </div>
 

@@ -30,7 +30,12 @@
 <li><a href="#_2">功能分类</a><ul>
 <li><a href="#workload-pod">工作负载 Workload （也称Pod控制器）</a><ul>
 <li><a href="#replicationcontroller">ReplicationController 无状态 （废弃）</a></li>
-<li><a href="#replicaset">ReplicaSet 无状态</a></li>
+<li><a href="#replicaset">ReplicaSet 无状态</a><ul>
+<li><a href="#_3">结构</a></li>
+<li><a href="#_4">水平扩展</a></li>
+<li><a href="#_5">滚动扩展</a></li>
+</ul>
+</li>
 <li><a href="#deployment">Deployment  无状态</a></li>
 <li><a href="#statefulset">StatefulSet 有状态</a></li>
 <li><a href="#daemonset">DaemonSet 守护进程</a></li>
@@ -72,11 +77,129 @@
 <h4 id="replicaset">ReplicaSet 无状态</h4>
 <p>负责无状态应用，新一代ReplicationController</p>
 <p>比上一代支持基于集合的选择器</p>
+<h5 id="_3">结构</h5>
+<p>Nginx-deployment.yaml</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">ReplicaSet</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span><span class="o">-</span><span class="kd">set</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">replicas</span><span class="o">:</span> <span class="mi">3</span>
+  <span class="n">selector</span><span class="o">:</span>
+    <span class="n">matchLabels</span><span class="o">:</span>
+      <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+  <span class="n">template</span><span class="o">:</span>
+    <span class="n">metadata</span><span class="o">:</span>
+      <span class="n">labels</span><span class="o">:</span>
+        <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">containers</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+        <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span><span class="o">:</span><span class="mf">1.7</span><span class="o">.</span><span class="mi">9</span>
+</pre></div>
+
+
+<blockquote>
+<p>replicas 是3，对应关系如下</p>
+</blockquote>
+<p><img alt="img" src="https://snag.gy/RwPJvc.jpg" /></p>
+<h5 id="_4">水平扩展</h5>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">scale</span> <span class="n">deployment</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">4</span>
+<span class="n">deployment</span><span class="p">.</span><span class="n">apps</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span> <span class="n">scaled</span>
+</pre></div>
+
+
+<h5 id="_5">滚动扩展</h5>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="p">.</span><span class="n">yaml</span> <span class="o">--</span><span class="n">record</span>
+</pre></div>
+
+
+<blockquote>
+<p>--record  可以记录每次操作所执行的命令</p>
+</blockquote>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">deployments</span>
+<span class="n">NAME</span>               <span class="n">DESIRED</span>   <span class="n">CURRENT</span>   <span class="n">UP</span><span class="o">-</span><span class="n">TO</span><span class="o">-</span><span class="n">DATE</span>   <span class="n">AVAILABLE</span>   <span class="n">AGE</span>
+<span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span>   <span class="mi">3</span>         <span class="mi">0</span>         <span class="mi">0</span>            <span class="mi">0</span>           <span class="mi">1</span><span class="n">s</span>
+</pre></div>
+
+
+<blockquote>
+<p>AVAILABLE 字段描述了用户所期望的最终状态</p>
+</blockquote>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">rollout</span> <span class="n">status</span> <span class="n">deployment</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">2</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">3</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">deployment</span><span class="p">.</span><span class="n">apps</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span> <span class="n">successfully</span> <span class="n">rolled</span> <span class="n">out</span>
+</pre></div>
+
+
+<blockquote>
+<p>在这个返回结果中，“2 out of 3 new replicas have been updated”意味着已经有 2 个 Pod 进入了 UP-TO-DATE 状态。</p>
+</blockquote>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">rs</span>
+<span class="n">NAME</span>                          <span class="n">DESIRED</span>   <span class="n">CURRENT</span>   <span class="n">READY</span>   <span class="n">AGE</span>
+<span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">3167673210</span>   <span class="mi">3</span>         <span class="mi">3</span>         <span class="mi">3</span>       <span class="mi">20</span><span class="n">s</span>
+</pre></div>
+
+
+<blockquote>
+<p>在用户提交了一个 Deployment 对象后，Deployment Controller 就会立即创建一个 Pod 副本个数为 3 的 ReplicaSet。这个 ReplicaSet 的名字，则是由 Deployment 的名字和一个随机字符串共同组成。</p>
+</blockquote>
+<p>修改了 Deployment 的 Pod 模板，“滚动更新”就会被自动触发。</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">edit</span> <span class="n">deployment</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span>
+<span class="p">...</span> 
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="nl">containers:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+        <span class="nl">image:</span> <span class="n">nginx</span><span class="o">:</span><span class="mf">1.9.1</span> <span class="err">#</span> <span class="mf">1.7.9</span> <span class="o">-&gt;</span> <span class="mf">1.9.1</span>
+        <span class="nl">ports:</span>
+        <span class="o">-</span> <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+<span class="p">...</span>
+<span class="n">deployment</span><span class="p">.</span><span class="n">extensions</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span> <span class="n">edited</span>
+</pre></div>
+
+
+<blockquote>
+<p>编辑 Etcd 里的 API 对象</p>
+</blockquote>
+<p>查看滚动更细腻状态变化</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">rollout</span> <span class="n">status</span> <span class="n">deployment</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">2</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">3</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">deployment</span><span class="p">.</span><span class="n">extensions</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span> <span class="n">successfully</span> <span class="n">rolled</span> <span class="n">out</span>
+
+
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">describe</span> <span class="n">deployment</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span>
+<span class="p">...</span>
+<span class="nl">Events:</span>
+  <span class="n">Type</span>    <span class="n">Reason</span>             <span class="n">Age</span>   <span class="n">From</span>                   <span class="n">Message</span>
+  <span class="o">----</span>    <span class="o">------</span>             <span class="o">----</span>  <span class="o">----</span>                   <span class="o">-------</span>
+<span class="p">...</span>
+  <span class="n">Normal</span>  <span class="n">ScalingReplicaSet</span>  <span class="mi">24</span><span class="n">s</span>   <span class="n">deployment</span><span class="o">-</span><span class="n">controller</span>  <span class="n">Scaled</span> <span class="n">up</span> <span class="n">replica</span> <span class="n">set</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">1764197365</span> <span class="n">to</span> <span class="mi">1</span>
+  <span class="n">Normal</span>  <span class="n">ScalingReplicaSet</span>  <span class="mi">22</span><span class="n">s</span>   <span class="n">deployment</span><span class="o">-</span><span class="n">controller</span>  <span class="n">Scaled</span> <span class="n">down</span> <span class="n">replica</span> <span class="n">set</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">3167673210</span> <span class="n">to</span> <span class="mi">2</span>
+  <span class="n">Normal</span>  <span class="n">ScalingReplicaSet</span>  <span class="mi">22</span><span class="n">s</span>   <span class="n">deployment</span><span class="o">-</span><span class="n">controller</span>  <span class="n">Scaled</span> <span class="n">up</span> <span class="n">replica</span> <span class="n">set</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">1764197365</span> <span class="n">to</span> <span class="mi">2</span>
+  <span class="n">Normal</span>  <span class="n">ScalingReplicaSet</span>  <span class="mi">19</span><span class="n">s</span>   <span class="n">deployment</span><span class="o">-</span><span class="n">controller</span>  <span class="n">Scaled</span> <span class="n">down</span> <span class="n">replica</span> <span class="n">set</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">3167673210</span> <span class="n">to</span> <span class="mi">1</span>
+  <span class="n">Normal</span>  <span class="n">ScalingReplicaSet</span>  <span class="mi">19</span><span class="n">s</span>   <span class="n">deployment</span><span class="o">-</span><span class="n">controller</span>  <span class="n">Scaled</span> <span class="n">up</span> <span class="n">replica</span> <span class="n">set</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">1764197365</span> <span class="n">to</span> <span class="mi">3</span>
+  <span class="n">Normal</span>  <span class="n">ScalingReplicaSet</span>  <span class="mi">14</span><span class="n">s</span>   <span class="n">deployment</span><span class="o">-</span><span class="n">controller</span>  <span class="n">Scaled</span> <span class="n">down</span> <span class="n">replica</span> <span class="n">set</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">3167673210</span> <span class="n">to</span> <span class="mi">0</span>
+</pre></div>
+
+
+<p>新旧状态对比</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">rs</span>
+<span class="n">NAME</span>                          <span class="n">DESIRED</span>   <span class="n">CURRENT</span>   <span class="n">READY</span>   <span class="n">AGE</span>
+<span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">1764197365</span>   <span class="mi">3</span>         <span class="mi">3</span>         <span class="mi">3</span>       <span class="mi">6</span><span class="n">s</span>
+<span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">3167673210</span>   <span class="mi">0</span>         <span class="mi">0</span>         <span class="mi">0</span>       <span class="mi">30</span><span class="n">s</span>
+</pre></div>
+
+
 <h4 id="deployment">Deployment  无状态</h4>
 <p>负责无状态应用</p>
 <p>用于管理无状态持久化的应用，如HTTP</p>
 <p>构建在ReplicaSet之上</p>
 <p>负责在Pod定义发生变化时，对每个副本进行跟懂更新</p>
+<p>实现了Pod的水平扩展和收缩(horizontal scaling out/in)</p>
+<p>Deployment 所管理的Pod，他的ownerReference 时ReplicaSet</p>
+<p>相对而言，Deployment 只是在ReplicaSet 的基础上，添加了<code>UP-TO-DATE</code> 这个跟版本有关的字段</p>
 <h4 id="statefulset">StatefulSet 有状态</h4>
 <p>负责有状态应用</p>
 <p>用于管理有状态的持久化应用，如database</p>
@@ -125,7 +248,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-19 08:45:58</p>
+        <p>Site Generated 2019-03-21 02:43:19</p>
       </span>
     </div>
 
