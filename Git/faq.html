@@ -29,6 +29,7 @@
 <li><a href="#faq">FAQ</a><ul>
 <li><a href="#everything-up-to-date">Everything up-to-date</a></li>
 <li><a href="#credential">credential</a></li>
+<li><a href="#detached-head">detached HEAD</a></li>
 <li><a href="#git-fire">Git fire</a></li>
 </ul>
 </li>
@@ -114,6 +115,27 @@
 </pre></div>
 
 
+<h2 id="detached-head">detached HEAD</h2>
+<p>分离头指针状态，即没有分支的状态下产生的问题</p>
+<p>需要将当前操作挂到一个分支上或一个tag上以确保变更不会被丢弃</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">checkout</span> <span class="mi">941</span><span class="n">a378ffcc76dc8fb30d3cc29a</span>
+<span class="nl">Note:</span> <span class="n">checking</span> <span class="n">out</span> <span class="err">&#39;</span><span class="mi">941</span><span class="n">a378ffcc76dc8fb30d3cc29a</span><span class="err">&#39;</span><span class="p">.</span>
+
+<span class="n">You</span> <span class="n">are</span> <span class="n">in</span> <span class="err">&#39;</span><span class="n">detached</span> <span class="n">HEAD</span><span class="err">&#39;</span> <span class="n">state</span><span class="p">.</span> <span class="n">You</span> <span class="n">can</span> <span class="n">look</span> <span class="n">around</span><span class="p">,</span> <span class="n">make</span> <span class="n">experimental</span>
+<span class="n">changes</span> <span class="n">and</span> <span class="n">commit</span> <span class="n">them</span><span class="p">,</span> <span class="n">and</span> <span class="n">you</span> <span class="n">can</span> <span class="n">discard</span> <span class="n">any</span> <span class="n">commits</span> <span class="n">you</span> <span class="n">make</span> <span class="n">in</span> <span class="n">this</span>
+<span class="n">state</span> <span class="n">without</span> <span class="n">impacting</span> <span class="n">any</span> <span class="n">branches</span> <span class="n">by</span> <span class="n">performing</span> <span class="n">another</span> <span class="n">checkout</span><span class="p">.</span>
+
+<span class="n">If</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">create</span> <span class="n">a</span> <span class="n">new</span> <span class="n">branch</span> <span class="n">to</span> <span class="n">retain</span> <span class="n">commits</span> <span class="n">you</span> <span class="n">create</span><span class="p">,</span> <span class="n">you</span> <span class="n">may</span>
+<span class="k">do</span> <span class="n">so</span> <span class="p">(</span><span class="n">now</span> <span class="n">or</span> <span class="n">later</span><span class="p">)</span> <span class="n">by</span> <span class="n">using</span> <span class="o">-</span><span class="n">b</span> <span class="n">with</span> <span class="n">the</span> <span class="n">checkout</span> <span class="n">command</span> <span class="n">again</span><span class="p">.</span> <span class="n">Example</span><span class="o">:</span>
+
+  <span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="n">new</span><span class="o">-</span><span class="n">branch</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span>
+
+<span class="n">HEAD</span> <span class="n">is</span> <span class="n">now</span> <span class="n">at</span> <span class="mi">941</span><span class="n">a378</span> <span class="n">Updates</span>
+</pre></div>
+
+
+<p>常用于测试的操作，其不在任何分支当中</p>
+<p>若需撤销此操作，<code>git checkout</code> 到其他分支即可</p>
 <h2 id="git-fire">Git fire</h2>
 <div class="hlcode"><pre><span class="err">程序员的消防演习：</span>
 <span class="n">alias</span> <span class="n">incaseoffire</span><span class="o">=</span><span class="s">&quot;git checkout -b $USER-emergency; git add .; git commit -m fire; git push origin $USER-emergency -f&quot;</span>
@@ -123,7 +145,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-21 02:43:19</p>
+        <p>Site Generated 2019-03-25 22:15:10</p>
       </span>
     </div>
 

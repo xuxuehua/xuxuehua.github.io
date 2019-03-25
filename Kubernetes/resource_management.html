@@ -37,12 +37,25 @@
 </ul>
 </li>
 <li><a href="#deployment">Deployment  无状态</a></li>
-<li><a href="#statefulset">StatefulSet 有状态</a></li>
-<li><a href="#daemonset">DaemonSet 守护进程</a></li>
-<li><a href="#job">Job 完成后终止</a></li>
+<li><a href="#statefulset">StatefulSet 有状态</a><ul>
+<li><a href="#_6">设计</a></li>
+<li><a href="#headless-service">Headless Service</a></li>
 </ul>
 </li>
-<li><a href="#discovery-lb">发现和负载均衡 Discovery &amp; LB</a></li>
+<li><a href="#daemonset">DaemonSet 守护进程</a></li>
+<li><a href="#job">Job 完成后终止</a><ul>
+<li><a href="#_7">并行控制</a></li>
+<li><a href="#_8">使用方法</a><ul>
+<li><a href="#job_1">外部管理器 +Job 模板</a></li>
+<li><a href="#_9">固定数目并行</a></li>
+<li><a href="#parallelism">指定并行度（parallelism）</a></li>
+</ul>
+</li>
+<li><a href="#cronjob">CronJob</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a href="#config-storage">配置和存储 Config &amp; Storage</a></li>
 <li><a href="#cluster">集群级资源 Cluster</a><ul>
 <li><a href="#namespace">Namespace</a></li>
@@ -59,6 +72,11 @@
 <li><a href="#api">API 群组</a><ul>
 <li><a href="#core-group">核心群组 core group</a></li>
 <li><a href="#named-group">命名群组 named group</a></li>
+</ul>
+</li>
+<li><a href="#_10">用户管理</a><ul>
+<li><a href="#serviceaccount">ServiceAccount</a></li>
+<li><a href="#group">Group</a></li>
 </ul>
 </li>
 </ul>
@@ -200,19 +218,475 @@
 <p>实现了Pod的水平扩展和收缩(horizontal scaling out/in)</p>
 <p>Deployment 所管理的Pod，他的ownerReference 时ReplicaSet</p>
 <p>相对而言，Deployment 只是在ReplicaSet 的基础上，添加了<code>UP-TO-DATE</code> 这个跟版本有关的字段</p>
+<p>Deployment 实际上并不足以覆盖所有的应用编排问题。即所有的Pod都是一样的，相互之间没有顺序，也无宿主机要求。</p>
+<p>但分布式应用的多个实例之间是相互有依赖关系的</p>
 <h4 id="statefulset">StatefulSet 有状态</h4>
 <p>负责有状态应用</p>
 <p>用于管理有状态的持久化应用，如database</p>
-<p>比Deployment会为每个Pod创建一个独有的持久性标识符，并确保Pod之间的顺序性</p>
+<p>比Deployment会为每个Pod创建一个独有的持久性标识符，并确保Pod之间的顺序性，即管理的是不同的Pod 实例，而不是ReplicaSet中完全一样的Pod</p>
+<p>创建statefulset必须要先创建一个headless的service，分为两个步骤， 而且必须是Headless Service</p>
+<h5 id="_6">设计</h5>
+<div class="hlcode"><pre><span class="err">拓扑状态</span>
+<span class="err">应用的多个实例之间不是完全对等的关系。</span>
+<span class="err">这些应用实例，必须按照某些顺序启动，比如应用的主节点</span> <span class="n">A</span> <span class="err">要先于从节点</span> <span class="n">B</span> <span class="err">启动。而如果你把</span> <span class="n">A</span> <span class="err">和</span> <span class="n">B</span> <span class="err">两个</span> <span class="n">Pod</span> <span class="err">删除掉，它们再次被创建出来时也必须严格按照这个顺序才行。并且，新创建出来的</span> <span class="n">Pod</span><span class="err">，必须和原来</span> <span class="n">Pod</span> <span class="err">的网络标识一样，这样原先的访问者才能使用同样的方法，访问到这个新</span> <span class="n">Pod</span><span class="err">。</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="err">存储状态</span>
+<span class="err">应用的多个实例分别绑定了不同的存储数据。</span>
+<span class="err">对于这些应用实例来说，</span><span class="n">Pod</span> <span class="n">A</span> <span class="err">第一次读取到的数据，和隔了十分钟之后再次读取到的数据，应该是同一份，哪怕在此期间</span> <span class="n">Pod</span> <span class="n">A</span> <span class="err">被重新创建过。这种情况最典型的例子，就是一个数据库应用的多个存储实例。</span>
+</pre></div>
+
+
+<h5 id="headless-service">Headless Service</h5>
+<p>即一个标准Service YAML文件</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Service</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">ports</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">port</span><span class="o">:</span> <span class="mi">80</span>
+    <span class="n">name</span><span class="o">:</span> <span class="n">web</span>
+  <span class="n">clusterIP</span><span class="o">:</span> <span class="n">None</span>
+  <span class="n">selector</span><span class="o">:</span>
+    <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+</pre></div>
+
+
+<blockquote>
+<p>因为clusterIP是None，所以创建之后不会分配VIP地址。所以将采用DNS记录的方式暴露出所在的代理Pod</p>
+</blockquote>
+<p>当按照上面的方式创建了一个 Headless Service 之后，它所代理的所有 Pod 的 IP 地址，都会被绑定一个这样格式的 DNS 记录</p>
+<div class="hlcode"><pre><span class="nt">&lt;pod</span><span class="na">-name</span><span class="nt">&gt;</span>.<span class="nt">&lt;svc</span><span class="na">-name</span><span class="nt">&gt;</span>.<span class="nt">&lt;namespace&gt;</span>.svc.cluster.local
+</pre></div>
+
+
+<p>statefuleSet.yaml</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">StatefulSet</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">web</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">serviceName</span><span class="o">:</span> <span class="s2">&quot;nginx&quot;</span>
+  <span class="n">replicas</span><span class="o">:</span> <span class="mi">2</span>
+  <span class="n">selector</span><span class="o">:</span>
+    <span class="n">matchLabels</span><span class="o">:</span>
+      <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+  <span class="n">template</span><span class="o">:</span>
+    <span class="n">metadata</span><span class="o">:</span>
+      <span class="n">labels</span><span class="o">:</span>
+        <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">containers</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+        <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span><span class="o">:</span><span class="mf">1.9</span><span class="o">.</span><span class="mi">1</span>
+        <span class="n">ports</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+          <span class="n">name</span><span class="o">:</span> <span class="n">web</span>
+</pre></div>
+
+
+<blockquote>
+<p>serviceName=nginx 字段, 就是告诉 StatefulSet 控制器，在执行控制循环（Control Loop）的时候，请使用 nginx 这个 Headless Service 来保证 Pod 的“可解析身份”。</p>
+</blockquote>
+<div class="hlcode"><pre><span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">create</span> <span class="na">-f</span> <span class="nx">svc.yaml</span>
+<span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">get</span> <span class="nx">service</span> <span class="nx">nginx</span>
+<span class="nb">NAME</span>      <span class="k">TYPE</span>         <span class="nx">CLUSTER</span><span class="na">-IP</span>   <span class="nx">EXTERNAL</span><span class="na">-IP</span>   <span class="nb">PORT</span><span class="p">(</span><span class="nb">S</span><span class="p">)</span>   <span class="nx">AGE</span>
+<span class="nx">nginx</span>     <span class="nx">ClusterIP</span>    <span class="kc">None</span>         <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>        <span class="mi">80</span><span class="p">/</span><span class="nx">TCP</span>    <span class="mi">10</span><span class="nb">s</span>
+
+<span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">create</span> <span class="na">-f</span> <span class="nx">statefulset.yaml</span>
+<span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">get</span> <span class="nx">statefulset</span> <span class="nx">web</span>
+<span class="nb">NAME</span>      <span class="nx">DESIRED</span>   <span class="nx">CURRENT</span>   <span class="nx">AGE</span>
+<span class="nx">web</span>       <span class="mi">2</span>         <span class="mi">1</span>         <span class="mi">19</span><span class="nb">s</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">w</span> <span class="o">-</span><span class="n">l</span> <span class="n">app</span><span class="o">=</span><span class="n">nginx</span>
+<span class="n">NAME</span>      <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">0</span>     <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Pending</span>   <span class="mi">0</span>          <span class="mi">0</span><span class="n">s</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">0</span>     <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Pending</span>   <span class="mi">0</span>         <span class="mi">0</span><span class="n">s</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">0</span>     <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>         <span class="mi">0</span><span class="n">s</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">0</span>     <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>         <span class="mi">19</span><span class="n">s</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Pending</span>   <span class="mi">0</span>         <span class="mi">0</span><span class="n">s</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Pending</span>   <span class="mi">0</span>         <span class="mi">0</span><span class="n">s</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>         <span class="mi">0</span><span class="n">s</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">1</span>     <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>         <span class="mi">20</span><span class="n">s</span>
+</pre></div>
+
+
+<blockquote>
+<p>StatefulSet 给所有被管理的Pod编号，通过-分隔</p>
+</blockquote>
+<p>可以查看到容器内部的hostname是不一样的</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">exec</span> <span class="n">web</span><span class="o">-</span><span class="mi">0</span> <span class="o">--</span> <span class="n">sh</span> <span class="o">-</span><span class="n">c</span> <span class="err">&#39;</span><span class="n">hostname</span><span class="err">&#39;</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">0</span>
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">exec</span> <span class="n">web</span><span class="o">-</span><span class="mi">1</span> <span class="o">--</span> <span class="n">sh</span> <span class="o">-</span><span class="n">c</span> <span class="err">&#39;</span><span class="n">hostname</span><span class="err">&#39;</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">1</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">run</span> <span class="o">-</span><span class="n">i</span> <span class="o">--</span><span class="n">tty</span> <span class="o">--</span><span class="n">image</span> <span class="n">busybox</span> <span class="n">dns</span><span class="o">-</span><span class="n">test</span> <span class="o">--</span><span class="n">restart</span><span class="o">=</span><span class="n">Never</span> <span class="o">--</span><span class="n">rm</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+<span class="err">$</span> <span class="n">nslookup</span> <span class="n">web</span><span class="o">-</span><span class="mf">0.</span><span class="n">nginx</span>
+<span class="nl">Server:</span>    <span class="mf">10.0.0.10</span>
+<span class="n">Address</span> <span class="mi">1</span><span class="o">:</span> <span class="mf">10.0.0.10</span> <span class="n">kube</span><span class="o">-</span><span class="n">dns</span><span class="p">.</span><span class="n">kube</span><span class="o">-</span><span class="n">system</span><span class="p">.</span><span class="n">svc</span><span class="p">.</span><span class="n">cluster</span><span class="p">.</span><span class="n">local</span>
+
+<span class="nl">Name:</span>      <span class="n">web</span><span class="o">-</span><span class="mf">0.</span><span class="n">nginx</span>
+<span class="n">Address</span> <span class="mi">1</span><span class="o">:</span> <span class="mf">10.244.1.7</span>
+
+<span class="err">$</span> <span class="n">nslookup</span> <span class="n">web</span><span class="o">-</span><span class="mf">1.</span><span class="n">nginx</span>
+<span class="nl">Server:</span>    <span class="mf">10.0.0.10</span>
+<span class="n">Address</span> <span class="mi">1</span><span class="o">:</span> <span class="mf">10.0.0.10</span> <span class="n">kube</span><span class="o">-</span><span class="n">dns</span><span class="p">.</span><span class="n">kube</span><span class="o">-</span><span class="n">system</span><span class="p">.</span><span class="n">svc</span><span class="p">.</span><span class="n">cluster</span><span class="p">.</span><span class="n">local</span>
+
+<span class="nl">Name:</span>      <span class="n">web</span><span class="o">-</span><span class="mf">1.</span><span class="n">nginx</span>
+<span class="n">Address</span> <span class="mi">1</span><span class="o">:</span> <span class="mf">10.244.2.7</span>
+</pre></div>
+
+
+<blockquote>
+<p>从 nslookup 命令的输出结果中，我们可以看到，在访问 web-0.nginx 的时候，最后解析到的，正是 web-0 这个 Pod 的 IP 地址；而当访问 web-1.nginx 的时候，解析到的则是 web-1 的 IP 地址。</p>
+</blockquote>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">delete</span> <span class="n">pod</span> <span class="o">-</span><span class="n">l</span> <span class="n">app</span><span class="o">=</span><span class="n">nginx</span>
+<span class="n">pod</span> <span class="s">&quot;web-0&quot;</span> <span class="n">deleted</span>
+<span class="n">pod</span> <span class="s">&quot;web-1&quot;</span> <span class="n">deleted</span>
+
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pod</span> <span class="o">-</span><span class="n">w</span> <span class="o">-</span><span class="n">l</span> <span class="n">app</span><span class="o">=</span><span class="n">nginx</span>
+<span class="n">NAME</span>      <span class="n">READY</span>     <span class="n">STATUS</span>              <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">0</span>     <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">0</span><span class="n">s</span>
+<span class="n">NAME</span>      <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">0</span>     <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">s</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Pending</span>   <span class="mi">0</span>         <span class="mi">0</span><span class="n">s</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">ContainerCreating</span>   <span class="mi">0</span>         <span class="mi">0</span><span class="n">s</span>
+<span class="n">web</span><span class="o">-</span><span class="mi">1</span>     <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>         <span class="mi">32</span><span class="n">s</span>
+</pre></div>
+
+
+<blockquote>
+<p>可以看到，当把这两个 Pod 删除之后，Kubernetes 会按照原先编号的顺序，创建出了两个新的 Pod。并且，Kubernetes 依然为它们分配了与原来相同的“网络身份”：web-0.nginx 和 web-1.nginx。</p>
+</blockquote>
+<p>尽管 web-0.nginx 这条记录本身不会变，但它解析到的 Pod 的 IP 地址，并不是固定的。这就意味着，对于“有状态应用”实例的访问，必须使用 DNS 记录或者 hostname 的方式，而绝不应该直接访问这些 Pod 的 IP 地址。</p>
 <h4 id="daemonset">DaemonSet 守护进程</h4>
 <p>常用于运行集群存储的守护进程，如glusterd，ceph，</p>
 <p>日志收集进程如fluentd，logstash，</p>
 <p>监控进程，如prometheus的Node Explorter，collected，datadog agent， Ganglia的gmond</p>
-<p>确保每个节点都运行Pod的副本</p>
+<p>这个Pod会运行在Kubernetes集群里面的每一个节点(Node)上面</p>
+<p>每一个Node上面只有一个这样的Pod实例</p>
+<p>当有新的节点加入到Kubernetes集群中，该Pod会自动在新节点上创建完成，旧节点删除后，Pod也会被回收</p>
+<p>相对而言，DaemonSet开始运行的时间，会比整个Kubernetes集群要早</p>
+<p>DaemonSet没有replicas字段</p>
+<p>创建每个Pod的时候，DaemonSet会自动给这个Pod加上一个nodeAffinity，从而保证Pod只会在这个节点上启动，同时还会自动加上一个Toleration，从而忽略节点的unschedulable污点</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">DaemonSet</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">fluentd</span><span class="o">-</span><span class="n">elasticsearch</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">k8s</span><span class="o">-</span><span class="n">app</span><span class="o">:</span> <span class="n">fluentd</span><span class="o">-</span><span class="n">logging</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">selector</span><span class="o">:</span>
+    <span class="n">matchLabels</span><span class="o">:</span>
+      <span class="n">name</span><span class="o">:</span> <span class="n">fluentd</span><span class="o">-</span><span class="n">elasticsearch</span>
+  <span class="n">template</span><span class="o">:</span>
+    <span class="n">metadata</span><span class="o">:</span>
+      <span class="n">labels</span><span class="o">:</span>
+        <span class="n">name</span><span class="o">:</span> <span class="n">fluentd</span><span class="o">-</span><span class="n">elasticsearch</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">tolerations</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">key</span><span class="o">:</span> <span class="n">node</span><span class="o">-</span><span class="n">role</span><span class="o">.</span><span class="na">kubernetes</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">master</span>
+        <span class="n">effect</span><span class="o">:</span> <span class="n">NoSchedule</span>
+      <span class="n">containers</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">fluentd</span><span class="o">-</span><span class="n">elasticsearch</span>
+        <span class="n">image</span><span class="o">:</span> <span class="n">k8s</span><span class="o">.</span><span class="na">gcr</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">fluentd</span><span class="o">-</span><span class="n">elasticsearch</span><span class="o">:</span><span class="mf">1.20</span>
+        <span class="n">resources</span><span class="o">:</span>
+          <span class="n">limits</span><span class="o">:</span>
+            <span class="n">memory</span><span class="o">:</span> <span class="mi">200</span><span class="n">Mi</span>
+          <span class="n">requests</span><span class="o">:</span>
+            <span class="n">cpu</span><span class="o">:</span> <span class="mi">100</span><span class="n">m</span>
+            <span class="n">memory</span><span class="o">:</span> <span class="mi">200</span><span class="n">Mi</span>
+        <span class="n">volumeMounts</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">varlog</span>
+          <span class="n">mountPath</span><span class="o">:</span> <span class="sr">/var/</span><span class="n">log</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">varlibdockercontainers</span>
+          <span class="n">mountPath</span><span class="o">:</span> <span class="sr">/var/lib/docker/</span><span class="n">containers</span>
+          <span class="n">readOnly</span><span class="o">:</span> <span class="kc">true</span>
+      <span class="n">terminationGracePeriodSeconds</span><span class="o">:</span> <span class="mi">30</span>
+      <span class="n">volumes</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">varlog</span>
+        <span class="n">hostPath</span><span class="o">:</span>
+          <span class="n">path</span><span class="o">:</span> <span class="sr">/var/</span><span class="n">log</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">varlibdockercontainers</span>
+        <span class="n">hostPath</span><span class="o">:</span>
+          <span class="n">path</span><span class="o">:</span> <span class="sr">/var/lib/docker/</span><span class="n">containers</span>
+</pre></div>
+
+
+<blockquote>
+<p>管理的是一个fluentd-elasticsearch镜像的Pod，即通过fluentd将Docker容器里面的日志转发到ElasticSearch中</p>
+<p>两个hostPath分别对应/var/log目录和/var/lib/docker/containers目录</p>
+</blockquote>
+<p>添加Toleration，在Master节点上部署Pod</p>
+<p>默认Kubernetes集群不允许用户在Master节点上部署Pod，因为Master节点携带了一个<code>node-role.kubernetes.io/master</code> 污点，所以要容忍这个污点</p>
+<div class="hlcode"><pre><span class="nl">tolerations:</span>
+<span class="o">-</span> <span class="n">key</span><span class="o">:</span> <span class="n">node</span><span class="o">-</span><span class="n">role</span><span class="p">.</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">master</span>
+  <span class="nl">effect:</span> <span class="n">NoSchedule</span>
+</pre></div>
+
+
 <h4 id="job">Job 完成后终止</h4>
-<p>用于管理运行完成后可以终止的应用，如批处理任务</p>
-<h3 id="discovery-lb">发现和负载均衡 Discovery &amp; LB</h3>
-<p>确保Pod资源被外部及集群内部访问，要为同一种工作负载的访问流量进行负载均衡</p>
+<p>用来描述离线业务的API对象</p>
+<p>restartPolicy 在 Job 对象里只允许被设置为 Never 和 OnFailure</p>
+<p>Job对象并不要一定要定一个spec.selector 来描述控制哪些Pod</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">batch</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Job</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pi</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">template</span><span class="o">:</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">containers</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">pi</span>
+        <span class="n">image</span><span class="o">:</span> <span class="n">resouer</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">-</span><span class="n">bc</span> 
+        <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;sh&quot;</span><span class="o">,</span> <span class="s2">&quot;-c&quot;</span><span class="o">,</span> <span class="s2">&quot;echo &#39;scale=10000; 4*a(1)&#39; | bc -l &quot;</span><span class="o">]</span>
+      <span class="n">restartPolicy</span><span class="o">:</span> <span class="n">Never</span>
+  <span class="n">backoffLimit</span><span class="o">:</span> <span class="mi">4</span>
+</pre></div>
+
+
+<blockquote>
+<p>4*a(1) 结果为pi </p>
+<p>restartPolicy: Never  离线计算的Pod不应该被重启</p>
+</blockquote>
+<div class="hlcode"><pre><span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">create</span> <span class="na">-f</span> <span class="nx">job.yaml</span>
+
+<span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">describe</span> <span class="nx">jobs</span><span class="p">/</span><span class="nb">pi</span>
+<span class="nb">Name</span><span class="p">:</span>             <span class="nb">pi</span>
+<span class="nx">Namespace</span><span class="p">:</span>        <span class="nb">default</span>
+<span class="nx">Selector</span><span class="p">:</span>         <span class="nx">controller</span><span class="na">-uid</span><span class="o">=</span><span class="nx">c2db599a</span><span class="o">-</span><span class="mi">2</span><span class="nx">c9d</span><span class="o">-</span><span class="mi">11</span><span class="nx">e6</span><span class="na">-b324</span><span class="o">-</span><span class="mi">0209</span><span class="nx">dc45a495</span>
+<span class="nx">Labels</span><span class="p">:</span>           <span class="nx">controller</span><span class="na">-uid</span><span class="o">=</span><span class="nx">c2db599a</span><span class="o">-</span><span class="mi">2</span><span class="nx">c9d</span><span class="o">-</span><span class="mi">11</span><span class="nx">e6</span><span class="na">-b324</span><span class="o">-</span><span class="mi">0209</span><span class="nx">dc45a495</span>
+                  <span class="nx">job</span><span class="na">-name</span><span class="o">=</span><span class="nb">pi</span>
+<span class="nx">Annotations</span><span class="p">:</span>      <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>
+<span class="nx">Parallelism</span><span class="p">:</span>      <span class="mi">1</span>
+<span class="nx">Completions</span><span class="p">:</span>      <span class="mi">1</span>
+<span class="nx">..</span>
+<span class="nx">Pods</span> <span class="nx">Statuses</span><span class="p">:</span>    <span class="mi">0</span> <span class="nb">Running</span> <span class="o">/</span> <span class="mi">1</span> <span class="nx">Succeeded</span> <span class="o">/</span> <span class="mi">0</span> <span class="nx">Failed</span>
+<span class="nx">Pod</span> <span class="nx">Template</span><span class="p">:</span>
+  <span class="nx">Labels</span><span class="p">:</span>       <span class="nx">controller</span><span class="na">-uid</span><span class="o">=</span><span class="nx">c2db599a</span><span class="o">-</span><span class="mi">2</span><span class="nx">c9d</span><span class="o">-</span><span class="mi">11</span><span class="nx">e6</span><span class="na">-b324</span><span class="o">-</span><span class="mi">0209</span><span class="nx">dc45a495</span>
+                <span class="nx">job</span><span class="na">-name</span><span class="o">=</span><span class="nb">pi</span>
+  <span class="nx">Containers</span><span class="p">:</span>
+   <span class="nx">...</span>
+  <span class="nx">Volumes</span><span class="p">:</span>              <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>
+<span class="nb">Events</span><span class="p">:</span>
+  <span class="nx">FirstSeen</span>    <span class="nx">LastSeen</span>    <span class="nb">Count</span>    <span class="nb">From</span>            <span class="nx">SubobjectPath</span>    <span class="k">Type</span>        <span class="nx">Reason</span>            <span class="nx">Message</span>
+  <span class="o">---------</span>    <span class="o">--------</span>    <span class="o">-----</span>    <span class="o">----</span>            <span class="o">-------------</span>    <span class="o">--------</span>    <span class="o">------</span>            <span class="o">-------</span>
+  <span class="mi">1</span><span class="nx">m</span>           <span class="mi">1</span><span class="nx">m</span>          <span class="mi">1</span>        <span class="p">{</span><span class="nx">job</span><span class="na">-controller</span> <span class="p">}</span>                <span class="nx">Normal</span>      <span class="nx">SuccessfulCreate</span>  <span class="nx">Created</span> <span class="nx">pod</span><span class="p">:</span> <span class="nb">pi</span><span class="na">-rq5rl</span>
+</pre></div>
+
+
+<blockquote>
+<p>创建成功之后，被自动加载了新的label，controller-uid=&lt; 一个随机字符串 &gt;， 这样保证了Job与其他Pod之间的匹配关系</p>
+</blockquote>
+<p>查看Pod状态</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span>
+<span class="n">NAME</span>                                <span class="n">READY</span>     <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">pi</span><span class="o">-</span><span class="n">rq5rl</span>                            <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">10</span><span class="n">s</span>
+</pre></div>
+
+
+<p>稍后就completed了</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span>
+<span class="n">NAME</span>                                <span class="n">READY</span>     <span class="n">STATUS</span>      <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">pi</span><span class="o">-</span><span class="n">rq5rl</span>                            <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Completed</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
+</pre></div>
+
+
+<p>可以查看到结果</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">logs</span> <span class="n">pi</span><span class="o">-</span><span class="n">rq5rl</span>
+<span class="mf">3.141592653589793238462643383279</span><span class="p">...</span>
+</pre></div>
+
+
+<h5 id="_7">并行控制</h5>
+<p>spec.parallelism，它定义的是一个 Job 在任意时间最多可以启动多少个 Pod 同时运行</p>
+<p>spec.completions，它定义的是 Job 至少要完成的 Pod 数目，即 Job 的最小完成数</p>
+<p>根据 Job 控制器的工作原理，如果你定义的 parallelism 比 completions 还大的话，</p>
+<div class="hlcode"><pre> <span class="nl">parallelism:</span> <span class="mi">4</span>
+ <span class="nl">completions:</span> <span class="mi">2</span>
+</pre></div>
+
+
+<p>需要创建的 Pod 数目 = 最终需要的 Pod 数目 - 实际在 Running 状态 Pod 数目 - 已经成功退出的 Pod 数目 = 2 - 0 - 0= 2。而parallelism数量为4，2小于4，所以应该会创建2个。</p>
+<h5 id="_8">使用方法</h5>
+<h6 id="job_1">外部管理器 +Job 模板</h6>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">batch</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Job</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">process</span><span class="o">-</span><span class="n">item</span><span class="o">-</span><span class="n">$ITEM</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">jobgroup</span><span class="o">:</span> <span class="n">jobexample</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">template</span><span class="o">:</span>
+    <span class="n">metadata</span><span class="o">:</span>
+      <span class="n">name</span><span class="o">:</span> <span class="n">jobexample</span>
+      <span class="n">labels</span><span class="o">:</span>
+        <span class="n">jobgroup</span><span class="o">:</span> <span class="n">jobexample</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">containers</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">c</span>
+        <span class="n">image</span><span class="o">:</span> <span class="n">busybox</span>
+        <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;sh&quot;</span><span class="o">,</span> <span class="s2">&quot;-c&quot;</span><span class="o">,</span> <span class="s2">&quot;echo Processing item $ITEM &amp;&amp; sleep 5&quot;</span><span class="o">]</span>
+      <span class="n">restartPolicy</span><span class="o">:</span> <span class="n">Never</span>
+</pre></div>
+
+
+<blockquote>
+<p>$ITEM 用于创建Job时，替换此变量的值</p>
+<p>所有来自于同一个模板的 Job，都有一个 jobgroup: jobexample 标签，也就是说这一组 Job 使用这样一个相同的标识。</p>
+</blockquote>
+<p>替换$ITEM操作</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">mkdir</span> <span class="p">.</span><span class="o">/</span><span class="n">jobs</span>
+<span class="err">$</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">apple</span> <span class="n">banana</span> <span class="n">cherry</span>
+<span class="k">do</span>
+  <span class="n">cat</span> <span class="n">job</span><span class="o">-</span><span class="n">tmpl</span><span class="p">.</span><span class="n">yaml</span> <span class="o">|</span> <span class="n">sed</span> <span class="s">&quot;s/\$ITEM/$i/&quot;</span> <span class="o">&gt;</span> <span class="p">.</span><span class="o">/</span><span class="n">jobs</span><span class="o">/</span><span class="n">job</span><span class="o">-</span><span class="err">$</span><span class="n">i</span><span class="p">.</span><span class="n">yaml</span>
+<span class="n">done</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="p">.</span><span class="o">/</span><span class="n">jobs</span>
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">l</span> <span class="n">jobgroup</span><span class="o">=</span><span class="n">jobexample</span>
+<span class="n">NAME</span>                        <span class="n">READY</span>     <span class="n">STATUS</span>      <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">process</span><span class="o">-</span><span class="n">item</span><span class="o">-</span><span class="n">apple</span><span class="o">-</span><span class="n">kixwv</span>    <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Completed</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
+<span class="n">process</span><span class="o">-</span><span class="n">item</span><span class="o">-</span><span class="n">banana</span><span class="o">-</span><span class="n">wrsf7</span>   <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Completed</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
+<span class="n">process</span><span class="o">-</span><span class="n">item</span><span class="o">-</span><span class="n">cherry</span><span class="o">-</span><span class="n">dnfu9</span>   <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>       <span class="n">Completed</span>   <span class="mi">0</span>          <span class="mi">4</span><span class="n">m</span>
+</pre></div>
+
+
+<h6 id="_9">固定数目并行</h6>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">batch</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Job</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">job</span><span class="o">-</span><span class="n">wq</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">completions</span><span class="o">:</span> <span class="mi">8</span>
+  <span class="n">parallelism</span><span class="o">:</span> <span class="mi">2</span>
+  <span class="n">template</span><span class="o">:</span>
+    <span class="n">metadata</span><span class="o">:</span>
+      <span class="n">name</span><span class="o">:</span> <span class="n">job</span><span class="o">-</span><span class="n">wq</span><span class="o">-</span><span class="mi">1</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">containers</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">c</span>
+        <span class="n">image</span><span class="o">:</span> <span class="n">myrepo</span><span class="o">/</span><span class="n">job</span><span class="o">-</span><span class="n">wq</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">env</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">BROKER_URL</span>
+          <span class="n">value</span><span class="o">:</span> <span class="n">amqp</span><span class="o">://</span><span class="n">guest</span><span class="o">:</span><span class="n">guest</span><span class="err">@</span><span class="n">rabbitmq</span><span class="o">-</span><span class="n">service</span><span class="o">:</span><span class="mi">5672</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">QUEUE</span>
+          <span class="n">value</span><span class="o">:</span> <span class="n">job1</span>
+      <span class="n">restartPolicy</span><span class="o">:</span> <span class="n">OnFailure</span>
+</pre></div>
+
+
+<blockquote>
+<p>completions 的值是：8, 即总共要处理的任务数目是 8 个</p>
+</blockquote>
+<p>在这个实例中，选择充当工作队列的是一个运行在 Kubernetes 里的 RabbitMQ。所以，需要在 Pod 模板里定义 BROKER_URL，来作为消费者。</p>
+<p>所以，一旦用 kubectl create 创建了这个 Job，它就会以并发度为 2 的方式，每两个 Pod 一组，创建出 8 个 Pod。每个 Pod 都会去连接 BROKER_URL，从 RabbitMQ 里读取任务，然后各自进行处理。这个 Pod 里的执行逻辑，可以用这样一段伪代码来表示：</p>
+<div class="hlcode"><pre><span class="cm">/* job-wq-1 的伪代码 */</span>
+<span class="n">queue</span> <span class="o">:=</span> <span class="n">newQueue</span><span class="p">(</span><span class="err">$</span><span class="no">BROKER_URL</span><span class="p">,</span> <span class="err">$</span><span class="no">QUEUE</span><span class="p">)</span>
+<span class="k">task</span> <span class="o">:=</span> <span class="n">queue</span><span class="p">.</span><span class="n">Pop</span><span class="p">()</span>
+<span class="n">process</span><span class="p">(</span><span class="k">task</span><span class="p">)</span>
+<span class="n">exit</span>
+</pre></div>
+
+
+<p>可以看到，每个 Pod 只需要将任务信息读取出来，处理完成，然后退出即可。而作为用户，我只关心最终一共有 8 个计算任务启动并且退出，只要这个目标达到，我就认为整个 Job 处理完成了。所以说，这种用法，对应的就是“任务总数固定”的场景。</p>
+<h6 id="parallelism">指定并行度（parallelism）</h6>
+<p>但不设置固定的 completions 的值 </p>
+<p>此时，必须自己想办法，来决定什么时候启动新 Pod，什么时候 Job 才算执行完成。在这种情况下，任务的总数是未知的，所以不仅需要一个工作队列来负责任务分发，还需要能够判断工作队列已经为空（即：所有的工作已经结束了）</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">batch</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Job</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">job</span><span class="o">-</span><span class="n">wq</span><span class="o">-</span><span class="mi">2</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">parallelism</span><span class="o">:</span> <span class="mi">2</span>
+  <span class="n">template</span><span class="o">:</span>
+    <span class="n">metadata</span><span class="o">:</span>
+      <span class="n">name</span><span class="o">:</span> <span class="n">job</span><span class="o">-</span><span class="n">wq</span><span class="o">-</span><span class="mi">2</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">containers</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">c</span>
+        <span class="n">image</span><span class="o">:</span> <span class="n">gcr</span><span class="o">.</span><span class="na">io</span><span class="sr">/myproject/</span><span class="n">job</span><span class="o">-</span><span class="n">wq</span><span class="o">-</span><span class="mi">2</span>
+        <span class="n">env</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">BROKER_URL</span>
+          <span class="n">value</span><span class="o">:</span> <span class="n">amqp</span><span class="o">://</span><span class="n">guest</span><span class="o">:</span><span class="n">guest</span><span class="err">@</span><span class="n">rabbitmq</span><span class="o">-</span><span class="n">service</span><span class="o">:</span><span class="mi">5672</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">QUEUE</span>
+          <span class="n">value</span><span class="o">:</span> <span class="n">job2</span>
+      <span class="n">restartPolicy</span><span class="o">:</span> <span class="n">OnFailure</span>
+</pre></div>
+
+
+<p>类似伪代码体现</p>
+<div class="hlcode"><pre><span class="cm">/* job-wq-2 的伪代码 */</span>
+<span class="k">for</span> <span class="o">!</span><span class="n">queue</span><span class="p">.</span><span class="n">IsEmpty</span><span class="p">(</span><span class="err">$</span><span class="no">BROKER_URL</span><span class="p">,</span> <span class="err">$</span><span class="no">QUEUE</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">task</span> <span class="o">:=</span> <span class="n">queue</span><span class="p">.</span><span class="n">Pop</span><span class="p">()</span>
+  <span class="n">process</span><span class="p">(</span><span class="k">task</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">print</span><span class="p">(</span><span class="s">&quot;Queue empty, exiting&quot;</span><span class="p">)</span>
+<span class="n">exit</span>
+</pre></div>
+
+
+<p>由于任务数目的总数不固定，所以每一个 Pod 必须能够知道，自己什么时候可以退出。比如，在这个例子中，简单地以“队列为空”，作为任务全部完成的标志。所以说，这种用法，对应的是“任务总数不固定”的场景。</p>
+<h5 id="cronjob">CronJob</h5>
+<p>定时任务</p>
+<p>CronJob是一个Job对象的控制器Controller</p>
+<p>CronJob 是一个专门用来管理 Job 对象的控制器。它创建和删除 Job 的依据，是 schedule 字段定义的、一个标准的Unix Cron格式的表达式</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">batch</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">CronJob</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">hello</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">schedule</span><span class="o">:</span> <span class="s2">&quot;*/1 * * * *&quot;</span>
+  <span class="n">jobTemplate</span><span class="o">:</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">template</span><span class="o">:</span>
+        <span class="n">spec</span><span class="o">:</span>
+          <span class="n">containers</span><span class="o">:</span>
+          <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">hello</span>
+            <span class="n">image</span><span class="o">:</span> <span class="n">busybox</span>
+            <span class="n">args</span><span class="o">:</span>
+            <span class="o">-</span> <span class="sr">/bin/s</span><span class="n">h</span>
+            <span class="o">-</span> <span class="o">-</span><span class="n">c</span>
+            <span class="o">-</span> <span class="n">date</span><span class="o">;</span> <span class="n">echo</span> <span class="n">Hello</span> <span class="n">from</span> <span class="n">the</span> <span class="n">Kubernetes</span> <span class="n">cluster</span>
+          <span class="n">restartPolicy</span><span class="o">:</span> <span class="n">OnFailure</span>
+</pre></div>
+
+
+<p>这个 CronJob 对象在创建 1 分钟后，就会有一个 Job 产生了</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="p">.</span><span class="o">/</span><span class="n">cronjob</span><span class="p">.</span><span class="n">yaml</span>
+<span class="n">cronjob</span> <span class="s">&quot;hello&quot;</span> <span class="n">created</span>
+
+<span class="cp"># 一分钟后</span>
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">jobs</span>
+<span class="n">NAME</span>               <span class="n">DESIRED</span>   <span class="n">SUCCESSFUL</span>   <span class="n">AGE</span>
+<span class="n">hello</span><span class="o">-</span><span class="mi">4111706356</span>   <span class="mi">1</span>         <span class="mi">1</span>         <span class="mi">2</span><span class="n">s</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">cronjob</span> <span class="n">hello</span>
+<span class="n">NAME</span>      <span class="n">SCHEDULE</span>      <span class="n">SUSPEND</span>   <span class="n">ACTIVE</span>    <span class="n">LAST</span><span class="o">-</span><span class="n">SCHEDULE</span>
+<span class="n">hello</span>     <span class="err">*/</span><span class="mi">1</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span>   <span class="n">False</span>     <span class="mi">0</span>         <span class="n">Thu</span><span class="p">,</span> <span class="mi">6</span> <span class="n">Sep</span> <span class="mi">2018</span> <span class="mi">14</span><span class="o">:</span><span class="mi">34</span><span class="o">:</span><span class="mo">00</span> <span class="o">-</span><span class="mo">070</span>
+</pre></div>
+
+
+<p>需要注意的是，由于定时任务的特殊性，很可能某个 Job 还没有执行完，另外一个新 Job 就产生了。这时候，你可以通过 spec.concurrencyPolicy 字段来定义具体的处理策略。</p>
+<div class="hlcode"><pre><span class="n">concurrencyPolicy</span><span class="o">=</span><span class="n">Allow</span><span class="err">，这也是默认情况，这意味着这些</span> <span class="n">Job</span> <span class="err">可以同时存在；</span>
+<span class="n">concurrencyPolicy</span><span class="o">=</span><span class="n">Forbid</span><span class="err">，这意味着不会创建新的</span> <span class="n">Pod</span><span class="err">，该创建周期被跳过；</span>
+<span class="n">concurrencyPolicy</span><span class="o">=</span><span class="n">Replace</span><span class="err">，这意味着新产生的</span> <span class="n">Job</span> <span class="err">会替换旧的、没有执行完的</span> <span class="n">Job</span><span class="err">。</span>
+</pre></div>
+
+
+<p>而如果某一次 Job 创建失败，这次创建就会被标记为“miss”。当在指定的时间窗口内，miss 的数目达到 100 时，那么 CronJob 会停止再创建这个 Job。</p>
 <h3 id="config-storage">配置和存储 Config &amp; Storage</h3>
 <p>支持多种存储确保存储资源持久化，如GlusterFS，ceph RBD， Flocker</p>
 <p>使用ConfigMap资源能够以环境变量或存储卷的方式接入到Pod中，还可以被同类Pod共享，不适合存储密钥等敏感数据</p>
@@ -243,12 +717,163 @@
 <p>REST 路径为<code>/apis/$GROUP_NAME/$VERSION</code> </p>
 <p>如 <code>/apis/apps/v1</code>  在apiVersion字段中引用的格式为<code>apiVersion:$GROUP_NAME/$VERSION</code> </p>
 <p>如<code>apiVersion:apps/v1</code></p>
+<h2 id="_10">用户管理</h2>
+<h3 id="serviceaccount">ServiceAccount</h3>
+<p>Kubernetes 负责管理的内置用户</p>
+<p>如果一个 Pod 没有声明 serviceAccountName，Kubernetes 会自动在它的 Namespace 下创建一个名叫 default 的默认 ServiceAccount，然后分配给这个 Pod。</p>
+<p>生产环境，建议所有Namespace下默认ServiceAccount 绑定只读权限的Role</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">ServiceAccount</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="n">mynamespace</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">example</span><span class="o">-</span><span class="n">sa</span>
+</pre></div>
+
+
+<p>然后，我们通过编写 RoleBinding 的 YAML 文件，来为这个 ServiceAccount 分配权限：</p>
+<div class="hlcode"><pre><span class="n">kind</span><span class="o">:</span> <span class="n">RoleBinding</span>
+<span class="n">apiVersion</span><span class="o">:</span> <span class="n">rbac</span><span class="o">.</span><span class="na">authorization</span><span class="o">.</span><span class="na">k8s</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">example</span><span class="o">-</span><span class="n">rolebinding</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="n">mynamespace</span>
+<span class="n">subjects</span><span class="o">:</span>
+<span class="o">-</span> <span class="n">kind</span><span class="o">:</span> <span class="n">ServiceAccount</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">example</span><span class="o">-</span><span class="n">sa</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="n">mynamespace</span>
+<span class="n">roleRef</span><span class="o">:</span>
+  <span class="n">kind</span><span class="o">:</span> <span class="n">Role</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">example</span><span class="o">-</span><span class="n">role</span>
+  <span class="n">apiGroup</span><span class="o">:</span> <span class="n">rbac</span><span class="o">.</span><span class="na">authorization</span><span class="o">.</span><span class="na">k8s</span><span class="o">.</span><span class="na">io</span>
+</pre></div>
+
+
+<blockquote>
+<p>RoleBinding 对象里，subjects 字段的类型（kind），不再是一个 User，而是一个名叫 example-sa 的 ServiceAccount。而 roleRef 引用的 Role 对象，依然名叫 example-role，也就是我在这篇文章一开始定义的 Role 对象。</p>
+</blockquote>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">svc</span><span class="o">-</span><span class="n">account</span><span class="p">.</span><span class="n">yaml</span>
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">role</span><span class="o">-</span><span class="n">binding</span><span class="p">.</span><span class="n">yaml</span>
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">role</span><span class="p">.</span><span class="n">yaml</span>
+
+<span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">sa</span> <span class="o">-</span><span class="n">n</span> <span class="n">mynamespace</span> <span class="o">-</span><span class="n">o</span> <span class="n">yaml</span>
+<span class="o">-</span> <span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+  <span class="nl">kind:</span> <span class="n">ServiceAccount</span>
+  <span class="nl">metadata:</span>
+    <span class="nl">creationTimestamp:</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">08</span><span class="n">T12</span><span class="o">:</span><span class="mi">59</span><span class="o">:</span><span class="mi">17</span><span class="n">Z</span>
+    <span class="nl">name:</span> <span class="n">example</span><span class="o">-</span><span class="n">sa</span>
+    <span class="nl">namespace:</span> <span class="n">mynamespace</span>
+    <span class="nl">resourceVersion:</span> <span class="s">&quot;409327&quot;</span>
+    <span class="p">...</span>
+  <span class="nl">secrets:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">example</span><span class="o">-</span><span class="n">sa</span><span class="o">-</span><span class="n">token</span><span class="o">-</span><span class="n">vmfg6</span>
+</pre></div>
+
+
+<p>声明使用ServiceAccount</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="n">mynamespace</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">sa</span><span class="o">-</span><span class="n">token</span><span class="o">-</span><span class="n">test</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span><span class="o">:</span><span class="mf">1.7</span><span class="o">.</span><span class="mi">9</span>
+  <span class="n">serviceAccountName</span><span class="o">:</span> <span class="n">example</span><span class="o">-</span><span class="n">sa</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">describe</span> <span class="n">pod</span> <span class="n">sa</span><span class="o">-</span><span class="n">token</span><span class="o">-</span><span class="n">test</span> <span class="o">-</span><span class="n">n</span> <span class="n">mynamespace</span>
+<span class="nl">Name:</span>               <span class="n">sa</span><span class="o">-</span><span class="n">token</span><span class="o">-</span><span class="n">test</span>
+<span class="nl">Namespace:</span>          <span class="n">mynamespace</span>
+<span class="p">...</span>
+<span class="nl">Containers:</span>
+  <span class="nl">nginx:</span>
+    <span class="p">...</span>
+    <span class="nl">Mounts:</span>
+      <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">secrets</span><span class="o">/</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">serviceaccount</span> <span class="n">from</span> <span class="n">example</span><span class="o">-</span><span class="n">sa</span><span class="o">-</span><span class="n">token</span><span class="o">-</span><span class="n">vmfg6</span> <span class="p">(</span><span class="n">ro</span><span class="p">)</span>
+</pre></div>
+
+
+<p>查看到目录的文件</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">sa</span><span class="o">-</span><span class="n">token</span><span class="o">-</span><span class="n">test</span> <span class="o">-</span><span class="n">n</span> <span class="n">mynamespace</span> <span class="o">--</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">root</span><span class="err">@</span><span class="n">sa</span><span class="o">-</span><span class="n">token</span><span class="o">-</span><span class="n">test</span><span class="o">:/</span><span class="err">#</span> <span class="n">ls</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">secrets</span><span class="o">/</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">serviceaccount</span>
+<span class="n">ca</span><span class="p">.</span><span class="n">crt</span> <span class="n">namespace</span>  <span class="n">token</span>
+</pre></div>
+
+
+<blockquote>
+<p>容器里的应用，就可以使用这个 ca.crt 来访问 APIServer 了。更重要的是，此时它只能够做 GET、WATCH 和 LIST 操作。因为 example-sa 这个 ServiceAccount 的权限，已经被我们绑定了 Role 做了限制。</p>
+</blockquote>
+<p>但在这种情况下，这个默认 ServiceAccount 并没有关联任何 Role。也就是说，此时它有访问 APIServer 的绝大多数权限。当然，这个访问所需要的 Token，还是默认 ServiceAccount 对应的 Secret 对象为它提供的，如下所示。</p>
+<div class="hlcode"><pre><span class="nv">$kubectl</span> <span class="nb">describe</span> <span class="nx">sa</span> <span class="nb">default</span>
+<span class="nb">Name</span><span class="p">:</span>                <span class="nb">default</span>
+<span class="nx">Namespace</span><span class="p">:</span>           <span class="nb">default</span>
+<span class="nx">Labels</span><span class="p">:</span>              <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>
+<span class="nx">Annotations</span><span class="p">:</span>         <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>
+<span class="nb">Image</span> <span class="nx">pull</span> <span class="nx">secrets</span><span class="p">:</span>  <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>
+<span class="nx">Mountable</span> <span class="nx">secrets</span><span class="p">:</span>   <span class="nb">default</span><span class="na">-token-s8rbq</span>
+<span class="nx">Tokens</span><span class="p">:</span>              <span class="nb">default</span><span class="na">-token-s8rbq</span>
+<span class="nb">Events</span><span class="p">:</span>              <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>
+
+<span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">get</span> <span class="nx">secret</span>
+<span class="nb">NAME</span>                  <span class="k">TYPE</span>                                  <span class="kd">DATA</span>      <span class="nx">AGE</span>
+<span class="nx">kubernetes.io</span><span class="p">/</span><span class="nx">service</span><span class="na">-account-token</span>   <span class="mi">3</span>         <span class="mi">82</span><span class="nb">d</span>
+
+<span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">describe</span> <span class="nx">secret</span> <span class="nb">default</span><span class="na">-token-s8rbq</span>
+<span class="nb">Name</span><span class="p">:</span>         <span class="nb">default</span><span class="na">-token-s8rbq</span>
+<span class="nx">Namespace</span><span class="p">:</span>    <span class="nb">default</span>
+<span class="nx">Labels</span><span class="p">:</span>       <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>
+<span class="nx">Annotations</span><span class="p">:</span>  <span class="nx">kubernetes.io</span><span class="p">/</span><span class="nx">service</span><span class="na">-account.name</span><span class="o">=</span><span class="nb">default</span>
+              <span class="nx">kubernetes.io</span><span class="p">/</span><span class="nx">service</span><span class="na">-account.uid</span><span class="o">=</span><span class="nx">ffcb12b2</span><span class="o">-</span><span class="mi">917</span><span class="nb">f</span><span class="o">-</span><span class="mi">11</span><span class="nx">e8</span><span class="na">-abde</span><span class="o">-</span><span class="mi">42010</span><span class="nx">aa80002</span>
+
+<span class="k">Type</span><span class="p">:</span>  <span class="nx">kubernetes.io</span><span class="p">/</span><span class="nx">service</span><span class="na">-account-token</span>
+
+<span class="kd">Data</span>
+<span class="o">====</span>
+<span class="nx">ca.crt</span><span class="p">:</span>     <span class="mi">1025</span> <span class="nb">bytes</span>
+<span class="nx">namespace</span><span class="p">:</span>  <span class="mi">7</span> <span class="nb">bytes</span>
+<span class="nb">token</span><span class="p">:</span>      <span class="o">&lt;</span><span class="nb">TOKEN</span> <span class="nx">数据</span> <span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="group">Group</h3>
+<p>一个ServiceAccount在Kubernetes对应的用户为</p>
+<div class="hlcode"><pre><span class="n">system</span><span class="o">:</span><span class="n">serviceaccount</span><span class="o">:&lt;</span><span class="n">ServiceAccount</span> <span class="err">名字</span> <span class="o">&gt;</span>
+</pre></div>
+
+
+<p>对应的用户组名</p>
+<div class="hlcode"><pre><span class="n">system</span><span class="o">:</span><span class="n">serviceaccounts</span><span class="o">:&lt;</span><span class="n">Namespace</span> <span class="err">名字</span> <span class="o">&gt;</span>
+</pre></div>
+
+
+<p>比如，现在我们可以在 RoleBinding 里定义如下的 subjects：</p>
+<div class="hlcode"><pre><span class="nl">subjects:</span>
+<span class="o">-</span> <span class="n">kind</span><span class="o">:</span> <span class="n">Group</span>
+  <span class="nl">name:</span> <span class="n">system</span><span class="o">:</span><span class="n">serviceaccounts</span><span class="o">:</span><span class="n">mynamespace</span>
+  <span class="nl">apiGroup:</span> <span class="n">rbac</span><span class="p">.</span><span class="n">authorization</span><span class="p">.</span><span class="n">k8s</span><span class="p">.</span><span class="n">io</span>
+</pre></div>
+
+
+<blockquote>
+<p>这就意味着这个 Role 的权限规则，作用于 mynamespace 里的所有 ServiceAccount。这就用到了“用户组”的概念。</p>
+</blockquote>
+<div class="hlcode"><pre><span class="nl">subjects:</span>
+<span class="o">-</span> <span class="n">kind</span><span class="o">:</span> <span class="n">Group</span>
+  <span class="nl">name:</span> <span class="n">system</span><span class="o">:</span><span class="n">serviceaccounts</span>
+  <span class="nl">apiGroup:</span> <span class="n">rbac</span><span class="p">.</span><span class="n">authorization</span><span class="p">.</span><span class="n">k8s</span><span class="p">.</span><span class="n">io</span>
+</pre></div>
+
+
+<blockquote>
+<p>就意味着这个 Role 的权限规则，作用于整个系统里的所有 ServiceAccount。</p>
+</blockquote>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-21 02:43:19</p>
+        <p>Site Generated 2019-03-25 22:15:10</p>
       </span>
     </div>
 

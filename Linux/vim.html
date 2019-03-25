@@ -27,21 +27,44 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#vim">VIM</a><ul>
-<li><a href="#_1">正常模式</a><ul>
-<li><a href="#_2">方向</a></li>
-<li><a href="#_3">页面</a></li>
-<li><a href="#_4">查找</a></li>
+<li><a href="#_1">历史</a></li>
+<li><a href="#_2">正常模式</a><ul>
+<li><a href="#_3">方向</a></li>
+<li><a href="#_4">页面</a></li>
+<li><a href="#_5">查找</a></li>
 </ul>
 </li>
-<li><a href="#_5">插入模式</a></li>
-<li><a href="#_6">底行模式</a></li>
+<li><a href="#_6">插入模式</a></li>
+<li><a href="#_7">可视模式</a></li>
+<li><a href="#_8">底行/命令模式</a><ul>
+<li><a href="#help">help 帮助</a></li>
+<li><a href="#colo">colo 颜色</a></li>
+<li><a href="#_9">读文件</a></li>
+<li><a href="#_10">缓冲区跳转</a></li>
+<li><a href="#_11">展示窗口</a></li>
+<li><a href="#_12">搜索</a></li>
+<li><a href="#_13">区域选择</a></li>
+<li><a href="#_14">宏录制</a></li>
+<li><a href="#_15">统计文本行数和当前光标的位置</a></li>
+<li><a href="#_16">统计字节数</a></li>
+<li><a href="#_17">文本行翻转</a></li>
+<li><a href="#1100">插入一个1到100的序列</a></li>
+<li><a href="#_18">每一行文字前面增加序号</a></li>
+<li><a href="#java-apache-eclipse">所有后缀为 java 的文件中的 apache 替换成 eclipse</a></li>
+</ul>
+</li>
+<li><a href="#vimrc">vimrc</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <h1 id="vim">VIM</h1>
-<h2 id="_1">正常模式</h2>
-<h3 id="_2">方向</h3>
+<h2 id="_1">历史</h2>
+<p>Vim 源于 Vi，但不是 Vi，Vi 作为计算机的文本编辑器历史极为悠远，它是由美国计算机科学家比尔·乔伊编写并于1976年发布的</p>
+<p>Vim 诞生的要晚一些，它的第一个版本由布莱姆·米勒在1991年发布</p>
+<p>随着 Vim 的不断发展，更多更好的功能被加了进来，正式名称改成了 Vi IMproved（增强），也就形成了现代的 Vim</p>
+<h2 id="_2">正常模式</h2>
+<h3 id="_3">方向</h3>
 <div class="hlcode"><pre><span class="n">h</span> <span class="err">或</span> <span class="err">向左方向鍵</span><span class="p">(</span><span class="err">←</span><span class="p">)</span>      <span class="err">游標向左移動一個字元</span>
 <span class="n">j</span> <span class="err">或</span> <span class="err">向下方向鍵</span><span class="p">(</span><span class="err">↓</span><span class="p">)</span>      <span class="err">游標向下移動一個字元</span>
 <span class="n">k</span> <span class="err">或</span> <span class="err">向上方向鍵</span><span class="p">(</span><span class="err">↑</span><span class="p">)</span>      <span class="err">游標向上移動一個字元</span>
@@ -49,7 +72,7 @@
 </pre></div>
 
 
-<h3 id="_3">页面</h3>
+<h3 id="_4">页面</h3>
 <div class="hlcode"><pre><span class="p">[</span><span class="n">Ctrl</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">f</span><span class="p">]</span>      <span class="err">螢幕『向下』移動一頁，相當於</span> <span class="p">[</span><span class="n">Page</span> <span class="n">Down</span><span class="p">]</span><span class="err">按鍵</span> <span class="p">(</span><span class="err">常用</span><span class="p">)</span>
 
 <span class="p">[</span><span class="n">Ctrl</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span>      <span class="err">螢幕『向上』移動一頁，相當於</span> <span class="p">[</span><span class="n">Page</span> <span class="n">Up</span><span class="p">]</span> <span class="err">按鍵</span> <span class="p">(</span><span class="err">常用</span><span class="p">)</span>
@@ -57,21 +80,219 @@
 
 
 <p>G      移動到這個檔案的最後一行(常用)</p>
-<h3 id="_4">查找</h3>
+<h3 id="_5">查找</h3>
 <div class="hlcode"><pre><span class="o">/</span><span class="n">word</span>      <span class="err">向游標之下尋找一個名稱為</span> <span class="n">word</span> <span class="err">的字串。例如要在檔案內搜尋</span> <span class="n">vbird</span> <span class="err">這個字串，就輸入</span> <span class="o">/</span><span class="n">vbird</span> <span class="err">即可！</span> <span class="p">(</span><span class="err">常用</span><span class="p">)</span>
 
 <span class="o">?</span><span class="n">word</span>      <span class="err">向游標之上尋找一個字串名稱為</span> <span class="n">word</span> <span class="err">的字串。</span>
 </pre></div>
 
 
-<h2 id="_5">插入模式</h2>
-<h2 id="_6">底行模式</h2>
+<h2 id="_6">插入模式</h2>
+<p>输入 i 或 a 进入插入模式</p>
+<h2 id="_7">可视模式</h2>
+<h2 id="_8">底行/命令模式</h2>
+<p>通过「: / ? !」可以进入命令模式，分别对应的是：执行内部命令、向上或向下搜索、执行外部命令</p>
+<h3 id="help">help 帮助</h3>
+<div class="hlcode"><pre><span class="o">:</span><span class="n">help</span>
+</pre></div>
+
+
+<h3 id="colo">colo 颜色</h3>
+<p>/usr/share/vim/vim72/colors</p>
+<div class="hlcode"><pre><span class="n">blue</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">darkblue</span><span class="p">.</span><span class="n">vim</span>
+<span class="k">default</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">delek</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">desert</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">elflord</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">evening</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">koehler</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">morning</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">murphy</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">pablo</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">peachpuff</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">ron</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">shine</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">slate</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">torte</span><span class="p">.</span><span class="n">vim</span>
+<span class="n">zellner</span><span class="p">.</span><span class="n">vim</span>
+</pre></div>
+
+
+<h3 id="_9">读文件</h3>
+<p>不知道经常用vim的同学有没有一个体验，经常会打开一个文件、复制内容、关闭文件、打开另一个文件、然后粘贴进去复制到内容。编辑器之神难道体验这么差？其实有更好的办法，那就是：</p>
+<div class="hlcode"><pre><span class="o">:</span><span class="nx">read</span> <span class="nx">filename</span>
+</pre></div>
+
+
+<h3 id="_10">缓冲区跳转</h3>
+<p><code>ctrl + ^</code> 是最常用的方式，来切换当前缓冲区和上一个缓冲区。这样非常方便来回编辑两个文件。缓冲区还提供了很多跳转命令：</p>
+<div class="hlcode"><pre><span class="o">:</span><span class="nx">ls</span><span class="p">,</span> <span class="o">:</span><span class="nx">buffers</span>      <span class="err">列出所有缓冲区</span>
+<span class="o">:</span><span class="nx">bn</span><span class="p">[</span><span class="nx">ext</span><span class="p">]</span>            <span class="err">下一个缓冲区</span>
+<span class="o">:</span><span class="nx">bp</span><span class="p">[</span><span class="nx">revious</span><span class="p">]</span>        <span class="err">上一个缓冲区</span>
+<span class="o">:</span><span class="nx">b</span> <span class="p">{</span><span class="nx">number</span><span class="p">,</span> <span class="nx">expression</span><span class="p">}</span>    <span class="err">跳转到指定缓冲区</span>
+</pre></div>
+
+
+<p><code>:ls</code> 然后输入编号是我常用的一种方式，可以快速跳转到对应文件。</p>
+<h3 id="_11">展示窗口</h3>
+<p>当修改某一个窗口的文件时，其他窗口都会同步更新</p>
+<div class="hlcode"><pre><span class="o">:</span><span class="n">split</span> <span class="n">filename</span> <span class="err">或</span> <span class="o">:</span><span class="n">vsplit</span> <span class="n">filename</span> <span class="err">命令在多个窗口打开一个文件</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="o">:</span><span class="n">tabedit</span> <span class="n">filename</span> <span class="err">在另一个标签页中打开一个文件，在这个标签页中又可以打开多个窗口。</span>
+</pre></div>
+
+
+<p>使用 ctrl + w 可以在个窗口之间跳转，使用 ctrl + 方向键可以按照方向切换窗口。</p>
+<h3 id="_12">搜索</h3>
+<p>用<code>vimgrep</code>还是比较快捷的。</p>
+<div class="hlcode"><pre><span class="nx">vimgrep</span> <span class="o">/</span><span class="err">匹配模式</span><span class="o">/</span><span class="p">[</span><span class="nx">g</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="err">要搜索的文件</span><span class="o">/</span><span class="err">范围</span>
+<span class="nx">g</span><span class="err">：表示是否把每一行的多个匹配结果都加入</span>
+<span class="nx">j</span><span class="err">：表示是否搜索完后定位到第一个匹配位置</span>
+
+<span class="nx">vimgrep</span> <span class="o">/</span><span class="nx">pattern</span><span class="o">/</span> <span class="o">%</span>           <span class="err">在当前打开文件中查找</span>
+<span class="nx">vimgrep</span> <span class="o">/</span><span class="nx">pattern</span><span class="o">/</span> <span class="o">*</span>             <span class="err">在当前目录下查找所有</span>
+<span class="nx">vimgrep</span> <span class="o">/</span><span class="nx">pattern</span><span class="o">/</span> <span class="o">**</span>            <span class="err">在当前目录及子目录下查找所有</span>
+<span class="nx">vimgrep</span> <span class="o">/</span><span class="nx">pattern</span><span class="o">/</span> <span class="o">*</span><span class="p">.</span><span class="nx">c</span>          <span class="err">查找当前目录下所有</span><span class="p">.</span><span class="nx">c</span><span class="err">文件</span>
+<span class="nx">vimgrep</span> <span class="o">/</span><span class="nx">pattern</span><span class="o">/</span> <span class="o">**</span><span class="err">/*         只查找子目录</span>
+
+<span class="nx">cn</span>                             <span class="err">查找下一个</span>
+<span class="nx">cp</span>                             <span class="err">查找上一个</span>
+<span class="nx">cw</span>                            <span class="err">打开</span><span class="nx">quickfix</span>
+</pre></div>
+
+
+<p>在<code>quickfix</code>里面一样可以快捷的跳转。</p>
+<h3 id="_13">区域选择</h3>
+<p>区域选择也是个非常常用的命令，其命令格式为</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="nx">action</span><span class="o">&gt;</span><span class="nx">a</span><span class="o">&lt;</span><span class="nx">object</span><span class="o">&gt;</span> <span class="err">和</span> <span class="o">&lt;</span><span class="nx">action</span><span class="o">&gt;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">object</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<ul>
+<li>action可以是任何的命令，如 d (删除), y (拷贝), v (可以视模式选择)。</li>
+<li>object 可能是： w 一个单词， W 一个以空格为分隔的单词， s 一个句字， p 一个段落。也可以是一个特别的字符："、 '、 )、 }、 ]。</li>
+</ul>
+<h3 id="_14">宏录制</h3>
+<div class="hlcode"><pre><span class="nx">qa</span> <span class="err">把你的操作记录在寄存器</span> <span class="nx">a</span><span class="err">。</span>
+<span class="err">@</span><span class="nx">a</span> <span class="err">会</span><span class="nx">replay</span><span class="err">被录制的宏。</span>
+<span class="err">@@</span> <span class="err">是一个快捷键用来</span><span class="nx">replay</span><span class="err">最新录制的宏。</span>
+</pre></div>
+
+
+<h3 id="_15">统计文本行数和当前光标的位置</h3>
+<div class="hlcode"><pre><span class="n">ctrl</span> <span class="o">+</span> <span class="n">g</span>
+</pre></div>
+
+
+<h3 id="_16">统计字节数</h3>
+<div class="hlcode"><pre><span class="n">g</span> <span class="o">+</span> <span class="n">ctrl</span> <span class="o">+</span> <span class="n">g</span>
+</pre></div>
+
+
+<h3 id="_17">文本行翻转</h3>
+<div class="hlcode"><pre><span class="o">:</span><span class="n">g</span><span class="o">/^/</span><span class="n">m</span> <span class="mi">0</span>
+</pre></div>
+
+
+<h3 id="1100">插入一个1到100的序列</h3>
+<div class="hlcode"><pre><span class="o">:</span><span class="n">r</span><span class="o">!</span><span class="n">seq</span> <span class="mi">100</span>
+</pre></div>
+
+
+<h3 id="_18">每一行文字前面增加序号</h3>
+<div class="hlcode"><pre><span class="o">:</span><span class="n">let</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span> <span class="o">|</span> <span class="n">g</span> <span class="o">/^/</span> <span class="n">s</span><span class="c1">//\=i.&quot;. &quot;/ | let i+=1</span>
+</pre></div>
+
+
+<h3 id="java-apache-eclipse">所有后缀为 java 的文件中的 apache 替换成 eclipse</h3>
+<p>当前目录执行</p>
+<div class="hlcode"><pre><span class="n">vim</span>
+<span class="o">:</span><span class="n">n</span> <span class="o">**/*.</span><span class="n">java</span>
+<span class="o">:</span><span class="n">argdo</span> <span class="o">%</span><span class="n">s</span><span class="sr">/apache/eclipse/g</span><span class="n">e</span> <span class="o">|</span> <span class="n">update</span> 
+</pre></div>
+
+
+<h2 id="vimrc">vimrc</h2>
+<p>用户目录下的.vimrc文件就是Vim针对当前用户的主配置文件，该文件不是必备的，没有的话就创建它。文件位于当前用户的主目录下，可以用 ~/.vimrc 找到，Vim启动时会自动运行文件中的每条命令。</p>
+<p><code>.vimrc</code>的注释用双引号"表示</p>
+<div class="hlcode"><pre><span class="nx">syn</span> <span class="k">on</span>                      <span class="s2">&quot;语法支持</span>
+
+<span class="s2"># 然后在  set backspace=2下面一行插入如下代码</span>
+<span class="s2">set ai                  &quot;</span> <span class="nx">auto</span> <span class="nx">indenting</span>
+<span class="nb">set</span> <span class="nx">ruler</span>               <span class="s2">&quot; show the cursor position</span>
+<span class="s2">set hlsearch            &quot;</span> <span class="nx">highlight</span> <span class="nx">the</span> <span class="nb">last</span> <span class="nx">searched</span> <span class="nx">term</span>
+<span class="nb">set</span> <span class="n">history</span><span class="o">=</span><span class="mi">1000</span>        <span class="s2">&quot; keep 1000 lines of history</span>
+<span class="s2">syntax on               &quot;</span> <span class="nx">syntax</span> <span class="nx">highlighting</span>
+<span class="nx">filetype</span> <span class="nx">plugin</span> <span class="k">on</span>      <span class="s2">&quot; use the file type plugins</span>
+
+<span class="s2">set bs=2                    &quot;</span><span class="nx">在insert模式下用退格键删除</span>
+<span class="nb">set</span> <span class="nx">showmatch</span>               <span class="s2">&quot;代码匹配</span>
+<span class="s2">set laststatus=2            &quot;</span><span class="nx">总是显示状态行</span>
+<span class="nb">set</span> <span class="nx">expandtab</span>               <span class="s2">&quot;以下三个配置配合使用，设置tab和缩进空格数</span>
+<span class="s2">set shiftwidth=4</span>
+<span class="s2">set tabstop=4</span>
+<span class="s2">set cursorline              &quot;</span><span class="nx">为光标所在行加下划线</span>
+<span class="nb">set</span> <span class="nx">number</span>                  <span class="s2">&quot;显示行号</span>
+<span class="s2">set autoread                &quot;</span><span class="nx">文件在Vim之外修改过</span><span class="err">，</span><span class="nx">自动重新读入</span>
+
+<span class="nb">set</span> <span class="nb">ignorecase</span>              <span class="s2">&quot;检索时忽略大小写</span>
+<span class="s2">set fileencodings=uft-8,gbk &quot;</span><span class="nx">使用utf</span><span class="o">-</span><span class="mi">8</span><span class="nx">或gbk打开文件</span>
+<span class="nb">set</span> <span class="nx">hls</span>                     <span class="s2">&quot;检索时高亮显示匹配项</span>
+<span class="s2">set helplang=cn             &quot;</span><span class="nx">帮助系统设置为中文</span>
+<span class="nb">set</span> <span class="n">foldmethod</span><span class="o">=</span><span class="nx">syntax</span>       <span class="s2">&quot;代码折叠</span>
+
+<span class="s2"># 其它选项</span>
+<span class="s2">set nocompatible                 &quot;</span><span class="nx">去掉有关vi一致性模式</span><span class="err">，</span><span class="nx">避免以前版本的bug和局限</span>    
+<span class="nb">set</span> <span class="nx">nu</span><span class="o">!</span>                          <span class="s2">&quot;显示行号</span>
+<span class="s2">set guifont=Luxi/ Mono/ 9        &quot;</span><span class="nx">设置字体</span><span class="err">，</span><span class="nx">字体名称和字号</span>
+<span class="nx">filetype</span> <span class="k">on</span>                      <span class="s2">&quot;检测文件的类型     </span>
+<span class="s2">set history=1000                 &quot;</span><span class="nx">记录历史的行数</span>
+<span class="nb">set</span> <span class="n">background</span><span class="o">=</span><span class="nx">dark</span>              <span class="s2">&quot;背景使用黑色</span>
+<span class="s2">syntax on                        &quot;</span><span class="nx">语法高亮度显示</span>
+<span class="nb">set</span> <span class="nx">autoindent</span>                   <span class="s2">&quot;vim使用自动对齐，也就是把当前行的对齐格式应用到下一行(自动缩进）</span>
+<span class="s2">set cindent                      &quot;</span><span class="err">（</span><span class="nx">cindent是特别针对</span> <span class="nx">C语言语法自动缩进</span><span class="err">）</span>
+<span class="nb">set</span> <span class="nx">smartindent</span>                  <span class="s2">&quot;依据上面的对齐格式，智能的选择对齐方式，对于类似C语言编写上有用   </span>
+<span class="s2">set tabstop=4                    &quot;</span><span class="nx">设置tab键为4个空格</span><span class="err">，</span>
+<span class="nb">set</span> <span class="n">shiftwidth</span> <span class="o">=</span><span class="mi">4</span>                <span class="s2">&quot;设置当行之间交错时使用4个空格     </span>
+<span class="s2">set ai!                          &quot;</span><span class="nx">设置自动缩进</span> 
+<span class="nb">set</span> <span class="nx">showmatch</span>                    <span class="s2">&quot;设置匹配模式，类似当输入一个左括号时会匹配相应的右括号      </span>
+<span class="s2">set guioptions-=T                &quot;</span><span class="nx">去除vim的GUI版本中得toolbar</span>   
+<span class="nb">set</span> <span class="nx">vb</span> <span class="n">t_vb</span><span class="o">=</span>                     <span class="s2">&quot;当vim进行编辑时，如果命令错误，会发出警报，该设置去掉警报       </span>
+<span class="s2">set ruler                        &quot;</span><span class="nx">在编辑过程中</span><span class="err">，</span><span class="nx">在右下角显示光标位置的状态行</span>     
+<span class="nb">set</span> <span class="nx">nohls</span>                        <span class="s2">&quot;默认情况下，寻找匹配是高亮度显示，该设置关闭高亮显示     </span>
+<span class="s2">set backspace=2                  &quot;</span><span class="nx">设置退格键可用</span>
+<span class="nb">set</span> <span class="nx">incsearch</span>                    <span class="s2">&quot;在程序中查询一单词，自动匹配单词的位置；如查询desk单词，当输到/d时， </span>
+
+<span class="s2">&quot;</span> <span class="nx">conf</span> <span class="nb">for</span> <span class="nb">tabs</span><span class="p">,</span> <span class="nx">为标签页进行的配置</span><span class="err">，</span><span class="nx">通过ctrl</span> <span class="nx">h</span><span class="p">/</span><span class="nx">l切换标签等</span>
+<span class="k">let</span> <span class="n">mapleader</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span>
+<span class="nx">nnoremap</span> <span class="o">&lt;</span><span class="nx">C</span><span class="na">-l</span><span class="o">&gt;</span> <span class="nb">gt</span>
+<span class="nx">nnoremap</span> <span class="o">&lt;</span><span class="nx">C</span><span class="na">-h</span><span class="o">&gt;</span> <span class="nb">gT</span>
+<span class="nx">nnoremap</span> <span class="o">&lt;</span><span class="nx">leader</span><span class="o">&gt;</span><span class="nb">t</span> <span class="p">:</span> <span class="nx">tabe</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span>
+
+<span class="s2">&quot;conf for plugins {{ 插件相关的配置</span>
+<span class="s2">&quot;</span><span class="nx">状态栏的配置</span> 
+<span class="s2">&quot;powerline{</span>
+<span class="s2">set guifont=PowerlineSymbols\ for\ Powerline</span>
+<span class="s2">set nocompatible</span>
+<span class="s2">set t_Co=256</span>
+<span class="s2">let g:Powerline_symbols = &#39;fancy&#39;</span>
+<span class="s2">&quot;</span><span class="p">}</span>
+<span class="s2">&quot;pathogen是Vim用来管理插件的插件</span>
+<span class="s2">&quot;</span><span class="nx">pathogen</span><span class="p">{</span>
+<span class="nb">call</span> <span class="nx">pathogen</span><span class="vi">#infect</span><span class="p">()</span>
+<span class="s2">&quot;}</span>
+
+<span class="s2">&quot;</span><span class="p">}}</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-21 02:43:19</p>
+        <p>Site Generated 2019-03-25 22:15:10</p>
       </span>
     </div>
 

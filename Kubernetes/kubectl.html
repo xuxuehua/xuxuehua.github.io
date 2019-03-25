@@ -52,6 +52,7 @@
 <li><a href="#explain">explain 资源文档</a></li>
 <li><a href="#expose">expose 暴露服务</a></li>
 <li><a href="#get">get 显示资源</a><ul>
+<li><a href="#controllerrevision-controller">controllerrevision 记录Controller版本</a></li>
 <li><a href="#-l">-l 标签选择器</a></li>
 <li><a href="#-l_1">-L 标签列表</a></li>
 <li><a href="#-o">-o 输出</a><ul>
@@ -251,6 +252,17 @@
 
 <h3 id="get">get 显示资源</h3>
 <p>即从Kubernetes里面获取指定的API对象</p>
+<h4 id="controllerrevision-controller">controllerrevision 记录Controller版本</h4>
+<p>用于记录某种Controller对象的版本</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">controllerrevision</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span> <span class="o">-</span><span class="n">l</span> <span class="n">name</span><span class="o">=</span><span class="n">fluentd</span><span class="o">-</span><span class="n">elasticsearch</span>
+<span class="n">NAME</span>                               <span class="n">CONTROLLER</span>                             <span class="n">REVISION</span>   <span class="n">AGE</span>
+<span class="n">fluentd</span><span class="o">-</span><span class="n">elasticsearch</span><span class="o">-</span><span class="mi">64</span><span class="n">dc6799c9</span>   <span class="n">daemonset</span><span class="p">.</span><span class="n">apps</span><span class="o">/</span><span class="n">fluentd</span><span class="o">-</span><span class="n">elasticsearch</span>   <span class="mi">2</span>          <span class="mi">1</span><span class="n">h</span>
+</pre></div>
+
+
+<blockquote>
+<p>查看fluentd-elasticsearch对应的ControllerRevision</p>
+</blockquote>
 <p>列出所有资源</p>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">get</span> <span class="n">namespaces</span>
 </pre></div>
@@ -537,7 +549,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-21 02:43:19</p>
+        <p>Site Generated 2019-03-25 22:15:10</p>
       </span>
     </div>
 

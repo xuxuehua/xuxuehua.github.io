@@ -46,6 +46,8 @@
 </li>
 </ul>
 </li>
+<li><a href="#persistent-volume-claim-pvc">Persistent Volume Claim (PVC)</a></li>
+<li><a href="#persistent-volume-pv">Persistent Volume (PV)</a></li>
 </ul>
 </li>
 </ul>
@@ -275,12 +277,91 @@ metadata.annotations - Pod 的所有 Annotation
 
 <h4 id="inclusterconfig">InClusterConfig (推荐)</h4>
 <p>这种把 Kubernetes 客户端以容器的方式运行在集群里，然后使用 default Service Account 自动授权的方式，被称作“InClusterConfig”，也是我最推荐的进行 Kubernetes API 编程的授权方式。</p>
+<h2 id="persistent-volume-claim-pvc">Persistent Volume Claim (PVC)</h2>
+<p>降低了用户声明和使用持久化 Volume 的门槛。</p>
+<p>PVC是一种特殊的Volume，但PVC所指定的volume类型，是和PV绑定之后才知道</p>
+<p>声明PVC</p>
+<div class="hlcode"><pre><span class="n">kind</span><span class="o">:</span> <span class="n">PersistentVolumeClaim</span>
+<span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pv</span><span class="o">-</span><span class="n">claim</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">accessModes</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">ReadWriteOnce</span>
+  <span class="n">resources</span><span class="o">:</span>
+    <span class="n">requests</span><span class="o">:</span>
+      <span class="n">storage</span><span class="o">:</span> <span class="mi">1</span><span class="n">Gi</span>
+</pre></div>
+
+
+<blockquote>
+<p>storage: 1Gi  Volume大小至少是1GiB</p>
+<p>accessModes   Volume 挂载的方式是可读写的，并且只能被挂载在一个节点上，而非被多个节点共享</p>
+</blockquote>
+<p>声明使用这个PVC</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pv</span><span class="o">-</span><span class="n">pod</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">pv</span><span class="o">-</span><span class="n">container</span>
+      <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span>
+      <span class="n">ports</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+          <span class="n">name</span><span class="o">:</span> <span class="s2">&quot;http-server&quot;</span>
+      <span class="n">volumeMounts</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">mountPath</span><span class="o">:</span> <span class="s2">&quot;/usr/share/nginx/html&quot;</span>
+          <span class="n">name</span><span class="o">:</span> <span class="n">pv</span><span class="o">-</span><span class="n">storage</span>
+  <span class="n">volumes</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">pv</span><span class="o">-</span><span class="n">storage</span>
+      <span class="n">persistentVolumeClaim</span><span class="o">:</span>
+        <span class="n">claimName</span><span class="o">:</span> <span class="n">pv</span><span class="o">-</span><span class="n">claim</span>
+</pre></div>
+
+
+<blockquote>
+<p>需要声明它的类型是 persistentVolumeClaim, 然后指定PVC名称即可</p>
+</blockquote>
+<h2 id="persistent-volume-pv">Persistent Volume (PV)</h2>
+<p>创建PVC之后，Kubernetes会自动为其绑定一个符合条件的Volume</p>
+<p>这个符合条件的Volume是来自于PV对象</p>
+<p>创建PV对象</p>
+<div class="hlcode"><pre><span class="n">kind</span><span class="o">:</span> <span class="n">PersistentVolume</span>
+<span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pv</span><span class="o">-</span><span class="n">volume</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">type</span><span class="o">:</span> <span class="n">local</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">capacity</span><span class="o">:</span>
+    <span class="n">storage</span><span class="o">:</span> <span class="mi">10</span><span class="n">Gi</span>
+  <span class="n">rbd</span><span class="o">:</span>
+    <span class="n">monitors</span><span class="o">:</span>
+    <span class="o">-</span> <span class="s1">&#39;10.16.154.78:6789&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;10.16.154.82:6789&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;10.16.154.83:6789&#39;</span>
+    <span class="n">pool</span><span class="o">:</span> <span class="n">kube</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">foo</span>
+    <span class="n">fsType</span><span class="o">:</span> <span class="n">ext4</span>
+    <span class="n">readOnly</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="n">user</span><span class="o">:</span> <span class="n">admin</span>
+    <span class="n">keyring</span><span class="o">:</span> <span class="sr">/etc/ceph/</span><span class="n">keyring</span>
+    <span class="n">imageformat</span><span class="o">:</span> <span class="s2">&quot;2&quot;</span>
+    <span class="n">imagefeatures</span><span class="o">:</span> <span class="s2">&quot;layering&quot;</span>
+</pre></div>
+
+
+<blockquote>
+<p>rbd 指 Ceph RBD Volume的详细定义</p>
+<p>storage 声明PV容量为10GiB</p>
+</blockquote>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-21 02:43:19</p>
+        <p>Site Generated 2019-03-25 22:15:10</p>
       </span>
     </div>
 

@@ -59,15 +59,20 @@
 </li>
 </ul>
 </li>
+<li><a href="#activedeadlineseconds">activeDeadlineSeconds</a></li>
+<li><a href="#parallelism">parallelism</a></li>
+<li><a href="#completions">completions</a></li>
 <li><a href="#imagepullpolicy">imagePullPolicy</a></li>
 <li><a href="#rollingupdatestrategy">RollingUpdateStrategy</a></li>
 <li><a href="#revisionhistorylimit">revisionHistoryLimit</a></li>
+<li><a href="#volumeclaimtemplates">volumeClaimTemplates</a></li>
 <li><a href="#ports">ports</a></li>
 <li><a href="#labels">labels</a></li>
-<li><a href="#nodeselector">nodeSelector</a><ul>
+<li><a href="#nodeselector-deprecated-by-nodeaffinity">nodeSelector (Deprecated by nodeAffinity)</a><ul>
 <li><a href="#nodename">NodeName</a></li>
 </ul>
 </li>
+<li><a href="#nodeaffinity">nodeAffinity</a></li>
 <li><a href="#hostaliases">hostAliases</a><ul>
 <li><a href="#hostnetworkhostipchostpid">hostNetwork/hostIPC/hostPID</a></li>
 </ul>
@@ -325,6 +330,21 @@
 </pre></div>
 
 
+<h2 id="activedeadlineseconds">activeDeadlineSeconds</h2>
+<p>设置最长运行时间</p>
+<div class="hlcode"><pre><span class="n">spec</span><span class="o">:</span>
+ <span class="n">backoffLimit</span><span class="o">:</span> <span class="mi">5</span>
+ <span class="n">activeDeadlineSeconds</span><span class="o">:</span> <span class="mi">100</span>
+</pre></div>
+
+
+<blockquote>
+<p>这是Job对象的例子</p>
+</blockquote>
+<h2 id="parallelism">parallelism</h2>
+<p>它定义的是一个 Job 在任意时间最多可以启动多少个 Pod 同时运行</p>
+<h2 id="completions">completions</h2>
+<p>它定义的是 Job 至少要完成的 Pod 数目，即 Job 的最小完成数</p>
 <h2 id="imagepullpolicy">imagePullPolicy</h2>
 <p>定义了拉取镜像的策略</p>
 <p>默认策略为Always，即每次创建Pod的时候会重新拉取一次镜像</p>
@@ -370,6 +390,45 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 <h2 id="revisionhistorylimit">revisionHistoryLimit</h2>
 <p>为Deployment保留的历史版本个数</p>
 <p>设置为0，表示再也不能做滚动更新操作了</p>
+<h2 id="volumeclaimtemplates">volumeClaimTemplates</h2>
+<p>被StatefulSet管理的Pod，都会声明一个对应的PVC</p>
+<p>PVC的定义，源自于volumeClaimTemplates的模板字段</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">StatefulSet</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">web</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">serviceName</span><span class="o">:</span> <span class="s2">&quot;nginx&quot;</span>
+  <span class="n">replicas</span><span class="o">:</span> <span class="mi">2</span>
+  <span class="n">selector</span><span class="o">:</span>
+    <span class="n">matchLabels</span><span class="o">:</span>
+      <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+  <span class="n">template</span><span class="o">:</span>
+    <span class="n">metadata</span><span class="o">:</span>
+      <span class="n">labels</span><span class="o">:</span>
+        <span class="n">app</span><span class="o">:</span> <span class="n">nginx</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">containers</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">nginx</span>
+        <span class="n">image</span><span class="o">:</span> <span class="n">nginx</span><span class="o">:</span><span class="mf">1.9</span><span class="o">.</span><span class="mi">1</span>
+        <span class="n">ports</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+          <span class="n">name</span><span class="o">:</span> <span class="n">web</span>
+        <span class="n">volumeMounts</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">www</span>
+          <span class="n">mountPath</span><span class="o">:</span> <span class="sr">/usr/share/nginx/</span><span class="n">html</span>
+  <span class="n">volumeClaimTemplates</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">metadata</span><span class="o">:</span>
+      <span class="n">name</span><span class="o">:</span> <span class="n">www</span>
+    <span class="n">spec</span><span class="o">:</span>
+      <span class="n">accessModes</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">ReadWriteOnce</span>
+      <span class="n">resources</span><span class="o">:</span>
+        <span class="n">requests</span><span class="o">:</span>
+          <span class="n">storage</span><span class="o">:</span> <span class="mi">1</span><span class="n">Gi</span>
+</pre></div>
+
+
 <h2 id="ports">ports</h2>
 <p>显示指定容器端口，为其赋予一个名称方便调用</p>
 <p>其值为一个列表，有一个到多个端口对象组成，且嵌套以下字段</p>
@@ -409,7 +468,7 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 </pre></div>
 
 
-<h2 id="nodeselector">nodeSelector</h2>
+<h2 id="nodeselector-deprecated-by-nodeaffinity">nodeSelector (Deprecated by nodeAffinity)</h2>
 <p>供用户将Pod与Node进行绑定的字段</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
@@ -441,6 +500,44 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 
 <h3 id="nodename">NodeName</h3>
 <p>一旦 Pod 的这个字段被赋值，Kubernetes 项目就会被认为这个 Pod 已经经过了调度，调度的结果就是赋值的节点名字。所以，这个字段一般由调度器负责设置，但用户也可以设置它来“骗过”调度器，当然这个做法一般是在测试或者调试的时候才会用到。</p>
+<h2 id="nodeaffinity">nodeAffinity</h2>
+<p>spec.affinity字段，是Pod里跟调度相关的一个字段</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="k">with</span><span class="o">-</span><span class="n">node</span><span class="o">-</span><span class="n">affinity</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">affinity</span><span class="o">:</span>
+    <span class="n">nodeAffinity</span><span class="o">:</span>
+      <span class="n">requiredDuringSchedulingIgnoredDuringExecution</span><span class="o">:</span>
+        <span class="n">nodeSelectorTerms</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">matchExpressions</span><span class="o">:</span>
+          <span class="o">-</span> <span class="n">key</span><span class="o">:</span> <span class="n">metadata</span><span class="o">.</span><span class="na">name</span>
+            <span class="n">operator</span><span class="o">:</span> <span class="n">In</span>
+            <span class="n">values</span><span class="o">:</span>
+            <span class="o">-</span> <span class="n">node</span><span class="o">-</span><span class="n">geektime</span>
+</pre></div>
+
+
+<blockquote>
+<p>requiredDuringSchedulingIgnoredDuringExecution    指这个nodeAffinity必须在每次调度的时候予以考虑，也表示可以在设置某些情况下不考虑这个nodeAffinity</p>
+<p>当前Pod只会运行在metadata.name 是 node-geektime上面节点运行</p>
+</blockquote>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="k">with</span><span class="o">-</span><span class="n">toleration</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">tolerations</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">key</span><span class="o">:</span> <span class="n">node</span><span class="o">.</span><span class="na">kubernetes</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">unschedulable</span>
+    <span class="n">operator</span><span class="o">:</span> <span class="n">Exists</span>
+    <span class="n">effect</span><span class="o">:</span> <span class="n">NoSchedule</span>
+</pre></div>
+
+
+<blockquote>
+<p>Toleration容忍”所有被标记为 unschedulable“污点”的 Node；“容忍”的效果是允许调度。</p>
+</blockquote>
 <h2 id="hostaliases">hostAliases</h2>
 <p>定义了 Pod 的 hosts 文件（比如 /etc/hosts）里的内容</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
@@ -568,7 +665,7 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-21 02:43:19</p>
+        <p>Site Generated 2019-03-25 22:15:10</p>
       </span>
     </div>
 

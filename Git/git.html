@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>git 命令 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Git">Git</a>&nbsp;&#187;&nbsp;git 命令
+    <span class="updated">Page Updated&nbsp;
+      2019-03-21 19:10
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">git 命令</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#git">git</a><ul>
+<li><a href="#branch">branch</a><ul>
+<li><a href="#-d">-D 强力删除</a></li>
+<li><a href="#-d_1">-d 删除</a></li>
+<li><a href="#-v-verbose">-v verbose</a></li>
+</ul>
+</li>
+<li><a href="#cat-file">cat-file</a><ul>
+<li><a href="#-p">-p 内容</a></li>
+<li><a href="#-t">-t 类型</a></li>
+</ul>
+</li>
+<li><a href="#checkout">checkout</a><ul>
+<li><a href="#-b">-b 指定分支</a></li>
+<li><a href="#-files">--  指定files  工作区变回暂存区</a></li>
+</ul>
+</li>
+<li><a href="#commit">commit</a><ul>
+<li><a href="#-amend-comment">--amend 修改最近一次comment</a></li>
+</ul>
+</li>
+<li><a href="#diff">diff</a><ul>
+<li><a href="#-files_1">--  指定files</a></li>
+<li><a href="#-cached-head">--cached  暂存区与HEAD差异</a></li>
+</ul>
+</li>
+<li><a href="#rebase">rebase</a><ul>
+<li><a href="#-i">-i 交互式操作</a><ul>
+<li><a href="#rreword-commit">r/reword 编辑历史commit</a></li>
+<li><a href="#ssquash-commit">s/squash 合并commit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#reset">reset</a><ul>
+<li><a href="#head">HEAD 清空暂存区</a></li>
+</ul>
+</li>
+<li><a href="#log">log</a><ul>
+<li><a href="#-graph">--graph 图形化</a></li>
+<li><a href="#-n">-n 行数</a></li>
+<li><a href="#-oneline">--oneline 一行信息</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="git">git</h1>
+<h2 id="branch">branch</h2>
+<h3 id="-d">-D 强力删除</h3>
+<p>处理-d删除不了的分支</p>
+<h3 id="-d_1">-d 删除</h3>
+<p>清除分支</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">d</span>
+</pre></div>
+
+
+<h3 id="-v-verbose">-v verbose</h3>
+<p>查看本地分支</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+
+
+<h2 id="cat-file">cat-file</h2>
+<h3 id="-p">-p 内容</h3>
+<p>查看HASH_VALUE 内容</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">cat</span><span class="o">-</span><span class="n">file</span> <span class="o">-</span><span class="n">p</span> <span class="n">HASH_VALUE</span>
+</pre></div>
+
+
+<h3 id="-t">-t 类型</h3>
+<p>查看文件类型</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">cat</span><span class="o">-</span><span class="n">file</span> <span class="o">-</span><span class="n">t</span> <span class="n">HASH_VALUE</span>
+</pre></div>
+
+
+<h2 id="checkout">checkout</h2>
+<p>切换分支</p>
+<h3 id="-b">-b 指定分支</h3>
+<p>创建临时分支temp</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">temp</span> <span class="n">COMMIT_ID</span>
+</pre></div>
+
+
+<h3 id="-files">--  指定files  工作区变回暂存区</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="o">--</span> <span class="n">SOME_FILES</span>
+</pre></div>
+
+
+<h2 id="commit">commit</h2>
+<h3 id="-amend-comment">--amend 修改最近一次comment</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">commit</span> <span class="o">--</span><span class="n">amend</span>
+</pre></div>
+
+
+<h2 id="diff">diff</h2>
+<p>默认的比较是工作区与暂存区差异</p>
+<p>变更比较</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="n">HASH_V1</span> <span class="n">HASH_V2</span>
+</pre></div>
+
+
+<p>对比head的上级</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="n">HEAD</span> <span class="n">HEAD</span><span class="o">^</span>
+<span class="n">or</span>
+<span class="n">git</span> <span class="n">diff</span> <span class="n">HEAD</span> <span class="n">HEAD</span><span class="o">~</span><span class="mi">1</span>
+</pre></div>
+
+
+<p>上级的上级</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="n">HEAD</span> <span class="n">HEAD</span><span class="o">^^</span>
+<span class="n">or</span>
+<span class="n">git</span> <span class="n">diff</span> <span class="n">HEAD</span> <span class="n">HEAD</span><span class="o">~</span><span class="mi">2</span>
+</pre></div>
+
+
+<h3 id="-files_1">--  指定files</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="o">--</span> <span class="n">SOME_FILES</span>
+</pre></div>
+
+
+<h3 id="-cached-head">--cached  暂存区与HEAD差异</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="o">--</span><span class="n">cached</span>
+</pre></div>
+
+
+<p>返回为空，表示暂存区和HEAD是一致的</p>
+<h2 id="rebase">rebase</h2>
+<h3 id="-i">-i 交互式操作</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">rebase</span> <span class="o">-</span><span class="n">i</span> <span class="n">HASH_VALUE</span>
+</pre></div>
+
+
+<h4 id="rreword-commit">r/reword 编辑历史commit</h4>
+<div class="hlcode"><pre><span class="cp"># 将开头的pick修改成需要的内容，如编辑commit 消息</span>
+<span class="n">r</span> <span class="mi">4123213</span> <span class="n">some</span> <span class="n">project</span> <span class="n">info</span><span class="p">.</span>
+</pre></div>
+
+
+<h4 id="ssquash-commit">s/squash 合并commit</h4>
+<div class="hlcode"><pre><span class="cp"># 将开头的pick修改成需要的内容，如合并commit 消息</span>
+<span class="n">pick</span>
+<span class="n">s</span>
+<span class="n">s</span>
+</pre></div>
+
+
+<p>合并间隔的commit 直接<code>git rebase -i HASH_VALUE</code></p>
+<h2 id="reset">reset</h2>
+<h3 id="head">HEAD 清空暂存区</h3>
+<h2 id="log">log</h2>
+<h3 id="-graph">--graph 图形化</h3>
+<p>开启图形化</p>
+<h3 id="-n">-n 行数</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">log</span> <span class="o">-</span><span class="n">n4</span> 
+</pre></div>
+
+
+<h3 id="-oneline">--oneline 一行信息</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">log</span> <span class="o">--</span><span class="n">oneline</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-03-25 22:15:10</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>
