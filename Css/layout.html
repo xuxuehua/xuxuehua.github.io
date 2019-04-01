@@ -36,15 +36,15 @@
 <li><a href="#_2">流式布局</a><ul>
 <li><a href="#_3">标准流</a></li>
 <li><a href="#_4">浮动流</a><ul>
-<li><a href="#_5">浮动定义</a></li>
+<li><a href="#div">浮动定义 (解决div)</a></li>
 </ul>
 </li>
 <li><a href="#overflow">overflow 属性</a></li>
-<li><a href="#_6">清除浮动</a><ul>
-<li><a href="#_7">常用布局案例</a></li>
+<li><a href="#_5">清除浮动</a><ul>
+<li><a href="#_6">常用布局案例</a></li>
 </ul>
 </li>
-<li><a href="#_8">瀑布流</a></li>
+<li><a href="#_7">瀑布流</a></li>
 </ul>
 </li>
 </ul>
@@ -128,9 +128,16 @@
 <p>若放不下盒子，换行存放</p>
 <h3 id="_4">浮动流</h3>
 <p>浮动的盒子可以向左或向右移动 </p>
-<h4 id="_5">浮动定义</h4>
+<h4 id="div">浮动定义 (解决div)</h4>
 <div class="hlcode"><pre><span class="n">div</span> <span class="p">{</span>
     <span class="nl">float:</span> <span class="n">right</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>通常div是独占一行，可以设置浮动类型居左</p>
+<div class="hlcode"><pre><span class="n">div</span> <span class="p">{</span>
+    <span class="nl">float:</span> <span class="n">left</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -170,12 +177,12 @@
 </tr>
 </tbody>
 </table>
-<h3 id="_6">清除浮动</h3>
+<h3 id="_5">清除浮动</h3>
 <div class="hlcode"><pre><span class="n">clear</span><span class="o">:</span><span class="n">left</span><span class="sr">/right/both/</span><span class="n">b</span>
 </pre></div>
 
 
-<h4 id="_7">常用布局案例</h4>
+<h4 id="_6">常用布局案例</h4>
 <p><img alt="img" src="https://snag.gy/od7icm.jpg" /></p>
 <div class="hlcode"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
@@ -422,7 +429,7 @@
 </pre></div>
 
 
-<h3 id="_8">瀑布流</h3>
+<h3 id="_7">瀑布流</h3>
 <div class="hlcode"><pre><span class="nt">&lt;body&gt;</span>
     <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;div&gt;</span>
@@ -459,7 +466,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-25 22:15:10</p>
+        <p>Site Generated 2019-04-02 00:07:18</p>
       </span>
     </div>
 

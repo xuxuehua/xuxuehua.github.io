@@ -27,12 +27,25 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#awk">awk</a><ul>
+<li><a href="#nr1">NR==1 第一行</a></li>
+<li><a href="#end">END 最后一行</a></li>
 <li><a href="#nf">\$NF 最后一列</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <h1 id="awk">awk</h1>
+<h2 id="nr1">NR==1 第一行</h2>
+<p>NF = Number of Fields</p>
+<div class="hlcode"><pre><span class="n">awk</span> <span class="err">&#39;</span><span class="n">NF</span><span class="o">==</span><span class="mi">1</span><span class="err">&#39;</span> <span class="n">file_name</span>
+</pre></div>
+
+
+<h2 id="end">END 最后一行</h2>
+<div class="hlcode"><pre><span class="n">awk</span> <span class="s">&quot;END{print $0}&quot;</span> <span class="n">file_name</span>
+</pre></div>
+
+
 <h2 id="nf">\$NF 最后一列</h2>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">echo</span> <span class="err">$</span><span class="n">a</span>
 <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span>
@@ -45,7 +58,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-25 22:15:10</p>
+        <p>Site Generated 2019-04-02 00:07:18</p>
       </span>
     </div>
 

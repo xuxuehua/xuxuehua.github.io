@@ -27,15 +27,83 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#sar">sar</a><ul>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#option">option</a><ul>
+<li><a href="#-b-io">-b I/O 数据</a></li>
+<li><a href="#-b-paging">-B Paging 数据</a></li>
+<li><a href="#-d">-d 块设备状态</a></li>
+<li><a href="#-h">-H 配置使用状态</a></li>
+<li><a href="#-i">-I 中断信息</a></li>
 <li><a href="#-n">-n 网络统计</a></li>
+<li><a href="#-m">-m 硬件信息</a></li>
+<li><a href="#-q">-q 队列</a></li>
+<li><a href="#-r">-r 内存使用率</a></li>
+<li><a href="#-r_1">-R 内存状态</a></li>
+<li><a href="#-s-swap">-S swap空间</a></li>
+<li><a href="#-u-all-cpu">-u [ ALL ] CPU使用率</a></li>
+<li><a href="#-v">-v 内核信息</a></li>
+<li><a href="#-w">-w 任务信息</a></li>
+<li><a href="#-w-swapping">-W swapping 状态</a></li>
+<li><a href="#-y-tty">-y tty设备</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 <h1 id="sar">sar</h1>
+<p>System Activity Report </p>
 <p>sar 命令用于收集、汇报和保存系统活动信息</p>
-<h2 id="-n">-n 网络统计</h2>
-<div class="hlcode"><pre><span class="c"># sar -n DEV | more</span>
+<h2 id="usage">Usage</h2>
+<div class="hlcode"><pre><span class="nx">sar</span> <span class="err">[</span> <span class="nx">options</span> <span class="cp">]</span> <span class="cp">[</span> <span class="o">&lt;</span><span class="nx">interval</span><span class="o">&gt;</span> <span class="err">[</span> <span class="o">&lt;</span><span class="nb">count</span><span class="o">&gt;</span> <span class="cp">]</span> ]
+</pre></div>
+
+
+<h2 id="option">option</h2>
+<h3 id="-b-io">-b I/O 数据</h3>
+<p>I/O and transfer rate statistics</p>
+<h3 id="-b-paging">-B Paging 数据</h3>
+<p>Paging statistics</p>
+<h3 id="-d">-d 块设备状态</h3>
+<p>Block device statistics</p>
+<h3 id="-h">-H 配置使用状态</h3>
+<p>Hugepages utilization statistics</p>
+<h3 id="-i">-I 中断信息</h3>
+<p>Interrupts statistics</p>
+<div class="hlcode"><pre><span class="na">-I</span> <span class="p">{</span> <span class="o">&lt;</span><span class="nx">int</span><span class="o">&gt;</span> <span class="o">|</span> <span class="k">SUM</span> <span class="o">|</span> <span class="kc">ALL</span> <span class="o">|</span> <span class="nx">XALL</span> <span class="p">}</span>
+</pre></div>
+
+
+<h3 id="-n">-n 网络统计</h3>
+<div class="hlcode"><pre><span class="na">-n</span> <span class="p">{</span> <span class="o">&lt;</span><span class="nb">keyword</span><span class="o">&gt;</span> <span class="err">[</span><span class="p">,</span><span class="nx">...</span><span class="cp">]</span> | ALL }
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">Network</span> <span class="n">statistics</span>
+<span class="n">Keywords</span> <span class="n">are</span><span class="o">:</span>
+
+    <span class="n">DEV</span> <span class="n">Network</span> <span class="n">interfaces</span>
+    <span class="n">EDEV</span>    <span class="n">Network</span> <span class="n">interfaces</span> <span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+    <span class="n">NFS</span> <span class="n">NFS</span> <span class="n">client</span>
+    <span class="n">NFSD</span>    <span class="n">NFS</span> <span class="n">server</span>
+    <span class="n">SOCK</span>    <span class="n">Sockets</span> <span class="p">(</span><span class="n">v4</span><span class="p">)</span>
+    <span class="n">IP</span>  <span class="n">IP</span> <span class="n">traffic</span>  <span class="p">(</span><span class="n">v4</span><span class="p">)</span>
+    <span class="n">EIP</span> <span class="n">IP</span> <span class="n">traffic</span>  <span class="p">(</span><span class="n">v4</span><span class="p">)</span> <span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+    <span class="n">ICMP</span>    <span class="n">ICMP</span> <span class="n">traffic</span>    <span class="p">(</span><span class="n">v4</span><span class="p">)</span>
+    <span class="n">EICMP</span>   <span class="n">ICMP</span> <span class="n">traffic</span>    <span class="p">(</span><span class="n">v4</span><span class="p">)</span> <span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+    <span class="n">TCP</span> <span class="n">TCP</span> <span class="n">traffic</span> <span class="p">(</span><span class="n">v4</span><span class="p">)</span>
+    <span class="n">ETCP</span>    <span class="n">TCP</span> <span class="n">traffic</span> <span class="p">(</span><span class="n">v4</span><span class="p">)</span> <span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+    <span class="n">UDP</span> <span class="n">UDP</span> <span class="n">traffic</span> <span class="p">(</span><span class="n">v4</span><span class="p">)</span>
+    <span class="n">SOCK6</span>   <span class="n">Sockets</span> <span class="p">(</span><span class="n">v6</span><span class="p">)</span>
+    <span class="n">IP6</span> <span class="n">IP</span> <span class="n">traffic</span>  <span class="p">(</span><span class="n">v6</span><span class="p">)</span>
+    <span class="n">EIP6</span>    <span class="n">IP</span> <span class="n">traffic</span>  <span class="p">(</span><span class="n">v6</span><span class="p">)</span> <span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+    <span class="n">ICMP6</span>   <span class="n">ICMP</span> <span class="n">traffic</span>    <span class="p">(</span><span class="n">v6</span><span class="p">)</span>
+    <span class="n">EICMP6</span>  <span class="n">ICMP</span> <span class="n">traffic</span>    <span class="p">(</span><span class="n">v6</span><span class="p">)</span> <span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+    <span class="n">UDP6</span>    <span class="n">UDP</span> <span class="n">traffic</span> <span class="p">(</span><span class="n">v6</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">sar</span> <span class="o">-</span><span class="n">n</span> <span class="n">DEV</span> <span class="o">|</span> <span class="n">more</span>
 </pre></div>
 
 
@@ -47,12 +115,49 @@
 <p>显示实时使用情况</p>
 <div class="hlcode"><pre><span class="c"># sar 4 5</span>
 </pre></div>
+
+
+<h3 id="-m">-m 硬件信息</h3>
+<div class="hlcode"><pre><span class="na">-m</span> <span class="p">{</span> <span class="o">&lt;</span><span class="nb">keyword</span><span class="o">&gt;</span> <span class="err">[</span><span class="p">,</span><span class="nx">...</span><span class="cp">]</span> | ALL }
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">Power</span> <span class="n">management</span> <span class="n">statistics</span>
+<span class="n">Keywords</span> <span class="n">are</span><span class="o">:</span>
+
+    <span class="n">CPU</span> <span class="n">CPU</span> <span class="n">instantaneous</span> <span class="n">clock</span> <span class="n">frequency</span>
+    <span class="n">FAN</span> <span class="n">Fans</span> <span class="n">speed</span>
+    <span class="n">FREQ</span>    <span class="n">CPU</span> <span class="n">average</span> <span class="n">clock</span> <span class="n">frequency</span>
+    <span class="n">IN</span>  <span class="n">Voltage</span> <span class="n">inputs</span>
+    <span class="n">TEMP</span>    <span class="n">Devices</span> <span class="n">temperature</span>
+    <span class="n">USB</span> <span class="n">USB</span> <span class="n">devices</span> <span class="n">plugged</span> <span class="n">into</span> <span class="n">the</span> <span class="n">system</span>
+</pre></div>
+
+
+<h3 id="-q">-q 队列</h3>
+<p>Queue length and load average statistics</p>
+<h3 id="-r">-r 内存使用率</h3>
+<p>Memory utilization statistics</p>
+<h3 id="-r_1">-R 内存状态</h3>
+<p>Memory statistics</p>
+<h3 id="-s-swap">-S swap空间</h3>
+<p>Swap space utilization statistics</p>
+<h3 id="-u-all-cpu">-u [ ALL ] CPU使用率</h3>
+<p>CPU utilization statistics</p>
+<h3 id="-v">-v 内核信息</h3>
+<p>Kernel table statistics</p>
+<h3 id="-w">-w 任务信息</h3>
+<p>Task creation and system switching statistics</p>
+<h3 id="-w-swapping">-W swapping 状态</h3>
+<p>Swapping statistics</p>
+<h3 id="-y-tty">-y tty设备</h3>
+<p>TTY device statistics</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-25 22:15:10</p>
+        <p>Site Generated 2019-04-02 00:07:18</p>
       </span>
     </div>
 

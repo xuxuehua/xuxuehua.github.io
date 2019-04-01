@@ -43,6 +43,10 @@
 <li><a href="#-files">--  指定files  工作区变回暂存区</a></li>
 </ul>
 </li>
+<li><a href="#clone">clone 备份</a><ul>
+<li><a href="#-bare">--  bare 裸仓库</a></li>
+</ul>
+</li>
 <li><a href="#commit">commit</a><ul>
 <li><a href="#-amend-comment">--amend 修改最近一次comment</a></li>
 </ul>
@@ -50,6 +54,19 @@
 <li><a href="#diff">diff</a><ul>
 <li><a href="#-files_1">--  指定files</a></li>
 <li><a href="#-cached-head">--cached  暂存区与HEAD差异</a></li>
+<li><a href="#branch1-branch2">BRANCH1 BRANCH2 分支差异</a><ul>
+<li><a href="#-files_2">-- 指定files</a></li>
+</ul>
+</li>
+<li><a href="#commit1-commit2">COMMIT1 COMMIT2 提交差异</a><ul>
+<li><a href="#-files_3">--  指定files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#fetch">fetch 拉取到本地</a></li>
+<li><a href="#merge">merge 合并</a><ul>
+<li><a href="#-allow-unrelated-histories">--allow-unrelated-histories</a></li>
 </ul>
 </li>
 <li><a href="#rebase">rebase</a><ul>
@@ -60,8 +77,23 @@
 </li>
 </ul>
 </li>
+<li><a href="#remote">remote 远程提交</a><ul>
+<li><a href="#add">add</a></li>
+</ul>
+</li>
 <li><a href="#reset">reset</a><ul>
-<li><a href="#head">HEAD 清空暂存区</a></li>
+<li><a href="#head">HEAD 清空暂存区</a><ul>
+<li><a href="#-filename">--  filename 取消部分文件修改</a></li>
+</ul>
+</li>
+<li><a href="#-hard">--hard 回退修改 (慎用)</a></li>
+</ul>
+</li>
+<li><a href="#rm">rm 删除文件</a></li>
+<li><a href="#stash">stash 保存临时现场</a><ul>
+<li><a href="#-list">--  list 查看保存信息</a></li>
+<li><a href="#apply">apply 恢复临时现场</a></li>
+<li><a href="#pop">pop 恢复临时现场</a></li>
 </ul>
 </li>
 <li><a href="#log">log</a><ul>
@@ -70,6 +102,8 @@
 <li><a href="#-oneline">--oneline 一行信息</a></li>
 </ul>
 </li>
+<li><a href="#pull">pull 拉取远端</a></li>
+<li><a href="#push">push 推送到远端</a></li>
 </ul>
 </li>
 </ul>
@@ -116,6 +150,9 @@
 </pre></div>
 
 
+<h2 id="clone">clone 备份</h2>
+<h3 id="-bare">--  bare 裸仓库</h3>
+<p>不带工作区的裸仓库</p>
 <h2 id="commit">commit</h2>
 <h3 id="-amend-comment">--amend 修改最近一次comment</h3>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">commit</span> <span class="o">--</span><span class="n">amend</span>
@@ -148,12 +185,42 @@
 </pre></div>
 
 
+<p>可以添加多个文件</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="o">--</span> <span class="n">FILE1</span> <span class="n">FILE2</span>
+</pre></div>
+
+
 <h3 id="-cached-head">--cached  暂存区与HEAD差异</h3>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="o">--</span><span class="n">cached</span>
 </pre></div>
 
 
 <p>返回为空，表示暂存区和HEAD是一致的</p>
+<h3 id="branch1-branch2">BRANCH1 BRANCH2 分支差异</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="n">test</span> <span class="n">master</span>
+</pre></div>
+
+
+<h4 id="-files_2">-- 指定files</h4>
+<p>查看分支下具体的某个文件差异</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="n">test</span> <span class="n">master</span> <span class="o">--</span> <span class="n">file1</span>
+</pre></div>
+
+
+<h3 id="commit1-commit2">COMMIT1 COMMIT2 提交差异</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="n">HASH_VALUE1</span> <span class="n">HASH_VALUE2</span>
+</pre></div>
+
+
+<h4 id="-files_3">--  指定files</h4>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="n">HASH_VALUE1</span> <span class="n">HASH_VALUE2</span> <span class="o">--</span> <span class="n">file1</span>
+</pre></div>
+
+
+<h2 id="fetch">fetch 拉取到本地</h2>
+<p>但不会和本地的分支产生关联</p>
+<h2 id="merge">merge 合并</h2>
+<h3 id="-allow-unrelated-histories">--allow-unrelated-histories</h3>
 <h2 id="rebase">rebase</h2>
 <h3 id="-i">-i 交互式操作</h3>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">rebase</span> <span class="o">-</span><span class="n">i</span> <span class="n">HASH_VALUE</span>
@@ -175,8 +242,75 @@
 
 
 <p>合并间隔的commit 直接<code>git rebase -i HASH_VALUE</code></p>
+<h2 id="remote">remote 远程提交</h2>
+<h3 id="add">add</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">REPO_NAME</span> <span class="n">LOCATION</span>
+</pre></div>
+
+
 <h2 id="reset">reset</h2>
 <h3 id="head">HEAD 清空暂存区</h3>
+<p>取消暂存区所有的变更</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">reset</span> <span class="n">HEAD</span>
+</pre></div>
+
+
+<h4 id="-filename">--  filename 取消部分文件修改</h4>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">reset</span> <span class="n">HEAD</span> <span class="o">--</span> <span class="n">FILENAME</span>
+</pre></div>
+
+
+<blockquote>
+<p>将不会变更FILENAME的修改</p>
+</blockquote>
+<p>多个文件</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">reset</span> <span class="n">HEAD</span> <span class="o">--</span> <span class="n">FILE1</span> <span class="n">FILE2</span> <span class="n">FILE3</span>
+</pre></div>
+
+
+<blockquote>
+<p>取消FILE1 FILE2 FILE3 的变更</p>
+</blockquote>
+<h3 id="-hard">--hard 回退修改 (慎用)</h3>
+<p>回退到指定的变更</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="n">HASH_VALUE</span>
+</pre></div>
+
+
+<p>恢复到头指针位置</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="n">HEAD</span>
+</pre></div>
+
+
+<h2 id="rm">rm 删除文件</h2>
+<p>删除后续commit不需要的文件</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">rm</span> <span class="n">FILENAMES</span>
+</pre></div>
+
+
+<h2 id="stash">stash 保存临时现场</h2>
+<p>不影响工作区的环境</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">stash</span>
+</pre></div>
+
+
+<h3 id="-list">--  list 查看保存信息</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">stash</span> <span class="o">--</span><span class="n">list</span>
+</pre></div>
+
+
+<h3 id="apply">apply 恢复临时现场</h3>
+<p>比pop会保留stash的堆栈信息</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">stash</span> <span class="n">apply</span>
+</pre></div>
+
+
+<h3 id="pop">pop 恢复临时现场</h3>
+<p>不会保留stash的堆栈信息</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">stash</span> <span class="n">pop</span>
+</pre></div>
+
+
 <h2 id="log">log</h2>
 <h3 id="-graph">--graph 图形化</h3>
 <p>开启图形化</p>
@@ -188,12 +322,16 @@
 <h3 id="-oneline">--oneline 一行信息</h3>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">log</span> <span class="o">--</span><span class="n">oneline</span>
 </pre></div>
+
+
+<h2 id="pull">pull 拉取远端</h2>
+<h2 id="push">push 推送到远端</h2>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-25 22:15:10</p>
+        <p>Site Generated 2019-04-02 00:07:18</p>
       </span>
     </div>
 

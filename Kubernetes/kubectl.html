@@ -155,6 +155,7 @@
 </div>
 <h1 id="kubectl">kubectl</h1>
 <p>Kubernetes API Server最常用的客户端程序之一，功能强大，能够几乎完成除了安装部署之外的所有管理操作</p>
+<p>连接API Server 对K8s相关对象资源的增删改查</p>
 <h2 id="syntax">syntax</h2>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="p">[</span><span class="n">command</span><span class="p">]</span> <span class="p">[</span><span class="n">TYPE</span><span class="p">]</span> <span class="p">[</span><span class="n">NAME</span><span class="p">]</span> <span class="p">[</span><span class="n">flags</span><span class="p">]</span>
 </pre></div>
@@ -242,14 +243,29 @@
 
 <h3 id="expose">expose 暴露服务</h3>
 <p>基于rc，service，deployment或pod创建Service资源</p>
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">expose</span> <span class="n">deployment</span><span class="o">/</span><span class="n">nginx</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">nginx</span><span class="o">-</span><span class="n">svc</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">80</span>
+<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">expose</span> <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="n">FILENAME</span> <span class="o">|</span> <span class="n">TYPE</span> <span class="n">NAME</span><span class="p">)</span> <span class="p">[</span><span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">protocol</span><span class="o">=</span><span class="n">TCP</span><span class="o">|</span><span class="n">UDP</span><span class="o">|</span><span class="n">SCTP</span><span class="p">]</span>
+<span class="p">[</span><span class="o">--</span><span class="n">target</span><span class="o">-</span><span class="n">port</span><span class="o">=</span><span class="n">number</span><span class="o">-</span><span class="n">or</span><span class="o">-</span><span class="n">name</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">external</span><span class="o">-</span><span class="n">ip</span><span class="o">=</span><span class="n">external</span><span class="o">-</span><span class="n">ip</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">service</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">type</span><span class="o">=</span><span class="n">type</span><span class="p">]</span>
+<span class="p">[</span><span class="n">options</span><span class="p">]</span>
 </pre></div>
 
 
-<div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">expose</span> <span class="n">deployments</span><span class="o">/</span><span class="n">myapp</span> <span class="o">--</span><span class="n">type</span><span class="o">=</span><span class="s">&quot;NodePort&quot;</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">80</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">myapp</span>
+<blockquote>
+<p>--port指service 端口， 一般使用众所周知的端口</p>
+<p>--target-port指pod端口</p>
+<p>两个端口可以一样</p>
+</blockquote>
+<div class="hlcode"><pre><span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl expose deployment nginx-deploy --name=nginx --port=80 --target-port=80 --protocol=TCP
+service/nginx exposed
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl get service
+NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1      <span class="nt">&lt;none&gt;</span>        443/TCP   3h34m
+nginx        ClusterIP   10.96.216.63   <span class="nt">&lt;none&gt;</span>        80/TCP    10s
 </pre></div>
 
 
+<blockquote>
+<p>10.96.216.63 service对外地址，代理后端pod</p>
+</blockquote>
 <h3 id="get">get 显示资源</h3>
 <p>即从Kubernetes里面获取指定的API对象</p>
 <h4 id="controllerrevision-controller">controllerrevision 记录Controller版本</h4>
@@ -549,7 +565,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-03-25 22:15:10</p>
+        <p>Site Generated 2019-04-02 00:07:18</p>
       </span>
     </div>
 
