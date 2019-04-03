@@ -32,42 +32,50 @@
 </ul>
 </li>
 <li><a href="#_2">设计</a></li>
-<li><a href="#pod-phase">Pod 声明周期（phase）</a><ul>
+<li><a href="#pod-phase">Pod 生命周期（phase）</a><ul>
+<li><a href="#_3">初始化容器</a></li>
+<li><a href="#_4">容器探测</a><ul>
+<li><a href="#liveness">liveness 存活探测</a><ul>
+<li><a href="#exec-object">exec &lt;Object&gt; 用户指定命令</a></li>
+<li><a href="#httpget-object">httpGet      &lt;Object&gt;</a></li>
+<li><a href="#tcpsocket-object">tcpSocket    &lt;Object&gt;</a></li>
+</ul>
+</li>
+<li><a href="#readiness">readiness 就绪探测</a></li>
+</ul>
+</li>
+<li><a href="#_5"></a></li>
+</ul>
+</li>
+<li><a href="#pod_1">Pod 状态</a><ul>
 <li><a href="#pending">Pending</a><ul>
 <li><a href="#condition-unschedulable">Condition: Unschedulable</a></li>
 </ul>
 </li>
 <li><a href="#running">Running</a><ul>
-<li><a href="#_3">异常情况</a></li>
+<li><a href="#_6">异常情况</a></li>
 </ul>
 </li>
 <li><a href="#succeeded">Succeeded</a></li>
 <li><a href="#failed">Failed</a></li>
 <li><a href="#unknown">Unknown</a></li>
+<li><a href="#crashloopbackoff">CrashLoopBackOff</a></li>
 </ul>
 </li>
-<li><a href="#_4">容器重启策略</a><ul>
+<li><a href="#restartpolicy">restartPolicy 容器重启策略</a><ul>
 <li><a href="#always">Always</a></li>
 <li><a href="#onfailure">OnFailure</a></li>
 <li><a href="#never">Never</a></li>
 </ul>
 </li>
-<li><a href="#pod_1">pod 资源需求</a><ul>
+<li><a href="#pod_2">pod 资源需求</a><ul>
 <li><a href="#limits">limits 资源限制</a></li>
 </ul>
 </li>
-<li><a href="#_5">分布式模型</a><ul>
+<li><a href="#_7">分布式模型</a><ul>
 <li><a href="#sidercar-pattern">sidercar pattern</a></li>
 <li><a href="#ambassador-pattern">Ambassador pattern</a></li>
 <li><a href="#adapter-pattern">Adapter pattern</a></li>
-</ul>
-</li>
-<li><a href="#_6">状态信息</a><ul>
-<li><a href="#pending_1">Pending</a></li>
-<li><a href="#running_1">Running</a></li>
-<li><a href="#succeeded_1">Succeeded</a></li>
-<li><a href="#failed_1">Failed</a></li>
-<li><a href="#crashloopbackoff">CrashLoopBackOff</a></li>
 </ul>
 </li>
 <li><a href="#pod-controller">Pod 控制器 Controller</a><ul>
@@ -82,7 +90,7 @@
 <li><a href="#daemonset">DaemonSet</a></li>
 </ul>
 </li>
-<li><a href="#_7">环境变量</a><ul>
+<li><a href="#_8">环境变量</a><ul>
 <li><a href="#env">env</a><ul>
 <li><a href="#example">example</a></li>
 </ul>
@@ -114,8 +122,50 @@
 <h2 id="_2">设计</h2>
 <p>通常应该一个容器中仅运行一个进程，而日志信息通过输出至容器的标准输出，用户通过kubectl log 进行获取</p>
 <p>省去了用户手动分拣日志信息</p>
-<h2 id="pod-phase">Pod 声明周期（phase）</h2>
+<h2 id="pod-phase">Pod 生命周期（phase）</h2>
 <p>pod.status.phase 表示当前Pod的状态</p>
+<h3 id="_3">初始化容器</h3>
+<h3 id="_4">容器探测</h3>
+<p>主容器定时探测容器状态</p>
+<p>建立在pod.containers 之上</p>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">explain</span> <span class="n">pods</span><span class="p">.</span><span class="n">spec</span><span class="p">.</span><span class="n">containers</span>
+<span class="nl">KIND:</span>     <span class="n">Pod</span>
+<span class="nl">VERSION:</span>  <span class="n">v1</span>
+
+<span class="nl">RESOURCE:</span> <span class="n">containers</span> <span class="o">&lt;</span><span class="p">[]</span><span class="n">Object</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h4 id="liveness">liveness 存活探测</h4>
+<p>探测容器是否处于存活状态</p>
+<h5 id="exec-object">exec <code>&lt;Object&gt;</code> 用户指定命令</h5>
+<p>根据指令返回码判断</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">liveness</span><span class="o">-</span><span class="n">exec</span><span class="o">-</span><span class="n">pod</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="k">default</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">liveness</span><span class="o">-</span><span class="n">exec</span><span class="o">-</span><span class="n">container</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">busybox</span><span class="o">:</span><span class="n">latest</span>
+    <span class="n">imagePullPolicy</span><span class="o">:</span> <span class="n">IfNotPresent</span>
+    <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;/bin/sh&quot;</span><span class="o">,</span> <span class="s2">&quot;-c&quot;</span><span class="o">,</span> <span class="s2">&quot;touch /tmp/healthy; sleep 30; rm -f /tmp/healthy; sleep 3600&quot;</span><span class="o">]</span>
+    <span class="n">livenessProbe</span><span class="o">:</span>
+      <span class="n">exec</span><span class="o">:</span>
+        <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s2">&quot;test&quot;</span><span class="o">,</span> <span class="s2">&quot;-e&quot;</span><span class="o">,</span> <span class="s2">&quot;/tmp/healthy&quot;</span><span class="o">]</span>
+      <span class="n">initialDelaySeconds</span><span class="o">:</span> <span class="mi">1</span>
+      <span class="n">periodSeconds</span><span class="o">:</span> <span class="mi">3</span>
+</pre></div>
+
+
+<blockquote></blockquote>
+<h5 id="httpget-object">httpGet      <code>&lt;Object&gt;</code></h5>
+<h5 id="tcpsocket-object">tcpSocket    <code>&lt;Object&gt;</code></h5>
+<h4 id="readiness">readiness 就绪探测</h4>
+<p>探测容器中的服务和程序是否提供服务</p>
+<h3 id="_5"></h3>
+<h2 id="pod_1">Pod 状态</h2>
 <h3 id="pending">Pending</h3>
 <p>Pod的YAML文件已经提交给Kubernetes，API Server 创建了Pod资源对象并已存储etcd中，但未被调度完成，或着仍然处于从仓库下载镜像的过程中</p>
 <p>如调度失败的情况</p>
@@ -123,7 +173,7 @@
 <p>调度出现问题</p>
 <h3 id="running">Running</h3>
 <p>Pod已经被调度至一个具体节点绑定，并且所有容器都已经被kubelet创建完成</p>
-<h4 id="_3">异常情况</h4>
+<h4 id="_6">异常情况</h4>
 <p>Pod（即容器）的状态是 Running，但是应用其实已经停止服务的例子</p>
 <div class="hlcode"><pre><span class="mf">1.</span> <span class="err">程序本身有</span> <span class="n">bug</span><span class="err">，本来应该返回</span> <span class="mi">200</span><span class="err">，但因为代码问题，返回的是</span><span class="mi">500</span><span class="err">；</span>
 <span class="mf">2.</span> <span class="err">程序因为内存问题，已经僵死，但进程还在，但无响应；</span>
@@ -140,14 +190,16 @@
 <p>此时需要debug这个容器的应用，如查看Pod的Events和日志</p>
 <h3 id="unknown">Unknown</h3>
 <p>Pod的状态不能持续地被kubelet汇报给kube-apiserver，很可能是主从节点间通信出现问题</p>
-<h2 id="_4">容器重启策略</h2>
+<h3 id="crashloopbackoff">CrashLoopBackOff</h3>
+<p>Kubernetes. 尝试一次又一次的重启Pod</p>
+<h2 id="restartpolicy">restartPolicy 容器重启策略</h2>
 <h3 id="always">Always</h3>
 <p>pod对象终止就将其重启，默认设定</p>
 <h3 id="onfailure">OnFailure</h3>
 <p>只在pod对象出现错误时方将其重启</p>
 <h3 id="never">Never</h3>
 <p>从不重启</p>
-<h2 id="pod_1">pod 资源需求</h2>
+<h2 id="pod_2">pod 资源需求</h2>
 <p>自主式Pod 要求stress 容器确保128Mi的内存及五分之一的CPU核心(200m) 资源可用</p>
 <p>运行stress-ng 镜像启动一个进程(-m 1) 进行内存性能压力测试，满载测试时也会尽可能多地占用CPU资源</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
@@ -199,7 +251,7 @@
 </pre></div>
 
 
-<h2 id="_5">分布式模型</h2>
+<h2 id="_7">分布式模型</h2>
 <h3 id="sidercar-pattern">sidercar pattern</h3>
 <p>边车模型或跨斗模型</p>
 <p>即pod的主应用容器提供协同的辅助应用容器，每个应用独立运行</p>
@@ -212,13 +264,6 @@
 <p>适配器模式</p>
 <p>将主应用容器中的内容进行标准化输出</p>
 <p>如日志数据或者指标数据的输出，</p>
-<h2 id="_6">状态信息</h2>
-<h3 id="pending_1">Pending</h3>
-<h3 id="running_1">Running</h3>
-<h3 id="succeeded_1">Succeeded</h3>
-<h3 id="failed_1">Failed</h3>
-<h3 id="crashloopbackoff">CrashLoopBackOff</h3>
-<p>Kubernetes. 尝试一次又一次的重启Pod</p>
 <h2 id="pod-controller">Pod 控制器 Controller</h2>
 <p>借助Controller 对Pod进行管理，实现一次性的Pod对象管理</p>
 <p>包括以下多种调度器</p>
@@ -261,7 +306,7 @@
 <p>类似于cronjob</p>
 <h3 id="daemonset">DaemonSet</h3>
 <p>确保所有nodes 运行同一个指定类型的pod</p>
-<h2 id="_7">环境变量</h2>
+<h2 id="_8">环境变量</h2>
 <p>通过环境变量在容器启动时传递配置信息</p>
 <h3 id="env">env</h3>
 <p>在容器配置段中嵌套env字段，值是环境变量构成的列表</p>
@@ -349,7 +394,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-02 00:07:18</p>
+        <p>Site Generated 2019-04-03 19:59:40</p>
       </span>
     </div>
 

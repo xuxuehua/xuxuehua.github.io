@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
-    <title>label - Xu XueHua</title>
+    <title>label 标签选择器 - Xu XueHua</title>
     <meta name="keywords" content="Xu XueHua"/>
     <meta name="description" content="Xu XueHua's public notes"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -16,14 +16,14 @@
     <div id="container">
       
 <div id="header">
-  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Kubernetes">Kubernetes</a>&nbsp;&#187;&nbsp;label
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Kubernetes">Kubernetes</a>&nbsp;&#187;&nbsp;label 标签选择器
     <span class="updated">Page Updated&nbsp;
       2019-03-07 13:20
     </span></div>
 </div>
 <div class="clearfix"></div>
 
-<div class="page_title">label</div>
+<div class="page_title">label 标签选择器</div>
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#_1">标签</a><ul>
@@ -49,7 +49,10 @@
 <li><a href="#-l_1">-L 标签列表</a></li>
 </ul>
 </li>
-<li><a href="#nodeselector">nodeSelector</a></li>
+<li><a href="#nodeselector">nodeSelector 节点标签选择器</a><ul>
+<li><a href="#nodename">nodeName</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -119,14 +122,53 @@
 </pre></div>
 
 
-<h2 id="nodeselector">nodeSelector</h2>
+<h2 id="nodeselector">nodeSelector 节点标签选择器</h2>
 <p>Pod节点选择器时标签以及标签选择器的一种应用，能够让Pod对象基于集群中工作节点的标签来挑选倾向运行的目标节点</p>
+<div class="hlcode"><pre><span class="n">piVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="n">demo</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="k">default</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">app</span><span class="o">:</span> <span class="n">myapp</span>
+    <span class="n">tier</span><span class="o">:</span> <span class="n">frontend</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+    <span class="n">ports</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">http</span>
+      <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">https</span>
+      <span class="n">containerPort</span><span class="o">:</span> <span class="mi">443</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">busybox</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">busybox</span><span class="o">:</span><span class="n">latest</span>
+    <span class="n">command</span><span class="o">:</span>
+    <span class="o">-</span> <span class="s2">&quot;/bin/sh&quot;</span>
+    <span class="o">-</span> <span class="s2">&quot;-c&quot;</span>
+    <span class="o">-</span> <span class="s2">&quot;sleep 3600&quot;</span>
+  <span class="n">nodeSelector</span><span class="o">:</span>
+    <span class="n">disktype</span><span class="o">:</span> <span class="n">ssd</span>
+</pre></div>
+
+
+<blockquote>
+<p>指定该pod运行在disktype为ssd的node工作节点上</p>
+</blockquote>
+<p>打标指定节点的disktype为ssd</p>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">label</span> <span class="n">nodes</span> <span class="n">node01</span> <span class="n">disktype</span><span class="o">=</span><span class="n">ssd</span>
+<span class="n">node</span><span class="o">/</span><span class="n">node01</span> <span class="n">labeled</span>
+</pre></div>
+
+
+<h3 id="nodename">nodeName</h3>
+<p>运行在指定节点名称上</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-02 00:07:18</p>
+        <p>Site Generated 2019-04-03 19:59:40</p>
       </span>
     </div>
 

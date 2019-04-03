@@ -27,13 +27,12 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#_1">资源管理</a><ul>
-<li><a href="#_2">功能分类</a><ul>
 <li><a href="#pod-workload">Pod控制器 (也称 工作负载 Workload)</a><ul>
 <li><a href="#replicationcontroller">ReplicationController 无状态 （废弃）</a></li>
 <li><a href="#replicaset">ReplicaSet 无状态</a><ul>
-<li><a href="#_3">结构</a></li>
-<li><a href="#_4">水平扩展</a></li>
-<li><a href="#_5">滚动扩展</a></li>
+<li><a href="#_2">结构</a></li>
+<li><a href="#_3">水平扩展</a></li>
+<li><a href="#_4">滚动扩展</a></li>
 </ul>
 </li>
 <li><a href="#deployment">Deployment  无状态</a><ul>
@@ -41,25 +40,34 @@
 </ul>
 </li>
 <li><a href="#statefulset">StatefulSet 有状态</a><ul>
-<li><a href="#_6">设计</a></li>
+<li><a href="#_5">设计</a><ul>
 <li><a href="#headless-service">Headless Service</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#daemonset">DaemonSet 守护进程</a></li>
 <li><a href="#job">Job 完成后终止</a><ul>
-<li><a href="#_7">并行控制</a></li>
-<li><a href="#_8">使用方法</a><ul>
+<li><a href="#_6">并行控制</a></li>
+<li><a href="#_7">使用方法</a><ul>
 <li><a href="#job_1">外部管理器 +Job 模板</a></li>
-<li><a href="#_9">固定数目并行</a></li>
+<li><a href="#item">替换$ITEM操作</a></li>
+<li><a href="#_8">固定数目并行</a></li>
 <li><a href="#parallelism">指定并行度（parallelism）</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#cronjob">CronJob</a></li>
 </ul>
 </li>
+<li><a href="#config-storage">配置和存储 Config &amp; Storage</a><ul>
+<li><a href="#volume">Volume</a></li>
+<li><a href="#csi">CSI</a></li>
+<li><a href="#configmap">ConfigMap</a></li>
+<li><a href="#downwardapi">DownwardAPI</a></li>
 </ul>
 </li>
-<li><a href="#config-storage">配置和存储 Config &amp; Storage</a></li>
 <li><a href="#cluster">集群级资源 Cluster</a><ul>
 <li><a href="#namespace">Namespace</a></li>
 <li><a href="#node">Node</a></li>
@@ -69,7 +77,11 @@
 <li><a href="#clusterrolebinding">ClusterRoleBinding</a></li>
 </ul>
 </li>
-<li><a href="#metadata">元数据 Metadata</a></li>
+<li><a href="#metadata">元数据资源 Metadata</a><ul>
+<li><a href="#hpa">HPA</a></li>
+<li><a href="#podtemplate">PodTemplate</a></li>
+<li><a href="#limitrange">LimitRange</a></li>
+<li><a href="#_9"></a></li>
 </ul>
 </li>
 <li><a href="#api">API 群组</a><ul>
@@ -87,18 +99,16 @@
 </ul>
 </div>
 <h1 id="_1">资源管理</h1>
-<h2 id="_2">功能分类</h2>
-<p>更好的运行和丰富Pod资源，从而为容器化应用提供更灵活，更完善的操作与管理组件为核心设计</p>
-<h3 id="pod-workload">Pod控制器 (也称 工作负载 Workload)</h3>
+<h2 id="pod-workload">Pod控制器 (也称 工作负载 Workload)</h2>
 <p>Pod 为此基础资源，负责运行容器，控制器负责Pod监控和管理</p>
 <p>当Pod非正常中止，重建工作由此控制器完成</p>
-<h4 id="replicationcontroller">ReplicationController 无状态 （废弃）</h4>
+<h3 id="replicationcontroller">ReplicationController 无状态 （废弃）</h3>
 <p>负责无状态应用，上一代应用控制器</p>
 <p>保证每个容器或者容器组运行并且可以被访问</p>
-<h4 id="replicaset">ReplicaSet 无状态</h4>
+<h3 id="replicaset">ReplicaSet 无状态</h3>
 <p>负责无状态应用，新一代ReplicationController</p>
 <p>比上一代支持基于集合的选择器</p>
-<h5 id="_3">结构</h5>
+<h4 id="_2">结构</h4>
 <p>Nginx-deployment.yaml</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">ReplicaSet</span>
@@ -126,13 +136,13 @@
 <p>replicas 是3，对应关系如下</p>
 </blockquote>
 <p><img alt="img" src="https://snag.gy/RwPJvc.jpg" /></p>
-<h5 id="_4">水平扩展</h5>
+<h4 id="_3">水平扩展</h4>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">scale</span> <span class="n">deployment</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">4</span>
 <span class="n">deployment</span><span class="p">.</span><span class="n">apps</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span> <span class="n">scaled</span>
 </pre></div>
 
 
-<h5 id="_5">滚动扩展</h5>
+<h4 id="_4">滚动扩展</h4>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span><span class="p">.</span><span class="n">yaml</span> <span class="o">--</span><span class="n">record</span>
 </pre></div>
 
@@ -213,7 +223,7 @@
 </pre></div>
 
 
-<h4 id="deployment">Deployment  无状态</h4>
+<h3 id="deployment">Deployment  无状态</h3>
 <p>负责无状态应用</p>
 <p>用于管理无状态持久化的应用，如HTTP</p>
 <p>构建在ReplicaSet之上</p>
@@ -223,14 +233,14 @@
 <p>相对而言，Deployment 只是在ReplicaSet 的基础上，添加了<code>UP-TO-DATE</code> 这个跟版本有关的字段</p>
 <p>Deployment 实际上并不足以覆盖所有的应用编排问题。即所有的Pod都是一样的，相互之间没有顺序，也无宿主机要求。</p>
 <p>但分布式应用的多个实例之间是相互有依赖关系的</p>
-<h5 id="hpa-pod">HPA 水平Pod伸缩</h5>
+<h4 id="hpa-pod">HPA 水平Pod伸缩</h4>
 <p>Horizontal Pod Autoscaler</p>
-<h4 id="statefulset">StatefulSet 有状态</h4>
+<h3 id="statefulset">StatefulSet 有状态</h3>
 <p>负责有状态应用</p>
 <p>用于管理有状态的持久化应用，如database</p>
 <p>比Deployment会为每个Pod创建一个独有的持久性标识符，并确保Pod之间的顺序性，即管理的是不同的Pod 实例，而不是ReplicaSet中完全一样的Pod</p>
 <p>创建statefulset必须要先创建一个headless的service，分为两个步骤， 而且必须是Headless Service</p>
-<h5 id="_6">设计</h5>
+<h4 id="_5">设计</h4>
 <div class="hlcode"><pre><span class="err">拓扑状态</span>
 <span class="err">应用的多个实例之间不是完全对等的关系。</span>
 <span class="err">这些应用实例，必须按照某些顺序启动，比如应用的主节点</span> <span class="n">A</span> <span class="err">要先于从节点</span> <span class="n">B</span> <span class="err">启动。而如果你把</span> <span class="n">A</span> <span class="err">和</span> <span class="n">B</span> <span class="err">两个</span> <span class="n">Pod</span> <span class="err">删除掉，它们再次被创建出来时也必须严格按照这个顺序才行。并且，新创建出来的</span> <span class="n">Pod</span><span class="err">，必须和原来</span> <span class="n">Pod</span> <span class="err">的网络标识一样，这样原先的访问者才能使用同样的方法，访问到这个新</span> <span class="n">Pod</span><span class="err">。</span>
@@ -372,7 +382,7 @@
 <p>可以看到，当把这两个 Pod 删除之后，Kubernetes 会按照原先编号的顺序，创建出了两个新的 Pod。并且，Kubernetes 依然为它们分配了与原来相同的“网络身份”：web-0.nginx 和 web-1.nginx。</p>
 </blockquote>
 <p>尽管 web-0.nginx 这条记录本身不会变，但它解析到的 Pod 的 IP 地址，并不是固定的。这就意味着，对于“有状态应用”实例的访问，必须使用 DNS 记录或者 hostname 的方式，而绝不应该直接访问这些 Pod 的 IP 地址。</p>
-<h4 id="daemonset">DaemonSet 守护进程</h4>
+<h3 id="daemonset">DaemonSet 守护进程</h3>
 <p>常用于运行集群存储的守护进程，如glusterd，ceph，</p>
 <p>日志收集进程如fluentd，logstash，</p>
 <p>监控进程，如prometheus的Node Explorter，collected，datadog agent， Ganglia的gmond</p>
@@ -439,7 +449,7 @@
 </pre></div>
 
 
-<h4 id="job">Job 完成后终止</h4>
+<h3 id="job">Job 完成后终止</h3>
 <p>用来描述离线业务的API对象</p>
 <p>restartPolicy 在 Job 对象里只允许被设置为 Never 和 OnFailure</p>
 <p>Job对象并不要一定要定一个spec.selector 来描述控制哪些Pod</p>
@@ -512,7 +522,7 @@
 </pre></div>
 
 
-<h5 id="_7">并行控制</h5>
+<h4 id="_6">并行控制</h4>
 <p>spec.parallelism，它定义的是一个 Job 在任意时间最多可以启动多少个 Pod 同时运行</p>
 <p>spec.completions，它定义的是 Job 至少要完成的 Pod 数目，即 Job 的最小完成数</p>
 <p>根据 Job 控制器的工作原理，如果你定义的 parallelism 比 completions 还大的话，</p>
@@ -522,8 +532,8 @@
 
 
 <p>需要创建的 Pod 数目 = 最终需要的 Pod 数目 - 实际在 Running 状态 Pod 数目 - 已经成功退出的 Pod 数目 = 2 - 0 - 0= 2。而parallelism数量为4，2小于4，所以应该会创建2个。</p>
-<h5 id="_8">使用方法</h5>
-<h6 id="job_1">外部管理器 +Job 模板</h6>
+<h4 id="_7">使用方法</h4>
+<h5 id="job_1">外部管理器 +Job 模板</h5>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">batch</span><span class="o">/</span><span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Job</span>
 <span class="n">metadata</span><span class="o">:</span>
@@ -549,7 +559,7 @@
 <p>$ITEM 用于创建Job时，替换此变量的值</p>
 <p>所有来自于同一个模板的 Job，都有一个 jobgroup: jobexample 标签，也就是说这一组 Job 使用这样一个相同的标识。</p>
 </blockquote>
-<p>替换$ITEM操作</p>
+<h5 id="item">替换$ITEM操作</h5>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">mkdir</span> <span class="p">.</span><span class="o">/</span><span class="n">jobs</span>
 <span class="err">$</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">apple</span> <span class="n">banana</span> <span class="n">cherry</span>
 <span class="k">do</span>
@@ -567,7 +577,7 @@
 </pre></div>
 
 
-<h6 id="_9">固定数目并行</h6>
+<h5 id="_8">固定数目并行</h5>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">batch</span><span class="o">/</span><span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Job</span>
 <span class="n">metadata</span><span class="o">:</span>
@@ -605,7 +615,7 @@
 
 
 <p>可以看到，每个 Pod 只需要将任务信息读取出来，处理完成，然后退出即可。而作为用户，我只关心最终一共有 8 个计算任务启动并且退出，只要这个目标达到，我就认为整个 Job 处理完成了。所以说，这种用法，对应的就是“任务总数固定”的场景。</p>
-<h6 id="parallelism">指定并行度（parallelism）</h6>
+<h5 id="parallelism">指定并行度（parallelism）</h5>
 <p>但不设置固定的 completions 的值 </p>
 <p>此时，必须自己想办法，来决定什么时候启动新 Pod，什么时候 Job 才算执行完成。在这种情况下，任务的总数是未知的，所以不仅需要一个工作队列来负责任务分发，还需要能够判断工作队列已经为空（即：所有的工作已经结束了）</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">batch</span><span class="o">/</span><span class="n">v1</span>
@@ -642,7 +652,7 @@
 
 
 <p>由于任务数目的总数不固定，所以每一个 Pod 必须能够知道，自己什么时候可以退出。比如，在这个例子中，简单地以“队列为空”，作为任务全部完成的标志。所以说，这种用法，对应的是“任务总数不固定”的场景。</p>
-<h5 id="cronjob">CronJob</h5>
+<h3 id="cronjob">CronJob</h3>
 <p>定时任务</p>
 <p>CronJob是一个Job对象的控制器Controller</p>
 <p>CronJob 是一个专门用来管理 Job 对象的控制器。它创建和删除 Job 的依据，是 schedule 字段定义的、一个标准的Unix Cron格式的表达式</p>
@@ -692,29 +702,40 @@
 
 
 <p>而如果某一次 Job 创建失败，这次创建就会被标记为“miss”。当在指定的时间窗口内，miss 的数目达到 100 时，那么 CronJob 会停止再创建这个 Job。</p>
-<h3 id="config-storage">配置和存储 Config &amp; Storage</h3>
+<h2 id="config-storage">配置和存储 Config &amp; Storage</h2>
 <p>支持多种存储确保存储资源持久化，如GlusterFS，ceph RBD， Flocker</p>
 <p>使用ConfigMap资源能够以环境变量或存储卷的方式接入到Pod中，还可以被同类Pod共享，不适合存储密钥等敏感数据</p>
-<h3 id="cluster">集群级资源 Cluster</h3>
-<h4 id="namespace">Namespace</h4>
+<h3 id="volume">Volume</h3>
+<h3 id="csi">CSI</h3>
+<h3 id="configmap">ConfigMap</h3>
+<h3 id="downwardapi">DownwardAPI</h3>
+<h2 id="cluster">集群级资源 Cluster</h2>
+<h3 id="namespace">Namespace</h3>
 <p>资源对象名称的作用范围，默认隶属default</p>
 <p>即管理空间</p>
-<h4 id="node">Node</h4>
+<h3 id="node">Node</h3>
 <p>Kubernetes集群工作节点，其标识符在当前集群唯一</p>
-<h4 id="role">Role</h4>
+<h3 id="role">Role</h3>
 <p>名称空间级别有规则组成的权限集合</p>
 <p>被RoleBinding 引用</p>
-<h4 id="clusterrole">ClusterRole</h4>
+<h3 id="clusterrole">ClusterRole</h3>
 <p>Cluster 级别的 </p>
 <p>规则组成的权限集合</p>
 <p>被RoleBinding，ClusterRole Binding 引用</p>
-<h4 id="rolebinding">RoleBinding</h4>
+<h3 id="rolebinding">RoleBinding</h3>
 <p>将Role权限绑定在一个或一组用户上，</p>
 <p>可以引用同一名称空间的Role，或全局名称的ClusterRole</p>
-<h4 id="clusterrolebinding">ClusterRoleBinding</h4>
+<h3 id="clusterrolebinding">ClusterRoleBinding</h3>
 <p>将ClusterRole中定义的许可权限绑定在一个或一组用户上，引用ClusterRole</p>
-<h3 id="metadata">元数据 Metadata</h3>
+<h2 id="metadata">元数据资源 Metadata</h2>
 <p>用于为集群内部的其他资源配置其行为或特征，如HorizontalPodAutoscaler用于自动伸缩工作负载类型的资源对象的规模</p>
+<h3 id="hpa">HPA</h3>
+<p>自动调整元数据的相关信息</p>
+<h3 id="podtemplate">PodTemplate</h3>
+<p>用于让控制器创建pod的模板</p>
+<h3 id="limitrange">LimitRange</h3>
+<p>定义资源限制</p>
+<h3 id="_9"></h3>
 <h2 id="api">API 群组</h2>
 <h3 id="core-group">核心群组 core group</h3>
 <p>REST 路径为<code>/api/v1</code>，在资源配置信息apiVersion 字段中引用时可以不指定路径，而仅给出版本</p>
@@ -879,7 +900,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-02 00:07:18</p>
+        <p>Site Generated 2019-04-03 19:59:40</p>
       </span>
     </div>
 

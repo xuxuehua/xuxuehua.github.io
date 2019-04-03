@@ -40,6 +40,7 @@
 <li><a href="#install_1">Install</a></li>
 <li><a href="#kubelet">kubelet</a></li>
 <li><a href="#add-to-master">add to master</a></li>
+<li><a href="#kubedns">kubedns</a></li>
 </ul>
 </li>
 </ul>
@@ -284,12 +285,53 @@ master   Ready    master   154m    v1.14.0
 node01   Ready    <span class="nt">&lt;none&gt;</span>   3m52s   v1.14.0
 node02   Ready    <span class="nt">&lt;none&gt;</span>   3m14s   v1.14.0
 </pre></div>
+
+
+<h2 id="kubedns">kubedns</h2>
+<div class="hlcode"><pre><span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl get svc -n kube-system
+NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
+kube-dns   ClusterIP   10.96.0.10   <span class="nt">&lt;none&gt;</span>        53/UDP,53/TCP,9153/TCP   12h
+</pre></div>
+
+
+<p>解析pod的地址，需要指定所在的default domain</p>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">run</span> <span class="n">client</span> <span class="o">--</span><span class="n">image</span><span class="o">=</span><span class="n">busybox</span> <span class="o">--</span><span class="n">replicas</span><span class="o">=</span><span class="mi">1</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">restart</span><span class="o">=</span><span class="n">Never</span>
+<span class="n">If</span> <span class="n">you</span> <span class="n">don</span><span class="err">&#39;</span><span class="n">t</span> <span class="n">see</span> <span class="n">a</span> <span class="n">command</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">try</span> <span class="n">pressing</span> <span class="n">enter</span><span class="p">.</span>
+<span class="o">/</span> <span class="err">#</span> <span class="n">cat</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">resolv</span><span class="p">.</span><span class="n">conf</span>
+<span class="n">nameserver</span> <span class="mf">10.96.0.10</span>
+<span class="n">search</span> <span class="k">default</span><span class="p">.</span><span class="n">svc</span><span class="p">.</span><span class="n">cluster</span><span class="p">.</span><span class="n">local</span> <span class="n">svc</span><span class="p">.</span><span class="n">cluster</span><span class="p">.</span><span class="n">local</span> <span class="n">cluster</span><span class="p">.</span><span class="n">local</span>
+<span class="n">options</span> <span class="n">ndots</span><span class="o">:</span><span class="mi">5</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="p">[</span>root<span class="o">@</span>master <span class="o">~</span><span class="p">]</span><span class="c1"># dig -t A nginx.default.svc.cluster.local @10.96.0.10</span>
+
+<span class="p">;</span> <span class="o">&lt;&lt;&gt;&gt;</span> DiG <span class="m">9.9.4</span><span class="o">-</span>RedHat<span class="m">-9.9.4-73</span>.el7_6 <span class="o">&lt;&lt;&gt;&gt;</span> <span class="o">-</span>t A nginx.default.svc.cluster.local <span class="o">@</span><span class="m">10.96.0.10</span>
+<span class="p">;;</span> global options<span class="o">:</span> <span class="o">+</span>cmd
+<span class="p">;;</span> Got answer<span class="o">:</span>
+<span class="p">;;</span> <span class="o">-&gt;&gt;</span>HEADER<span class="o">&lt;&lt;-</span> opcode<span class="o">:</span> QUERY<span class="p">,</span> status<span class="o">:</span> NOERROR<span class="p">,</span> id<span class="o">:</span> <span class="m">61822</span>
+<span class="p">;;</span> flags<span class="o">:</span> qr aa rd<span class="p">;</span> QUERY<span class="o">:</span> <span class="m">1</span><span class="p">,</span> ANSWER<span class="o">:</span> <span class="m">1</span><span class="p">,</span> AUTHORITY<span class="o">:</span> <span class="m">0</span><span class="p">,</span> ADDITIONAL<span class="o">:</span> <span class="m">1</span>
+<span class="p">;;</span> WARNING<span class="o">:</span> recursion requested but not available
+
+<span class="p">;;</span> OPT PSEUDOSECTION<span class="o">:</span>
+<span class="p">;</span> EDNS<span class="o">:</span> version<span class="o">:</span> <span class="m">0</span><span class="p">,</span> flags<span class="o">:</span><span class="p">;</span> udp<span class="o">:</span> <span class="m">4096</span>
+<span class="p">;;</span> QUESTION SECTION<span class="o">:</span>
+<span class="p">;</span>nginx.default.svc.cluster.local. IN    A
+
+<span class="p">;;</span> ANSWER SECTION<span class="o">:</span>
+nginx.default.svc.cluster.local. <span class="m">5</span> IN   A       <span class="m">10.96.216.63</span>
+
+<span class="p">;;</span> Query time<span class="o">:</span> <span class="m">0</span> msec
+<span class="p">;;</span> SERVER<span class="o">:</span> <span class="m">10.96.0.10</span><span class="c1">#53(10.96.0.10)</span>
+<span class="p">;;</span> WHEN<span class="o">:</span> Tue Apr <span class="m">02</span> <span class="m">00</span><span class="o">:</span><span class="m">44</span><span class="o">:</span><span class="m">52</span> UTC <span class="m">2019</span>
+<span class="p">;;</span> MSG SIZE  rcvd<span class="o">:</span> <span class="m">107</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-02 00:07:18</p>
+        <p>Site Generated 2019-04-03 19:59:40</p>
       </span>
     </div>
 
