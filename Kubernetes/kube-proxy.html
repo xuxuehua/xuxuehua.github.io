@@ -39,7 +39,8 @@
 </ul>
 </div>
 <h1 id="kube-proxy">Kube-proxy</h1>
-<p>网络代理</p>
+<p>需要连接至Master节点的API_Server进行交互，获取service 相关的资源变动状态</p>
+<p>service资源发生的变动，kube-proxy都会将其转化为调动service后端pod节点上的iptables或ipvs规则</p>
 <h2 id="_1">特点</h2>
 <p>在所有worker nodes上运行</p>
 <p>反应每一个node的服务状态，以及简单的round-robin 转发到后端服务</p>
@@ -52,7 +53,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-03 19:59:40</p>
+        <p>Site Generated 2019-04-06 20:56:10</p>
       </span>
     </div>
 

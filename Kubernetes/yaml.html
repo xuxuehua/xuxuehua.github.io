@@ -51,6 +51,11 @@
 <li><a href="#command-string">command &lt;[]string&gt;</a></li>
 </ul>
 </li>
+<li><a href="#selector">selector</a><ul>
+<li><a href="#matchlabels">matchLabels</a></li>
+<li><a href="#matchexpressions">matchExpressions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#status">status 当前状态</a><ul>
@@ -64,18 +69,12 @@
 <li><a href="#node">node</a></li>
 <li><a href="#readinessprobe">readinessProbe</a></li>
 <li><a href="#restartpolicy">restartPolicy</a></li>
-<li><a href="#selector">selector</a><ul>
-<li><a href="#matchlabels">matchLabels</a></li>
-<li><a href="#matchexpressions">matchExpressions</a></li>
-</ul>
-</li>
 <li><a href="#activedeadlineseconds">activeDeadlineSeconds</a></li>
 <li><a href="#parallelism">parallelism</a></li>
 <li><a href="#completions">completions</a></li>
 <li><a href="#rollingupdatestrategy">RollingUpdateStrategy</a></li>
 <li><a href="#revisionhistorylimit">revisionHistoryLimit</a></li>
 <li><a href="#volumeclaimtemplates">volumeClaimTemplates</a></li>
-<li><a href="#labels_1">labels</a></li>
 <li><a href="#nodeselector-deprecated-by-nodeaffinity">nodeSelector (Deprecated by nodeAffinity)</a><ul>
 <li><a href="#nodename">NodeName</a></li>
 </ul>
@@ -235,6 +234,20 @@
 <p>key-value 数据</p>
 <p>key最多63个字符，只能使用字母，数字，下划线，横线</p>
 <p>value 可以为空，只能字母或者数字开头及结尾</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">labels</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">env</span><span class="o">:</span> <span class="n">qa</span>
+    <span class="n">tier</span><span class="o">:</span> <span class="n">frontend</span>
+<span class="n">spec</span><span class="o">:</span> 
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+</pre></div>
+
+
 <h3 id="annotation">annotation</h3>
 <p>资源注解</p>
 <h3 id="ownerreference">ownerReference</h3>
@@ -408,6 +421,28 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 </tr>
 </tbody>
 </table>
+<h2 id="selector">selector</h2>
+<h3 id="matchlabels">matchLabels</h3>
+<p>通过直接给定键值来指定标签选择器</p>
+<div class="hlcode"><pre><span class="n">selector</span><span class="o">:</span>
+  <span class="n">matchLabels</span><span class="o">:</span>
+    <span class="n">component</span><span class="o">:</span> <span class="n">redis</span>
+</pre></div>
+
+
+<h3 id="matchexpressions">matchExpressions</h3>
+<p>基于表达式指定的标签选择器列表，每个选择器都形如</p>
+<div class="hlcode"><pre><span class="p">{</span><span class="n">key</span><span class="o">:</span> <span class="n">KEY_NAME</span><span class="p">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">OPERATOR</span><span class="p">,</span> <span class="n">values</span><span class="o">:</span> <span class="p">[</span><span class="n">VALUE1</span><span class="p">,</span> <span class="n">VALUE2</span><span class="p">,</span> <span class="p">...]}</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">selector</span><span class="o">:</span>
+  <span class="n">matchExpressions</span><span class="o">:</span>
+    <span class="o">-</span> <span class="o">{</span><span class="n">key</span><span class="o">:</span> <span class="n">tier</span><span class="o">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">In</span><span class="o">,</span> <span class="n">values</span><span class="o">:</span> <span class="o">[</span><span class="n">cache</span><span class="o">]}</span>
+    <span class="o">-</span> <span class="o">{</span><span class="n">key</span><span class="o">:</span> <span class="n">environment</span><span class="o">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">Exists</span><span class="o">,</span> <span class="n">values</span><span class="o">:}</span>
+</pre></div>
+
+
 <h1 id="status">status 当前状态</h1>
 <p>目标资源的当前状态</p>
 <p>由kubernetes集群维护，用户不能自定义</p>
@@ -519,28 +554,6 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 </pre></div>
 
 
-<h4 id="selector">selector</h4>
-<h5 id="matchlabels">matchLabels</h5>
-<p>通过直接给定键值来指定标签选择器</p>
-<div class="hlcode"><pre><span class="n">selector</span><span class="o">:</span>
-  <span class="n">matchLabels</span><span class="o">:</span>
-    <span class="n">component</span><span class="o">:</span> <span class="n">redis</span>
-</pre></div>
-
-
-<h5 id="matchexpressions">matchExpressions</h5>
-<p>基于表达式指定的标签选择器列表，每个选择器都形如</p>
-<div class="hlcode"><pre><span class="p">{</span><span class="n">key</span><span class="o">:</span> <span class="n">KEY_NAME</span><span class="p">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">OPERATOR</span><span class="p">,</span> <span class="n">values</span><span class="o">:</span> <span class="p">[</span><span class="n">VALUE1</span><span class="p">,</span> <span class="n">VALUE2</span><span class="p">,</span> <span class="p">...]}</span>
-</pre></div>
-
-
-<div class="hlcode"><pre><span class="n">selector</span><span class="o">:</span>
-  <span class="n">matchExpressions</span><span class="o">:</span>
-    <span class="o">-</span> <span class="o">{</span><span class="n">key</span><span class="o">:</span> <span class="n">tier</span><span class="o">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">In</span><span class="o">,</span> <span class="n">values</span><span class="o">:</span> <span class="o">[</span><span class="n">cache</span><span class="o">]}</span>
-    <span class="o">-</span> <span class="o">{</span><span class="n">key</span><span class="o">:</span> <span class="n">environment</span><span class="o">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">Exists</span><span class="o">,</span> <span class="n">values</span><span class="o">:}</span>
-</pre></div>
-
-
 <h2 id="activedeadlineseconds">activeDeadlineSeconds</h2>
 <p>设置最长运行时间</p>
 <div class="hlcode"><pre><span class="n">spec</span><span class="o">:</span>
@@ -617,21 +630,6 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
       <span class="n">resources</span><span class="o">:</span>
         <span class="n">requests</span><span class="o">:</span>
           <span class="n">storage</span><span class="o">:</span> <span class="mi">1</span><span class="n">Gi</span>
-</pre></div>
-
-
-<h2 id="labels_1">labels</h2>
-<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
-<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
-<span class="n">metadata</span><span class="o">:</span>
-  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">labels</span>
-  <span class="n">labels</span><span class="o">:</span>
-    <span class="n">env</span><span class="o">:</span> <span class="n">qa</span>
-    <span class="n">tier</span><span class="o">:</span> <span class="n">frontend</span>
-<span class="n">spec</span><span class="o">:</span> 
-  <span class="n">containers</span><span class="o">:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
-    <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
 </pre></div>
 
 
@@ -819,7 +817,7 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-03 19:59:40</p>
+        <p>Site Generated 2019-04-06 20:56:10</p>
       </span>
     </div>
 

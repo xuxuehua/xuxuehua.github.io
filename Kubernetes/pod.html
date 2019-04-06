@@ -33,18 +33,37 @@
 </li>
 <li><a href="#_2">设计</a></li>
 <li><a href="#pod-phase">Pod 生命周期（phase）</a><ul>
-<li><a href="#_3">初始化容器</a></li>
-<li><a href="#_4">容器探测</a><ul>
-<li><a href="#liveness">liveness 存活探测</a><ul>
+<li><a href="#lifecycle">初始化容器 lifecycle</a><ul>
+<li><a href="#poststart-object">postStart   &lt;Object&gt; 启动后</a><ul>
 <li><a href="#exec-object">exec &lt;Object&gt; 用户指定命令</a></li>
 <li><a href="#httpget-object">httpGet      &lt;Object&gt;</a></li>
 <li><a href="#tcpsocket-object">tcpSocket    &lt;Object&gt;</a></li>
 </ul>
 </li>
-<li><a href="#readiness">readiness 就绪探测</a></li>
+<li><a href="#prestop-object">preStop     &lt;Object&gt; 终止前</a><ul>
+<li><a href="#exec-object_1">exec &lt;Object&gt; 用户指定命令</a></li>
+<li><a href="#httpget-object_1">httpGet      &lt;Object&gt;</a></li>
+<li><a href="#tcpsocket-object_1">tcpSocket    &lt;Object&gt;</a></li>
 </ul>
 </li>
-<li><a href="#_5"></a></li>
+</ul>
+</li>
+<li><a href="#_3">容器探测</a><ul>
+<li><a href="#liveness">liveness 存活探测</a><ul>
+<li><a href="#exec-object_2">exec &lt;Object&gt; 用户指定命令</a></li>
+<li><a href="#httpget-object_2">httpGet      &lt;Object&gt;</a></li>
+<li><a href="#tcpsocket-object_2">tcpSocket    &lt;Object&gt;</a></li>
+</ul>
+</li>
+<li><a href="#readiness">readiness 就绪探测   (重要)</a><ul>
+<li><a href="#exec-object_3">exec &lt;Object&gt; 用户指定命令</a></li>
+<li><a href="#httpget-object_3">httpGet      &lt;Object&gt;</a></li>
+<li><a href="#tcpsocket-object_3">tcpSocket    &lt;Object&gt;</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_4"></a></li>
 </ul>
 </li>
 <li><a href="#pod_1">Pod 状态</a><ul>
@@ -53,7 +72,7 @@
 </ul>
 </li>
 <li><a href="#running">Running</a><ul>
-<li><a href="#_6">异常情况</a></li>
+<li><a href="#_5">异常情况</a></li>
 </ul>
 </li>
 <li><a href="#succeeded">Succeeded</a></li>
@@ -72,7 +91,7 @@
 <li><a href="#limits">limits 资源限制</a></li>
 </ul>
 </li>
-<li><a href="#_7">分布式模型</a><ul>
+<li><a href="#_6">分布式模型</a><ul>
 <li><a href="#sidercar-pattern">sidercar pattern</a></li>
 <li><a href="#ambassador-pattern">Ambassador pattern</a></li>
 <li><a href="#adapter-pattern">Adapter pattern</a></li>
@@ -90,7 +109,7 @@
 <li><a href="#daemonset">DaemonSet</a></li>
 </ul>
 </li>
-<li><a href="#_8">环境变量</a><ul>
+<li><a href="#_7">环境变量</a><ul>
 <li><a href="#env">env</a><ul>
 <li><a href="#example">example</a></li>
 </ul>
@@ -124,8 +143,48 @@
 <p>省去了用户手动分拣日志信息</p>
 <h2 id="pod-phase">Pod 生命周期（phase）</h2>
 <p>pod.status.phase 表示当前Pod的状态</p>
-<h3 id="_3">初始化容器</h3>
-<h3 id="_4">容器探测</h3>
+<h3 id="lifecycle">初始化容器 lifecycle</h3>
+<h4 id="poststart-object">postStart   <code>&lt;Object&gt;</code> 启动后</h4>
+<h5 id="exec-object">exec <code>&lt;Object&gt;</code> 用户指定命令</h5>
+<p>根据指令返回码判断</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">poststart</span><span class="o">-</span><span class="n">pod</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="k">default</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">busybox</span><span class="o">-</span><span class="n">httpd</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">busybox</span><span class="o">:</span><span class="n">latest</span>
+    <span class="n">imagePullPolicy</span><span class="o">:</span> <span class="n">IfNotPresent</span>
+    <span class="n">lifecycle</span><span class="o">:</span>
+      <span class="n">postStart</span><span class="o">:</span>
+        <span class="n">exec</span><span class="o">:</span>
+          <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s1">&#39;mkdir&#39;</span><span class="o">,</span> <span class="s1">&#39;-p&#39;</span><span class="o">,</span> <span class="s1">&#39;/data/web/html&#39;</span><span class="o">]</span>
+    <span class="n">command</span><span class="o">:</span> <span class="o">[</span><span class="s1">&#39;/bin/sh&#39;</span><span class="o">,</span> <span class="s1">&#39;-c&#39;</span><span class="o">,</span> <span class="s1">&#39;sleep 3600&#39;</span><span class="o">]</span>
+</pre></div>
+
+
+<h5 id="httpget-object">httpGet      <code>&lt;Object&gt;</code></h5>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h5 id="tcpsocket-object">tcpSocket    <code>&lt;Object&gt;</code></h5>
+<h4 id="prestop-object">preStop     <code>&lt;Object&gt;</code> 终止前</h4>
+<h5 id="exec-object_1">exec <code>&lt;Object&gt;</code> 用户指定命令</h5>
+<p>根据指令返回码判断</p>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h5 id="httpget-object_1">httpGet      <code>&lt;Object&gt;</code></h5>
+<div class="hlcode"><pre>
+</pre></div>
+
+
+<h5 id="tcpsocket-object_1">tcpSocket    <code>&lt;Object&gt;</code></h5>
+<h3 id="_3">容器探测</h3>
 <p>主容器定时探测容器状态</p>
 <p>建立在pod.containers 之上</p>
 <div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">explain</span> <span class="n">pods</span><span class="p">.</span><span class="n">spec</span><span class="p">.</span><span class="n">containers</span>
@@ -138,7 +197,7 @@
 
 <h4 id="liveness">liveness 存活探测</h4>
 <p>探测容器是否处于存活状态</p>
-<h5 id="exec-object">exec <code>&lt;Object&gt;</code> 用户指定命令</h5>
+<h5 id="exec-object_2">exec <code>&lt;Object&gt;</code> 用户指定命令</h5>
 <p>根据指令返回码判断</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
@@ -159,12 +218,80 @@
 </pre></div>
 
 
-<blockquote></blockquote>
-<h5 id="httpget-object">httpGet      <code>&lt;Object&gt;</code></h5>
-<h5 id="tcpsocket-object">tcpSocket    <code>&lt;Object&gt;</code></h5>
-<h4 id="readiness">readiness 就绪探测</h4>
+<h5 id="httpget-object_2">httpGet      <code>&lt;Object&gt;</code></h5>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">liveness</span><span class="o">-</span><span class="n">httpget</span><span class="o">-</span><span class="n">pod</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="k">default</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">liveness</span><span class="o">-</span><span class="n">httpget</span><span class="o">-</span><span class="n">container</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+    <span class="n">imagePullPolicy</span><span class="o">:</span> <span class="n">IfNotPresent</span>
+    <span class="n">ports</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">http</span>
+      <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+    <span class="n">livenessProbe</span><span class="o">:</span>
+      <span class="n">httpGet</span><span class="o">:</span>
+        <span class="n">port</span><span class="o">:</span> <span class="n">http</span>
+        <span class="n">path</span><span class="o">:</span> <span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="na">html</span>
+      <span class="n">initialDelaySeconds</span><span class="o">:</span> <span class="mi">1</span>
+      <span class="n">periodSeconds</span><span class="o">:</span> <span class="mi">3</span>
+</pre></div>
+
+
+<h5 id="tcpsocket-object_2">tcpSocket    <code>&lt;Object&gt;</code></h5>
+<h4 id="readiness">readiness 就绪探测   (重要)</h4>
 <p>探测容器中的服务和程序是否提供服务</p>
-<h3 id="_5"></h3>
+<h5 id="exec-object_3">exec <code>&lt;Object&gt;</code> 用户指定命令</h5>
+<p>根据指令返回码判断</p>
+<h5 id="httpget-object_3">httpGet      <code>&lt;Object&gt;</code></h5>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">readiness</span><span class="o">-</span><span class="n">httpget</span><span class="o">-</span><span class="n">pod</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="k">default</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">readiness</span><span class="o">-</span><span class="n">httpget</span><span class="o">-</span><span class="n">container</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+    <span class="n">imagePullPolicy</span><span class="o">:</span> <span class="n">IfNotPresent</span>
+    <span class="n">ports</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">http</span>
+      <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+    <span class="n">readinessProbe</span><span class="o">:</span>
+      <span class="n">httpGet</span><span class="o">:</span>
+        <span class="n">port</span><span class="o">:</span> <span class="n">http</span>
+        <span class="n">path</span><span class="o">:</span> <span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="na">html</span>
+      <span class="n">initialDelaySeconds</span><span class="o">:</span> <span class="mi">1</span>
+      <span class="n">periodSeconds</span><span class="o">:</span> <span class="mi">3</span>
+</pre></div>
+
+
+<p>进入容器后创建和删除index文件，会看到以下效果</p>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">readiness</span><span class="o">-</span><span class="n">httpget</span><span class="o">-</span><span class="n">pod</span> <span class="o">--</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="n">manifests</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">w</span>
+<span class="n">NAME</span>                           <span class="n">READY</span>   <span class="n">STATUS</span>             <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">client</span>                         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>            <span class="mi">0</span>          <span class="mi">35</span><span class="n">h</span>
+<span class="n">liveness</span><span class="o">-</span><span class="n">exec</span><span class="o">-</span><span class="n">pod</span>              <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>     <span class="n">CrashLoopBackOff</span>   <span class="mi">43</span>         <span class="mi">147</span><span class="n">m</span>
+<span class="n">liveness</span><span class="o">-</span><span class="n">httpget</span><span class="o">-</span><span class="n">pod</span>           <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>            <span class="mi">1</span>          <span class="mi">12</span><span class="n">m</span>
+<span class="n">myapp</span><span class="o">-</span><span class="mi">5</span><span class="n">bc569c47d</span><span class="o">-</span><span class="mi">62</span><span class="n">hwb</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>            <span class="mi">0</span>          <span class="mi">34</span><span class="n">h</span>
+<span class="n">myapp</span><span class="o">-</span><span class="mi">5</span><span class="n">bc569c47d</span><span class="o">-</span><span class="n">kwlcp</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>            <span class="mi">0</span>          <span class="mi">34</span><span class="n">h</span>
+<span class="n">myapp</span><span class="o">-</span><span class="mi">5</span><span class="n">bc569c47d</span><span class="o">-</span><span class="n">tpns4</span>         <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>            <span class="mi">0</span>          <span class="mi">34</span><span class="n">h</span>
+<span class="n">nginx</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="mi">55</span><span class="n">d8d67cf</span><span class="o">-</span><span class="mi">7</span><span class="n">zkxm</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>            <span class="mi">0</span>          <span class="mi">44</span><span class="n">h</span>
+<span class="n">pod</span><span class="o">-</span><span class="n">demo</span>                       <span class="mi">2</span><span class="o">/</span><span class="mi">2</span>     <span class="n">Running</span>            <span class="mi">8</span>          <span class="mi">8</span><span class="n">h</span>
+<span class="n">readiness</span><span class="o">-</span><span class="n">httpget</span><span class="o">-</span><span class="n">pod</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>            <span class="mi">0</span>          <span class="mi">67</span><span class="n">s</span>
+<span class="n">readiness</span><span class="o">-</span><span class="n">httpget</span><span class="o">-</span><span class="n">pod</span>          <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>            <span class="mi">0</span>          <span class="mi">69</span><span class="n">s</span>
+<span class="n">readiness</span><span class="o">-</span><span class="n">httpget</span><span class="o">-</span><span class="n">pod</span>          <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>            <span class="mi">0</span>          <span class="mi">4</span><span class="n">m48s</span>
+</pre></div>
+
+
+<h5 id="tcpsocket-object_3">tcpSocket    <code>&lt;Object&gt;</code></h5>
+<h3 id="_4"></h3>
 <h2 id="pod_1">Pod 状态</h2>
 <h3 id="pending">Pending</h3>
 <p>Pod的YAML文件已经提交给Kubernetes，API Server 创建了Pod资源对象并已存储etcd中，但未被调度完成，或着仍然处于从仓库下载镜像的过程中</p>
@@ -173,7 +300,7 @@
 <p>调度出现问题</p>
 <h3 id="running">Running</h3>
 <p>Pod已经被调度至一个具体节点绑定，并且所有容器都已经被kubelet创建完成</p>
-<h4 id="_6">异常情况</h4>
+<h4 id="_5">异常情况</h4>
 <p>Pod（即容器）的状态是 Running，但是应用其实已经停止服务的例子</p>
 <div class="hlcode"><pre><span class="mf">1.</span> <span class="err">程序本身有</span> <span class="n">bug</span><span class="err">，本来应该返回</span> <span class="mi">200</span><span class="err">，但因为代码问题，返回的是</span><span class="mi">500</span><span class="err">；</span>
 <span class="mf">2.</span> <span class="err">程序因为内存问题，已经僵死，但进程还在，但无响应；</span>
@@ -251,7 +378,7 @@
 </pre></div>
 
 
-<h2 id="_7">分布式模型</h2>
+<h2 id="_6">分布式模型</h2>
 <h3 id="sidercar-pattern">sidercar pattern</h3>
 <p>边车模型或跨斗模型</p>
 <p>即pod的主应用容器提供协同的辅助应用容器，每个应用独立运行</p>
@@ -306,7 +433,7 @@
 <p>类似于cronjob</p>
 <h3 id="daemonset">DaemonSet</h3>
 <p>确保所有nodes 运行同一个指定类型的pod</p>
-<h2 id="_8">环境变量</h2>
+<h2 id="_7">环境变量</h2>
 <p>通过环境变量在容器启动时传递配置信息</p>
 <h3 id="env">env</h3>
 <p>在容器配置段中嵌套env字段，值是环境变量构成的列表</p>
@@ -394,7 +521,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-03 19:59:40</p>
+        <p>Site Generated 2019-04-06 20:56:10</p>
       </span>
     </div>
 

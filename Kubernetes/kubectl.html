@@ -85,6 +85,7 @@
 <li><a href="#history">history</a></li>
 <li><a href="#pause">pause</a></li>
 <li><a href="#resume">resume</a></li>
+<li><a href="#status">status</a></li>
 <li><a href="#undo">undo</a></li>
 </ul>
 </li>
@@ -415,13 +416,42 @@ nginx        ClusterIP   10.96.216.63   <span class="nt">&lt;none&gt;</span>    
 </blockquote>
 <h4 id="resume">resume</h4>
 <p>恢复Deployment 滚动更新</p>
-<div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">rollout</span> <span class="n">resume</span> <span class="n">deploy</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span>
-<span class="n">deployment</span><span class="p">.</span><span class="n">extensions</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span> <span class="n">resumed</span>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">rollout</span> <span class="n">resume</span> <span class="n">deployment</span> <span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span>
+<span class="n">deployment</span><span class="p">.</span><span class="n">extensions</span><span class="o">/</span><span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span> <span class="n">resumed</span>
+</pre></div>
+
+
+<p>可以看到更新状况</p>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">rollout</span> <span class="n">status</span> <span class="n">deployment</span> <span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">1</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="n">spec</span> <span class="n">update</span> <span class="n">to</span> <span class="n">be</span> <span class="n">observed</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="n">spec</span> <span class="n">update</span> <span class="n">to</span> <span class="n">be</span> <span class="n">observed</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">1</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">1</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">2</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">2</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">2</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">3</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">3</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">4</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">4</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">4</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">4</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">1</span> <span class="n">old</span> <span class="n">replicas</span> <span class="n">are</span> <span class="n">pending</span> <span class="n">termination</span><span class="p">...</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">1</span> <span class="n">old</span> <span class="n">replicas</span> <span class="n">are</span> <span class="n">pending</span> <span class="n">termination</span><span class="p">...</span>
+<span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">successfully</span> <span class="n">rolled</span> <span class="n">out</span>
+</pre></div>
+
+
+<h4 id="status">status</h4>
+<p>监听更新状态</p>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">rollout</span> <span class="n">status</span> <span class="n">deployment</span> <span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span>
+<span class="n">Waiting</span> <span class="k">for</span> <span class="n">deployment</span> <span class="s">&quot;myapp-deployment&quot;</span> <span class="n">rollout</span> <span class="n">to</span> <span class="n">finish</span><span class="o">:</span> <span class="mi">1</span> <span class="n">out</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">new</span> <span class="n">replicas</span> <span class="n">have</span> <span class="n">been</span> <span class="n">updated</span><span class="p">...</span>
 </pre></div>
 
 
 <h4 id="undo">undo</h4>
-<p>撤销滚动版本, 不指明为上一个版本</p>
+<p>撤销滚动版本, 默认为上一个版本</p>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">kubectl</span> <span class="n">rollout</span> <span class="n">undo</span> <span class="n">deployment</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span> <span class="o">--</span><span class="n">to</span><span class="o">-</span><span class="n">revision</span><span class="o">=</span><span class="mi">2</span>
 <span class="n">deployment</span><span class="p">.</span><span class="n">extensions</span><span class="o">/</span><span class="n">nginx</span><span class="o">-</span><span class="n">deployment</span>
 </pre></div>
@@ -429,6 +459,28 @@ nginx        ClusterIP   10.96.216.63   <span class="nt">&lt;none&gt;</span>    
 
 <blockquote>
 <p>这里指定了滚动的版本号</p>
+</blockquote>
+<div class="hlcode"><pre><span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl rollout history deployment myapp-deployment
+deployment.extensions/myapp-deployment
+REVISION  CHANGE-CAUSE
+1         <span class="nt">&lt;none&gt;</span>
+2         <span class="nt">&lt;none&gt;</span>
+3         <span class="nt">&lt;none&gt;</span>
+
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl rollout undo deployment myapp-deployment --to-revision=1
+deployment.extensions/myapp-deployment rolled back
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span>#
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl rollout history deployment myapp-deployment
+deployment.extensions/myapp-deployment
+REVISION  CHANGE-CAUSE
+2         <span class="nt">&lt;none&gt;</span>
+3         <span class="nt">&lt;none&gt;</span>
+4         <span class="nt">&lt;none&gt;</span>
+</pre></div>
+
+
+<blockquote>
+<p>这里的4 表示revision号码变动了</p>
 </blockquote>
 <h3 id="rolling-update">rolling-update 滚动升级</h3>
 <p>对ReplicationController执行滚动升级</p>
@@ -552,6 +604,7 @@ Events:            <span class="nt">&lt;none&gt;</span>
 <p>能够访问Kubernetes API Server的代理</p>
 <h2 id="_7">高级命令</h2>
 <h3 id="apply">apply 实现声明</h3>
+<p>既可以创建，也可以更新</p>
 <p>基于文件或者stdin 将配置应用于资源</p>
 <div class="hlcode"><pre><span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">deploy</span><span class="p">.</span><span class="n">yaml</span> <span class="o">-</span><span class="n">f</span> <span class="n">nginx</span><span class="o">-</span><span class="n">svc</span><span class="p">.</span><span class="n">yaml</span>
 </pre></div>
@@ -646,7 +699,7 @@ Events:            <span class="nt">&lt;none&gt;</span>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-03 19:59:40</p>
+        <p>Site Generated 2019-04-06 20:56:10</p>
       </span>
     </div>
 

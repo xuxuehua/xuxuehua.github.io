@@ -35,7 +35,7 @@
 <li><a href="#_4">滚动扩展</a></li>
 </ul>
 </li>
-<li><a href="#deployment">Deployment  无状态</a><ul>
+<li><a href="#deployment">Deployment  无状态 (常用)</a><ul>
 <li><a href="#hpa-pod">HPA 水平Pod伸缩</a></li>
 </ul>
 </li>
@@ -46,13 +46,17 @@
 </li>
 </ul>
 </li>
-<li><a href="#daemonset">DaemonSet 守护进程</a></li>
+<li><a href="#daemonset">DaemonSet 守护进程 无状态</a><ul>
+<li><a href="#_6">滚动更新方式</a></li>
+<li><a href="#master-toleration">Master 节点 toleration</a></li>
+</ul>
+</li>
 <li><a href="#job">Job 完成后终止</a><ul>
-<li><a href="#_6">并行控制</a></li>
-<li><a href="#_7">使用方法</a><ul>
+<li><a href="#_7">并行控制</a></li>
+<li><a href="#_8">使用方法</a><ul>
 <li><a href="#job_1">外部管理器 +Job 模板</a></li>
 <li><a href="#item">替换$ITEM操作</a></li>
-<li><a href="#_8">固定数目并行</a></li>
+<li><a href="#_9">固定数目并行</a></li>
 <li><a href="#parallelism">指定并行度（parallelism）</a></li>
 </ul>
 </li>
@@ -68,6 +72,23 @@
 <li><a href="#downwardapi">DownwardAPI</a></li>
 </ul>
 </li>
+<li><a href="#service">service 服务</a><ul>
+<li><a href="#_10">工作模式</a><ul>
+<li><a href="#user-space">user space 模型</a></li>
+<li><a href="#iptables">iptables 模型</a></li>
+<li><a href="#ipvs">ipvs 模型</a></li>
+</ul>
+</li>
+<li><a href="#type">类型 type</a><ul>
+<li><a href="#externalname">ExternalName</a></li>
+<li><a href="#clusterip">ClusterIP 默认</a></li>
+<li><a href="#nodeport">NodePort</a></li>
+<li><a href="#loadbalancer">LoadBalancer</a></li>
+</ul>
+</li>
+<li><a href="#_11"></a></li>
+</ul>
+</li>
 <li><a href="#cluster">集群级资源 Cluster</a><ul>
 <li><a href="#namespace">Namespace</a></li>
 <li><a href="#node">Node</a></li>
@@ -81,7 +102,7 @@
 <li><a href="#hpa">HPA</a></li>
 <li><a href="#podtemplate">PodTemplate</a></li>
 <li><a href="#limitrange">LimitRange</a></li>
-<li><a href="#_9"></a></li>
+<li><a href="#_12"></a></li>
 </ul>
 </li>
 <li><a href="#api">API 群组</a><ul>
@@ -89,7 +110,7 @@
 <li><a href="#named-group">命名群组 named group</a></li>
 </ul>
 </li>
-<li><a href="#_10">用户管理</a><ul>
+<li><a href="#_13">用户管理</a><ul>
 <li><a href="#serviceaccount">ServiceAccount</a></li>
 <li><a href="#group">Group</a></li>
 </ul>
@@ -108,6 +129,7 @@
 <h3 id="replicaset">ReplicaSet 无状态</h3>
 <p>负责无状态应用，新一代ReplicationController</p>
 <p>比上一代支持基于集合的选择器</p>
+<p>代用户创建对pod副本，并保证其运行数量的状态</p>
 <h4 id="_2">结构</h4>
 <p>Nginx-deployment.yaml</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
@@ -223,21 +245,48 @@
 </pre></div>
 
 
-<h3 id="deployment">Deployment  无状态</h3>
-<p>负责无状态应用</p>
+<h3 id="deployment">Deployment  无状态 (常用)</h3>
+<p>负责无状态应用, 一个deployment 可以管理多个ReplicaSet</p>
 <p>用于管理无状态持久化的应用，如HTTP</p>
-<p>构建在ReplicaSet之上</p>
+<p>构建在ReplicaSet之上，通过控制ReplicaSet来控制副本</p>
 <p>负责在Pod定义发生变化时，对每个副本进行跟懂更新</p>
 <p>实现了Pod的水平扩展和收缩(horizontal scaling out/in)</p>
 <p>Deployment 所管理的Pod，他的ownerReference 时ReplicaSet</p>
 <p>相对而言，Deployment 只是在ReplicaSet 的基础上，添加了<code>UP-TO-DATE</code> 这个跟版本有关的字段</p>
 <p>Deployment 实际上并不足以覆盖所有的应用编排问题。即所有的Pod都是一样的，相互之间没有顺序，也无宿主机要求。</p>
 <p>但分布式应用的多个实例之间是相互有依赖关系的</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Deployment</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="k">default</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">replicas</span><span class="o">:</span> <span class="mi">2</span>
+  <span class="n">selector</span><span class="o">:</span>
+    <span class="n">matchLabels</span><span class="o">:</span>
+      <span class="n">app</span><span class="o">:</span> <span class="n">myapp</span>
+      <span class="n">release</span><span class="o">:</span> <span class="n">canary</span>
+  <span class="n">template</span><span class="o">:</span>
+   <span class="n">metadata</span><span class="o">:</span>
+     <span class="n">labels</span><span class="o">:</span>
+       <span class="n">app</span><span class="o">:</span> <span class="n">myapp</span>
+       <span class="n">release</span><span class="o">:</span> <span class="n">canary</span>
+   <span class="n">spec</span><span class="o">:</span>
+     <span class="n">containers</span><span class="o">:</span>
+     <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+       <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+       <span class="n">ports</span><span class="o">:</span>
+       <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">http</span>
+         <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
 <h4 id="hpa-pod">HPA 水平Pod伸缩</h4>
 <p>Horizontal Pod Autoscaler</p>
 <h3 id="statefulset">StatefulSet 有状态</h3>
 <p>负责有状态应用</p>
 <p>用于管理有状态的持久化应用，如database</p>
+<p>运维操作极其复杂，需要将脚本写入到statefulset里面完成其对应的操作</p>
 <p>比Deployment会为每个Pod创建一个独有的持久性标识符，并确保Pod之间的顺序性，即管理的是不同的Pod 实例，而不是ReplicaSet中完全一样的Pod</p>
 <p>创建statefulset必须要先创建一个headless的service，分为两个步骤， 而且必须是Headless Service</p>
 <h4 id="_5">设计</h4>
@@ -382,12 +431,11 @@
 <p>可以看到，当把这两个 Pod 删除之后，Kubernetes 会按照原先编号的顺序，创建出了两个新的 Pod。并且，Kubernetes 依然为它们分配了与原来相同的“网络身份”：web-0.nginx 和 web-1.nginx。</p>
 </blockquote>
 <p>尽管 web-0.nginx 这条记录本身不会变，但它解析到的 Pod 的 IP 地址，并不是固定的。这就意味着，对于“有状态应用”实例的访问，必须使用 DNS 记录或者 hostname 的方式，而绝不应该直接访问这些 Pod 的 IP 地址。</p>
-<h3 id="daemonset">DaemonSet 守护进程</h3>
+<h3 id="daemonset">DaemonSet 守护进程 无状态</h3>
+<p>这个Pod会运行在Kubernetes集群里面的每一个节点(Node)上面， 而且只会有一个这样的pod 实例</p>
 <p>常用于运行集群存储的守护进程，如glusterd，ceph，</p>
 <p>日志收集进程如fluentd，logstash，</p>
 <p>监控进程，如prometheus的Node Explorter，collected，datadog agent， Ganglia的gmond</p>
-<p>这个Pod会运行在Kubernetes集群里面的每一个节点(Node)上面</p>
-<p>每一个Node上面只有一个这样的Pod实例</p>
 <p>当有新的节点加入到Kubernetes集群中，该Pod会自动在新节点上创建完成，旧节点删除后，Pod也会被回收</p>
 <p>相对而言，DaemonSet开始运行的时间，会比整个Kubernetes集群要早</p>
 <p>DaemonSet没有replicas字段</p>
@@ -441,6 +489,64 @@
 <p>管理的是一个fluentd-elasticsearch镜像的Pod，即通过fluentd将Docker容器里面的日志转发到ElasticSearch中</p>
 <p>两个hostPath分别对应/var/log目录和/var/lib/docker/containers目录</p>
 </blockquote>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">DaemonSet</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span><span class="o">-</span><span class="n">ds</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="k">default</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">selector</span><span class="o">:</span>
+    <span class="n">matchLabels</span><span class="o">:</span>
+      <span class="n">app</span><span class="o">:</span> <span class="n">filebeat</span>
+      <span class="n">release</span><span class="o">:</span> <span class="n">stable</span>
+  <span class="n">template</span><span class="o">:</span>
+   <span class="n">metadata</span><span class="o">:</span>
+     <span class="n">labels</span><span class="o">:</span>
+       <span class="n">app</span><span class="o">:</span> <span class="n">filebeat</span>
+       <span class="n">release</span><span class="o">:</span> <span class="n">stable</span>
+   <span class="n">spec</span><span class="o">:</span>
+     <span class="n">containers</span><span class="o">:</span>
+     <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">filebeat</span>
+       <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">filebeat</span><span class="o">:</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">5</span><span class="o">-</span><span class="n">alpine</span>
+       <span class="n">env</span><span class="o">:</span>
+       <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">REDIS_HOST</span>
+         <span class="n">value</span><span class="o">:</span> <span class="n">redis</span><span class="o">.</span><span class="na">default</span><span class="o">.</span><span class="na">svc</span><span class="o">.</span><span class="na">cluster</span><span class="o">.</span><span class="na">local</span>
+       <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">REDIS_LOG_LEVEL</span>
+         <span class="n">value</span><span class="o">:</span> <span class="n">info</span>
+</pre></div>
+
+
+<h4 id="_6">滚动更新方式</h4>
+<div class="hlcode"><pre><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">set</span> <span class="n">image</span> <span class="n">daemonsets</span> <span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span> <span class="n">filebeat</span><span class="o">=</span><span class="n">ikubernetes</span><span class="o">/</span><span class="n">filebeat</span><span class="o">:</span><span class="mf">5.6.6</span><span class="o">-</span><span class="n">alpine</span>
+<span class="n">daemonset</span><span class="p">.</span><span class="n">extensions</span><span class="o">/</span><span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span> <span class="n">image</span> <span class="n">updated</span>
+<span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span>  <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">w</span>
+<span class="n">NAME</span>                               <span class="n">READY</span>   <span class="n">STATUS</span>              <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">client</span>                             <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">3</span><span class="n">d10h</span>
+<span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="mi">9</span><span class="n">tgw8</span>                  <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">1</span>          <span class="mi">11</span><span class="n">m</span>
+<span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="n">x8zpd</span>                  <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>     <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">3</span><span class="n">s</span>
+<span class="n">liveness</span><span class="o">-</span><span class="n">exec</span><span class="o">-</span><span class="n">pod</span>                  <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>     <span class="n">CrashLoopBackOff</span>    <span class="mi">806</span>        <span class="mi">2</span><span class="n">d1h</span>
+<span class="n">liveness</span><span class="o">-</span><span class="n">httpget</span><span class="o">-</span><span class="n">pod</span>               <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">1</span>          <span class="mi">47</span><span class="n">h</span>
+<span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">67</span><span class="n">b6dfcd8</span><span class="o">-</span><span class="mi">59</span><span class="n">wxt</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">50</span><span class="n">m</span>
+<span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">67</span><span class="n">b6dfcd8</span><span class="o">-</span><span class="n">g2cnc</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">50</span><span class="n">m</span>
+<span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">67</span><span class="n">b6dfcd8</span><span class="o">-</span><span class="n">jjfml</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">50</span><span class="n">m</span>
+<span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">67</span><span class="n">b6dfcd8</span><span class="o">-</span><span class="n">rc7t8</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">50</span><span class="n">m</span>
+<span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">67</span><span class="n">b6dfcd8</span><span class="o">-</span><span class="n">s6g9m</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">50</span><span class="n">m</span>
+<span class="n">poststart</span><span class="o">-</span><span class="n">pod</span>                      <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>     <span class="n">CrashLoopBackOff</span>    <span class="mi">319</span>        <span class="mi">26</span><span class="n">h</span>
+<span class="n">readiness</span><span class="o">-</span><span class="n">httpget</span><span class="o">-</span><span class="n">pod</span>              <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">46</span><span class="n">h</span>
+<span class="n">redis</span><span class="o">-</span><span class="mi">58</span><span class="n">b9f5776</span><span class="o">-</span><span class="n">bdp8d</span>              <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">11</span><span class="n">m</span>
+<span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="n">x8zpd</span>                  <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">6</span><span class="n">s</span>
+<span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="mi">9</span><span class="n">tgw8</span>                  <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Terminating</span>         <span class="mi">1</span>          <span class="mi">11</span><span class="n">m</span>
+<span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="mi">9</span><span class="n">tgw8</span>                  <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Terminating</span>         <span class="mi">1</span>          <span class="mi">11</span><span class="n">m</span>
+<span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="mi">9</span><span class="n">tgw8</span>                  <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Terminating</span>         <span class="mi">1</span>          <span class="mi">11</span><span class="n">m</span>
+<span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="mi">9</span><span class="n">tgw8</span>                  <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Terminating</span>         <span class="mi">1</span>          <span class="mi">11</span><span class="n">m</span>
+<span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="n">k926z</span>                  <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Pending</span>             <span class="mi">0</span>          <span class="mi">0</span><span class="n">s</span>
+<span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="n">k926z</span>                  <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Pending</span>             <span class="mi">0</span>          <span class="mi">0</span><span class="n">s</span>
+<span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="n">k926z</span>                  <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>     <span class="n">ContainerCreating</span>   <span class="mi">0</span>          <span class="mi">0</span><span class="n">s</span>
+<span class="n">filebeat</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="n">k926z</span>                  <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>             <span class="mi">0</span>          <span class="mi">5</span><span class="n">s</span>
+</pre></div>
+
+
+<h4 id="master-toleration">Master 节点 toleration</h4>
 <p>添加Toleration，在Master节点上部署Pod</p>
 <p>默认Kubernetes集群不允许用户在Master节点上部署Pod，因为Master节点携带了一个<code>node-role.kubernetes.io/master</code> 污点，所以要容忍这个污点</p>
 <div class="hlcode"><pre><span class="nl">tolerations:</span>
@@ -450,6 +556,7 @@
 
 
 <h3 id="job">Job 完成后终止</h3>
+<p>只能执行一次性的作业</p>
 <p>用来描述离线业务的API对象</p>
 <p>restartPolicy 在 Job 对象里只允许被设置为 Never 和 OnFailure</p>
 <p>Job对象并不要一定要定一个spec.selector 来描述控制哪些Pod</p>
@@ -522,7 +629,7 @@
 </pre></div>
 
 
-<h4 id="_6">并行控制</h4>
+<h4 id="_7">并行控制</h4>
 <p>spec.parallelism，它定义的是一个 Job 在任意时间最多可以启动多少个 Pod 同时运行</p>
 <p>spec.completions，它定义的是 Job 至少要完成的 Pod 数目，即 Job 的最小完成数</p>
 <p>根据 Job 控制器的工作原理，如果你定义的 parallelism 比 completions 还大的话，</p>
@@ -532,7 +639,7 @@
 
 
 <p>需要创建的 Pod 数目 = 最终需要的 Pod 数目 - 实际在 Running 状态 Pod 数目 - 已经成功退出的 Pod 数目 = 2 - 0 - 0= 2。而parallelism数量为4，2小于4，所以应该会创建2个。</p>
-<h4 id="_7">使用方法</h4>
+<h4 id="_8">使用方法</h4>
 <h5 id="job_1">外部管理器 +Job 模板</h5>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">batch</span><span class="o">/</span><span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Job</span>
@@ -577,7 +684,7 @@
 </pre></div>
 
 
-<h5 id="_8">固定数目并行</h5>
+<h5 id="_9">固定数目并行</h5>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">batch</span><span class="o">/</span><span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Job</span>
 <span class="n">metadata</span><span class="o">:</span>
@@ -653,7 +760,8 @@
 
 <p>由于任务数目的总数不固定，所以每一个 Pod 必须能够知道，自己什么时候可以退出。比如，在这个例子中，简单地以“队列为空”，作为任务全部完成的标志。所以说，这种用法，对应的是“任务总数不固定”的场景。</p>
 <h3 id="cronjob">CronJob</h3>
-<p>定时任务</p>
+<p>定时任务，周期性运行</p>
+<p>还要处理的问题，如前一个任务未完成，下一个任务时间点已到，将要触发</p>
 <p>CronJob是一个Job对象的控制器Controller</p>
 <p>CronJob 是一个专门用来管理 Job 对象的控制器。它创建和删除 Job 的依据，是 schedule 字段定义的、一个标准的Unix Cron格式的表达式</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">batch</span><span class="o">/</span><span class="n">v1beta1</span>
@@ -709,6 +817,29 @@
 <h3 id="csi">CSI</h3>
 <h3 id="configmap">ConfigMap</h3>
 <h3 id="downwardapi">DownwardAPI</h3>
+<h2 id="service">service 服务</h2>
+<p>依赖于kubernetes的dns 服务器，默认使用CoreDNS, 或kube-dns(1.11之前)</p>
+<h3 id="_10">工作模式</h3>
+<h4 id="user-space">user space 模型</h4>
+<p><img alt="img" src="https://snag.gy/0kHw5e.jpg" /></p>
+<p>来自外部，先到达当前节点内核空间的service 规则，kube-proxy是工作在用户空间的进程</p>
+<p>但是效率很低</p>
+<h4 id="iptables">iptables 模型</h4>
+<p><img alt="img" src="https://snag.gy/wMid4m.jpg" /></p>
+<p>直接工作在内核空间，直接由service的iptables负责调度</p>
+<h4 id="ipvs">ipvs 模型</h4>
+<p><img alt="img" src="https://snag.gy/ad5SnY.jpg" /></p>
+<p>1.11之后使用ipvs，若没有安装ipvs模块，自动降级为iptables</p>
+<h3 id="type">类型 type</h3>
+<h4 id="externalname">ExternalName</h4>
+<p>把集群外部的服务引入到集群内部来直接使用</p>
+<h4 id="clusterip">ClusterIP 默认</h4>
+<p>默认分配一个IP地址，仅用于集群内部通信</p>
+<h4 id="nodeport">NodePort</h4>
+<p>接入集群外部流量</p>
+<h4 id="loadbalancer">LoadBalancer</h4>
+<p>自动触发创建web的负载均衡器</p>
+<h3 id="_11"></h3>
 <h2 id="cluster">集群级资源 Cluster</h2>
 <h3 id="namespace">Namespace</h3>
 <p>资源对象名称的作用范围，默认隶属default</p>
@@ -735,7 +866,7 @@
 <p>用于让控制器创建pod的模板</p>
 <h3 id="limitrange">LimitRange</h3>
 <p>定义资源限制</p>
-<h3 id="_9"></h3>
+<h3 id="_12"></h3>
 <h2 id="api">API 群组</h2>
 <h3 id="core-group">核心群组 core group</h3>
 <p>REST 路径为<code>/api/v1</code>，在资源配置信息apiVersion 字段中引用时可以不指定路径，而仅给出版本</p>
@@ -744,7 +875,7 @@
 <p>REST 路径为<code>/apis/$GROUP_NAME/$VERSION</code> </p>
 <p>如 <code>/apis/apps/v1</code>  在apiVersion字段中引用的格式为<code>apiVersion:$GROUP_NAME/$VERSION</code> </p>
 <p>如<code>apiVersion:apps/v1</code></p>
-<h2 id="_10">用户管理</h2>
+<h2 id="_13">用户管理</h2>
 <h3 id="serviceaccount">ServiceAccount</h3>
 <p>Kubernetes 负责管理的内置用户</p>
 <p>如果一个 Pod 没有声明 serviceAccountName，Kubernetes 会自动在它的 Namespace 下创建一个名叫 default 的默认 ServiceAccount，然后分配给这个 Pod。</p>
@@ -900,7 +1031,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-03 19:59:40</p>
+        <p>Site Generated 2019-04-06 20:56:10</p>
       </span>
     </div>
 

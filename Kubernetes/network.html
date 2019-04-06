@@ -28,7 +28,7 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#kubernetes">Kubernetes 网络</a><ul>
 <li><a href="#node">Node 节点网络 (网络独立)</a></li>
-<li><a href="#service">Service 集群网络 (网络独立)</a></li>
+<li><a href="#servicecluster">Service/cluster 集群网络 (网络独立)</a></li>
 <li><a href="#pod">Pod 网络 (网络独立)</a><ul>
 <li><a href="#_1">容器间通信</a></li>
 <li><a href="#pod_1">各Pod之间通信</a></li>
@@ -50,8 +50,8 @@
 <p><img alt="img" src="https://snag.gy/H8Oely.jpg" /></p>
 <h2 id="node">Node 节点网络 (网络独立)</h2>
 <p>在构建之前，配置完成节点间的网络通信</p>
-<h2 id="service">Service 集群网络 (网络独立)</h2>
-<p>仅存在于iptables 和ipvs中，即iptables规则中的地址</p>
+<h2 id="servicecluster">Service/cluster 集群网络 (网络独立)</h2>
+<p>虚拟地址， 仅存在于iptables 和ipvs中，即iptables规则中的地址</p>
 <p>通过kube-proxy在每个节点上创建规则，实现管控</p>
 <p>每次网络变更的实现，都是有kube-proxy在每一个节点上创建规则</p>
 <p>每一个service的变动，也需要kube-proxy反应的规则上</p>
@@ -80,7 +80,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-03 19:59:40</p>
+        <p>Site Generated 2019-04-06 20:56:10</p>
       </span>
     </div>
 
