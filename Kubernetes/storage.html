@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>storage - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Kubernetes">Kubernetes</a>&nbsp;&#187;&nbsp;storage
+    <span class="updated">Page Updated&nbsp;
+      2019-04-14 14:43
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">storage</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#config-storage">配置和存储 Config &amp; Storage</a><ul>
+<li><a href="#volume">Volume</a><ul>
+<li><a href="#emptydir">emptyDir 最简单</a><ul>
+<li><a href="#pod">存储卷在pod 容器间共享</a></li>
+</ul>
+</li>
+<li><a href="#gitrepo">gitRepo</a></li>
+<li><a href="#hostpath">hostPath 重要</a></li>
+</ul>
+</li>
+<li><a href="#csi">CSI</a></li>
+<li><a href="#configmap">ConfigMap</a></li>
+<li><a href="#downwardapi">DownwardAPI</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="config-storage">配置和存储 Config &amp; Storage</h1>
+<p>本地网络存储，如SAN (iSCSI), NAS (nfs, cifs)</p>
+<p>分布式存储集群，支持多种存储确保存储资源持久化，如GlusterFS，ceph RBD， Flocker</p>
+<p>云存储，如EBS， Azure Disk </p>
+<p>使用ConfigMap资源能够以环境变量或存储卷的方式接入到Pod中，还可以被同类Pod共享，不适合存储密钥等敏感数据</p>
+<h2 id="volume">Volume</h2>
+<p>在Pod上要定义volume，volume要指明关联到哪个存储卷上</p>
+<p>在容器中使用volumeMounts，讲存储卷挂载才可使用</p>
+<h3 id="emptydir">emptyDir 最简单</h3>
+<p>最简单的一种存储卷</p>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="n">volumes</span><span class="p">]</span><span class="err">#</span> <span class="n">cat</span> <span class="n">pod</span><span class="o">-</span><span class="n">vol</span><span class="o">-</span><span class="n">demo</span><span class="p">.</span><span class="n">yaml</span>
+<span class="nl">apiVersion:</span> <span class="n">v1</span>
+<span class="nl">kind:</span> <span class="n">Pod</span>
+<span class="nl">metadata:</span>
+  <span class="nl">name:</span> <span class="n">pod</span><span class="o">-</span><span class="n">vol</span><span class="o">-</span><span class="n">demo</span>
+  <span class="nl">namespace:</span> <span class="k">default</span>
+  <span class="nl">labels:</span>
+    <span class="nl">app:</span> <span class="n">myapp</span>
+    <span class="nl">tier:</span> <span class="n">frontend</span>
+  <span class="nl">annotations:</span>
+    <span class="n">xuxuehua</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">created</span><span class="o">-</span><span class="n">by</span><span class="o">:</span> <span class="s">&quot;cluster admin&quot;</span>
+<span class="nl">spec:</span>
+  <span class="nl">containers:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+    <span class="nl">image:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+    <span class="nl">ports:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">http</span>
+      <span class="nl">containerPort:</span> <span class="mi">80</span>
+    <span class="nl">volumeMounts:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">html</span>
+      <span class="nl">mountPath:</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">web</span><span class="o">/</span><span class="n">html</span><span class="o">/</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">busybox</span>
+    <span class="nl">image:</span> <span class="n">busybox</span><span class="o">:</span><span class="n">latest</span>
+    <span class="nl">imagePullPolicy:</span> <span class="n">IfNotPresent</span>
+    <span class="nl">volumeMounts:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">html</span>
+      <span class="nl">mountPath:</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span>
+    <span class="nl">command:</span>
+    <span class="o">-</span> <span class="s">&quot;/bin/sh&quot;</span>
+    <span class="o">-</span> <span class="s">&quot;-c&quot;</span>
+    <span class="o">-</span> <span class="s">&quot;sleep 3600&quot;</span>
+  <span class="nl">volumes:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">html</span>
+    <span class="nl">emptyDir:</span> <span class="p">{}</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="n">volumes</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">pod</span><span class="o">-</span><span class="n">vol</span><span class="o">-</span><span class="n">demo</span><span class="p">.</span><span class="n">yaml</span>
+<span class="n">pod</span><span class="o">/</span><span class="n">pod</span><span class="o">-</span><span class="n">vol</span><span class="o">-</span><span class="n">demo</span> <span class="n">created</span>
+<span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="n">volumes</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span>
+<span class="n">NAME</span>           <span class="n">READY</span>   <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
+<span class="n">pod</span><span class="o">-</span><span class="n">vol</span><span class="o">-</span><span class="n">demo</span>   <span class="mi">2</span><span class="o">/</span><span class="mi">2</span>     <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">24</span><span class="n">s</span>
+
+
+<span class="cp"># 使用mount命令可以查看到被挂载的存储卷</span>
+<span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="n">volumes</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">pod</span><span class="o">-</span><span class="n">vol</span><span class="o">-</span><span class="n">demo</span> <span class="o">-</span><span class="n">c</span> <span class="n">busybox</span> <span class="o">--</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+<span class="o">/</span> <span class="err">#</span> <span class="n">mount</span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mapper</span><span class="o">/</span><span class="n">cl</span><span class="o">-</span><span class="n">root</span> <span class="n">on</span> <span class="o">/</span><span class="n">data</span> <span class="n">type</span> <span class="n">xfs</span> <span class="p">(</span><span class="n">rw</span><span class="p">,</span><span class="n">seclabel</span><span class="p">,</span><span class="n">relatime</span><span class="p">,</span><span class="n">attr2</span><span class="p">,</span><span class="n">inode64</span><span class="p">,</span><span class="n">noquota</span><span class="p">)</span>
+
+<span class="o">/</span> <span class="err">#</span> <span class="n">echo</span> <span class="err">$</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">index</span><span class="p">.</span><span class="n">html</span>
+<span class="o">/</span> <span class="err">#</span> <span class="n">cat</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">index</span><span class="p">.</span><span class="n">html</span>
+
+<span class="n">Sun</span> <span class="n">Apr</span> <span class="mi">14</span> <span class="mi">08</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">29</span> <span class="n">UTC</span> <span class="mi">2019</span>
+</pre></div>
+
+
+<p>也可以在另一个pod 中查看到该文件</p>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="n">volumes</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">pod</span><span class="o">-</span><span class="n">vol</span><span class="o">-</span><span class="n">demo</span> <span class="o">-</span><span class="n">c</span> <span class="n">myapp</span> <span class="o">--</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+<span class="o">/</span> <span class="err">#</span> <span class="n">cat</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">web</span><span class="o">/</span><span class="n">html</span><span class="o">/</span><span class="n">index</span><span class="p">.</span><span class="n">html</span>
+
+<span class="n">Sun</span> <span class="n">Apr</span> <span class="mi">14</span> <span class="mi">08</span><span class="o">:</span><span class="mi">43</span><span class="o">:</span><span class="mi">29</span> <span class="n">UTC</span> <span class="mi">2019</span>
+</pre></div>
+
+
+<h4 id="pod">存储卷在pod 容器间共享</h4>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="n">volumes</span><span class="p">]</span><span class="err">#</span> <span class="n">cat</span> <span class="n">pod</span><span class="o">-</span><span class="n">vol</span><span class="o">-</span><span class="n">demo</span><span class="p">.</span><span class="n">yaml</span>
+<span class="nl">apiVersion:</span> <span class="n">v1</span>
+<span class="nl">kind:</span> <span class="n">Pod</span>
+<span class="nl">metadata:</span>
+  <span class="nl">name:</span> <span class="n">pod</span><span class="o">-</span><span class="n">vol</span><span class="o">-</span><span class="n">demo</span>
+  <span class="nl">namespace:</span> <span class="k">default</span>
+  <span class="nl">labels:</span>
+    <span class="nl">app:</span> <span class="n">myapp</span>
+    <span class="nl">tier:</span> <span class="n">frontend</span>
+  <span class="nl">annotations:</span>
+    <span class="n">xuxuehua</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">created</span><span class="o">-</span><span class="n">by</span><span class="o">:</span> <span class="s">&quot;cluster admin&quot;</span>
+<span class="nl">spec:</span>
+  <span class="nl">containers:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+    <span class="nl">image:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+    <span class="nl">imagePullPolicy:</span> <span class="n">IfNotPresent</span>
+    <span class="nl">ports:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">http</span>
+      <span class="nl">containerPort:</span> <span class="mi">80</span>
+    <span class="nl">volumeMounts:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">html</span>
+      <span class="nl">mountPath:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">html</span><span class="o">/</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">busybox</span>
+    <span class="nl">image:</span> <span class="n">busybox</span><span class="o">:</span><span class="n">latest</span>
+    <span class="nl">imagePullPolicy:</span> <span class="n">IfNotPresent</span>
+    <span class="nl">volumeMounts:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">html</span>
+      <span class="nl">mountPath:</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span>
+    <span class="nl">command:</span> <span class="p">[</span><span class="s">&quot;/bin/sh&quot;</span><span class="p">]</span>
+    <span class="nl">args:</span> <span class="p">[</span><span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="s">&quot;while true; do echo $(date) &gt;&gt; /data/index.html; sleep 2 ; done&quot;</span><span class="p">]</span>
+  <span class="nl">volumes:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">html</span>
+    <span class="nl">emptyDir:</span> <span class="p">{}</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="nx">volumes</span><span class="cp">]</span># kubectl apply -f pod-vol-demo.yaml
+pod/pod-vol-demo created
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="nx">volumes</span><span class="cp">]</span># kubectl get pods
+NAME           READY   STATUS    RESTARTS   AGE
+pod-vol-demo   2/2     Running   0          13s
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="nx">volumes</span><span class="cp">]</span># kubectl  get pods -o wide
+NAME           READY   STATUS    RESTARTS   AGE   IP             NODE                    NOMINATED NODE   READINESS GATES
+pod-vol-demo   2/2     Running   0          27s   10.244.2.236   localhost.localdomain   <span class="nt">&lt;none&gt;</span>           <span class="nt">&lt;none&gt;</span>
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="nx">volumes</span><span class="cp">]</span># curl 10.244.2.236
+Sun Apr 14 12:10:17 UTC 2019
+Sun Apr 14 12:10:19 UTC 2019
+Sun Apr 14 12:10:21 UTC 2019
+Sun Apr 14 12:10:23 UTC 2019
+Sun Apr 14 12:10:25 UTC 2019
+Sun Apr 14 12:10:27 UTC 2019
+</pre></div>
+
+
+<h3 id="gitrepo">gitRepo</h3>
+<p>把git 仓库中的内容clone 到本地上，并且作为存储卷定义到pod上</p>
+<p>但本质上也是emptyDir</p>
+<p>可以使用sidecar定时clone 到本地，保持数据的更新</p>
+<h3 id="hostpath">hostPath 重要</h3>
+<p>将pod所在的宿主机上的文件或者目录建立存储关系，但是存储数据不会在pod删除的时候，一同删除</p>
+<h2 id="csi">CSI</h2>
+<h2 id="configmap">ConfigMap</h2>
+<h2 id="downwardapi">DownwardAPI</h2>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-04-15 15:27:01</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

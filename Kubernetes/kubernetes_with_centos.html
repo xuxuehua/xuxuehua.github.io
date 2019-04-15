@@ -116,6 +116,16 @@
 </pre></div>
 
 
+<p>添加ipvs 模块 (未测试)</p>
+<div class="hlcode"><pre><span class="n">KUBE_PROXY_MODE</span><span class="o">=</span><span class="n">ipvs</span>
+</pre></div>
+
+
+<p>并且导入模块</p>
+<div class="hlcode"><pre><span class="n">ip_vs</span><span class="p">,</span> <span class="n">ip_vs_rr</span><span class="p">,</span> <span class="n">ip_vs_wrr</span><span class="p">,</span> <span class="n">ip_vs_sh</span><span class="p">,</span> <span class="n">nf_conntrack_ipv4</span>
+</pre></div>
+
+
 <p>若无法启动服务</p>
 <div class="hlcode"><pre><span class="n">kubeadm</span> <span class="n">reset</span> 
 <span class="n">echo</span> <span class="err">&#39;</span><span class="n">Environment</span><span class="o">=</span><span class="s">&quot;KUBELET_EXTRA_ARGS=--fail-swap-on=false&quot;</span><span class="err">&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">kubelet</span><span class="p">.</span><span class="n">service</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="mi">10</span><span class="o">-</span><span class="n">kubeadm</span><span class="p">.</span><span class="n">conf</span>
@@ -331,7 +341,7 @@ nginx.default.svc.cluster.local. <span class="m">5</span> IN   A       <span cla
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-06 20:56:10</p>
+        <p>Site Generated 2019-04-15 15:27:01</p>
       </span>
     </div>
 

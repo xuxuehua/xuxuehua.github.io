@@ -96,6 +96,10 @@
 <li><a href="#pop">pop 恢复临时现场</a></li>
 </ul>
 </li>
+<li><a href="#status">status</a><ul>
+<li><a href="#-porcelain">--porcelain 简单输出</a></li>
+</ul>
+</li>
 <li><a href="#log">log</a><ul>
 <li><a href="#-graph">--graph 图形化</a></li>
 <li><a href="#-n">-n 行数</a></li>
@@ -103,7 +107,10 @@
 </ul>
 </li>
 <li><a href="#pull">pull 拉取远端</a></li>
-<li><a href="#push">push 推送到远端</a></li>
+<li><a href="#push">push 推送到远端</a><ul>
+<li><a href="#-force">--force</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -142,6 +149,11 @@
 <h3 id="-b">-b 指定分支</h3>
 <p>创建临时分支temp</p>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">temp</span> <span class="n">COMMIT_ID</span>
+</pre></div>
+
+
+<p>基于远端的分支进行创建</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">BRANCH_NAME</span><span class="o">/</span><span class="n">INFO</span>  <span class="n">origin</span><span class="o">/</span><span class="n">BRANCH_NAME</span><span class="o">/</span><span class="n">INFO</span>
 </pre></div>
 
 
@@ -311,6 +323,35 @@
 </pre></div>
 
 
+<h2 id="status">status</h2>
+<h3 id="-porcelain">--porcelain 简单输出</h3>
+<div class="hlcode"><pre><span class="err">$</span> <span class="nx">git</span> <span class="nb">status</span>
+<span class="k">On</span> <span class="nx">branch</span> <span class="nx">master</span>
+<span class="nx">Your</span> <span class="nx">branch</span> <span class="nx">is</span> <span class="nb">up</span> <span class="k">to</span> <span class="kt">date</span> <span class="k">with</span> <span class="s1">&#39;origin/master&#39;</span><span class="nx">.</span>
+
+<span class="nx">Changes</span> <span class="ow">not</span> <span class="nx">staged</span> <span class="nb">for</span> <span class="nx">commit</span><span class="p">:</span>
+  <span class="p">(</span><span class="nx">use</span> <span class="s2">&quot;git add &lt;file&gt;...&quot;</span> <span class="k">to</span> <span class="nx">update</span> <span class="nx">what</span> <span class="nx">will</span> <span class="nx">be</span> <span class="nx">committed</span><span class="p">)</span>
+  <span class="p">(</span><span class="nx">use</span> <span class="s2">&quot;git checkout -- &lt;file&gt;...&quot;</span> <span class="k">to</span> <span class="nx">discard</span> <span class="n">changes</span> <span class="k">in</span> <span class="nx">working</span> <span class="nx">directory</span><span class="p">)</span>
+
+    <span class="nx">modified</span><span class="p">:</span>   <span class="nb">content</span><span class="p">/</span><span class="nx">Kubernetes</span><span class="p">/</span><span class="nx">kubernetes_with_centos.md</span>
+    <span class="nx">modified</span><span class="p">:</span>   <span class="nb">content</span><span class="p">/</span><span class="nx">Kubernetes</span><span class="p">/</span><span class="nx">resource_management.md</span>
+    <span class="nx">modified</span><span class="p">:</span>   <span class="nb">content</span><span class="p">/</span><span class="nx">Kubernetes</span><span class="p">/</span><span class="nx">yaml.md</span>
+
+<span class="nx">Untracked</span> <span class="nx">files</span><span class="p">:</span>
+  <span class="p">(</span><span class="nx">use</span> <span class="s2">&quot;git add &lt;file&gt;...&quot;</span> <span class="k">to</span> <span class="n">include</span> <span class="k">in</span> <span class="nx">what</span> <span class="nx">will</span> <span class="nx">be</span> <span class="nx">committed</span><span class="p">)</span>
+
+    <span class="nb">content</span><span class="p">/</span><span class="nx">Kubernetes</span><span class="p">/</span><span class="nx">services.md</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">git</span> <span class="n">status</span> <span class="o">--</span><span class="n">porcelain</span>
+ <span class="n">M</span> <span class="n">content</span><span class="o">/</span><span class="n">Kubernetes</span><span class="o">/</span><span class="n">kubernetes_with_centos</span><span class="p">.</span><span class="n">md</span>
+ <span class="n">M</span> <span class="n">content</span><span class="o">/</span><span class="n">Kubernetes</span><span class="o">/</span><span class="n">resource_management</span><span class="p">.</span><span class="n">md</span>
+ <span class="n">M</span> <span class="n">content</span><span class="o">/</span><span class="n">Kubernetes</span><span class="o">/</span><span class="n">yaml</span><span class="p">.</span><span class="n">md</span>
+<span class="o">??</span> <span class="n">content</span><span class="o">/</span><span class="n">Kubernetes</span><span class="o">/</span><span class="n">services</span><span class="p">.</span><span class="n">md</span>
+</pre></div>
+
+
 <h2 id="log">log</h2>
 <h3 id="-graph">--graph 图形化</h3>
 <p>开启图形化</p>
@@ -326,12 +367,14 @@
 
 <h2 id="pull">pull 拉取远端</h2>
 <h2 id="push">push 推送到远端</h2>
+<h3 id="-force">--force</h3>
+<p>不要用 git push --force，而要用 git push --force-with-lease 代替。在你上次提交之后，只要其他人往该分支提交给代码，git push --force-with-lease 会拒绝覆盖</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-06 20:56:10</p>
+        <p>Site Generated 2019-04-15 15:27:01</p>
       </span>
     </div>
 

@@ -70,6 +70,7 @@
 <li><a href="#readinessprobe">readinessProbe</a></li>
 <li><a href="#restartpolicy">restartPolicy</a></li>
 <li><a href="#activedeadlineseconds">activeDeadlineSeconds</a></li>
+<li><a href="#sessionaffinity">sessionAffinity</a></li>
 <li><a href="#parallelism">parallelism</a></li>
 <li><a href="#completions">completions</a></li>
 <li><a href="#rollingupdatestrategy">RollingUpdateStrategy</a></li>
@@ -565,6 +566,43 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 <blockquote>
 <p>这是Job对象的例子</p>
 </blockquote>
+<h2 id="sessionaffinity">sessionAffinity</h2>
+<p>None表示不启用，随机请求后端Pod</p>
+<p>ClientIP表示锁定一个后端请求</p>
+<div class="hlcode"><pre><span class="cp"># Please edit the object below. Lines beginning with a &#39;#&#39; will be ignored,</span>
+<span class="cp"># and an empty file will abort the edit. If an error occurs while saving this file will be</span>
+<span class="cp"># reopened with the relevant failures.</span>
+<span class="cp">#</span>
+<span class="nl">apiVersion:</span> <span class="n">v1</span>
+<span class="nl">kind:</span> <span class="n">Service</span>
+<span class="nl">metadata:</span>
+  <span class="nl">annotations:</span>
+    <span class="n">kubectl</span><span class="p">.</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">last</span><span class="o">-</span><span class="n">applied</span><span class="o">-</span><span class="n">configuration</span><span class="o">:</span> <span class="o">|</span>
+      <span class="p">{</span><span class="s">&quot;apiVersion&quot;</span><span class="o">:</span><span class="s">&quot;v1&quot;</span><span class="p">,</span><span class="s">&quot;kind&quot;</span><span class="o">:</span><span class="s">&quot;Service&quot;</span><span class="p">,</span><span class="s">&quot;metadata&quot;</span><span class="o">:</span><span class="p">{</span><span class="s">&quot;annotations&quot;</span><span class="o">:</span><span class="p">{},</span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="s">&quot;myapp&quot;</span><span class="p">,</span><span class="s">&quot;namespace&quot;</span><span class="o">:</span><span class="s">&quot;default&quot;</span><span class="p">},</span><span class="s">&quot;spec&quot;</span><span class="o">:</span><span class="p">{</span><span class="s">&quot;clusterIP&quot;</span><span class="o">:</span><span class="s">&quot;10.99.99.99&quot;</span><span class="p">,</span><span class="s">&quot;ports&quot;</span><span class="o">:</span><span class="p">[{</span><span class="s">&quot;nodePort&quot;</span><span class="o">:</span><span class="mi">30080</span><span class="p">,</span><span class="s">&quot;port&quot;</span><span class="o">:</span><span class="mi">80</span><span class="p">,</span><span class="s">&quot;targetPort&quot;</span><span class="o">:</span><span class="mi">80</span><span class="p">}],</span><span class="s">&quot;selector&quot;</span><span class="o">:</span><span class="p">{</span><span class="s">&quot;app&quot;</span><span class="o">:</span><span class="s">&quot;myapp&quot;</span><span class="p">,</span><span class="s">&quot;release&quot;</span><span class="o">:</span><span class="s">&quot;canary&quot;</span><span class="p">},</span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="s">&quot;NodePort&quot;</span><span class="p">}}</span>
+  <span class="nl">creationTimestamp:</span> <span class="s">&quot;2019-04-07T05:54:38Z&quot;</span>
+  <span class="nl">name:</span> <span class="n">myapp</span>
+  <span class="nl">namespace:</span> <span class="k">default</span>
+  <span class="nl">resourceVersion:</span> <span class="s">&quot;739917&quot;</span>
+  <span class="nl">selfLink:</span> <span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">namespaces</span><span class="o">/</span><span class="k">default</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">myapp</span>
+  <span class="nl">uid:</span> <span class="n">a1636d2f</span><span class="o">-</span><span class="mf">58f</span><span class="mi">9</span><span class="o">-</span><span class="mf">11e9</span><span class="o">-</span><span class="mi">8178</span><span class="o">-</span><span class="mf">560001f</span><span class="n">a0d25</span>
+<span class="nl">spec:</span>
+  <span class="nl">clusterIP:</span> <span class="mf">10.99.99.99</span>
+  <span class="nl">externalTrafficPolicy:</span> <span class="n">Cluster</span>
+  <span class="nl">ports:</span>
+  <span class="o">-</span> <span class="n">nodePort</span><span class="o">:</span> <span class="mi">30080</span>
+    <span class="nl">port:</span> <span class="mi">80</span>
+    <span class="nl">protocol:</span> <span class="n">TCP</span>
+    <span class="nl">targetPort:</span> <span class="mi">80</span>
+  <span class="nl">selector:</span>
+    <span class="nl">app:</span> <span class="n">myapp</span>
+    <span class="nl">release:</span> <span class="n">canary</span>
+  <span class="nl">sessionAffinity:</span> <span class="n">None</span>
+  <span class="nl">type:</span> <span class="n">NodePort</span>
+<span class="nl">status:</span>
+  <span class="nl">loadBalancer:</span> <span class="p">{}</span>
+</pre></div>
+
+
 <h2 id="parallelism">parallelism</h2>
 <p>它定义的是一个 Job 在任意时间最多可以启动多少个 Pod 同时运行</p>
 <h2 id="completions">completions</h2>
@@ -817,7 +855,7 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-06 20:56:10</p>
+        <p>Site Generated 2019-04-15 15:27:01</p>
       </span>
     </div>
 
