@@ -55,39 +55,39 @@
 </pre></div>
 
 
-<div class="hlcode"><pre><span class="nx">FILE</span><span class="o">=~</span><span class="err">/.zshrc # 随便找个路径</span>
-<span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="nx">e</span> <span class="s2">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="nx">then</span> <span class="err">#</span> <span class="o">-</span><span class="nx">e</span> <span class="err">单目操作符</span>
-    <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="nx">f</span> <span class="s2">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="nx">then</span>
-        <span class="nx">echo</span> <span class="s2">&quot;$FILE is a regular file.&quot;</span>
-    <span class="nx">fi</span>
-    <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="nx">d</span> <span class="s2">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="nx">then</span>
-        <span class="nx">echo</span> <span class="s2">&quot;$FILE is a directory.&quot;</span>
-    <span class="nx">fi</span>
-    <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="nx">r</span> <span class="s2">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="nx">then</span>
-        <span class="nx">echo</span> <span class="s2">&quot;$FILE is readable.&quot;</span>
-    <span class="nx">fi</span>
-    <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="nx">w</span> <span class="s2">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="nx">then</span>
-        <span class="nx">echo</span> <span class="s2">&quot;$FILE is writable.&quot;</span>
-    <span class="nx">fi</span>
-    <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="nx">x</span> <span class="s2">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="nx">then</span>
-        <span class="nx">echo</span> <span class="s2">&quot;$FILE is executable/searchable.&quot;</span>
-    <span class="nx">fi</span>
+<div class="hlcode"><pre><span class="kt">FILE</span><span class="o">=~/</span><span class="p">.</span><span class="n">zshrc</span> <span class="err">#</span> <span class="err">随便找个路径</span>
+<span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">e</span> <span class="s">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="n">then</span> <span class="err">#</span> <span class="o">-</span><span class="n">e</span> <span class="err">单目操作符</span>
+    <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">f</span> <span class="s">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="n">then</span>
+        <span class="n">echo</span> <span class="s">&quot;$FILE is a regular file.&quot;</span>
+    <span class="n">fi</span>
+    <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">d</span> <span class="s">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="n">then</span>
+        <span class="n">echo</span> <span class="s">&quot;$FILE is a directory.&quot;</span>
+    <span class="n">fi</span>
+    <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">r</span> <span class="s">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="n">then</span>
+        <span class="n">echo</span> <span class="s">&quot;$FILE is readable.&quot;</span>
+    <span class="n">fi</span>
+    <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">w</span> <span class="s">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="n">then</span>
+        <span class="n">echo</span> <span class="s">&quot;$FILE is writable.&quot;</span>
+    <span class="n">fi</span>
+    <span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">x</span> <span class="s">&quot;$FILE&quot;</span> <span class="p">];</span> <span class="n">then</span>
+        <span class="n">echo</span> <span class="s">&quot;$FILE is executable/searchable.&quot;</span>
+    <span class="n">fi</span>
 <span class="k">else</span>
-    <span class="nx">echo</span> <span class="s2">&quot;$FILE does not exist&quot;</span>
-<span class="nx">fi</span>
+    <span class="n">echo</span> <span class="s">&quot;$FILE does not exist&quot;</span>
+<span class="n">fi</span>
 </pre></div>
 
 
 <h2 id="case">case</h2>
 <p><code>case</code> 其实就是我们熟悉的那个 <code>swich</code> ，但语法形式上有很大的不同。</p>
-<div class="hlcode"><pre><span class="k">case</span> <span class="s2">&quot;$variable&quot;</span> <span class="k">in</span>
-    <span class="s2">&quot;$condition1&quot;</span> <span class="p">)</span>
-        <span class="nx">command</span><span class="p">...</span>
+<div class="hlcode"><pre><span class="k">case</span> <span class="s">&quot;$variable&quot;</span> <span class="n">in</span>
+    <span class="s">&quot;$condition1&quot;</span> <span class="p">)</span>
+        <span class="n">command</span><span class="p">...</span>
     <span class="p">;;</span>
-    <span class="s2">&quot;$condition2&quot;</span> <span class="p">)</span>
-        <span class="nx">command</span><span class="p">...</span>
+    <span class="s">&quot;$condition2&quot;</span> <span class="p">)</span>
+        <span class="n">command</span><span class="p">...</span>
     <span class="p">;;</span>
-<span class="nx">esac</span>
+<span class="n">esac</span>
 </pre></div>
 
 
@@ -98,18 +98,18 @@
 <li>整个 <code>case</code> 区块，必须以 <code>esac</code> 结尾——<code>esac case spelled backwards</code></li>
 </ul>
 <p>来个例子。</p>
-<div class="hlcode"><pre><span class="nx">x</span><span class="o">=</span><span class="mi">4</span>
+<div class="hlcode"><pre><span class="n">x</span><span class="o">=</span><span class="mi">4</span>
 
-<span class="k">case</span> <span class="nx">$x</span> <span class="k">in</span>
-    <span class="s1">&#39;a&#39;</span> <span class="p">)</span>
-        <span class="nx">echo</span> <span class="s2">&quot;x 是 a&quot;</span><span class="p">;;</span>
+<span class="k">case</span> <span class="err">$</span><span class="n">x</span> <span class="n">in</span>
+    <span class="sc">&#39;a&#39;</span> <span class="p">)</span>
+        <span class="n">echo</span> <span class="s">&quot;x 是 a&quot;</span><span class="p">;;</span>
     <span class="mi">4</span> <span class="p">)</span>
-        <span class="nx">echo</span> <span class="s2">&quot;x 是 4&quot;</span><span class="p">;;</span>
-    <span class="s1">&#39;b&#39;</span> <span class="p">)</span>
-        <span class="nx">echo</span> <span class="s2">&quot;x 是 b&quot;</span>
-<span class="nx">esac</span>
+        <span class="n">echo</span> <span class="s">&quot;x 是 4&quot;</span><span class="p">;;</span>
+    <span class="sc">&#39;b&#39;</span> <span class="p">)</span>
+        <span class="n">echo</span> <span class="s">&quot;x 是 b&quot;</span>
+<span class="n">esac</span>
 
-<span class="err">#</span> <span class="nx">x</span> <span class="err">是</span> <span class="mi">4</span>
+<span class="cp"># x 是 4</span>
 </pre></div>
 
 
@@ -125,12 +125,12 @@
 <li>循环体必须 <code>done</code> 结尾</li>
 <li><code>[in words]</code> 取值很宽泛，可以是通配符，可以是一个命令(<code>ls</code>)，一句话，必须是数组形式</li>
 </ul>
-<div class="hlcode"><pre><span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="o">*</span>
+<div class="hlcode"><pre><span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="o">*</span>
 <span class="k">do</span>
-    <span class="nx">echo</span> <span class="nx">$i</span><span class="p">;</span>
-<span class="nx">done</span>
+    <span class="n">echo</span> <span class="err">$</span><span class="n">i</span><span class="p">;</span>
+<span class="n">done</span>
 
-<span class="err">##</span> <span class="err">会打印当前目录下的所有文件名</span>
+<span class="cp">## 会打印当前目录下的所有文件名</span>
 </pre></div>
 
 
@@ -161,19 +161,19 @@
 
 
 <h2 id="while">while</h2>
-<div class="hlcode"><pre><span class="nx">count</span><span class="o">=</span><span class="mi">1</span>
-<span class="k">while</span> <span class="p">[</span> <span class="nx">$count</span> <span class="o">-</span><span class="nx">le</span> <span class="mi">5</span> <span class="p">];</span> <span class="k">do</span>
-    <span class="nx">echo</span> <span class="nx">$count</span>
-    <span class="nx">count</span><span class="o">=</span><span class="nx">$</span><span class="p">((</span><span class="nx">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-<span class="nx">done</span>
-<span class="nx">echo</span> <span class="s2">&quot;Finished.&quot;</span>
+<div class="hlcode"><pre><span class="n">count</span><span class="o">=</span><span class="mi">1</span>
+<span class="k">while</span> <span class="p">[</span> <span class="err">$</span><span class="n">count</span> <span class="o">-</span><span class="n">le</span> <span class="mi">5</span> <span class="p">];</span> <span class="k">do</span>
+    <span class="n">echo</span> <span class="err">$</span><span class="n">count</span>
+    <span class="n">count</span><span class="o">=</span><span class="err">$</span><span class="p">((</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">done</span>
+<span class="n">echo</span> <span class="s">&quot;Finished.&quot;</span>
 
-<span class="err">#</span> <span class="err">依次打印</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">5</span> <span class="err">和</span> <span class="nx">finished</span>
+<span class="cp"># 依次打印 1 - 5 和 finished</span>
 </pre></div>
 
 
 <p>语法如下：</p>
-<div class="hlcode"><pre><span class="k">while</span> <span class="nx">commands</span><span class="p">;</span> <span class="k">do</span> <span class="nx">commands</span><span class="p">;</span> <span class="nx">done</span>
+<div class="hlcode"><pre><span class="k">while</span> <span class="n">commands</span><span class="p">;</span> <span class="k">do</span> <span class="n">commands</span><span class="p">;</span> <span class="n">done</span>
 </pre></div>
 
 
@@ -199,7 +199,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-15 15:27:01</p>
+        <p>Site Generated 2019-04-28 23:01:51</p>
       </span>
     </div>
 

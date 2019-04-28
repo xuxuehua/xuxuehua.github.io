@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>input_output_redirection - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Linux">Linux</a>&nbsp;&#187;&nbsp;input_output_redirection
+    <span class="updated">Page Updated&nbsp;
+      2019-04-17 16:01
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">input_output_redirection</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">输入/输出 重定向</a></li>
+</ul>
+</div>
+<h1 id="_1">输入/输出 重定向</h1>
+<div class="hlcode"><pre>输出/输入重导向 
+&gt; &gt;&gt;   <span class="err">&lt;</span>   <span class="err">&lt;</span><span class="nt">&lt;   :&gt;</span>   <span class="err">&amp;</span>&gt;   2<span class="err">&amp;</span>&gt;   2<span class="err">&lt;</span>&gt;&gt;<span class="err">&amp;</span>   &gt;<span class="err">&amp;</span>2  
+
+文件描述符(File Descriptor)，用一个数字（通常为0-9）来表示一个文件。 
+常用的文件描述符如下： 
+文件描述符     名称     常用缩写 默认值 
+0        标准输入 stdin    键盘 
+1        标准输出 stdout     屏幕 
+2    标准错误输出   stderr     屏幕 
+我们在简单地用<span class="err">&lt;</span>或&gt;时，相当于使用 0<span class="err">&lt;</span> 或 1&gt;（下面会详细介绍）。 
+* cmd &gt; file 
+把cmd命令的输出重定向到文件file中。如果file已经存在，则清空原有文件，使用bash的noclobber选项可以防止复盖原有文件。 
+* cmd &gt;&gt; file 
+把cmd命令的输出重定向到文件file中，如果file已经存在，则把信息加在原有文件後面。 
+* cmd <span class="nt">&lt; file</span> 
+<span class="err">使</span><span class="na">cmd</span><span class="err">命令从</span><span class="na">file</span><span class="err">读入</span> 
+<span class="err">*</span> <span class="na">cmd</span> <span class="err">&lt;&lt;</span> <span class="na">text</span> 
+<span class="err">从命令行读取输入，直到一个与</span><span class="na">text</span><span class="err">相同的行结束。除非使用引号把输入括起来，此模式将对输入内容进行</span><span class="na">shell</span><span class="err">变量替换。如果使用&lt;&lt;</span><span class="na">-</span> <span class="err">，则会忽略接下来输入行首的</span><span class="na">tab</span><span class="err">，结束行也可以是一堆</span><span class="na">tab</span><span class="err">再加上一个与</span><span class="na">text</span><span class="err">相同的内容，可以参考後面的例子。</span> 
+<span class="err">*</span> <span class="na">cmd</span> <span class="err">&lt;&lt;&lt;</span> <span class="na">word</span> 
+<span class="err">把</span><span class="na">word</span><span class="err">（而不是文件</span><span class="na">word</span><span class="err">）和後面的换行作为输入提供给</span><span class="na">cmd</span><span class="err">。</span> 
+<span class="err">*</span> <span class="na">cmd</span> <span class="err">&lt;</span><span class="nt">&gt;</span> file 
+以读写模式把文件file重定向到输入，文件file不会被破坏。仅当应用程序利用了这一特性时，它才是有意义的。 
+* cmd &gt;| file 
+功能同&gt;，但即便在设置了noclobber时也会复盖file文件，注意用的是|而非一些书中说的!，目前仅在csh中仍沿用&gt;!实现这一功能。 
+: &gt; filename    把文件\&quot;filename\&quot;截断为0长度.# 如果文件不存在, 那么就创建一个0长度的文件(与&#39;touch&#39;的效果相同). 
+cmd &gt;<span class="err">&amp;</span>n 把输出送到文件描述符n 
+cmd m&gt;<span class="err">&amp;</span>n 把输出 到文件符m的信息重定向到文件描述符n 
+cmd &gt;<span class="err">&amp;</span>- 关闭标准输出 
+cmd <span class="err">&lt;&amp;</span>n 输入来自文件描述符n 
+cmd m<span class="err">&lt;&amp;</span>n m来自文件描述各个n 
+cmd <span class="err">&lt;&amp;</span>- 关闭标准输入 
+cmd <span class="err">&lt;&amp;</span>n- 移动输入文件描述符n而非复制它。（需要解释） 
+cmd &gt;<span class="err">&amp;</span>n- 移动输出文件描述符 n而非复制它。（需要解释） 
+注意： &gt;<span class="err">&amp;</span>实际上复制了文件描述符，这使得cmd &gt; file 2&gt;<span class="err">&amp;</span>1与cmd 2&gt;<span class="err">&amp;</span>1 &gt;file的效果不一样。
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-04-28 23:01:51</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

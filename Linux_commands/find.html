@@ -272,6 +272,14 @@
 <p>此参数的效果和指定“-xdev”相同</p>
 <h3 id="-mtime24">-mtime&lt;24小时数&gt;</h3>
 <p>查找在指定时间曾被更改过的文件或目录，单位以24小时计算</p>
+<p>To find all files modified in the last 24 hours (last full day) in a particular specific directory and its sub-directories:</p>
+<div class="hlcode"><pre>find /directory_path -mtime -1 -ls
+</pre></div>
+
+
+<blockquote>
+<p>The <code>-</code> before <code>1</code> is important - it means anything changed one day or less ago. A <code>+</code> before <code>1</code>would instead mean anything changed at least one day ago, while having nothing before the <code>1</code>would have meant it was changed exacted one day ago, no more, no less.</p>
+</blockquote>
 <h3 id="-name">-name 指定字符串</h3>
 <p>指定字符串作为寻找文件或目录的范本样式</p>
 <p>在<code>/home</code>目录下查找以.txt结尾的文件名</p>
@@ -413,7 +421,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-15 15:27:01</p>
+        <p>Site Generated 2019-04-28 23:01:51</p>
       </span>
     </div>
 

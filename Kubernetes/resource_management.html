@@ -42,6 +42,11 @@
 <li><a href="#statefulset">StatefulSet 有状态</a><ul>
 <li><a href="#_5">设计</a><ul>
 <li><a href="#headless-service">Headless Service</a></li>
+<li><a href="#statefulset_1">StatefulSet</a></li>
+<li><a href="#volumeclaimtemplate">volumeClaimTemplate</a><ul>
+<li><a href="#example">example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -50,7 +55,7 @@
 <li><a href="#_6">滚动更新方式</a></li>
 <li><a href="#master-toleration">Master 节点 toleration</a></li>
 <li><a href="#ingress-controller">Ingress Controller (七层会话卸载)</a><ul>
-<li><a href="#example">example</a></li>
+<li><a href="#example_1">example</a></li>
 </ul>
 </li>
 </ul>
@@ -266,6 +271,8 @@
 <h3 id="statefulset">StatefulSet 有状态</h3>
 <p>负责有状态应用</p>
 <p>用于管理有状态的持久化应用，如database</p>
+<p>要稳定且拥有唯一的网络标识符</p>
+<p>而且需要有序，平滑的部署，扩展，滚动更新，删除，终止</p>
 <p>运维操作极其复杂，需要将脚本写入到statefulset里面完成其对应的操作</p>
 <p>比Deployment会为每个Pod创建一个独有的持久性标识符，并确保Pod之间的顺序性，即管理的是不同的Pod 实例，而不是ReplicaSet中完全一样的Pod</p>
 <p>创建statefulset必须要先创建一个headless的service，分为两个步骤， 而且必须是Headless Service</p>
@@ -411,6 +418,188 @@
 <p>可以看到，当把这两个 Pod 删除之后，Kubernetes 会按照原先编号的顺序，创建出了两个新的 Pod。并且，Kubernetes 依然为它们分配了与原来相同的“网络身份”：web-0.nginx 和 web-1.nginx。</p>
 </blockquote>
 <p>尽管 web-0.nginx 这条记录本身不会变，但它解析到的 Pod 的 IP 地址，并不是固定的。这就意味着，对于“有状态应用”实例的访问，必须使用 DNS 记录或者 hostname 的方式，而绝不应该直接访问这些 Pod 的 IP 地址。</p>
+<h5 id="statefulset_1">StatefulSet</h5>
+<h5 id="volumeclaimtemplate">volumeClaimTemplate</h5>
+<p>不同过pod模版生产，即生成每一个Pod时，会对每一个pod自动创建volume， 而且对每一个volume生成对应的PVC，从而绑定预设好的PV</p>
+<h6 id="example">example</h6>
+<p>生成PV</p>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="n">volumes</span><span class="p">]</span><span class="err">#</span> <span class="n">cat</span> <span class="n">pv</span><span class="o">-</span><span class="n">demo</span><span class="p">.</span><span class="n">yaml</span>
+<span class="nl">apiVersion:</span> <span class="n">v1</span>
+<span class="nl">kind:</span> <span class="n">PersistentVolume</span>
+<span class="nl">metadata:</span>
+  <span class="nl">name:</span> <span class="n">pv001</span>
+  <span class="nl">labels:</span>
+    <span class="nl">name:</span> <span class="n">pv001</span>
+<span class="nl">spec:</span>
+  <span class="nl">nfs:</span>
+    <span class="nl">path:</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">volumes</span><span class="o">/</span><span class="n">v1</span>
+    <span class="nl">server:</span> <span class="mf">202.182.104.162</span>
+  <span class="nl">accessModes:</span> <span class="p">[</span><span class="s">&quot;ReadWriteMany&quot;</span><span class="p">,</span> <span class="s">&quot;ReadWriteOnce&quot;</span><span class="p">]</span>
+  <span class="nl">capacity:</span>
+    <span class="nl">storage:</span> <span class="mi">5</span><span class="n">Gi</span>
+<span class="o">---</span>
+<span class="nl">apiVersion:</span> <span class="n">v1</span>
+<span class="nl">kind:</span> <span class="n">PersistentVolume</span>
+<span class="nl">metadata:</span>
+  <span class="nl">name:</span> <span class="n">pv002</span>
+  <span class="nl">labels:</span>
+    <span class="nl">name:</span> <span class="n">pv002</span>
+<span class="nl">spec:</span>
+  <span class="nl">nfs:</span>
+    <span class="nl">path:</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">volumes</span><span class="o">/</span><span class="n">v2</span>
+    <span class="nl">server:</span> <span class="mf">202.182.104.162</span>
+  <span class="nl">accessModes:</span> <span class="p">[</span><span class="s">&quot;ReadWriteOnce&quot;</span><span class="p">]</span>
+  <span class="nl">capacity:</span>
+    <span class="nl">storage:</span> <span class="mi">5</span><span class="n">Gi</span>
+<span class="o">---</span>
+<span class="nl">apiVersion:</span> <span class="n">v1</span>
+<span class="nl">kind:</span> <span class="n">PersistentVolume</span>
+<span class="nl">metadata:</span>
+  <span class="nl">name:</span> <span class="n">pv003</span>
+  <span class="nl">labels:</span>
+    <span class="nl">name:</span> <span class="n">pv003</span>
+<span class="nl">spec:</span>
+  <span class="nl">nfs:</span>
+    <span class="nl">path:</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">volumes</span><span class="o">/</span><span class="n">v3</span>
+    <span class="nl">server:</span> <span class="mf">202.182.104.162</span>
+  <span class="nl">accessModes:</span> <span class="p">[</span><span class="s">&quot;ReadWriteMany&quot;</span><span class="p">,</span> <span class="s">&quot;ReadWriteOnce&quot;</span><span class="p">]</span>
+  <span class="nl">capacity:</span>
+    <span class="nl">storage:</span> <span class="mi">5</span><span class="n">Gi</span>
+<span class="o">---</span>
+<span class="nl">apiVersion:</span> <span class="n">v1</span>
+<span class="nl">kind:</span> <span class="n">PersistentVolume</span>
+<span class="nl">metadata:</span>
+  <span class="nl">name:</span> <span class="n">pv004</span>
+  <span class="nl">labels:</span>
+    <span class="nl">name:</span> <span class="n">pv004</span>
+<span class="nl">spec:</span>
+  <span class="nl">nfs:</span>
+    <span class="nl">path:</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">volumes</span><span class="o">/</span><span class="n">v4</span>
+    <span class="nl">server:</span> <span class="mf">202.182.104.162</span>
+  <span class="nl">accessModes:</span> <span class="p">[</span><span class="s">&quot;ReadWriteMany&quot;</span><span class="p">,</span> <span class="s">&quot;ReadWriteOnce&quot;</span><span class="p">]</span>
+  <span class="nl">capacity:</span>
+    <span class="nl">storage:</span> <span class="mi">5</span><span class="n">Gi</span>
+<span class="o">---</span>
+<span class="nl">apiVersion:</span> <span class="n">v1</span>
+<span class="nl">kind:</span> <span class="n">PersistentVolume</span>
+<span class="nl">metadata:</span>
+  <span class="nl">name:</span> <span class="n">pv005</span>
+  <span class="nl">labels:</span>
+    <span class="nl">name:</span> <span class="n">pv005</span>
+<span class="nl">spec:</span>
+  <span class="nl">nfs:</span>
+    <span class="nl">path:</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">volumes</span><span class="o">/</span><span class="n">v5</span>
+    <span class="nl">server:</span> <span class="mf">202.182.104.162</span>
+  <span class="nl">accessModes:</span> <span class="p">[</span><span class="s">&quot;ReadWriteMany&quot;</span><span class="p">,</span> <span class="s">&quot;ReadWriteOnce&quot;</span><span class="p">]</span>
+  <span class="nl">capacity:</span>
+    <span class="nl">storage:</span> <span class="mi">5</span><span class="n">Gi</span>
+<span class="o">---</span>
+
+<span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="n">volumes</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span>  <span class="n">get</span> <span class="n">pv</span>
+<span class="n">NAME</span>    <span class="n">CAPACITY</span>   <span class="n">ACCESS</span> <span class="n">MODES</span>   <span class="n">RECLAIM</span> <span class="n">POLICY</span>   <span class="n">STATUS</span>      <span class="n">CLAIM</span>   <span class="n">STORAGECLASS</span>   <span class="n">REASON</span>   <span class="n">AGE</span>
+<span class="n">pv001</span>   <span class="mi">5</span><span class="n">Gi</span>        <span class="n">RWO</span><span class="p">,</span><span class="n">RWX</span>        <span class="n">Retain</span>           <span class="n">Available</span>                                   <span class="mi">11</span><span class="n">m</span>
+<span class="n">pv002</span>   <span class="mi">5</span><span class="n">Gi</span>        <span class="n">RWO</span>            <span class="n">Retain</span>           <span class="n">Available</span>                                   <span class="mi">11</span><span class="n">m</span>
+<span class="n">pv003</span>   <span class="mi">5</span><span class="n">Gi</span>        <span class="n">RWO</span><span class="p">,</span><span class="n">RWX</span>        <span class="n">Retain</span>           <span class="n">Available</span>                                   <span class="mi">11</span><span class="n">m</span>
+<span class="n">pv004</span>   <span class="mi">5</span><span class="n">Gi</span>        <span class="n">RWO</span><span class="p">,</span><span class="n">RWX</span>        <span class="n">Retain</span>           <span class="n">Available</span>                                   <span class="mi">11</span><span class="n">m</span>
+<span class="n">pv005</span>   <span class="mi">5</span><span class="n">Gi</span>        <span class="n">RWO</span><span class="p">,</span><span class="n">RWX</span>        <span class="n">Retain</span>           <span class="n">Available</span>                                   <span class="mi">11</span><span class="n">m</span>
+</pre></div>
+
+
+<p>生成StatefulSet</p>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="n">manifests</span><span class="p">]</span><span class="err">#</span> <span class="n">cat</span> <span class="n">stateful</span><span class="o">-</span><span class="n">demo</span><span class="p">.</span><span class="n">yaml</span>
+<span class="nl">apiVersion:</span> <span class="n">v1</span>
+<span class="nl">kind:</span> <span class="n">Service</span>
+<span class="nl">metadata:</span>
+  <span class="nl">name:</span> <span class="n">myapp</span>
+  <span class="nl">labels:</span>
+    <span class="nl">app:</span> <span class="n">myapp</span>
+<span class="nl">spec:</span>
+  <span class="nl">ports:</span>
+  <span class="o">-</span> <span class="n">port</span><span class="o">:</span> <span class="mi">80</span>
+    <span class="nl">name:</span> <span class="n">web</span>
+  <span class="nl">clusterIP:</span> <span class="n">None</span>
+  <span class="nl">selector:</span>
+    <span class="nl">app:</span> <span class="n">myapp</span><span class="o">-</span><span class="n">pod</span>
+<span class="o">---</span>
+<span class="nl">apiVersion:</span> <span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
+<span class="nl">kind:</span> <span class="n">StatefulSet</span>
+<span class="nl">metadata:</span>
+  <span class="nl">name:</span> <span class="n">myapp</span>
+<span class="nl">spec:</span>
+  <span class="nl">serviceName:</span> <span class="n">myapp</span>
+  <span class="nl">replicas:</span> <span class="mi">3</span>
+  <span class="nl">selector:</span>
+    <span class="nl">matchLabels:</span>
+      <span class="nl">app:</span> <span class="n">myapp</span><span class="o">-</span><span class="n">pod</span>
+  <span class="nl">template:</span>
+    <span class="nl">metadata:</span>
+      <span class="nl">labels:</span>
+        <span class="nl">app:</span> <span class="n">myapp</span><span class="o">-</span><span class="n">pod</span>
+    <span class="nl">spec:</span>
+      <span class="nl">containers:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+        <span class="nl">image:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+        <span class="nl">ports:</span>
+        <span class="o">-</span> <span class="n">containerPort</span><span class="o">:</span> <span class="mi">80</span>
+          <span class="nl">name:</span> <span class="n">web</span>
+        <span class="nl">volumeMounts:</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myappdata</span>
+          <span class="nl">mountPath:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">html</span><span class="o">/</span>
+  <span class="nl">volumeClaimTemplates:</span>
+  <span class="o">-</span> <span class="n">metadata</span><span class="o">:</span>
+      <span class="nl">name:</span> <span class="n">myappdata</span>
+    <span class="nl">spec:</span>
+      <span class="nl">accessModes:</span> <span class="p">[</span> <span class="s">&quot;ReadWriteOnce&quot;</span> <span class="p">]</span>
+      <span class="nl">resources:</span>
+        <span class="nl">requests:</span>
+          <span class="nl">storage:</span> <span class="mi">5</span><span class="n">Gi</span>                   
+</pre></div>
+
+
+<blockquote>
+<p>要在每个worker node提前挂载nfs目录</p>
+</blockquote>
+<div class="hlcode"><pre><span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="nx">manifests</span><span class="cp">]</span># kubectl  apply -f stateful-demo.yaml
+service/myapp unchanged
+statefulset.apps/myapp created
+
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl  get pods
+NAME          READY   STATUS    RESTARTS   AGE
+myapp-0       1/1     Running   0          59m
+myapp-1       1/1     Running   0          58m
+myapp-2       1/1     Running   0          52m
+pod-vol-nfs   1/1     Running   0          5d23h
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl  get pods
+NAME          READY   STATUS    RESTARTS   AGE
+myapp-0       1/1     Running   0          59m
+myapp-1       1/1     Running   0          59m
+myapp-2       1/1     Running   0          52m
+pod-vol-nfs   1/1     Running   0          5d23h
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl  get svc
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1    <span class="nt">&lt;none&gt;</span>        443/TCP   7d20h
+myapp        ClusterIP   None         <span class="nt">&lt;none&gt;</span>        80/TCP    59m
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl  get sts
+NAME    READY   AGE
+myapp   3/3     59m
+
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl  get pv
+NAME    CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM                       STORAGECLASS   REASON   AGE
+pv001   5Gi        RWO,RWX        Retain           Bound       default/myappdata-myapp-1                           59m
+pv002   5Gi        RWO            Retain           Bound       default/myappdata-myapp-0                           59m
+pv003   5Gi        RWO,RWX        Retain           Bound       default/myappdata-myapp-2                           59m
+pv004   5Gi        RWO,RWX        Retain           Available                                                       59m
+pv005   5Gi        RWO,RWX        Retain           Available                                                       59m
+
+
+<span class="cp">[</span><span class="nb">root</span><span class="p">@</span><span class="nx">master</span> <span class="err">~</span><span class="cp">]</span># kubectl  get pvc
+NAME                STATUS   VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+myappdata-myapp-0   Bound    pv002    5Gi        RWO                           59m
+myappdata-myapp-1   Bound    pv001    5Gi        RWO,RWX                       59m
+myappdata-myapp-2   Bound    pv003    5Gi        RWO,RWX                       53m
+</pre></div>
+
+
 <h3 id="daemonset">DaemonSet 守护进程 无状态</h3>
 <p>这个Pod会运行在Kubernetes集群里面的有限节点(Node)上面， 而且只会有一个这样的pod 实例</p>
 <p>常用于运行集群存储的守护进程，如glusterd，ceph，</p>
@@ -541,7 +730,7 @@
 <p><img alt="img" src="https://snag.gy/HhNRni.jpg" /></p>
 <p>这里通过一个service，帮助来对Pod进行分组，本身并不接受外部请求，然后通过ingress资源，实时反应Pod节点的状态，将其信息动态注入到ingress controller，并生成对应的配置文件，哪些pod可以被使用</p>
 <p>通常有3种选择，Nginx，Traefik， Envoy(微服务)</p>
-<h5 id="example">example</h5>
+<h5 id="example_1">example</h5>
 <p>对应的repo</p>
 <p>https://github.com/kubernetes/ingress-nginx.git</p>
 <p>创建名称空间</p>
@@ -1209,7 +1398,7 @@ Events:
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-15 15:27:01</p>
+        <p>Site Generated 2019-04-28 23:01:51</p>
       </span>
     </div>
 

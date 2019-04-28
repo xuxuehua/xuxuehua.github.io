@@ -135,8 +135,12 @@
 <p>你可以理解为<strong>主要关键字.  主键在当前表单的当前字段是唯一的</strong> </p>
 <p>比如数据库通常都是在第一个字段是 <code>ID</code>，这个通常就是一个主键，它默认会自增长。它在名为<code>ID</code>的字段下是不会重复的，每行的值与其他行的值不会重复。</p>
 <h2 id="_3">外键</h2>
-<p>主要用于两个表直接的关联</p>
+<p>主要用于两个表直接的关联, 必须使用InnoDB 表引擎</p>
+<p>外键可以方便的解决数据关联和一致性的问题，但是由于目前互联网数据流量很大，一般在中间层实现约束和控制，尤其是面向Web 应用，</p>
 <p>比如我现在有一个名为<code>A</code> 和 <code>B</code> 的表单，在<code>A</code> 中有一个名为 <strong>username</strong>的字段，在<code>B</code>中有一个名为<strong>user_email</strong>的字段，这时<strong>username去关联user_emai</strong>l的字段，这时的<strong>username</strong>字段就叫做<strong>外键.</strong></p>
+<p>user 表：id 为主键</p>
+<p>profile 表： uid 为主键</p>
+<p>简单来说，若表 profile 的 uid 列 作为表外键（外建名称：user_profile），以表 user 做为主表，以其 id列 做为参照（references），且联动删除/更新操作（on delete/update cascade）。则 user表 中删除 id 为 1 的记录，会联动删除 profile 中 uid 为 1 的记录。user 表中更新 id 为 1 的记录至 id 为 2，则profile 表中 uid 为 1 的记录也会被联动更新至 uid 为 2，这样即保持了数据的完整性和一致性。</p>
 <h2 id="_4">索引</h2>
 <p>把表中的特殊数据提取出来</p>
 <p>利用一定的算法方法，对专门的字段进行优化，使其加快查询速率。</p>
@@ -446,7 +450,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-15 15:27:01</p>
+        <p>Site Generated 2019-04-28 23:01:51</p>
       </span>
     </div>
 

@@ -43,9 +43,11 @@
 <li><a href="#-l">-l</a></li>
 <li><a href="#-l_1">-L 本地转发</a></li>
 <li><a href="#-n">-N</a></li>
-<li><a href="#-o-option">-o option 配置选项</a></li>
-<li><a href="#serveraliveinterval">ServerAliveInterval</a><ul>
+<li><a href="#-o-option">-o option 配置选项</a><ul>
+<li><a href="#serveraliveinterval">ServerAliveInterval</a></li>
 <li><a href="#stricthostkeychecking">StrictHostKeyChecking</a></li>
+<li><a href="#preferredauthentications">PreferredAuthentications</a></li>
+<li><a href="#pubkeyauthentication">PubkeyAuthentication</a></li>
 <li><a href="#proxycommand-case-sensitive">ProxyCommand (Case sensitive)</a><ul>
 <li><a href="#connect">connect</a></li>
 </ul>
@@ -114,7 +116,7 @@
 <h2 id="-o-option">-o option 配置选项</h2>
 <p>指定配置选项</p>
 <p>Can be used to give options in the format used in the configuration file.  This is useful for specifying options for which there is no separate command-line flag</p>
-<h2 id="serveraliveinterval">ServerAliveInterval</h2>
+<h3 id="serveraliveinterval">ServerAliveInterval</h3>
 <p>指定ssh 超时时间</p>
 <div class="hlcode"><pre><span class="n">ssh</span> <span class="o">-</span><span class="n">o</span> <span class="n">ServerAliveInterval</span><span class="o">=</span><span class="mi">30</span> <span class="n">user</span><span class="err">@</span><span class="n">host</span>
 </pre></div>
@@ -123,6 +125,18 @@
 <h3 id="stricthostkeychecking">StrictHostKeyChecking</h3>
 <p>Automatically accept keys</p>
 <div class="hlcode"><pre><span class="n">ssh</span> <span class="o">-</span><span class="n">oStrictHostKeyChecking</span><span class="o">=</span><span class="n">no</span> <span class="err">$</span><span class="n">h</span> 
+</pre></div>
+
+
+<h3 id="preferredauthentications">PreferredAuthentications</h3>
+<p>Force SSH client to use password authentication instead of public key</p>
+<div class="hlcode"><pre><span class="n">ssh</span> <span class="o">-</span><span class="n">o</span> <span class="n">PreferredAuthentications</span><span class="o">=</span><span class="n">password</span> <span class="o">-</span><span class="n">o</span> <span class="n">PubkeyAuthentication</span><span class="o">=</span><span class="n">no</span> <span class="n">user</span><span class="err">@</span><span class="n">host</span>
+</pre></div>
+
+
+<h3 id="pubkeyauthentication">PubkeyAuthentication</h3>
+<p>Force SSH client to use password authentication instead of public key</p>
+<div class="hlcode"><pre><span class="n">ssh</span> <span class="o">-</span><span class="n">o</span> <span class="n">PreferredAuthentications</span><span class="o">=</span><span class="n">password</span> <span class="o">-</span><span class="n">o</span> <span class="n">PubkeyAuthentication</span><span class="o">=</span><span class="n">no</span> <span class="n">user</span><span class="err">@</span><span class="n">host</span>
 </pre></div>
 
 
@@ -205,7 +219,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-15 15:27:01</p>
+        <p>Site Generated 2019-04-28 23:01:51</p>
       </span>
     </div>
 
