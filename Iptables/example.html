@@ -360,7 +360,7 @@
 <h2 id="iptablesrecentdos">利用iptables的recent模块抵御DOS攻击</h2>
 <div class="hlcode"><pre><span class="n">iptables</span> <span class="o">-</span><span class="n">I</span> <span class="n">INPUT</span> <span class="o">-</span><span class="n">p</span> <span class="n">tcp</span> <span class="o">--</span><span class="n">dport</span> <span class="mi">22</span> <span class="o">-</span><span class="n">m</span> <span class="n">connlimit</span> <span class="o">--</span><span class="n">connlimit</span><span class="o">-</span><span class="n">above</span> <span class="mi">3</span> <span class="o">-</span><span class="n">j</span> <span class="n">DROP</span>
 <span class="n">iptables</span> <span class="o">-</span><span class="n">I</span> <span class="n">INPUT</span> <span class="o">-</span><span class="n">p</span> <span class="n">tcp</span> <span class="o">--</span><span class="n">dport</span> <span class="mi">22</span> <span class="o">-</span><span class="n">m</span> <span class="n">state</span> <span class="o">--</span><span class="n">state</span> <span class="n">NEW</span> <span class="o">-</span><span class="n">m</span> <span class="n">recent</span> <span class="o">--</span><span class="n">set</span> <span class="o">--</span><span class="n">name</span> <span class="n">SSH</span>
-<span class="n">iptables</span> <span class="o">-</span><span class="n">I</span> <span class="n">INPUT</span> <span class="o">-</span><span class="n">p</span> <span class="n">tcp</span> <span class="o">--</span><span class="n">dport</span> <span class="mi">22</span> <span class="o">-</span><span class="n">m</span> <span class="n">state</span> <span class="o">--</span><span class="n">state</span> <span class="n">NEW</span> <span class="o">-</span><span class="n">m</span> <span class="n">recent</span> <span class="o">--</span><span class="n">update</span> <span class="o">--</span><span class="n">seconds</span> <span class="mi">300</span> <span class="o">-</span><span class="n">hitcount</span> <span class="mi">3</span> <span class="o">--</span><span class="n">name</span> <span class="n">SSH</span> <span class="o">-</span><span class="n">j</span> <span class="n">DROP</span>
+<span class="n">iptables</span> <span class="o">-</span><span class="n">I</span> <span class="n">INPUT</span> <span class="o">-</span><span class="n">p</span> <span class="n">tcp</span> <span class="o">--</span><span class="n">dport</span> <span class="mi">22</span> <span class="o">-</span><span class="n">m</span> <span class="n">state</span> <span class="o">--</span><span class="n">state</span> <span class="n">NEW</span> <span class="o">-</span><span class="n">m</span> <span class="n">recent</span> <span class="o">--</span><span class="n">update</span> <span class="o">--</span><span class="n">seconds</span> <span class="mi">300</span> <span class="o">--</span><span class="n">hitcount</span> <span class="mi">3</span> <span class="o">--</span><span class="n">name</span> <span class="n">SSH</span> <span class="o">-</span><span class="n">j</span> <span class="n">DROP</span>
 </pre></div>
 
 
@@ -501,7 +501,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-28 23:01:51</p>
+        <p>Site Generated 2019-05-01 20:48:47</p>
       </span>
     </div>
 

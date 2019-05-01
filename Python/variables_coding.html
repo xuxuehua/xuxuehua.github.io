@@ -89,7 +89,7 @@
 <h1 id="_4">编码</h1>
 <h2 id="ascii">ASCII</h2>
 <p>ASCII（American Standard Code for Information Interchange，美国标准信息交换代码）是基于拉丁字母的一套电脑编码系统，主要用于显示现代英语和其他西欧语言，其最多只能用 8 位来表示（一个字节），即：2**8 = 256，所以，ASCII码最多只能表示 256 个符号。</p>
-<p><img alt="img" src="https://cdn.pbrd.co/images/Hs5H3Nu.png" /></p>
+<p><img alt="img" src="https://snag.gy/R0xrZH.jpg" /></p>
 <h2 id="ascii_1"><strong>非 ASCII 编码</strong></h2>
 <p>英语用128个符号编码就够了，但是用来表示其他语言，128个符号是不够的。比如，在法语中，字母上方有注音符号，它就无法用 ASCII 码表示。于是，一些欧洲国家就决定，利用字节中闲置的最高位编入新的符号。比如，法语中的<code>é</code>的编码为130（二进制<code>10000010</code>）。这样一来，这些欧洲国家使用的编码体系，可以表示最多256个符号。</p>
 <p>但是，这里又出现了新的问题。不同的国家有不同的字母，因此，哪怕它们都使用256个符号的编码方式，代表的字母却不一样。比如，130在法语编码中代表了<code>é</code>，在希伯来语编码中却代表了字母<code>Gimel</code> (<code>ג</code>)，在俄语编码中又会代表另一个符号。但是不管怎样，所有这些编码方式中，0--127表示的符号是一样的，不一样的只是128--255的这一段。</p>
@@ -163,13 +163,13 @@
 <p>str是一种高层对象。bytes是一种底层的东西。</p>
 <p>如果需要在高层处理，那么就全部使用str。</p>
 <p>在与外部通信的时候，比如保存文件，socket通信，使用bytes。</p>
-<p><img alt="img" src="https://cdn.pbrd.co/images/HzUl0CK.png" /></p>
+<p><img alt="img" src="https://snag.gy/J5uRa3.jpg" /></p>
 <h2 id="_9">字符编码与转码</h2>
 <p>在py3中encode,在转码的同时还会把string 变成bytes类型，decode在解码的同时还会把bytes变回string</p>
 <ul>
 <li>Python2 图解</li>
 </ul>
-<p><img alt="img" src="https://cdn.pbrd.co/images/HzSb0CT.png" /></p>
+<p><img alt="img" src="https://snag.gy/EbpdFC.jpg" /></p>
 <h3 id="ascii-python2">默认系统编码为ascii (Python2)</h3>
 <h4 id="string-unicode">string(中文) 转 unicode</h4>
 <div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">import</span> <span class="n">sys</span>
@@ -323,7 +323,7 @@ Out<span class="cp">[</span><span class="mi">38</span><span class="cp">]</span>:
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-28 23:01:51</p>
+        <p>Site Generated 2019-05-01 20:48:47</p>
       </span>
     </div>
 

@@ -25,7 +25,57 @@
 
 <div class="page_title">set 集合</div>
 
-  <h1 id="_1">集合</h1>
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">集合</a><ul>
+<li><a href="#_2">定义集合</a></li>
+<li><a href="#_3">集合常用操作</a><ul>
+<li><a href="#_4">增</a><ul>
+<li><a href="#add">add</a></li>
+<li><a href="#update">update</a></li>
+</ul>
+</li>
+<li><a href="#_5"></a></li>
+<li><a href="#_6">查</a><ul>
+<li><a href="#len">len</a></li>
+</ul>
+</li>
+<li><a href="#in">in</a></li>
+<li><a href="#_7">删</a><ul>
+<li><a href="#remove">remove</a></li>
+<li><a href="#discard">discard</a></li>
+<li><a href="#clear">clear</a></li>
+<li><a href="#pop">pop</a></li>
+</ul>
+</li>
+<li><a href="#_8">集合运算</a><ul>
+<li><a href="#union">union 并集</a></li>
+<li><a href="#_9"></a></li>
+<li><a href="#intersection">intersection 交集</a></li>
+<li><a href="#_10"></a></li>
+<li><a href="#difference">difference 差集</a></li>
+<li><a href="#_11"></a></li>
+<li><a href="#symmetric_difference">symmetric_difference 对称差集</a></li>
+<li><a href="#symmetric_difference_update">symmetric_difference_update()</a></li>
+</ul>
+</li>
+<li><a href="#_12">集合判断</a><ul>
+<li><a href="#issubset">issubset 子集 &lt;=</a></li>
+<li><a href="#_13">真子集 &lt;</a></li>
+<li><a href="#issuperset">issuperset 父集 &gt;=</a></li>
+<li><a href="#isdisjoint">isdisjoint</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_14">集合解析</a><ul>
+<li><a href="#_15">基本语法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">集合</h1>
 <p>集合的含义和数学上的含义相同<br />
 集合不是线性的<br />
 集合的元素是唯一的<br />
@@ -203,6 +253,7 @@
 
 <h4 id="_11"></h4>
 <h4 id="symmetric_difference">symmetric_difference 对称差集</h4>
+<p>两个集合中不重复的元素集合</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="n">s1</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
 
@@ -217,8 +268,9 @@
 </pre></div>
 
 
-<h3 id="_12"></h3>
-<h3 id="_13">集合判断</h3>
+<h4 id="symmetric_difference_update">symmetric_difference_update()</h4>
+<p>移除当前集合中在另外一个指定集合相同的元素，并将另外一个指定集合中不同的元素插入到当前集合中</p>
+<h3 id="_12">集合判断</h3>
 <h4 id="issubset">issubset 子集 &lt;=</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="n">s</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">}</span>
@@ -238,7 +290,7 @@
 </pre></div>
 
 
-<h4 id="_14">真子集 &lt;</h4>
+<h4 id="_13">真子集 &lt;</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">78</span><span class="p">]</span><span class="o">:</span> <span class="n">s1</span> <span class="o">=</span> <span class="p">({</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">})</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">79</span><span class="p">]</span><span class="o">:</span> <span class="n">s2</span> <span class="o">=</span> <span class="p">({</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">})</span>
@@ -292,8 +344,8 @@
 </pre></div>
 
 
-<h2 id="_15">集合解析</h2>
-<h3 id="_16">基本语法</h3>
+<h2 id="_14">集合解析</h2>
+<h3 id="_15">基本语法</h3>
 <p><code>ret = {expression for item in iterator}</code></p>
 <p>等价于</p>
 <div class="hlcode"><pre><span class="n">ret</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -318,7 +370,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-04-28 23:01:51</p>
+        <p>Site Generated 2019-05-01 20:48:47</p>
       </span>
     </div>
 
