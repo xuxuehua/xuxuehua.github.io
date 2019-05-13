@@ -35,6 +35,12 @@
 <li><a href="#_5">调用蓝图</a></li>
 </ul>
 </li>
+<li><a href="#_6">前端布局</a><ul>
+<li><a href="#_7">静态文件引入</a></li>
+<li><a href="#_8">定义路由</a></li>
+<li><a href="#_9">定义数据块</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="installation">Installation</h1>
@@ -104,12 +110,30 @@
 <div class="hlcode"><pre><span class="n">from</span> <span class="p">.</span> <span class="n">import</span> <span class="n">admin</span>
 <span class="err">@</span><span class="n">admin</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
 </pre></div>
+
+
+<h1 id="_6">前端布局</h1>
+<h2 id="_7">静态文件引入</h2>
+<div class="hlcode"><pre><span class="p">{{</span> <span class="n">url_for</span><span class="p">(</span><span class="err">&#39;</span><span class="k">static</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="err">&#39;</span><span class="n">FILE_PATH</span><span class="err">&#39;</span><span class="p">)</span> <span class="p">}}</span>
+</pre></div>
+
+
+<h2 id="_8">定义路由</h2>
+<div class="hlcode"><pre><span class="p">{{</span> <span class="n">url_for</span><span class="p">(</span><span class="err">&#39;</span><span class="n">MODULE_NAME</span><span class="p">.</span><span class="n">VIEW_NAME</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">VARIABLE</span><span class="o">=</span><span class="n">PARAMETER</span><span class="p">)</span> <span class="p">}}</span>
+</pre></div>
+
+
+<h2 id="_9">定义数据块</h2>
+<div class="hlcode"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">BLOCK_NAME</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">INFO</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-01 20:48:47</p>
+        <p>Site Generated 2019-05-13 17:30:22</p>
       </span>
     </div>
 

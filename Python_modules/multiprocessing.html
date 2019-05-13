@@ -27,9 +27,11 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#multiprocessing">multiprocessing</a><ul>
+<li><a href="#_1">多线程</a></li>
+<li><a href="#_2">多进程</a></li>
 <li><a href="#pipe-queue">Pipe 和 Queue</a></li>
-<li><a href="#_1">进程池</a></li>
-<li><a href="#_2">共享内存</a></li>
+<li><a href="#_3">进程池</a></li>
+<li><a href="#_4">共享内存</a></li>
 <li><a href="#manager">Manager</a></li>
 </ul>
 </li>
@@ -98,6 +100,12 @@
 </pre></div>
 
 
+<h2 id="_1">多线程</h2>
+<p>指IO密集型</p>
+<p>web请求中，为IO密集型</p>
+<p>异步是单线程的，更优雅的处理IO密集型</p>
+<h2 id="_2">多进程</h2>
+<p>指CPU密集型</p>
 <h2 id="pipe-queue">Pipe 和 Queue</h2>
 <ul>
 <li>
@@ -184,7 +192,7 @@
 </pre></div>
 
 
-<h2 id="_1">进程池</h2>
+<h2 id="_3">进程池</h2>
 <ul>
 <li>
 <p>进程池(Process Pool) 可以创建多个进程</p>
@@ -210,7 +218,7 @@
 1. apply_async(func, args)从进程池中取出一个进行执行func，args为func的参数。它将返回一个AsyncResult的对象，可以对该对象调用get()方法获得结果<br />
 2. close() 进程池不在创建新的进程<br />
 3. join() wait 进程池中的全部进程。必须对Pool先调用close()方法才能join</p>
-<h2 id="_2">共享内存</h2>
+<h2 id="_4">共享内存</h2>
 <ul>
 <li>主进程的内存空间中创建共享的内存，也就是Value和Array两个对象</li>
 </ul>
@@ -273,7 +281,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-01 20:48:47</p>
+        <p>Site Generated 2019-05-13 17:30:22</p>
       </span>
     </div>
 

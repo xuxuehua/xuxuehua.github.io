@@ -52,16 +52,17 @@
 <li><a href="#_17">备份方案</a><ul>
 <li><a href="#_18">数据集</a></li>
 <li><a href="#_19">备份手段</a></li>
+<li><a href="#_20">常用策略</a></li>
 </ul>
 </li>
-<li><a href="#_20">备份工具</a><ul>
+<li><a href="#_21">备份工具</a><ul>
 <li><a href="#mysqldump">mysqldump</a></li>
 <li><a href="#cp-tar">cp, tar 等</a></li>
 <li><a href="#lvm2">lvm2</a></li>
 <li><a href="#mysqlhotcopy">mysqlhotcopy</a></li>
 </ul>
 </li>
-<li><a href="#_21">工具选择</a><ul>
+<li><a href="#_22">工具选择</a><ul>
 <li><a href="#mysqldumpbinlog">mysqldump+复制binlog</a></li>
 <li><a href="#lvm2-binlog">Lvm2 快照+复制binlog</a></li>
 <li><a href="#xtrabackup">xtrabackup</a></li>
@@ -97,11 +98,11 @@
 </li>
 <li><a href="#xtrabackup_1">Xtrabackup</a><ul>
 <li><a href="#installation">Installation</a></li>
-<li><a href="#_22">完全备份</a></li>
-<li><a href="#_23">完全还原</a></li>
-<li><a href="#_24">增量备份</a></li>
-<li><a href="#_25">增量还原</a><ul>
-<li><a href="#_26">单张表操作</a></li>
+<li><a href="#_23">完全备份</a></li>
+<li><a href="#_24">完全还原</a></li>
+<li><a href="#_25">增量备份</a></li>
+<li><a href="#_26">增量还原</a><ul>
+<li><a href="#_27">单张表操作</a></li>
 </ul>
 </li>
 </ul>
@@ -120,6 +121,7 @@
 <p>仅仅备份最近一次的完全备份，或者增量备份以来变化的数据</p>
 <h2 id="_5">差异备份</h2>
 <p>仅仅备份最近一次完全备份以来变化的数据</p>
+<p>即提供运行完整备份后变更的文件的备份选择式备份</p>
 <h2 id="_6">热备份（常用）</h2>
 <p>读写操作均可进行</p>
 <p>InnoDB 支持</p>
@@ -154,7 +156,9 @@
 <p>完全+增量</p>
 <h2 id="_19">备份手段</h2>
 <p>物理，逻辑</p>
-<h1 id="_20">备份工具</h1>
+<h2 id="_20">常用策略</h2>
+<p>全量备份+增量备份+binlogs</p>
+<h1 id="_21">备份工具</h1>
 <h2 id="mysqldump">mysqldump</h2>
 <p>逻辑备份工具，适用于所有存储引擎</p>
 <p>支持温备份，完全备份，部分备份</p>
@@ -166,7 +170,7 @@
 <p>快照功几乎实现热备份， 需要借助于文件系统管理工具进行备份</p>
 <h2 id="mysqlhotcopy">mysqlhotcopy</h2>
 <p>几乎实现冷备份，仅适用MyISAM存储引擎</p>
-<h1 id="_21">工具选择</h1>
+<h1 id="_22">工具选择</h1>
 <h2 id="mysqldumpbinlog">mysqldump+复制binlog</h2>
 <p>速度比较慢，适用于小范围，对要求不是很严格 </p>
 <p>mysqldump 进行完全备份</p>
@@ -288,7 +292,7 @@
 </pre></div>
 
 
-<h2 id="_22">完全备份</h2>
+<h2 id="_23">完全备份</h2>
 <p>确保存储引擎为InnoDB</p>
 <div class="hlcode"><pre><span class="n">MariaDB</span> <span class="p">[</span><span class="n">hellodb</span><span class="p">]</span><span class="o">&gt;</span> <span class="n">show</span> <span class="n">table</span> <span class="n">status</span><span class="err">\</span><span class="n">G</span><span class="p">;</span>
 </pre></div>
@@ -332,7 +336,12 @@
 </pre></div>
 
 
-<h2 id="_23">完全还原</h2>
+<p>或者（未测试）</p>
+<div class="hlcode"><pre><span class="n">innobackupex</span> <span class="o">--</span><span class="n">user</span><span class="o">=</span><span class="n">root</span> <span class="o">--</span><span class="n">password</span><span class="o">=</span><span class="n">redhat</span> <span class="o">--</span><span class="n">apply</span><span class="o">-</span><span class="n">log</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">xt_full_backup</span><span class="o">/</span><span class="mi">20181112</span>
+</pre></div>
+
+
+<h2 id="_24">完全还原</h2>
 <p>确保<code>innodb_file_per_table</code>参数是ON</p>
 <p>复制所有文件到backups目录</p>
 <p>整理log</p>
@@ -351,7 +360,15 @@
 </pre></div>
 
 
-<h2 id="_24">增量备份</h2>
+<p>或者(未测试)</p>
+<div class="hlcode"><pre><span class="n">innobackupex</span> <span class="o">--</span><span class="n">user</span><span class="o">=</span><span class="n">root</span> <span class="o">--</span><span class="n">password</span><span class="o">=</span><span class="n">redhat</span> <span class="o">--</span><span class="n">copy</span><span class="o">-</span><span class="n">back</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">xt_full_backup</span><span class="o">/</span><span class="mi">20181112</span>
+</pre></div>
+
+
+<blockquote>
+<p>--copy-back需要再mysqld本地主机执行，mysqld不能启动</p>
+</blockquote>
+<h2 id="_25">增量备份</h2>
 <p>仅能应用于InnoDB 或XtraDB表</p>
 <p>需要在每个备份（包括完全备份和各个增量备份）上，将已经提交的事务进行重放，所有备份数据将合并到完全备份上面</p>
 <p>基于所有的备份将未提交的事务进行回滚操作</p>
@@ -400,7 +417,7 @@
 </pre></div>
 
 
-<h2 id="_25">增量还原</h2>
+<h2 id="_26">增量还原</h2>
 <div class="hlcode"><pre><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">mysqld</span> <span class="n">stop</span>
 </pre></div>
 
@@ -462,7 +479,7 @@
 </pre></div>
 
 
-<h3 id="_26">单张表操作</h3>
+<h3 id="_27">单张表操作</h3>
 <p>先进行完全备份</p>
 <div class="hlcode"><pre><span class="n">innobackupex</span>  <span class="o">/</span><span class="n">backups</span><span class="o">/</span>
 </pre></div>
@@ -597,7 +614,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-01 20:48:47</p>
+        <p>Site Generated 2019-05-13 17:30:22</p>
       </span>
     </div>
 

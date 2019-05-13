@@ -298,14 +298,8 @@ for line in iter(input, sentinel):
 <h3 id="_21">开源软件</h3>
 <p>如果你想写一个开源软件，目录该如何组织，可以参考<a href="http://www.jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/">这篇文章</a>。</p>
 <h2 id="_22">垃圾回收</h2>
-<ul>
-<li>
 <p>Python的某个对象的引用计数降为0时，说明没有任何引用指向改对象，该对象就要被垃圾回收</p>
-</li>
-<li>
 <p>在垃圾回收的时候，Python不能执行其他的任何任务。当Python运行时，会记录其中分配对象(object allocation)和取消分配对象(object deallocaiton)的次数，当两者差值高于某个阀值的时候，垃圾回收会自动启动。</p>
-</li>
-</ul>
 <div class="hlcode"><pre><span class="cp">#700是垃圾回收的阀值，可以使用set_threshold方法重新设置</span>
 <span class="cp">#后面两个10是与分代回收相关的阀值</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">gc</span>
@@ -363,7 +357,7 @@ for line in iter(input, sentinel):
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-01 20:48:47</p>
+        <p>Site Generated 2019-05-13 17:30:22</p>
       </span>
     </div>
 

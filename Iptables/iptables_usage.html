@@ -74,7 +74,6 @@
 <li><a href="#_6">显式扩展</a><ul>
 <li><a href="#multiport">multiport</a></li>
 <li><a href="#icmp">icmp</a></li>
-<li><a href="#_7"></a></li>
 <li><a href="#iprange">iprange</a></li>
 <li><a href="#set">set</a></li>
 <li><a href="#string">string</a></li>
@@ -100,12 +99,12 @@
 <li><a href="#redirect">REDIRECT</a></li>
 <li><a href="#masquerade">MASQUERADE</a></li>
 <li><a href="#mark">MARK</a></li>
-<li><a href="#_8">自定义链</a></li>
+<li><a href="#_7">自定义链</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_9">保存及重载规则</a><ul>
+<li><a href="#_8">保存及重载规则</a><ul>
 <li><a href="#iptables-save">iptables-save 保存现有规则</a></li>
 <li><a href="#iptables-restore">iptables-restore  导入规则</a></li>
 </ul>
@@ -277,15 +276,14 @@
 
 
 <h5 id="icmp">icmp</h5>
-<p>​        icmp-type 8 请求</p>
-<p>​        icmp-type 0 应答</p>
+<p>icmp-type 8 请求</p>
+<p>icmp-type 0 应答</p>
 <p>基于发包速率作限制；</p>
 <div class="hlcode"><pre>        --limit n<span class="o">[</span>/second|/minit|/hour|/day<span class="o">]</span>
         --limit-burst n
 </pre></div>
 
 
-<h5 id="_7"></h5>
 <h5 id="iprange">iprange</h5>
 <p>以连续的ip地址范围, 指明连续的多地址匹配条件</p>
 <div class="hlcode"><pre><span class="o">[</span>!<span class="o">]</span> --src-range from<span class="o">[</span>-to<span class="o">]</span>：源IP地址范围
@@ -539,9 +537,9 @@
 <p>​     </p>
 <h3 id="mark">MARK</h3>
 <p>做防火墙标记</p>
-<h3 id="_8">自定义链</h3>
+<h3 id="_7">自定义链</h3>
 <p>由自定义链上的规则进行匹配检查</p>
-<h1 id="_9">保存及重载规则</h1>
+<h1 id="_8">保存及重载规则</h1>
 <h2 id="iptables-save">iptables-save 保存现有规则</h2>
 <div class="hlcode"><pre><span class="n">iptables</span><span class="o">-</span><span class="n">save</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">PATH</span><span class="o">/</span><span class="n">TO</span><span class="o">/</span><span class="n">SOMEFILE</span>
 </pre></div>
@@ -566,7 +564,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-01 20:48:47</p>
+        <p>Site Generated 2019-05-13 17:30:22</p>
       </span>
     </div>
 
