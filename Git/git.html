@@ -27,6 +27,7 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#git">git</a><ul>
+<li><a href="#add">add 添加到暂存区</a></li>
 <li><a href="#branch">branch</a><ul>
 <li><a href="#-d">-D 强力删除</a></li>
 <li><a href="#-d_1">-d 删除</a></li>
@@ -47,7 +48,7 @@
 <li><a href="#-bare">--  bare 裸仓库</a></li>
 </ul>
 </li>
-<li><a href="#commit">commit</a><ul>
+<li><a href="#commit">commit 提交更改</a><ul>
 <li><a href="#-amend-comment">--amend 修改最近一次comment</a></li>
 </ul>
 </li>
@@ -80,12 +81,12 @@
 </li>
 <li><a href="#reflog">reflog 查看回退历史</a></li>
 <li><a href="#remote">remote 远程提交</a><ul>
-<li><a href="#add">add</a></li>
+<li><a href="#add_1">add</a></li>
 </ul>
 </li>
 <li><a href="#reset">reset</a><ul>
 <li><a href="#head">HEAD 清空暂存区</a><ul>
-<li><a href="#-filename">--  filename 取消部分文件修改</a></li>
+<li><a href="#-filename">--filename 取消部分文件修改</a></li>
 </ul>
 </li>
 <li><a href="#-hard">--hard 回退修改 (慎用)</a></li>
@@ -107,11 +108,12 @@
 <li><a href="#-graph">--graph 图形化</a></li>
 <li><a href="#-n">-n 行数</a></li>
 <li><a href="#-oneline">--oneline 一行信息</a></li>
+<li><a href="#-pretty">--pretty 编辑输出信息</a></li>
 </ul>
 </li>
 <li><a href="#pull">pull 拉取远端</a></li>
 <li><a href="#push">push 推送到远端</a><ul>
-<li><a href="#-u">-u 关联分支</a></li>
+<li><a href="#-u-set-upstream">-u/--set-upstream 关联分支</a></li>
 <li><a href="#-force">--force</a></li>
 </ul>
 </li>
@@ -120,6 +122,8 @@
 </ul>
 </div>
 <h1 id="git">git</h1>
+<h2 id="add">add 添加到暂存区</h2>
+<p>把文件修改添加到暂存区</p>
 <h2 id="branch">branch</h2>
 <h3 id="-d">-D 强力删除</h3>
 <p>处理-d删除不了的分支</p>
@@ -171,7 +175,8 @@
 <h2 id="clone">clone 备份</h2>
 <h3 id="-bare">--  bare 裸仓库</h3>
 <p>不带工作区的裸仓库</p>
-<h2 id="commit">commit</h2>
+<h2 id="commit">commit 提交更改</h2>
+<p>把暂存区的所有内容提交到当前分支（若是多分支，就不一定是master分支）</p>
 <h3 id="-amend-comment">--amend 修改最近一次comment</h3>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">commit</span> <span class="o">--</span><span class="n">amend</span>
 </pre></div>
@@ -275,7 +280,7 @@
 <h2 id="reflog">reflog 查看回退历史</h2>
 <p>可查看reset --hard 之前的操作</p>
 <h2 id="remote">remote 远程提交</h2>
-<h3 id="add">add</h3>
+<h3 id="add_1">add</h3>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">REPO_NAME</span> <span class="n">LOCATION</span>
 </pre></div>
 
@@ -284,6 +289,9 @@
 </pre></div>
 
 
+<blockquote>
+<p>这里的origin指远程库的名称</p>
+</blockquote>
 <h2 id="reset">reset</h2>
 <h3 id="head">HEAD 清空暂存区</h3>
 <p>取消暂存区所有的变更</p>
@@ -291,7 +299,7 @@
 </pre></div>
 
 
-<h4 id="-filename">--  filename 取消部分文件修改</h4>
+<h4 id="-filename">--filename 取消部分文件修改</h4>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">reset</span> <span class="n">HEAD</span> <span class="o">--</span> <span class="n">FILENAME</span>
 </pre></div>
 
@@ -410,9 +418,15 @@
 </pre></div>
 
 
+<h3 id="-pretty">--pretty 编辑输出信息</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">log</span> <span class="o">--</span><span class="n">pretty</span><span class="o">=</span><span class="n">oneline</span>
+</pre></div>
+
+
 <h2 id="pull">pull 拉取远端</h2>
 <h2 id="push">push 推送到远端</h2>
-<h3 id="-u">-u 关联分支</h3>
+<h3 id="-u-set-upstream">-u/--set-upstream 关联分支</h3>
+<p>set upstream for git pull/status</p>
 <p>Git 不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令</p>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">push</span> <span class="o">-</span><span class="n">u</span> <span class="n">origin</span> <span class="n">master</span>
 </pre></div>
@@ -425,7 +439,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-13 17:30:22</p>
+        <p>Site Generated 2019-05-20 00:38:30</p>
       </span>
     </div>
 

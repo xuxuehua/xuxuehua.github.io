@@ -36,10 +36,12 @@
 <li><a href="#_8">装饰器带参数</a></li>
 </ul>
 </li>
-<li><a href="#_9">装饰类</a></li>
+<li><a href="#_9">叠放装饰器</a></li>
+<li><a href="#_10">装饰类</a></li>
 <li><a href="#doc-string">doc string</a></li>
 </ul>
 </li>
+<li><a href="#wraps">wraps 装饰器</a></li>
 </ul>
 </div>
 <h1 id="_1">装饰器</h1>
@@ -201,7 +203,43 @@
 </pre></div>
 
 
-<h2 id="_9">装饰类</h2>
+<h2 id="_9">叠放装饰器</h2>
+<p>如果一个函数被多个装饰器修饰，其实应该是该函数先被最里面的装饰器修饰</p>
+<div class="hlcode"><pre><span class="nx">def</span> <span class="nx">outer</span><span class="p">(</span><span class="nx">func</span><span class="p">):</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s1">&#39;Enter outer&#39;</span><span class="p">,</span> <span class="nx">func</span><span class="p">)</span>
+    <span class="nx">def</span> <span class="nx">wrapper</span><span class="p">():</span>
+        <span class="nx">print</span><span class="p">(</span><span class="s1">&#39;Running outer&#39;</span><span class="p">)</span>
+        <span class="nx">func</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nx">wrapper</span>
+
+<span class="nx">def</span> <span class="nx">inner</span><span class="p">(</span><span class="nx">func</span><span class="p">):</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s1">&#39;Enter inner&#39;</span><span class="p">,</span> <span class="nx">func</span><span class="p">)</span>
+    <span class="nx">def</span> <span class="nx">wrapper</span><span class="p">():</span>
+        <span class="nx">print</span><span class="p">(</span><span class="s1">&#39;Running inner&#39;</span><span class="p">)</span>
+        <span class="nx">func</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nx">wrapper</span>
+
+<span class="p">@</span><span class="nx">outer</span>
+<span class="p">@</span><span class="nx">inner</span>
+<span class="nx">def</span> <span class="nx">main</span><span class="p">():</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s1">&#39;Running main&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="nx">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nx">main</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="nx">Enter</span> <span class="nx">inner</span> <span class="o">&lt;</span><span class="nx">function</span> <span class="nx">main</span> <span class="nx">at</span> <span class="mh">0x10a1ae730</span><span class="o">&gt;</span>
+<span class="nx">Enter</span> <span class="nx">outer</span> <span class="o">&lt;</span><span class="nx">function</span> <span class="nx">inner.</span><span class="o">&lt;</span><span class="nb">locals</span><span class="o">&gt;</span><span class="bp">.</span><span class="nx">wrapper</span> <span class="nx">at</span> <span class="mh">0x10a1ae7b8</span><span class="o">&gt;</span>
+<span class="nb">Running</span> <span class="nx">outer</span>
+<span class="nb">Running</span> <span class="nx">inner</span>
+<span class="nb">Running</span> <span class="nx">main</span>
+</pre></div>
+
+
+<blockquote>
+<p>函数main()先被inner装饰，变成新的函数，变成另一个函数后，再次被装饰器修饰</p>
+</blockquote>
+<h2 id="_10">装饰类</h2>
 <p>一个装饰器可以接收一个类，并返回一个类，起到加工的作用。</p>
 <div class="hlcode"><pre><span class="k">def</span> <span class="nf">deco</span><span class="p">(</span><span class="n">aClass</span><span class="p">):</span>
     <span class="k">class</span> <span class="nc">newClass</span><span class="p">:</span>
@@ -253,12 +291,16 @@
 <span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="s">&quot;name={}</span><span class="se">\n</span><span class="s">doc={}&quot;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">add</span><span class="p">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">add</span><span class="p">.</span><span class="n">__doc__</span><span class="p">)</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">name</span><span class="o">=</span><span class="n">add</span><span class="err">\</span><span class="n">ndoc</span><span class="o">=</span><span class="n">This</span> <span class="n">is</span> <span class="n">doc</span> <span class="n">string</span><span class="err">&#39;</span>
 </pre></div>
+
+
+<h1 id="wraps">wraps 装饰器</h1>
+<p>使用装饰器会产生我们可能不希望出现的副作用，　例如：改变被修饰函数名称，对于调试器或者对象序列化器等需要使用内省机制的那些工具，可能会无法正常运行；其实调用装饰器后，会将同一个作用域中原来函数同名的那个变量（例如下面的func_1）,重新赋值为装饰器返回的对象；使用＠wraps后，会把与内部函数（被修饰函数，例如下面的func_1）相关的重要元数据全部复制到外围函数</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-13 17:30:22</p>
+        <p>Site Generated 2019-05-20 00:38:30</p>
       </span>
     </div>
 

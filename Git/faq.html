@@ -31,6 +31,7 @@
 <li><a href="#credential">credential</a></li>
 <li><a href="#detached-head">detached HEAD</a></li>
 <li><a href="#everything-up-to-date">Everything up-to-date</a></li>
+<li><a href="#the-following-untracked-working-tree-files-would-be-overwritten-by-merge">The following untracked working tree files would be overwritten by merge:</a></li>
 <li><a href="#git-fire">Git fire</a></li>
 </ul>
 </li>
@@ -159,6 +160,13 @@ You can run the below sample script in your repository (filling in real values f
 
 
 <p>如果想保留分支只是想删除已经合并的部分只要把大写的D改成小写的d就行了。</p>
+<h2 id="the-following-untracked-working-tree-files-would-be-overwritten-by-merge">The following untracked working tree files would be overwritten by merge:</h2>
+<p>we want to overwrite these files.</p>
+<div class="hlcode"><pre><span class="err">`</span><span class="n">git</span> <span class="n">fetch</span> <span class="o">--</span><span class="n">all</span><span class="err">``</span><span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="n">origin</span><span class="err">``</span><span class="o">/</span><span class="n">master</span><span class="err">`</span>
+</pre></div>
+
+
+<p>This grabs the latest repository files without merging and resets the master branch and overwrites the modified ones.</p>
 <h2 id="git-fire">Git fire</h2>
 <div class="hlcode"><pre><span class="err">程序员的消防演习：</span>
 <span class="n">alias</span> <span class="n">incaseoffire</span><span class="o">=</span><span class="s">&quot;git checkout -b $USER-emergency; git add .; git commit -m fire; git push origin $USER-emergency -f&quot;</span>
@@ -168,7 +176,7 @@ You can run the below sample script in your repository (filling in real values f
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-13 17:30:22</p>
+        <p>Site Generated 2019-05-20 00:38:30</p>
       </span>
     </div>
 

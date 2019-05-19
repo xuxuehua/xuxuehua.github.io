@@ -131,7 +131,23 @@
 <p>只要文件的内容相同，那么就是唯一的blob</p>
 <h1 id="git_2">.git 目录</h1>
 <h2 id="head">HEAD</h2>
-<p>文本信息，分支信息</p>
+<p>文本信息，分支信息，即当前版本</p>
+<p>HEAD指向哪个版本，当前版本就会定位到那里</p>
+<div class="hlcode"><pre><span class="err">┌────┐</span>
+<span class="err">│</span><span class="n">HEAD</span><span class="err">│</span>
+<span class="err">└────┘</span>
+   <span class="err">│</span>
+   <span class="err">│</span>    <span class="err">○</span> <span class="n">Version</span> <span class="mi">3</span>
+   <span class="err">│</span>    <span class="err">│</span>
+   <span class="err">└──</span><span class="o">&gt;</span> <span class="err">○</span> <span class="n">Version</span> <span class="mi">2</span>
+        <span class="err">│</span>
+        <span class="err">○</span> <span class="n">Version</span> <span class="mi">1</span>
+</pre></div>
+
+
+<blockquote>
+<p>当前处于version2</p>
+</blockquote>
 <p>若处于Detached HEAD状态，会指向具体的某个commit上，不和任何分支挂钩</p>
 <h2 id="config_1">config</h2>
 <p>git的配置信息</p>
@@ -162,7 +178,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-13 17:30:22</p>
+        <p>Site Generated 2019-05-20 00:38:30</p>
       </span>
     </div>
 
