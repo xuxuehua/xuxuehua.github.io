@@ -37,9 +37,9 @@
 <li><a href="#_5"></a></li>
 <li><a href="#_6">查</a><ul>
 <li><a href="#len">len</a></li>
+<li><a href="#in">in</a></li>
 </ul>
 </li>
-<li><a href="#in">in</a></li>
 <li><a href="#_7">删</a><ul>
 <li><a href="#remove">remove</a></li>
 <li><a href="#discard">discard</a></li>
@@ -49,26 +49,23 @@
 </li>
 <li><a href="#_8">集合运算</a><ul>
 <li><a href="#union">union 并集</a></li>
-<li><a href="#_9"></a></li>
 <li><a href="#intersection">intersection 交集</a></li>
-<li><a href="#_10"></a></li>
 <li><a href="#difference">difference 差集</a></li>
-<li><a href="#_11"></a></li>
 <li><a href="#symmetric_difference">symmetric_difference 对称差集</a></li>
 <li><a href="#symmetric_difference_update">symmetric_difference_update()</a></li>
 </ul>
 </li>
-<li><a href="#_12">集合判断</a><ul>
+<li><a href="#_9">集合判断</a><ul>
 <li><a href="#issubset">issubset 子集 &lt;=</a></li>
-<li><a href="#_13">真子集 &lt;</a></li>
+<li><a href="#_10">真子集 &lt;</a></li>
 <li><a href="#issuperset">issuperset 父集 &gt;=</a></li>
 <li><a href="#isdisjoint">isdisjoint</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_14">集合解析</a><ul>
-<li><a href="#_15">基本语法</a></li>
+<li><a href="#_11">集合解析</a><ul>
+<li><a href="#_12">基本语法</a></li>
 </ul>
 </li>
 </ul>
@@ -130,7 +127,7 @@
 </pre></div>
 
 
-<h3 id="in">in</h3>
+<h4 id="in">in</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">s</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
 
@@ -222,7 +219,6 @@
 </pre></div>
 
 
-<h4 id="_9"></h4>
 <h4 id="intersection">intersection 交集</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">s1</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
@@ -235,7 +231,6 @@
 </pre></div>
 
 
-<h4 id="_10"></h4>
 <h4 id="difference">difference 差集</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">s1</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
@@ -251,7 +246,6 @@
 </pre></div>
 
 
-<h4 id="_11"></h4>
 <h4 id="symmetric_difference">symmetric_difference 对称差集</h4>
 <p>两个集合中不重复的元素集合</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="n">s1</span>
@@ -270,7 +264,7 @@
 
 <h4 id="symmetric_difference_update">symmetric_difference_update()</h4>
 <p>移除当前集合中在另外一个指定集合相同的元素，并将另外一个指定集合中不同的元素插入到当前集合中</p>
-<h3 id="_12">集合判断</h3>
+<h3 id="_9">集合判断</h3>
 <h4 id="issubset">issubset 子集 &lt;=</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="n">s</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">}</span>
@@ -290,7 +284,7 @@
 </pre></div>
 
 
-<h4 id="_13">真子集 &lt;</h4>
+<h4 id="_10">真子集 &lt;</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">78</span><span class="p">]</span><span class="o">:</span> <span class="n">s1</span> <span class="o">=</span> <span class="p">({</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">})</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">79</span><span class="p">]</span><span class="o">:</span> <span class="n">s2</span> <span class="o">=</span> <span class="p">({</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">})</span>
@@ -344,8 +338,8 @@
 </pre></div>
 
 
-<h2 id="_14">集合解析</h2>
-<h3 id="_15">基本语法</h3>
+<h2 id="_11">集合解析</h2>
+<h3 id="_12">基本语法</h3>
 <p><code>ret = {expression for item in iterator}</code></p>
 <p>等价于</p>
 <div class="hlcode"><pre><span class="n">ret</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -370,7 +364,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-20 00:38:30</p>
+        <p>Site Generated 2019-05-24 01:26:43</p>
       </span>
     </div>
 

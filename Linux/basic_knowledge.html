@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>basic_knowledge - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Linux">Linux</a>&nbsp;&#187;&nbsp;basic_knowledge
+    <span class="updated">Page Updated&nbsp;
+      2019-05-24 00:55
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">basic_knowledge</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#trap">Trap 信号</a></li>
+</ul>
+</div>
+<h1 id="trap">Trap 信号</h1>
+<p>trap 在脚本中捕捉信号，并且可以待定处理</p>
+<div class="hlcode"><pre><span class="mf">1.</span> <span class="n">SIGHUP</span>
+<span class="mf">2.</span> <span class="n">SIGINT</span>
+<span class="mf">9.</span> <span class="n">SIGKILL</span>
+<span class="mf">15.</span> <span class="n">SIGTERM</span>
+<span class="mf">18.</span> <span class="n">SIGCONT</span>
+<span class="mf">19.</span> <span class="n">SIGSTOP</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">trap</span> <span class="err">‘</span> <span class="n">echo</span> <span class="err">“</span><span class="n">No</span> <span class="n">quit</span><span class="err">…</span><span class="p">.</span><span class="err">”’</span> <span class="n">INT</span>   <span class="err">不允许用户取消</span>
+</pre></div>
+
+
+<table class="hlcodetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="hlcode"><pre><span class="c">#!/bin/bash</span>
+CLEANUP<span class="o">()</span> <span class="o">{</span>
+     rm -rf /var/tmp/test
+     <span class="nb">echo</span> “Cleanup ….<span class="err">&quot;</span>
+<span class="o">}</span>
+<span class="nb">trap</span> ‘CLEANUP ; <span class="nb">exit </span>5’ INT
+mkdir -p /var/tmp/test
+<span class="k">while </span><span class="nb">true</span>; <span class="k">do</span>
+<span class="k">     </span>touch /var/tmp/test/file-<span class="sb">`</span>date +%F-%H-%M-%S<span class="sb">`</span>
+     sleep 2
+<span class="k">done</span>
+</pre></div>
+</td></tr></table>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-05-24 01:26:43</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

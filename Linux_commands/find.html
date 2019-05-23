@@ -355,6 +355,23 @@
 </pre></div>
 
 
+<div class="hlcode"><pre>find . -name <span class="s2">&quot;file-$a.sh&quot;</span> -o -name <span class="s2">&quot;file-$b.sh&quot;</span>
+</pre></div>
+
+
+<blockquote>
+<p>To combine it into one using <code>-regex</code> option:</p>
+</blockquote>
+<p><strong>On OSX</strong></p>
+<div class="hlcode"><pre>find -E . -regex <span class="s2">&quot;.*file-($a|$b)\.txt&quot;</span>
+</pre></div>
+
+
+<p><strong>On Linux:</strong></p>
+<div class="hlcode"><pre>find . -regextype posix-extended -regex <span class="s2">&quot;.*file-($a|$b)\.txt&quot;</span>
+</pre></div>
+
+
 <h3 id="-size">-size 文件大小</h3>
 <p>查找符合指定的文件大小的文件</p>
 <p>文件大小单元：</p>
@@ -422,7 +439,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-20 00:38:30</p>
+        <p>Site Generated 2019-05-24 01:26:43</p>
       </span>
     </div>
 

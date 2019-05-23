@@ -41,6 +41,18 @@
 <li><a href="#doc-string">doc string</a></li>
 </ul>
 </li>
+<li><a href="#_11">类的装饰器</a><ul>
+<li><a href="#staticmethod">staticmethod 静态方法</a></li>
+<li><a href="#classmethod">classmethod 类方法</a></li>
+<li><a href="#property">property 属性</a><ul>
+<li><a href="#setter">setter 装饰器</a></li>
+<li><a href="#deleter">deleter 装饰器</a></li>
+<li><a href="#property_1">property 参数</a></li>
+<li><a href="#property_2">property 实现的原理</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a href="#wraps">wraps 装饰器</a></li>
 </ul>
 </div>
@@ -293,6 +305,304 @@
 </pre></div>
 
 
+<h1 id="_11">类的装饰器</h1>
+<h2 id="staticmethod">staticmethod 静态方法</h2>
+<p>静态方法并不能访问私有变量，只是给类方法加了类的属性</p>
+<div class="hlcode"><pre><span class="nb">class</span> <span class="nx">A</span><span class="p">:</span>
+    <span class="n">__val</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="p">@</span><span class="nx">staticmethod</span>
+    <span class="nx">def</span> <span class="nx">print_val</span><span class="p">():</span>
+        <span class="nx">print</span><span class="p">(</span><span class="nx">__val</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="nx">A</span><span class="p">()</span>
+
+<span class="nx">a.print_val</span><span class="p">()</span>
+<span class="nx">A.print_val</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="nx">Traceback</span> <span class="p">(</span><span class="nx">most</span> <span class="nx">recent</span> <span class="nb">call</span> <span class="nb">last</span><span class="p">):</span>
+  <span class="nb">File</span> <span class="s2">&quot;/Users/xhxu/python/python3/test/9.py&quot;</span><span class="p">,</span> <span class="nb">line</span> <span class="mi">10</span><span class="p">,</span> <span class="k">in</span> <span class="o">&lt;</span><span class="nx">module</span><span class="o">&gt;</span>
+    <span class="nx">a.print_val</span><span class="p">()</span>
+  <span class="nb">File</span> <span class="s2">&quot;/Users/xhxu/python/python3/test/9.py&quot;</span><span class="p">,</span> <span class="nb">line</span> <span class="mi">6</span><span class="p">,</span> <span class="k">in</span> <span class="nx">print_val</span>
+    <span class="nx">print</span><span class="p">(</span><span class="nx">__val</span><span class="p">)</span>
+<span class="nx">NameError</span><span class="p">:</span> <span class="nb">name</span> <span class="s1">&#39;_A__val&#39;</span> <span class="nx">is</span> <span class="ow">not</span> <span class="nx">defined</span>
+</pre></div>
+
+
+<p>静态方法只属于定义他的类，而不属于任何一个具体的对象</p>
+<p>即不能传self，相当于单纯的一个函数，主要</p>
+<p>静态方法无需传入self参数，因此在静态方法中无法访问实例变量</p>
+<p>静态方法不能直接访问类的静态变量，但可以通过类名引用静态变量</p>
+<p>与成员方法的区别是没有 self 参数，并且可以在类不进行实例化的情况下调用。</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
+    <span class="n">var1</span> <span class="o">=</span> <span class="s">&quot;String1&quot;</span>
+    <span class="nd">@staticmethod</span>   <span class="c">#静态方法</span>
+    <span class="k">def</span> <span class="nf">staticmd</span><span class="p">():</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;I am static method&#39;</span><span class="p">)</span>
+
+<span class="n">MyClass</span><span class="o">.</span><span class="n">staticmd</span><span class="p">()</span>  <span class="c">#调用了静态方法</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
+<span class="n">c</span><span class="o">.</span><span class="n">staticmd</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">I</span> <span class="n">am</span> <span class="n">static</span> <span class="n">method</span>
+<span class="n">I</span> <span class="n">am</span> <span class="n">static</span> <span class="n">method</span>
+</pre></div>
+
+
+<h2 id="classmethod">classmethod 类方法</h2>
+<p>至少一个cls参数；执行类方法时，自动将调用该方法的类复制给cls, cls指代调用者即类对象自身</p>
+<p>类方法传递类本身， 可以访问私有的类变量</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+    <span class="n">__val</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_val</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">__val</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">get_val</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">get_val</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">3</span>
+<span class="mi">3</span>
+</pre></div>
+
+
+<p>与静态方法一样，类方法可以使用类名调用类方法</p>
+<p>与静态方法一样，类成员方法也无法访问实例变量，但可以访问类的静态变量</p>
+<p>与成员方法的区别在于所接收的第一个参数不是 self （类实例的指针），而是cls（当前类的具体类型）。</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
+    <span class="n">val1</span> <span class="o">=</span> <span class="s">&quot;String1&quot;</span>  <span class="c">#静态变量</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val2</span> <span class="o">=</span> <span class="s">&quot;Value 2&quot;</span>
+    <span class="nd">@classmethod</span>      <span class="c">#类方法</span>
+    <span class="k">def</span> <span class="nf">classmd</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Class: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;,val1: &#39;</span> <span class="o">+</span> <span class="n">cls</span><span class="o">.</span><span class="n">val1</span> <span class="o">+</span> <span class="s">&#39;, Cannot access value 2&#39;</span><span class="p">)</span>
+
+<span class="n">MyClass</span><span class="o">.</span><span class="n">classmd</span><span class="p">()</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
+<span class="n">c</span><span class="o">.</span><span class="n">classmd</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="n">Class</span><span class="p">:</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">MyClass</span><span class="s">&#39;&gt;,val1: String1, Cannot access value 2</span>
+<span class="n">Class</span><span class="p">:</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">MyClass</span><span class="s">&#39;&gt;,val1: String1, Cannot access value 2</span>
+</pre></div>
+
+
+<p>类方法不能访问实例变量, 但可以访问类变量</p>
+<div class="hlcode"><pre><span class="nb">class</span> <span class="nx">A</span><span class="p">:</span>
+    <span class="n">__val</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nx">x</span><span class="p">):</span>
+        <span class="bp">self.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span>
+
+    <span class="p">@</span><span class="nx">classmethod</span>
+    <span class="nx">def</span> <span class="nx">get_val</span><span class="p">(</span><span class="nx">cls</span><span class="p">):</span>
+        <span class="nx">print</span><span class="p">(</span><span class="nx">cls.x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nx">cls.__val</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="nx">A</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">A.get_val</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="nx">Traceback</span> <span class="p">(</span><span class="nx">most</span> <span class="nx">recent</span> <span class="nb">call</span> <span class="nb">last</span><span class="p">):</span>
+  <span class="nb">File</span> <span class="s2">&quot;/Users/xhxu/python/python3/test/9.py&quot;</span><span class="p">,</span> <span class="nb">line</span> <span class="mi">12</span><span class="p">,</span> <span class="k">in</span> <span class="o">&lt;</span><span class="nx">module</span><span class="o">&gt;</span>
+    <span class="nx">print</span><span class="p">(</span><span class="nx">A.get_val</span><span class="p">())</span>
+  <span class="nb">File</span> <span class="s2">&quot;/Users/xhxu/python/python3/test/9.py&quot;</span><span class="p">,</span> <span class="nb">line</span> <span class="mi">9</span><span class="p">,</span> <span class="k">in</span> <span class="nx">get_val</span>
+    <span class="nx">print</span><span class="p">(</span><span class="nx">cls.x</span><span class="p">)</span>
+<span class="nx">AttributeError</span><span class="p">:</span> <span class="k">type</span> <span class="nb">object</span> <span class="s1">&#39;A&#39;</span> <span class="nx">has</span> <span class="nx">no</span> <span class="nx">attribute</span> <span class="s1">&#39;x&#39;</span>
+</pre></div>
+
+
+<h2 id="property">property 属性</h2>
+<p>加上property 装饰器，在函数调用的时候，就不需要加上小括号</p>
+<p>property调用的时候，只能调用self参数</p>
+<p>将一个类方法转变成一个静态属性,只读属性。</p>
+<p>类属性可以直接被类调用，如果想要实现能被类直接调用的方法就可以借助staticmethod和classmethod了，区别在于staticmethod的方法没有self参数，通常用来直接定一个静态类方法，如果想将一个普通动态方法变成类方法就要使用classmethod了。</p>
+<p>property 属性必须再setter 和 deleter之前</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__value</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span> <span class="c"># property 可以访问私有的变量</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__value</span>
+
+    <span class="nd">@value.setter</span> <span class="c"># 加了这个装饰器，才会被认为是属性</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__value</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__value</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">0</span>
+<span class="mi">3</span>
+</pre></div>
+
+
+<p>同一个对象的不同属性之间可能存在依赖关系。当某个属性被修改时，依赖于该属性的其他属性也会同时变化。</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">bird</span><span class="p">(</span><span class="n">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">feather</span> <span class="o">=</span> <span class="n">True</span>
+
+<span class="n">class</span> <span class="n">chicken</span><span class="p">(</span><span class="n">bird</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">fly</span> <span class="o">=</span> <span class="n">False</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+
+    <span class="n">def</span> <span class="n">getAdult</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="o">:</span>
+            <span class="k">return</span> <span class="n">True</span>
+        <span class="nl">else:</span>
+            <span class="k">return</span> <span class="n">False</span>
+    <span class="n">adult</span> <span class="o">=</span> <span class="n">property</span><span class="p">(</span><span class="n">getAdult</span><span class="p">)</span>  <span class="err">#</span> <span class="err">这里定义了</span><span class="n">adult</span><span class="err">变量，其等同于将</span><span class="n">getAdult</span><span class="err">方法添加@</span><span class="n">property</span><span class="err">装饰器的结果指向给</span><span class="n">adult</span>
+
+<span class="n">summer</span> <span class="o">=</span> <span class="n">chicken</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">print</span><span class="p">(</span><span class="n">summer</span><span class="p">.</span><span class="n">adult</span><span class="p">)</span>
+<span class="n">summer</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">print</span><span class="p">(</span><span class="n">summer</span><span class="p">.</span><span class="n">adult</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">True</span>
+<span class="n">False</span>
+</pre></div>
+
+
+<h3 id="setter">setter 装饰器</h3>
+<p>与属性名同名，并且接受2个参数，第一个是self， 第二个是将要赋值的值。</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__val</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="err">@</span><span class="n">property</span>
+    <span class="n">def</span> <span class="n">val</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">__val</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">__val</span>
+
+    <span class="err">@</span><span class="n">val</span><span class="p">.</span><span class="n">setter</span>
+    <span class="n">def</span> <span class="n">val</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">if</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">float</span><span class="p">))</span> <span class="n">and</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="o">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">__val</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="nl">else:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">__val</span> <span class="o">=</span> <span class="mi">0</span>
+
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">val</span><span class="p">)</span>
+<span class="n">a</span><span class="p">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">val</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">0</span>
+<span class="mi">3</span>
+</pre></div>
+
+
+<h3 id="deleter">deleter 装饰器</h3>
+<p>可以控制是否删除属性，不常用</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Person</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__age</span> <span class="o">=</span> <span class="n">age</span>
+
+    <span class="err">@</span><span class="n">property</span>
+    <span class="n">def</span> <span class="n">age</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">__age</span>
+
+    <span class="err">@</span><span class="n">age</span><span class="p">.</span><span class="n">setter</span>
+    <span class="n">def</span> <span class="n">age</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__age</span> <span class="o">=</span> <span class="n">age</span>
+
+    <span class="err">@</span><span class="n">age</span><span class="p">.</span><span class="n">deleter</span>
+    <span class="n">def</span> <span class="n">age</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">del</span> <span class="n">age</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">age</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">age</span><span class="p">)</span>
+
+<span class="n">del</span> <span class="n">p</span><span class="p">.</span><span class="n">age</span>
+<span class="n">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">age</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">18</span>
+<span class="mi">30</span>
+<span class="n">del</span> <span class="n">age</span>
+<span class="mi">30</span>
+</pre></div>
+
+
+<h3 id="property_1">property 参数</h3>
+<p>property()最多可以加载四个参数。</p>
+<p>第一个参数是方法名，调用 对象.属性 时自动触发执行方法</p>
+<p>第二个参数是方法名，调用 对象.属性 ＝ XXX 时自动触发执行方法</p>
+<p>第三个参数是方法名，调用 del 对象.属性 时自动触发执行方法</p>
+<p>第四个参数是字符串，调用 对象.属性.<code>__doc__</code> ，此参数是该属性的描述信息</p>
+<p>negative 为一个特性，用于表示数字的负数。property() 最后一个参数('I am negative one') 表示特性negative的说明文档</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Goods</span><span class="p">(</span><span class="n">object</span><span class="p">)</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">original_price</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">discount</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+    <span class="n">def</span> <span class="n">get_price</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">new_price</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">original_price</span> <span class="o">*</span> <span class="n">self</span><span class="p">.</span><span class="n">discount</span>
+        <span class="k">return</span> <span class="n">new_price</span>
+
+    <span class="n">def</span> <span class="n">set_price</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">original_price</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="n">def</span> <span class="n">del_price</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">del</span> <span class="n">self</span><span class="p">.</span><span class="n">original_price</span>
+
+    <span class="n">PRICE</span> <span class="o">=</span> <span class="n">property</span><span class="p">(</span><span class="n">get_price</span><span class="p">,</span> <span class="n">set_price</span><span class="p">,</span> <span class="n">del_price</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">Price</span> <span class="n">description</span><span class="err">&#39;</span><span class="p">)</span>
+
+
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Goods</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">obj</span><span class="p">.</span><span class="n">PRICE</span><span class="p">)</span>
+<span class="n">obj</span><span class="p">.</span><span class="n">PRICE</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">print</span><span class="p">(</span><span class="n">obj</span><span class="p">.</span><span class="n">PRICE</span><span class="p">)</span>
+<span class="n">del</span> <span class="n">obj</span><span class="p">.</span><span class="n">PRICE</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mf">80.0</span>
+<span class="mf">160.0</span>
+</pre></div>
+
+
+<h3 id="property_2">property 实现的原理</h3>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__val</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">def</span> <span class="n">get_val</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">__val</span>
+
+    <span class="n">def</span> <span class="n">set_val</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__val</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="n">val</span> <span class="o">=</span> <span class="n">property</span><span class="p">(</span><span class="n">get_val</span><span class="p">,</span> <span class="n">set_val</span><span class="p">)</span>
+
+<span class="n">print</span><span class="p">(</span><span class="n">type</span><span class="p">(</span><span class="n">A</span><span class="p">.</span><span class="n">val</span><span class="p">))</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+
+<span class="n">a</span><span class="p">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">val</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&lt;</span><span class="n">class</span> <span class="err">&#39;</span><span class="n">property</span><span class="err">&#39;</span><span class="o">&gt;</span>
+<span class="mi">3</span>
+</pre></div>
+
+
 <h1 id="wraps">wraps 装饰器</h1>
 <p>使用装饰器会产生我们可能不希望出现的副作用，　例如：改变被修饰函数名称，对于调试器或者对象序列化器等需要使用内省机制的那些工具，可能会无法正常运行；其实调用装饰器后，会将同一个作用域中原来函数同名的那个变量（例如下面的func_1）,重新赋值为装饰器返回的对象；使用＠wraps后，会把与内部函数（被修饰函数，例如下面的func_1）相关的重要元数据全部复制到外围函数</p>
     </div>
@@ -300,7 +610,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-20 00:38:30</p>
+        <p>Site Generated 2019-05-24 01:26:43</p>
       </span>
     </div>
 

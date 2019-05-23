@@ -29,11 +29,12 @@
 <li><a href="#imagemagick">imagemagick</a><ul>
 <li><a href="#_1">安装</a></li>
 <li><a href="#convert">convert</a><ul>
-<li><a href="#-thumnail">-thumnail</a></li>
-<li><a href="#-resize">-resize</a></li>
-<li><a href="#-sample">-sample</a></li>
-<li><a href="#-rotate">-rotate</a></li>
 <li><a href="#-draw">-draw</a></li>
+<li><a href="#-quality">-quality</a></li>
+<li><a href="#-resize">-resize</a></li>
+<li><a href="#-rotate">-rotate</a></li>
+<li><a href="#-sample">-sample</a></li>
+<li><a href="#-thumnail">-thumnail</a></li>
 </ul>
 </li>
 <li><a href="#script">script</a></li>
@@ -50,20 +51,21 @@
 
 
 <h2 id="convert">convert</h2>
-<h3 id="-thumnail">-thumnail</h3>
-<p>So to create a thumbnail of the abc.png image with 200px width, you need to type:<br />
-<code>$ convert -thumbnail 200 abc.png thumb.abc.png</code></p>
-<p>To create a thumbnail of the abc.png image with 200px height, you need to type:<br />
-<code>$ convert -thumbnail x200 abc.png thumb.abc.png</code></p>
-<h3 id="-resize">-resize</h3>
-<p>将图像的像素改为1024*768，注意1024与768之间是小写字母x</p>
-<div class="hlcode"><pre><span class="n">convert</span> <span class="o">-</span><span class="n">resize</span> <span class="mi">1024</span><span class="n">x768</span>  <span class="n">xxx</span><span class="p">.</span><span class="n">jpg</span>   <span class="n">xxx1</span><span class="p">.</span><span class="n">jpg</span>    
+<h3 id="-draw">-draw</h3>
+<p>使用-draw选项还可以在图像里面添加文字：</p>
+<div class="hlcode"><pre><span class="n">convert</span> <span class="o">-</span><span class="n">fill</span> <span class="n">black</span> <span class="o">-</span><span class="n">pointsize</span> <span class="mi">60</span> <span class="o">-</span><span class="n">font</span> <span class="n">helvetica</span> <span class="o">-</span><span class="n">draw</span> <span class="err">&#39;</span><span class="n">text</span> <span class="mi">10</span><span class="p">,</span><span class="mi">80</span> <span class="s">&quot;Hello, World!&quot;</span> <span class="err">‘</span>  <span class="n">hello</span><span class="p">.</span><span class="n">jpg</span>  <span class="n">helloworld</span><span class="p">.</span><span class="n">jpg</span>
 </pre></div>
 
 
-<h3 id="-sample">-sample</h3>
-<p>将图像的缩减为原来的50%*50%</p>
-<div class="hlcode"><pre><span class="n">convert</span> <span class="o">-</span><span class="n">sample</span> <span class="mi">50</span><span class="o">%</span><span class="n">x50</span><span class="o">%</span>  <span class="n">xxx</span><span class="p">.</span><span class="n">jpg</span>  <span class="n">xxx1</span><span class="p">.</span><span class="n">jpg</span>   
+<h3 id="-quality">-quality</h3>
+<p>大多时候，我们的网站并不需要那么清晰的图片，适量调节JPG图片的压缩比会减少图片大小，肉眼并不会分辨出质量被压缩后的图片。通常75%是最佳比例。</p>
+<div class="hlcode"><pre><span class="n">convert</span> <span class="o">-</span><span class="n">quality</span> <span class="mi">75</span><span class="o">%</span> <span class="n">input</span><span class="p">.</span><span class="n">jpg</span> <span class="n">output</span><span class="p">.</span><span class="n">jpg</span>
+</pre></div>
+
+
+<h3 id="-resize">-resize</h3>
+<p>将图像的像素改为1024*768，注意1024与768之间是小写字母x</p>
+<div class="hlcode"><pre><span class="n">convert</span> <span class="o">-</span><span class="n">resize</span> <span class="mi">1024</span><span class="n">x768</span>  <span class="n">xxx</span><span class="p">.</span><span class="n">jpg</span>   <span class="n">xxx1</span><span class="p">.</span><span class="n">jpg</span>    
 </pre></div>
 
 
@@ -73,9 +75,20 @@
 </pre></div>
 
 
-<h3 id="-draw">-draw</h3>
-<p>使用-draw选项还可以在图像里面添加文字：</p>
-<div class="hlcode"><pre><span class="n">convert</span> <span class="o">-</span><span class="n">fill</span> <span class="n">black</span> <span class="o">-</span><span class="n">pointsize</span> <span class="mi">60</span> <span class="o">-</span><span class="n">font</span> <span class="n">helvetica</span> <span class="o">-</span><span class="n">draw</span> <span class="err">&#39;</span><span class="n">text</span> <span class="mi">10</span><span class="p">,</span><span class="mi">80</span> <span class="s">&quot;Hello, World!&quot;</span> <span class="err">‘</span>  <span class="n">hello</span><span class="p">.</span><span class="n">jpg</span>  <span class="n">helloworld</span><span class="p">.</span><span class="n">jpg</span>
+<h3 id="-sample">-sample</h3>
+<p>将图像的缩减为原来的50%*50%</p>
+<div class="hlcode"><pre><span class="n">convert</span> <span class="o">-</span><span class="n">sample</span> <span class="mi">50</span><span class="o">%</span><span class="n">x50</span><span class="o">%</span>  <span class="n">xxx</span><span class="p">.</span><span class="n">jpg</span>  <span class="n">xxx1</span><span class="p">.</span><span class="n">jpg</span>   
+</pre></div>
+
+
+<h3 id="-thumnail">-thumnail</h3>
+<p>So to create a thumbnail of the abc.png image with 200px width, you need to type:</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">convert</span> <span class="o">-</span><span class="n">thumbnail</span> <span class="mi">200</span> <span class="n">abc</span><span class="p">.</span><span class="n">png</span> <span class="n">thumb</span><span class="p">.</span><span class="n">abc</span><span class="p">.</span><span class="n">png</span>
+</pre></div>
+
+
+<p>To create a thumbnail of the abc.png image with 200px height, you need to type:</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">convert</span> <span class="o">-</span><span class="n">thumbnail</span> <span class="n">x200</span> <span class="n">abc</span><span class="p">.</span><span class="n">png</span> <span class="n">thumb</span><span class="p">.</span><span class="n">abc</span><span class="p">.</span><span class="n">png</span>
 </pre></div>
 
 
@@ -100,7 +113,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-20 00:38:30</p>
+        <p>Site Generated 2019-05-24 01:26:43</p>
       </span>
     </div>
 

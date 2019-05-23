@@ -43,24 +43,29 @@
 <li><a href="#_4">被动模式</a></li>
 </ul>
 </li>
-<li><a href="#vsftpd">vsftpd</a><ul>
-<li><a href="#_5">用户的类型</a><ul>
-<li><a href="#_6">匿名用户</a></li>
-<li><a href="#_7">本地用户</a></li>
-<li><a href="#_8">虚拟用户</a></li>
+<li><a href="#_5">应用程序</a><ul>
+<li><a href="#_6">服务器端</a></li>
+<li><a href="#_7">客户端</a></li>
 </ul>
 </li>
-<li><a href="#_9">包架构</a></li>
+<li><a href="#vsftpd">vsftpd</a><ul>
+<li><a href="#_8">用户的类型</a><ul>
+<li><a href="#_9">匿名用户</a></li>
+<li><a href="#_10">本地用户</a></li>
+<li><a href="#_11">虚拟用户</a></li>
+</ul>
+</li>
+<li><a href="#_12">包架构</a></li>
 <li><a href="#installation">installation</a></li>
-<li><a href="#_10">访问控制</a><ul>
-<li><a href="#_11">匿名用户</a></li>
-<li><a href="#_12">本地用户</a></li>
+<li><a href="#_13">访问控制</a><ul>
+<li><a href="#_14">匿名用户</a></li>
+<li><a href="#_15">本地用户</a></li>
 </ul>
 </li>
 <li><a href="#chroot">设置CHROOT</a></li>
-<li><a href="#_13">登陆提示信息</a></li>
-<li><a href="#_14">优化配置</a></li>
-<li><a href="#_15">虚拟用户</a><ul>
+<li><a href="#_16">登陆提示信息</a></li>
+<li><a href="#_17">优化配置</a></li>
+<li><a href="#_18">虚拟用户</a><ul>
 <li><a href="#mysql">基于mysql的虚拟用户</a></li>
 </ul>
 </li>
@@ -102,20 +107,49 @@
 <li>服务端在受到PASV端口后就会打开一个高位端口作为数据传输端口来响应给客户端等待客户端连接。</li>
 <li>客户端在收到响应后，就会去连接响应的端口建立数据连接通道</li>
 </ol>
+<h1 id="_5">应用程序</h1>
+<h2 id="_6">服务器端</h2>
+<div class="hlcode"><pre><span class="n">wu</span><span class="o">-</span><span class="n">ftpd</span><span class="o">:</span> <span class="n">Washington</span> <span class="n">University</span><span class="p">,</span> <span class="err">非模块化设计</span> 
+
+<span class="n">vsftpd</span><span class="err">：</span><span class="n">Very</span> <span class="n">Secure</span> <span class="n">ftp</span> <span class="n">Daemon</span> 
+
+<span class="nl">proftpd:</span>  
+
+<span class="n">pureftpd</span><span class="err">：</span> 
+
+<span class="n">Filezilla</span><span class="err">：</span> 
+
+<span class="n">Serv</span><span class="o">-</span><span class="n">U</span> 
+</pre></div>
+
+
+<h2 id="_7">客户端</h2>
+<div class="hlcode"><pre><span class="n">CLI</span><span class="o">:</span> 
+  <span class="n">ftp</span> 
+    <span class="n">lftp</span> 
+
+<span class="n">GUI</span><span class="o">:</span> 
+    <span class="n">gftpd</span> 
+    <span class="n">FlashFXP</span> 
+    <span class="n">Cuteftp</span> 
+  <span class="n">filezilla</span> 
+</pre></div>
+
+
 <h1 id="vsftpd">vsftpd</h1>
 <p>Vsftpd是基于ftp协议来对网络数据交换的一种实现，是一个开源的解决方案</p>
-<h2 id="_5">用户的类型</h2>
-<h3 id="_6">匿名用户</h3>
+<h2 id="_8">用户的类型</h2>
+<h3 id="_9">匿名用户</h3>
 <p>anonymous或ftp</p>
-<h3 id="_7">本地用户</h3>
+<h3 id="_10">本地用户</h3>
 <p>账号名称、密码等信息保存在passwd、 shadow文件中</p>
-<h3 id="_8">虚拟用户</h3>
+<h3 id="_11">虚拟用户</h3>
 <p>使用独立的账号/密码数据文件</p>
 <div class="hlcode"><pre><span class="n">user_list</span> <span class="n">wangwu</span> <span class="mi">123456</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">pub</span>
 </pre></div>
 
 
-<h2 id="_9">包架构</h2>
+<h2 id="_12">包架构</h2>
 <div class="hlcode"><pre><span class="err">官方站点：</span> <span class="n">http</span><span class="o">:</span><span class="c1">//vsftpd.beasts.org/</span>
 <span class="err">主程序</span><span class="o">:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">vsftpd</span>
 <span class="err">服务名：</span> <span class="n">vsftpd</span>
@@ -148,8 +182,8 @@
 </pre></div>
 
 
-<h2 id="_10">访问控制</h2>
-<h3 id="_11">匿名用户</h3>
+<h2 id="_13">访问控制</h2>
+<h3 id="_14">匿名用户</h3>
 <div class="hlcode"><pre><span class="err">配置基于匿名用户的访问控制，可以修改</span><span class="n">vsftpd</span><span class="err">的主配置文件</span>
 <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">vsftpd</span><span class="o">/</span><span class="n">vsftpd</span><span class="p">.</span><span class="n">conf</span><span class="err">来进行，主要有下面几个参数</span>
 <span class="err"></span> <span class="n">anonymous_enable</span><span class="o">=</span><span class="n">YES</span>
@@ -166,7 +200,7 @@
 </pre></div>
 
 
-<h3 id="_12">本地用户</h3>
+<h3 id="_15">本地用户</h3>
 <div class="hlcode"><pre><span class="err">默认情况下，操作系统的账户是可以直接使用用户名和密码来登陆的。并且登</span>
 <span class="err">陆成功之后，默认进入到了自己的家目录。</span>
 
@@ -226,7 +260,7 @@
 </pre></div>
 
 
-<h2 id="_13">登陆提示信息</h2>
+<h2 id="_16">登陆提示信息</h2>
 <div class="hlcode"><pre><span class="err">登陆提示信息图形界面是看不到的，只适用于</span><span class="n">ftp</span><span class="err">作为客户端的时候。可以使用下面的</span>
 <span class="err">方式来进行配置。但是优先级却不一样。如果希望用户登陆后不能切换到自家目录以为</span>
 <span class="err">的目录，</span>
@@ -241,7 +275,7 @@
 </pre></div>
 
 
-<h2 id="_14">优化配置</h2>
+<h2 id="_17">优化配置</h2>
 <div class="hlcode"><pre><span class="err">设置最大传输速率限制</span>
 <span class="err"></span> <span class="err">例如下面的配置：</span>
 <span class="err"></span> <span class="n">local_max_rate</span><span class="o">=</span><span class="mi">50000</span>
@@ -272,7 +306,7 @@
 </pre></div>
 
 
-<h2 id="_15">虚拟用户</h2>
+<h2 id="_18">虚拟用户</h2>
 <div class="hlcode"><pre><span class="err"></span> <span class="err">所有虚拟用户会统一映射为一个指定的系统帐号：访问共享位置，即为此系统帐号的家</span>
 <span class="err">目录。</span>
 <span class="err"></span> <span class="err">各虚拟用户可被赋予不同的访问权限，通过匿名用户的权限控制参数进行指定。</span>
@@ -464,7 +498,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-20 00:38:30</p>
+        <p>Site Generated 2019-05-24 01:26:43</p>
       </span>
     </div>
 
