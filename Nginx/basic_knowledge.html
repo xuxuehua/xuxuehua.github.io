@@ -46,13 +46,13 @@
 </li>
 </ul>
 </li>
-<li><a href="#_11">配置语法</a></li>
-<li><a href="#_12">配置参数</a><ul>
-<li><a href="#_13">时间的单位</a></li>
-<li><a href="#_14">空间的单位</a></li>
+<li><a href="#_11">配置语法</a><ul>
+<li><a href="#_12">时间的单位</a></li>
+<li><a href="#_13">空间的单位</a></li>
 </ul>
 </li>
-<li><a href="#_15">配置指令块</a><ul>
+<li><a href="#_14">配置指令块</a><ul>
+<li><a href="#general">general</a></li>
 <li><a href="#http">http</a></li>
 <li><a href="#server">server 域名</a><ul>
 <li><a href="#listen">listen 指令</a></li>
@@ -65,11 +65,11 @@
 </li>
 <li><a href="#nginx">Nginx命令行</a><ul>
 <li><a href="#syntax">syntax</a></li>
-<li><a href="#_16">热部署版本升级</a></li>
-<li><a href="#_17">日志切割</a></li>
+<li><a href="#_15">热部署版本升级</a></li>
+<li><a href="#_16">日志切割</a></li>
 </ul>
 </li>
-<li><a href="#_18">进程结构</a><ul>
+<li><a href="#_17">进程结构</a><ul>
 <li><a href="#master-process">Master Process</a></li>
 <li><a href="#worker-processes">Worker processes</a></li>
 <li><a href="#cache-manager">Cache manager</a></li>
@@ -194,8 +194,7 @@ BSD许可证，可以更改代码</p>
 <p>include语句允许组合多个配置文件以提升可维护性</p>
 <p>使用$符号使用变量 （变量由nginx框架提供）</p>
 <p>部分指令的参数支持正则表达式</p>
-<h2 id="_12">配置参数</h2>
-<h3 id="_13">时间的单位</h3>
+<h3 id="_12">时间的单位</h3>
 <div class="hlcode"><pre><span class="n">ms</span> <span class="o">-&gt;</span> <span class="n">milliseconds</span>
 <span class="n">s</span> <span class="o">-&gt;</span> <span class="n">seconds</span>
 <span class="n">m</span> <span class="o">-&gt;</span> <span class="n">minutes</span>
@@ -206,7 +205,7 @@ BSD许可证，可以更改代码</p>
 </pre></div>
 
 
-<h3 id="_14">空间的单位</h3>
+<h3 id="_13">空间的单位</h3>
 <div class="hlcode"><pre><span class="n">bytes</span> <span class="o">-&gt;</span> <span class="n">bytes</span>
 <span class="n">k</span><span class="o">/</span><span class="n">K</span> <span class="o">-&gt;</span> <span class="n">kilobytes</span>
 <span class="n">m</span><span class="o">/</span><span class="n">M</span> <span class="o">-&gt;</span> <span class="n">megabytes</span>
@@ -214,7 +213,12 @@ BSD许可证，可以更改代码</p>
 </pre></div>
 
 
-<h2 id="_15">配置指令块</h2>
+<h2 id="_14">配置指令块</h2>
+<h3 id="general">general</h3>
+<div class="hlcode"><pre><span class="n">user</span> <span class="n">nobody</span> <span class="n">nobody</span><span class="p">;</span>
+</pre></div>
+
+
 <h3 id="http">http</h3>
 <h3 id="server">server 域名</h3>
 <h4 id="listen">listen 指令</h4>
@@ -260,7 +264,7 @@ BSD许可证，可以更改代码</p>
 发送信号：-s {stop立刻停止服务,quit优雅的停止服务,reload重载配置文件,reopen重新开始记录日志文件}<br />
 测试配置文件是否有语法错误：-t -T<br />
 打印nginx的版本信息、编译信息等：-v -V</p>
-<h3 id="_16">热部署版本升级</h3>
+<h3 id="_15">热部署版本升级</h3>
 <div class="hlcode"><pre><span class="n">kill</span> <span class="o">-</span><span class="n">USR2</span> <span class="n">masterPid</span>
 <span class="n">kill</span> <span class="o">-</span><span class="n">WINCH</span> <span class="n">masterPid</span> <span class="err">切换到新的版本，老版本的进程不会退出，方便进行版本回退</span>
 </pre></div>
@@ -268,7 +272,7 @@ BSD许可证，可以更改代码</p>
 
 <p>版本回退</p>
 <p>直接用kill -USR1来执行reload，不要用nginx -s reload，这样还是老的nginx worker起来</p>
-<h3 id="_17">日志切割</h3>
+<h3 id="_16">日志切割</h3>
 <div class="hlcode"><pre><span class="n">mv</span> <span class="n">access</span><span class="p">.</span><span class="n">log</span> <span class="n">bak</span><span class="p">.</span><span class="n">log</span> 
 <span class="p">..</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">nginx</span> <span class="o">-</span><span class="n">s</span> <span class="n">reopen</span>
 </pre></div>
@@ -300,7 +304,7 @@ mv <span class="k">${</span><span class="nv">CUR_LOGS_PATH</span><span class="k"
 </pre></div>
 </td></tr></table>
 
-<h2 id="_18">进程结构</h2>
+<h2 id="_17">进程结构</h2>
 <h3 id="master-process">Master Process</h3>
 <p>Master Process 用于管理Worker Processes， Worker Processes 用于响应请求</p>
 <p>所以会将CPU核数配置成Worker Processes 数量，或者绑定到指定的核上</p>
@@ -345,7 +349,7 @@ mv <span class="k">${</span><span class="nv">CUR_LOGS_PATH</span><span class="k"
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-24 01:26:43</p>
+        <p>Site Generated 2019-05-28 09:23:56</p>
       </span>
     </div>
 

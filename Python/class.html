@@ -26,28 +26,28 @@
 <div class="page_title">class 类</div>
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
-<li><a href="#_1">类的定义</a><ul>
-<li><a href="#_2">自定义类的新的属性</a></li>
-<li><a href="#_3">方法定义 (类中的函数)</a><ul>
-<li><a href="#_4">私有方法</a><ul>
-<li><a href="#_5">私有方法原理</a></li>
+<li><a href="#_1">类之间的关系</a></li>
+<li><a href="#_2">类的定义</a><ul>
+<li><a href="#_3">自定义类的新的属性</a></li>
+<li><a href="#_4">方法定义 (类中的函数)</a><ul>
+<li><a href="#_5">私有方法</a><ul>
+<li><a href="#_6">私有方法原理</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_6">类的属性</a><ul>
-<li><a href="#_7">实例变量</a></li>
-<li><a href="#_8">私有变量</a></li>
-<li><a href="#_9">类变量</a></li>
-<li><a href="#_10">私有类变量</a></li>
+<li><a href="#_7">类的属性</a><ul>
+<li><a href="#_8">实例变量</a></li>
+<li><a href="#_9">私有变量</a></li>
+<li><a href="#_10">类变量</a></li>
+<li><a href="#_11">私有类变量</a></li>
 <li><a href="#__slots__">__slots__ 属性</a></li>
 </ul>
 </li>
-<li><a href="#_11">内置特殊方法</a><ul>
+<li><a href="#_12">内置特殊方法</a><ul>
 <li><a href="#__init__">__init__</a></li>
-<li><a href="#_12"></a></li>
 <li><a href="#__dict__">__dict__</a></li>
 <li><a href="#__doc__">__doc__</a></li>
 <li><a href="#__name__">__name__</a></li>
@@ -74,7 +74,17 @@
 <li><a href="#instance">instance() 函数判断对象类型</a></li>
 </ul>
 </div>
-<h1 id="_1">类的定义</h1>
+<h1 id="_1">类之间的关系</h1>
+<p>类和类之间的关系有三种：is-a、has-a和use-a关系</p>
+<ul>
+<li>is-a关系也叫继承或泛化，比如学生和人的关系、手机和电子产品的关系都属于继承关系。</li>
+<li>has-a关系通常称之为关联，比如部门和员工的关系，汽车和引擎的关系都属于关联关系；关联关系如果是整体和部分的关联，那么我们称之为聚合关系；如果整体进一步负责了部分的生命周期（整体和部分是不可分割的，同时同在也同时消亡），那么这种就是最强的关联关系，我们称之为合成关系。</li>
+<li>use-a关系通常称之为依赖，比如司机有一个驾驶的行为（方法），其中（的参数）使用到了汽车，那么司机和汽车的关系就是依赖关系。</li>
+</ul>
+<p>使用一种叫做<a href="https://zh.wikipedia.org/wiki/统一建模语言">UML</a>（统一建模语言）的东西来进行面向对象建模，其中一项重要的工作就是把类和类之间的关系用标准化的图形符号描述出来。</p>
+<p>利用类之间的这些关系，我们可以在已有类的基础上来完成某些操作，也可以在已有类的基础上创建新的类，这些都是实现代码复用的重要手段。</p>
+<p><img alt="img" src="https://snag.gy/pDjZHr.jpg" /></p>
+<h1 id="_2">类的定义</h1>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">ClassName</span><span class="p">:</span>
     <span class="k">pass</span>
 
@@ -96,7 +106,7 @@
 </pre></div>
 
 
-<h2 id="_2">自定义类的新的属性</h2>
+<h2 id="_3">自定义类的新的属性</h2>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
 
     <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">:</span>
@@ -110,7 +120,7 @@
 </pre></div>
 
 
-<h2 id="_3">方法定义 (类中的函数)</h2>
+<h2 id="_4">方法定义 (类中的函数)</h2>
 <p>写在类中的函数，我们通常称之为（对象的）方法</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">ClassName</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">method_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -118,7 +128,7 @@
 </pre></div>
 
 
-<h3 id="_4">私有方法</h3>
+<h3 id="_5">私有方法</h3>
 <p><code>__val</code> 但不以__结尾的</p>
 <p><code>__private_method</code>：两个下划线开头，声明该方法为私有方法，不能在类地外部调用。在类的内部调用 <code>self.__private_methods</code></p>
 <div class="hlcode"><pre><span class="nb">class</span> <span class="nx">A</span><span class="p">:</span>
@@ -191,7 +201,7 @@
 </pre></div>
 
 
-<h4 id="_5">私有方法原理</h4>
+<h4 id="_6">私有方法原理</h4>
 <p>python并没有真正的私有，变量改名 _classname__val来绕过</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
     <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">:</span>
@@ -222,8 +232,8 @@
 </pre></div>
 
 
-<h1 id="_6">类的属性</h1>
-<h2 id="_7">实例变量</h2>
+<h1 id="_7">类的属性</h1>
+<h2 id="_8">实例变量</h2>
 <p>定义在方法中的变量，只作用于当前实例的类。</p>
 <p>实例变量的作用域，就是实例本身</p>
 <p>类可以访问；类内部可以访问；派生类中可以访问</p>
@@ -253,7 +263,7 @@
 </pre></div>
 
 
-<h2 id="_8">私有变量</h2>
+<h2 id="_9">私有变量</h2>
 <p>仅类内部可以访问</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">C</span><span class="o">:</span>
 
@@ -278,7 +288,7 @@
 </pre></div>
 
 
-<h2 id="_9">类变量</h2>
+<h2 id="_10">类变量</h2>
 <p>类变量对所有的实例都是可见的，可以共享，且初值都是一样的</p>
 <p>定义在方法体之外，可以通过类名访问，对所有方法共享</p>
 <p>实例变量没有，会找类变量调用</p>
@@ -330,7 +340,7 @@
 </pre></div>
 
 
-<h2 id="_10">私有类变量</h2>
+<h2 id="_11">私有类变量</h2>
 <p>私有类变量不能被实例访问</p>
 <p>类内部可以通过方法访问</p>
 <p><code>__private_attrs</code>：两个下划线开头，声明该属性为私有，不能在类的外部被使用或直接访问。在类内部的方法中使用时 <code>self.__private_attrs</code>。</p>
@@ -357,7 +367,7 @@
 
 <h2 id="__slots__"><code>__slots__</code> 属性</h2>
 <p>动态语言允许我们在程序运行时给对象绑定新的属性或方法，当然也可以对已经绑定的属性和方法进行解绑定。但是如果我们需要限定自定义类型的对象只能绑定某些属性，可以通过在类中定义<code>__slots__</code>变量来进行限定。需要注意的是<code>__slots__</code>的限定只对当前类的对象生效，对子类并不起任何作用。</p>
-<h1 id="_11">内置特殊方法</h1>
+<h1 id="_12">内置特殊方法</h1>
 <h2 id="__init__"><code>__init__</code></h2>
 <p>构造方法, 通过类创建对象时，自动触发执行， 可用于绑定属性</p>
 <p>不能有返回值，也就是None</p>
@@ -400,7 +410,6 @@
 </pre></div>
 
 
-<h2 id="_12"></h2>
 <h2 id="__dict__"><code>__dict__</code></h2>
 <p>类或对象中的所有成员信息</p>
 <p>对象的属性可能来自与其类定义，叫做类属性(class attribute)。 </p>
@@ -892,7 +901,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-24 01:26:43</p>
+        <p>Site Generated 2019-05-28 09:23:56</p>
       </span>
     </div>
 

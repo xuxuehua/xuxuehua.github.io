@@ -43,6 +43,11 @@
 <li><a href="#_3">设置不含执行权限的特殊权限</a></li>
 </ul>
 </li>
+<li><a href="#_4">文件隐藏属性</a><ul>
+<li><a href="#chattr">chattr</a></li>
+<li><a href="#lsattr">lsattr</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -88,12 +93,57 @@
 <div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">linuxtmp</span><span class="p">]</span><span class="err">#</span> <span class="n">chmod</span> <span class="mi">7666</span> <span class="n">test</span><span class="p">;</span> <span class="n">ls</span> <span class="o">-</span><span class="n">l</span> <span class="n">test</span>
 <span class="o">-</span><span class="n">rwSrwSrwT</span> <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">0</span> <span class="n">Jul</span> <span class="mi">20</span> <span class="mi">11</span><span class="o">:</span><span class="mi">27</span> <span class="n">test</span>
 </pre></div>
+
+
+<h2 id="_4">文件隐藏属性</h2>
+<p>文件有隐藏属性，隐藏属性对系统有很大的帮助。尤其是在系统安全（Security）方面，非常重要。</p>
+<h3 id="chattr">chattr</h3>
+<div class="hlcode"><pre><span class="n">chattr</span> <span class="p">[</span><span class="o">+-=</span><span class="p">][</span><span class="n">ASacdistu</span><span class="p">]</span> <span class="err">文件或目录名</span> 
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">linux</span><span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">cd</span> <span class="o">/</span><span class="n">tmp</span> 
+<span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">linuxtmp</span><span class="p">]</span><span class="err">#</span> <span class="n">touch</span> <span class="n">attrtest</span> 
+<span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">linuxtmp</span><span class="p">]</span><span class="err">#</span> <span class="n">chattr</span> <span class="o">+</span><span class="n">i</span> <span class="n">attrtest</span> 
+<span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">linuxtmp</span><span class="p">]</span><span class="err">#</span> <span class="n">rm</span> <span class="n">attrtest</span> 
+<span class="nl">rm:</span> <span class="n">remove</span> <span class="n">write</span><span class="o">-</span><span class="n">protected</span> <span class="n">regular</span> <span class="n">empty</span> <span class="n">file</span> <span class="err">`</span><span class="n">attrtest</span><span class="err">&#39;</span><span class="o">?</span> <span class="n">y</span> 
+<span class="nl">rm:</span> <span class="n">cannot</span> <span class="n">remove</span> <span class="err">`</span><span class="n">attrtest</span><span class="err">&#39;</span><span class="o">:</span> <span class="n">Operation</span> <span class="n">not</span> <span class="n">permitted</span> 
+</pre></div>
+
+
+<blockquote>
+<p>看到了吗？连root也没有办法删除这个文件。赶紧解除设置。 </p>
+</blockquote>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">linuxtmp</span><span class="p">]</span><span class="err">#</span> <span class="n">chattr</span> <span class="o">-</span><span class="n">i</span> <span class="n">attrtest</span> 
+</pre></div>
+
+
+<p>这个命令很重要，尤其是在系统的安全性方面。由于这些属性是隐藏的，所以需要用lsattr才能看到。</p>
+<p>笔者认为，最重要的是 +i属性，因为它可以让一个文件无法被更改，对于需要很高系统安全性的人来说，相当重要。还有相当多的属性是需要root才能设置的。此外，如果是登录文件，就更需要 +a参数，使之可以增加但不能修改与删除原有的数据。将来提到登录文件时，我们再来介绍如何设置它。 </p>
+<h3 id="lsattr">lsattr</h3>
+<div class="hlcode"><pre><span class="n">lsattr</span> <span class="p">[</span><span class="o">-</span><span class="n">aR</span><span class="p">]</span> <span class="err">文件或目录</span> 
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="o">-</span><span class="n">a</span> <span class="o">:</span> <span class="err">将隐藏文件的属性也显示出来。</span> 
+
+<span class="o">-</span><span class="n">R</span> <span class="o">:</span> <span class="err">连同子目录的数据也一并列出来。</span> 
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">linuxtmp</span><span class="p">]</span><span class="err">#</span> <span class="n">chattr</span> <span class="o">+</span><span class="n">aij</span> <span class="n">attrtest</span> 
+<span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">linuxtmp</span><span class="p">]</span><span class="err">#</span> <span class="n">lsattr</span> 
+<span class="o">----</span><span class="n">ia</span><span class="o">---</span><span class="n">j</span><span class="o">---</span> <span class="p">.</span><span class="o">/</span><span class="n">attrtest</span> 
+</pre></div>
+
+
+<p>使用chattr设置后，可以利用lsattr来查看隐藏属性。不过，这两个命令在使用上必须要特别小心，否则会造成很大的困扰。例如，某天你心情好，突然将 /etc/shadow这个重要的密码记录文件设置为具有i属性，那么，过了若干天之后，突然要新增用户，却一直无法新增。怎么办？将i的属性去掉即可。 </p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-24 01:26:43</p>
+        <p>Site Generated 2019-05-28 09:23:56</p>
       </span>
     </div>
 
