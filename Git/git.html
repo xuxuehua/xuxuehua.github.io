@@ -28,10 +28,12 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#git">git</a><ul>
 <li><a href="#add">add 添加到暂存区</a></li>
+<li><a href="#alias">alias 设置别名</a></li>
 <li><a href="#branch">branch</a><ul>
 <li><a href="#-d">-D 强力删除</a></li>
 <li><a href="#-d_1">-d 删除</a></li>
 <li><a href="#-v-verbose">-v verbose</a></li>
+<li><a href="#-set-upstream-to">--set-upstream-to 关联分支</a></li>
 </ul>
 </li>
 <li><a href="#cat-file">cat-file</a><ul>
@@ -39,6 +41,7 @@
 <li><a href="#-t">-t 类型</a></li>
 </ul>
 </li>
+<li><a href="#check-ignore">check-ignore</a></li>
 <li><a href="#checkout">checkout</a><ul>
 <li><a href="#-b">-b 指定分支</a></li>
 <li><a href="#-files">--  指定files  工作区变回暂存区</a></li>
@@ -52,6 +55,7 @@
 <li><a href="#-amend-comment">--amend 修改最近一次comment</a></li>
 </ul>
 </li>
+<li><a href="#config">config</a></li>
 <li><a href="#diff">diff</a><ul>
 <li><a href="#-files_1">--  指定files</a></li>
 <li><a href="#-cached-head">--cached  暂存区与HEAD差异</a></li>
@@ -66,9 +70,22 @@
 </ul>
 </li>
 <li><a href="#fetch">fetch 拉取到本地</a></li>
+<li><a href="#log">log</a><ul>
+<li><a href="#-graph">--graph 图形化</a></li>
+<li><a href="#-n">-n 行数</a></li>
+<li><a href="#-oneline">--oneline 一行信息</a></li>
+<li><a href="#-pretty">--pretty 编辑输出信息</a></li>
+</ul>
+</li>
 <li><a href="#merge">merge 合并</a><ul>
 <li><a href="#-allow-unrelated-histories">--allow-unrelated-histories</a></li>
 <li><a href="#-no-ff">--no-ff</a></li>
+</ul>
+</li>
+<li><a href="#pull">pull 拉取远端</a></li>
+<li><a href="#push">push 推送到远端</a><ul>
+<li><a href="#-u-set-upstream">-u/--set-upstream 关联分支</a></li>
+<li><a href="#-force">--force</a></li>
 </ul>
 </li>
 <li><a href="#rebase">rebase</a><ul>
@@ -93,8 +110,17 @@
 </ul>
 </li>
 <li><a href="#rm">rm 删除文件</a></li>
+<li><a href="#tag">tag</a><ul>
+<li><a href="#show">show 查看标签</a><ul>
+<li><a href="#-a">-a 指定标签名</a></li>
+<li><a href="#-m">-m 指定说明文字</a></li>
+</ul>
+</li>
+<li><a href="#-d_2">-d 删除</a></li>
+</ul>
+</li>
 <li><a href="#stash">stash 保存临时现场</a><ul>
-<li><a href="#-list">--  list 查看临时现场保存信息</a></li>
+<li><a href="#-list">--list 查看临时现场保存信息</a></li>
 <li><a href="#apply">apply 恢复临时现场 (保留堆栈)</a></li>
 <li><a href="#pop">pop 恢复临时现场 (不保留堆栈)</a></li>
 <li><a href="#drop">drop 删除临时现场</a></li>
@@ -104,19 +130,6 @@
 <li><a href="#-porcelain">--porcelain 简单输出</a></li>
 </ul>
 </li>
-<li><a href="#log">log</a><ul>
-<li><a href="#-graph">--graph 图形化</a></li>
-<li><a href="#-n">-n 行数</a></li>
-<li><a href="#-oneline">--oneline 一行信息</a></li>
-<li><a href="#-pretty">--pretty 编辑输出信息</a></li>
-</ul>
-</li>
-<li><a href="#pull">pull 拉取远端</a></li>
-<li><a href="#push">push 推送到远端</a><ul>
-<li><a href="#-u-set-upstream">-u/--set-upstream 关联分支</a></li>
-<li><a href="#-force">--force</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -124,6 +137,17 @@
 <h1 id="git">git</h1>
 <h2 id="add">add 添加到暂存区</h2>
 <p>把文件修改添加到暂存区</p>
+<h2 id="alias">alias 设置别名</h2>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">global</span> <span class="n">alias</span><span class="p">.</span><span class="n">co</span> <span class="n">checkout</span>
+<span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">global</span> <span class="n">alias</span><span class="p">.</span><span class="n">ci</span> <span class="n">commit</span>
+<span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">global</span> <span class="n">alias</span><span class="p">.</span><span class="n">br</span> <span class="n">branch</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">global</span> <span class="n">alias</span><span class="p">.</span><span class="n">lg</span> <span class="s">&quot;log --color --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#39; --abbrev-commit&quot;</span>
+</pre></div>
+
+
 <h2 id="branch">branch</h2>
 <h3 id="-d">-D 强力删除</h3>
 <p>处理-d删除不了的分支</p>
@@ -139,6 +163,16 @@
 </pre></div>
 
 
+<h3 id="-set-upstream-to">--set-upstream-to 关联分支</h3>
+<p><code>no tracking information</code>，则说明本地分支和远程分支的链接关系没有创建</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">branch</span> <span class="o">--</span><span class="n">set</span><span class="o">-</span><span class="n">upstream</span><span class="o">-</span><span class="n">to</span> <span class="o">&lt;</span><span class="n">branch</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span> <span class="n">origin</span><span class="o">/&lt;</span><span class="n">branch</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">branch</span> <span class="o">--</span><span class="n">set</span><span class="o">-</span><span class="n">upstream</span><span class="o">-</span><span class="n">to</span><span class="o">=</span><span class="n">origin</span><span class="o">/</span><span class="n">master</span> <span class="n">master</span>
+</pre></div>
+
+
 <h2 id="cat-file">cat-file</h2>
 <h3 id="-p">-p 内容</h3>
 <p>查看HASH_VALUE 内容</p>
@@ -149,6 +183,12 @@
 <h3 id="-t">-t 类型</h3>
 <p>查看文件类型</p>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">cat</span><span class="o">-</span><span class="n">file</span> <span class="o">-</span><span class="n">t</span> <span class="n">HASH_VALUE</span>
+</pre></div>
+
+
+<h2 id="check-ignore">check-ignore</h2>
+<p>检查<code>.gitignore</code> 是否配置正确</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">check</span><span class="o">-</span><span class="n">ignore</span> <span class="o">-</span><span class="n">v</span> <span class="n">App</span><span class="p">.</span><span class="n">class</span>
 </pre></div>
 
 
@@ -179,6 +219,12 @@
 <p>把暂存区的所有内容提交到当前分支（若是多分支，就不一定是master分支）</p>
 <h3 id="-amend-comment">--amend 修改最近一次comment</h3>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">commit</span> <span class="o">--</span><span class="n">amend</span>
+</pre></div>
+
+
+<h2 id="config">config</h2>
+<p>配置显示颜色</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">global</span> <span class="n">color</span><span class="p">.</span><span class="n">ui</span> <span class="nb">true</span>
 </pre></div>
 
 
@@ -242,6 +288,24 @@
 
 <h2 id="fetch">fetch 拉取到本地</h2>
 <p>但不会和本地的分支产生关联</p>
+<h2 id="log">log</h2>
+<h3 id="-graph">--graph 图形化</h3>
+<p>开启图形化</p>
+<h3 id="-n">-n 行数</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">log</span> <span class="o">-</span><span class="n">n4</span> 
+</pre></div>
+
+
+<h3 id="-oneline">--oneline 一行信息</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">log</span> <span class="o">--</span><span class="n">oneline</span>
+</pre></div>
+
+
+<h3 id="-pretty">--pretty 编辑输出信息</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">log</span> <span class="o">--</span><span class="n">pretty</span><span class="o">=</span><span class="n">oneline</span>
+</pre></div>
+
+
 <h2 id="merge">merge 合并</h2>
 <p>git merge命令用于合并指定分支到当前分支上</p>
 <p>在master 分支上合并dev 分支内容</p>
@@ -256,7 +320,24 @@
 </pre></div>
 
 
+<p>合并分支时，加上<code>--no-ff</code>参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而<code>fast forward</code>合并就看不出来曾经做过合并。</p>
+<h2 id="pull">pull 拉取远端</h2>
+<h2 id="push">push 推送到远端</h2>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">https</span><span class="o">:</span><span class="c1">//user:pass@example.com</span>
+</pre></div>
+
+
+<h3 id="-u-set-upstream">-u/--set-upstream 关联分支</h3>
+<p>set upstream for git pull/status</p>
+<p>Git 不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">push</span> <span class="o">-</span><span class="n">u</span> <span class="n">origin</span> <span class="n">master</span>
+</pre></div>
+
+
+<h3 id="-force">--force</h3>
+<p>不要用 git push --force，而要用 git push --force-with-lease 代替。在你上次提交之后，只要其他人往该分支提交给代码，git push --force-with-lease 会拒绝覆盖</p>
 <h2 id="rebase">rebase</h2>
+<p>把分叉的提交历史“整理”成一条直线，看上去更直观。缺点是本地的分叉提交已经被修改过了。</p>
 <h3 id="-i">-i 交互式操作</h3>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">rebase</span> <span class="o">-</span><span class="n">i</span> <span class="n">HASH_VALUE</span>
 </pre></div>
@@ -347,13 +428,73 @@
 </pre></div>
 
 
+<h2 id="tag">tag</h2>
+<p>创建标签</p>
+<p>默认为<code>HEAD</code>，也可以指定一个commit id</p>
+<div class="hlcode"><pre><span class="nx">git</span> <span class="kt">tag</span> <span class="o">&lt;</span><span class="nb">tagname</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p>查看标签</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">tag</span>
+</pre></div>
+
+
+<h3 id="show">show 查看标签</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">show</span> <span class="n">v0</span><span class="mf">.1</span>
+</pre></div>
+
+
+<h4 id="-a">-a 指定标签名</h4>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">tag</span> <span class="o">-</span><span class="n">a</span> <span class="n">v0</span><span class="mf">.1</span> <span class="o">-</span><span class="n">m</span> <span class="s">&quot;version 0.1 released&quot;</span> <span class="mi">1094</span><span class="n">adb</span>
+</pre></div>
+
+
+<h4 id="-m">-m 指定说明文字</h4>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">tag</span> <span class="o">-</span><span class="n">a</span> <span class="n">v0</span><span class="mf">.1</span> <span class="o">-</span><span class="n">m</span> <span class="s">&quot;version 0.1 released&quot;</span> <span class="mi">1094</span><span class="n">adb</span>
+</pre></div>
+
+
+<h3 id="-d_2">-d 删除</h3>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">tag</span> <span class="o">-</span><span class="n">d</span> <span class="n">v0</span><span class="mf">.1</span>
+</pre></div>
+
+
+<p>推送某个标签到远程</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">v1</span><span class="mf">.0</span>
+</pre></div>
+
+
+<p>一次性推送全部尚未推送到远程的本地标签</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="o">--</span><span class="n">tags</span>
+</pre></div>
+
+
+<p>从远程删除。删除命令也是push</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="o">:</span><span class="n">refs</span><span class="o">/</span><span class="n">tags</span><span class="o">/</span><span class="n">v0</span><span class="mf">.9</span>
+</pre></div>
+
+
 <h2 id="stash">stash 保存临时现场</h2>
+<p>设A为游戏软件 </p>
+<div class="hlcode"><pre><span class="mi">1</span><span class="err">、</span><span class="n">master</span> <span class="err">上面发布的是</span><span class="n">A</span><span class="err">的</span><span class="mf">1.0</span><span class="err">版本</span> 
+<span class="mi">2</span><span class="err">、</span><span class="n">dev</span> <span class="err">上开发的是</span><span class="n">A</span><span class="err">的</span><span class="mf">2.0</span><span class="err">版本</span> 
+<span class="mi">3</span><span class="err">、这时，用户反映</span> <span class="mf">1.0</span><span class="err">版本存在漏洞，有人利用这个漏洞开外挂</span> 
+<span class="mi">4</span><span class="err">、需要从</span><span class="n">dev</span><span class="err">切换到</span><span class="n">master</span><span class="err">去填这个漏洞，正常必须先提交</span><span class="n">dev</span><span class="err">目前的工作，才能切换。</span> 
+<span class="mi">5</span><span class="err">、而</span><span class="n">dev</span><span class="err">的工作还未完成，不想提交，所以先把</span><span class="n">dev</span><span class="err">的工作</span><span class="n">stash</span><span class="err">一下。然后切换到</span><span class="n">master</span> 
+<span class="mi">6</span><span class="err">、在</span><span class="n">master</span><span class="err">建立分支</span><span class="n">issue101</span><span class="err">并切换</span><span class="p">.</span> 
+<span class="mi">7</span><span class="err">、在</span><span class="n">issue101</span><span class="err">上修复漏洞。</span> 
+<span class="mi">8</span><span class="err">、修复后，在</span><span class="n">master</span><span class="err">上合并</span><span class="n">issue101</span> 
+<span class="mi">9</span><span class="err">、切回</span><span class="n">dev</span><span class="err">，恢复原本工作，继续工作。</span>
+</pre></div>
+
+
 <p>不影响工作区的环境</p>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">stash</span>
 </pre></div>
 
 
-<h3 id="-list">--  list 查看临时现场保存信息</h3>
+<h3 id="-list">--list 查看临时现场保存信息</h3>
 <p>查看工作现场信息</p>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">stash</span> <span class="o">--</span><span class="n">list</span>
 </pre></div>
@@ -403,47 +544,12 @@
  <span class="n">M</span> <span class="n">content</span><span class="o">/</span><span class="n">Kubernetes</span><span class="o">/</span><span class="n">yaml</span><span class="p">.</span><span class="n">md</span>
 <span class="o">??</span> <span class="n">content</span><span class="o">/</span><span class="n">Kubernetes</span><span class="o">/</span><span class="n">services</span><span class="p">.</span><span class="n">md</span>
 </pre></div>
-
-
-<h2 id="log">log</h2>
-<h3 id="-graph">--graph 图形化</h3>
-<p>开启图形化</p>
-<h3 id="-n">-n 行数</h3>
-<div class="hlcode"><pre><span class="n">git</span> <span class="n">log</span> <span class="o">-</span><span class="n">n4</span> 
-</pre></div>
-
-
-<h3 id="-oneline">--oneline 一行信息</h3>
-<div class="hlcode"><pre><span class="n">git</span> <span class="n">log</span> <span class="o">--</span><span class="n">oneline</span>
-</pre></div>
-
-
-<h3 id="-pretty">--pretty 编辑输出信息</h3>
-<div class="hlcode"><pre><span class="n">git</span> <span class="n">log</span> <span class="o">--</span><span class="n">pretty</span><span class="o">=</span><span class="n">oneline</span>
-</pre></div>
-
-
-<h2 id="pull">pull 拉取远端</h2>
-<h2 id="push">push 推送到远端</h2>
-<div class="hlcode"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">https</span><span class="o">:</span><span class="c1">//user:pass@example.com</span>
-</pre></div>
-
-
-<h3 id="-u-set-upstream">-u/--set-upstream 关联分支</h3>
-<p>set upstream for git pull/status</p>
-<p>Git 不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令</p>
-<div class="hlcode"><pre><span class="n">git</span> <span class="n">push</span> <span class="o">-</span><span class="n">u</span> <span class="n">origin</span> <span class="n">master</span>
-</pre></div>
-
-
-<h3 id="-force">--force</h3>
-<p>不要用 git push --force，而要用 git push --force-with-lease 代替。在你上次提交之后，只要其他人往该分支提交给代码，git push --force-with-lease 会拒绝覆盖</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-28 09:23:56</p>
+        <p>Site Generated 2019-05-29 19:37:38</p>
       </span>
     </div>
 

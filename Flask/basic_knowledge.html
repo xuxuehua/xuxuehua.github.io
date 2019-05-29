@@ -31,23 +31,36 @@
 <li><a href="#_1">自动刷新</a></li>
 </ul>
 </li>
-<li><a href="#_2">视图函数注册</a><ul>
-<li><a href="#_3">装饰器方法</a></li>
+<li><a href="#_2">工作原理</a></li>
+<li><a href="#flask">Flask 源码结构</a><ul>
+<li><a href="#apppy">app.py</a><ul>
+<li><a href="#flask_1">Flask</a></li>
+</ul>
+</li>
+<li><a href="#ctxpy">ctx.py</a><ul>
+<li><a href="#appcontext">AppContext</a></li>
+<li><a href="#requestcontext">RequestContext</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_3">视图函数注册</a><ul>
+<li><a href="#_4">装饰器方法</a></li>
 <li><a href="#add_url_url">add_url_url</a></li>
 </ul>
 </li>
 <li><a href="#response">response 对象</a></li>
-<li><a href="#_4">目录结构</a></li>
-<li><a href="#_5">蓝图</a><ul>
-<li><a href="#_6">定义蓝图</a></li>
-<li><a href="#_7">注册蓝图</a></li>
-<li><a href="#_8">调用蓝图</a></li>
+<li><a href="#_5">目录结构</a></li>
+<li><a href="#_6">蓝图</a><ul>
+<li><a href="#_7">定义蓝图</a></li>
+<li><a href="#_8">注册蓝图</a></li>
+<li><a href="#_9">调用蓝图</a></li>
 </ul>
 </li>
-<li><a href="#_9">前端布局</a><ul>
-<li><a href="#_10">静态文件引入</a></li>
-<li><a href="#_11">定义路由</a></li>
-<li><a href="#_12">定义数据块</a></li>
+<li><a href="#_10">前端布局</a><ul>
+<li><a href="#_11">静态文件引入</a></li>
+<li><a href="#_12">定义路由</a></li>
+<li><a href="#_13">定义数据块</a></li>
 </ul>
 </li>
 </ul>
@@ -76,8 +89,50 @@
 </blockquote>
 <h2 id="_1">自动刷新</h2>
 <p>将debug=True 开启即可</p>
-<h1 id="_2">视图函数注册</h1>
-<h2 id="_3">装饰器方法</h2>
+<h1 id="_2">工作原理</h1>
+<p><img alt="img" src="https://snag.gy/JNTclY.jpg" /></p>
+<p>当一个请求进来，先检查<code>_app_ctx_stack</code> 的堆栈中是否为空，若没有，那么将实例化 的<code>AppContext</code> 推入到栈中，然后 实例化一个Request Context，封装的信息在Request中，然后将Request Context推入到LocalStack中，LocalStack实例化之后，存储到<code>_request_ctx_stack</code> 中</p>
+<p>在使用<code>current_app(Local Proxy)</code> 和 <code>request(Local Proxy)</code> 其实就是间接的操作两个栈顶的元素，也就是这两个上下文</p>
+<h1 id="flask">Flask 源码结构</h1>
+<div class="hlcode"><pre><span class="err">├──</span> <span class="n">__init__</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">__main__</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">_compat</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">app</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">blueprints</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">cli</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">config</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">ctx</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">debughelpers</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">globals</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">helpers</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">json</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">__init__</span><span class="p">.</span><span class="n">py</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="n">tag</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">logging</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">sessions</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">signals</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">templating</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">testing</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">views</span><span class="p">.</span><span class="n">py</span>
+<span class="err">└──</span> <span class="n">wrappers</span><span class="p">.</span><span class="n">py</span>
+</pre></div>
+
+
+<h2 id="apppy">app.py</h2>
+<p>含有核心实例化的Flask类</p>
+<h3 id="flask_1">Flask</h3>
+<p>保存配置文件信息， 注册路由，以及试图函数的功能</p>
+<h2 id="ctxpy">ctx.py</h2>
+<h3 id="appcontext">AppContext</h3>
+<p>应用上下文， 对Flask 核心对象的封装</p>
+<p>self.app = app 即封装了Flask实例化的核心对象 </p>
+<p>定义了4个方法，<code>push</code>， <code>pop</code>， <code>__enter__</code>  , <code>__exit__</code></p>
+<p>设计思想，即有些对象的属性是在对象外部的，不属于对象本身的，所以可以设计上下文对象将对象外部的属性和操作关联起来,放到新的上下文对象中</p>
+<h3 id="requestcontext">RequestContext</h3>
+<p>请求上下文，即封装请求对象Request</p>
+<p>同样和AppContext一样，定义了4个方法，<code>push</code>， <code>pop</code>， <code>__enter__</code>  , <code>__exit__</code></p>
+<h1 id="_3">视图函数注册</h1>
+<h2 id="_4">装饰器方法</h2>
 <p>常用方法</p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Flask</span>
 
@@ -136,7 +191,7 @@
 </pre></div>
 
 
-<h1 id="_4">目录结构</h1>
+<h1 id="_5">目录结构</h1>
 <div class="hlcode"><pre><span class="err">├──</span> <span class="n">app</span>
 <span class="err">│</span>   <span class="err">├──</span> <span class="n">__init__</span><span class="p">.</span><span class="n">py</span>
 <span class="err">│</span>   <span class="err">├──</span> <span class="n">admin</span>
@@ -158,13 +213,13 @@
 </pre></div>
 
 
-<h1 id="_5">蓝图</h1>
+<h1 id="_6">蓝图</h1>
 <p>一种应用中或者跨应用制作应用组件和支持通用的模式</p>
 <p>可以将不同的功能模块化，增强可读性，易于维护</p>
 <p>不建议将其作为试图函数的拆分</p>
 <p>蓝图不能独立存在，需要插入到app的核心对象里面</p>
 <p><img alt="img" src="https://snag.gy/2kzj6W.jpg" /></p>
-<h2 id="_6">定义蓝图</h2>
+<h2 id="_7">定义蓝图</h2>
 <p><code>app/admin/__init__.py</code></p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Blueprint</span>
 <span class="n">admin</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">,</span> <span class="n">__name__</span><span class="p">)</span>
@@ -172,32 +227,32 @@
 </pre></div>
 
 
-<h2 id="_7">注册蓝图</h2>
+<h2 id="_8">注册蓝图</h2>
 <p><code>app/__init__.py</code></p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">admin</span> <span class="n">import</span> <span class="n">admin</span> <span class="n">as</span> <span class="n">admin_blueprint</span>
 <span class="n">app</span><span class="p">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">admin_blueprint</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s">&quot;/admin&quot;</span><span class="p">)</span>
 </pre></div>
 
 
-<h2 id="_8">调用蓝图</h2>
+<h2 id="_9">调用蓝图</h2>
 <p><code>app/admin/views.py</code></p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="p">.</span> <span class="n">import</span> <span class="n">admin</span>
 <span class="err">@</span><span class="n">admin</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
 </pre></div>
 
 
-<h1 id="_9">前端布局</h1>
-<h2 id="_10">静态文件引入</h2>
+<h1 id="_10">前端布局</h1>
+<h2 id="_11">静态文件引入</h2>
 <div class="hlcode"><pre><span class="p">{{</span> <span class="n">url_for</span><span class="p">(</span><span class="err">&#39;</span><span class="k">static</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="err">&#39;</span><span class="n">FILE_PATH</span><span class="err">&#39;</span><span class="p">)</span> <span class="p">}}</span>
 </pre></div>
 
 
-<h2 id="_11">定义路由</h2>
+<h2 id="_12">定义路由</h2>
 <div class="hlcode"><pre><span class="p">{{</span> <span class="n">url_for</span><span class="p">(</span><span class="err">&#39;</span><span class="n">MODULE_NAME</span><span class="p">.</span><span class="n">VIEW_NAME</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">VARIABLE</span><span class="o">=</span><span class="n">PARAMETER</span><span class="p">)</span> <span class="p">}}</span>
 </pre></div>
 
 
-<h2 id="_12">定义数据块</h2>
+<h2 id="_13">定义数据块</h2>
 <div class="hlcode"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">BLOCK_NAME</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">INFO</span>
 <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
@@ -207,7 +262,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-28 09:23:56</p>
+        <p>Site Generated 2019-05-29 19:37:38</p>
       </span>
     </div>
 
