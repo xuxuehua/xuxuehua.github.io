@@ -156,7 +156,7 @@
 <p>当我们从<a href="https://www.python.org/">Python官方网站</a>下载并安装好Python 2.7后，我们就直接获得了一个官方版本的解释器：CPython。这个解释器是用C语言开发的，所以叫CPython。在命令行下运行<code>python</code>就是启动CPython解释器。</p>
 <p>CPython是使用最广的Python解释器。教程的所有代码也都在CPython下执行。</p>
 <h4 id="gil-global-interpreter-lock">GIL (Global Interpreter Lock)</h4>
-<p>全局解释器锁，保证在同一时刻只有一个线程执行。</p>
+<p>全局解释器锁，保证变量运算和读取，在同一时刻只有一个线程执行。</p>
 <p>这个解释器锁是有必要的，因为cpython解释器的内存管理不是线程安全的</p>
 <p>GIL虽然是一个假的多线程，但是在处理一些IO操作(文件读写，网络请求)可以提高效率，建议使用多线程提高效率。但CPU计算操作不建议使用多线程，建议使用多进程。</p>
 <h3 id="ipython">IPython</h3>
@@ -357,7 +357,7 @@ for line in iter(input, sentinel):
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-29 19:37:38</p>
+        <p>Site Generated 2019-06-01 01:33:42</p>
       </span>
     </div>
 

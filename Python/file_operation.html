@@ -33,7 +33,7 @@
 <li><a href="#x">x 创建写入</a></li>
 <li><a href="#a">a 追加</a></li>
 <li><a href="#b">b 二进制模式</a></li>
-<li><a href="#t">t 文本</a></li>
+<li><a href="#t">t 文本</a></li>
 </ul>
 </li>
 <li><a href="#_3">模式</a><ul>
@@ -71,10 +71,11 @@
 </ul>
 </li>
 <li><a href="#with">with语句</a><ul>
-<li><a href="#_6">单词统计</a></li>
+<li><a href="#_6">实现原理</a></li>
+<li><a href="#_7">单词统计</a></li>
 </ul>
 </li>
-<li><a href="#_7">查找</a><ul>
+<li><a href="#_8">查找</a><ul>
 <li><a href="#seek">seek 文件指针</a></li>
 <li><a href="#tell_1">tell 指针位置</a></li>
 <li><a href="#flush">flush 缓冲</a></li>
@@ -99,7 +100,7 @@
 
 
 <h3 id="x">x 创建写入</h3>
-<p>创建并写入一个新文件， 要求文件事先不存在</p>
+<p>创建并写入一个新文件， 文件存在会报异常</p>
 <h3 id="a">a 追加</h3>
 <p>以附加的方式打开只写文件。</p>
 <p>若文件不存在，则会建立该文件，并在尾部追加</p>
@@ -110,7 +111,7 @@
 
 <h3 id="b">b 二进制模式</h3>
 <p>字节流，将文件就按照字节理解，与字符编码无关，二进制模式操作时，字节操作用bytes类型</p>
-<h3 id="t">t 文本</h3>
+<h3 id="t">t 文本</h3>
 <p>字符流，将文件的字节按照某种字符编码理解，按照字符操作</p>
 <h2 id="_3">模式</h2>
 <h3 id="r_1">r+ 可读写</h3>
@@ -242,7 +243,44 @@
 </pre></div>
 
 
-<h3 id="_6">单词统计</h3>
+<h3 id="_6">实现原理</h3>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__enter__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">a</span>
+
+    <span class="n">def</span> <span class="n">__exit__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+
+
+<span class="n">with</span> <span class="n">A</span><span class="p">()</span> <span class="n">as</span> <span class="n">obj_a</span><span class="o">:</span>
+    <span class="n">pass</span>
+</pre></div>
+
+
+<blockquote>
+<p>通过debug 模式，obj_a是返回<code>__enter__</code> 的返回值， 但是一旦执行了<code>__exit__</code> 结束了上下文管理</p>
+</blockquote>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">MyResource</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__enter__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Connect</span> <span class="n">to</span> <span class="n">resource</span><span class="err">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">self</span>
+
+    <span class="n">def</span> <span class="n">__exit__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Disconnect</span> <span class="n">to</span> <span class="n">resource</span><span class="err">&#39;</span><span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">query</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Query</span> <span class="n">data</span><span class="err">&#39;</span><span class="p">)</span>
+
+
+<span class="n">with</span> <span class="n">MyResource</span><span class="p">()</span> <span class="n">as</span> <span class="n">resource</span><span class="o">:</span>
+    <span class="n">resource</span><span class="p">.</span><span class="n">query</span><span class="p">()</span>
+</pre></div>
+
+
+<h3 id="_7">单词统计</h3>
 <div class="hlcode"><pre><span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="n">with</span> <span class="n">open</span><span class="p">(</span><span class="err">&#39;</span><span class="n">sample</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="err">&#39;</span><span class="n">utf</span><span class="o">-</span><span class="mi">8</span><span class="err">&#39;</span><span class="p">)</span> <span class="n">as</span> <span class="n">f</span><span class="o">:</span>
@@ -255,7 +293,7 @@
 </pre></div>
 
 
-<h2 id="_7">查找</h2>
+<h2 id="_8">查找</h2>
 <h3 id="seek">seek 文件指针</h3>
 <p>移动文件指针位置，offset偏移多少字节，whence从哪里开始</p>
 <div class="hlcode"><pre><span class="n">seek</span><span class="p">(</span><span class="n">offset</span><span class="p">[,</span> <span class="n">whence</span><span class="p">])</span>
@@ -285,7 +323,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-29 19:37:38</p>
+        <p>Site Generated 2019-06-01 01:33:42</p>
       </span>
     </div>
 

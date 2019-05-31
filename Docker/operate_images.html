@@ -99,6 +99,37 @@
 </pre></div>
 
 
+<p><strong>获取所有的IDs</strong></p>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">images</span> <span class="o">|</span> <span class="n">col</span> <span class="mi">3</span>
+
+<span class="n">IMAGE</span>
+<span class="mi">65</span><span class="n">a9e3ef7171</span>
+<span class="mi">7</span><span class="n">c01ca6c30f2</span>
+<span class="mf">9518620e6</span><span class="n">a0e</span>
+<span class="mi">430707</span><span class="n">ee7fe8</span>
+<span class="mi">1</span><span class="n">dbd7ebffe31</span>
+<span class="n">f47686df00df</span>
+<span class="n">df1e39df8dbf</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">images</span> <span class="o">|</span> <span class="n">col</span> <span class="mi">3</span> <span class="o">|</span> <span class="n">xargs</span>
+
+<span class="n">IMAGE</span> <span class="mi">65</span><span class="n">a9e3ef7171</span> <span class="mi">7</span><span class="n">c01ca6c30f2</span> <span class="mf">9518620e6</span><span class="n">a0e</span> <span class="mi">430707</span><span class="n">ee7fe8</span> <span class="mi">1</span><span class="n">dbd7ebffe31</span> <span class="n">f47686df00df</span> <span class="n">df1e39df8dbf</span> <span class="n">c5e6cf38d985</span> <span class="n">e426f6ef897e</span> <span class="mi">8</span><span class="n">cdd417ec611</span> <span class="mi">511136</span><span class="n">ea3c5a</span>
+</pre></div>
+
+
+<p><strong>前面的”IMAGE”字符去掉</strong></p>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">images</span> <span class="o">|</span> <span class="n">col</span> <span class="mi">3</span> <span class="o">|</span> <span class="n">xargs</span> <span class="o">|</span> <span class="n">skip</span> <span class="mi">1</span>
+
+<span class="mi">65</span><span class="n">a9e3ef7171</span> <span class="mi">7</span><span class="n">c01ca6c30f2</span> <span class="mf">9518620e6</span><span class="n">a0e</span> <span class="mi">430707</span><span class="n">ee7fe8</span> <span class="mi">1</span><span class="n">dbd7ebffe31</span> <span class="n">f47686df00df</span> <span class="n">df1e39df8dbf</span> <span class="n">c5e6cf38d985</span> <span class="n">e426f6ef897e</span> <span class="mi">8</span><span class="n">cdd417ec611</span> <span class="mi">511136</span><span class="n">ea3c5a</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">rmi</span> <span class="err">$</span><span class="p">(</span><span class="n">docker</span> <span class="n">images</span> <span class="o">|</span> <span class="n">col</span> <span class="mi">3</span> <span class="o">|</span> <span class="n">xargs</span> <span class="o">|</span> <span class="n">skip</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+
 <h3 id="_2">显示虚悬镜像</h3>
 <div class="hlcode"><pre><span class="err">$</span> <span class="nx">docker</span> <span class="nx">images</span> <span class="na">-f</span> <span class="n">dangling</span><span class="o">=</span><span class="kc">true</span>
 <span class="nx">REPOSITORY</span>          <span class="kt">TAG</span>                 <span class="nb">IMAGE</span> <span class="nb">ID</span>            <span class="nx">CREATED</span>             <span class="nb">SIZE</span>
@@ -429,7 +460,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-29 19:37:38</p>
+        <p>Site Generated 2019-06-01 01:33:42</p>
       </span>
     </div>
 

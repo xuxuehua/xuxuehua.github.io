@@ -29,9 +29,14 @@
 <li><a href="#installation">Installation</a></li>
 <li><a href="#hello-world">Hello World</a><ul>
 <li><a href="#_1">自动刷新</a></li>
+<li><a href="#_2">开启多线程</a></li>
 </ul>
 </li>
-<li><a href="#_2">工作原理</a></li>
+<li><a href="#_3">工作原理</a><ul>
+<li><a href="#localstack">LocalStack原理</a></li>
+<li><a href="#_4">线程隔离</a></li>
+</ul>
+</li>
 <li><a href="#flask">Flask 源码结构</a><ul>
 <li><a href="#apppy">app.py</a><ul>
 <li><a href="#flask_1">Flask</a></li>
@@ -42,25 +47,26 @@
 <li><a href="#requestcontext">RequestContext</a></li>
 </ul>
 </li>
+<li><a href="#_5">线程隔离</a></li>
 </ul>
 </li>
-<li><a href="#_3">视图函数注册</a><ul>
-<li><a href="#_4">装饰器方法</a></li>
+<li><a href="#_6">视图函数注册</a><ul>
+<li><a href="#_7">装饰器方法</a></li>
 <li><a href="#add_url_url">add_url_url</a></li>
 </ul>
 </li>
 <li><a href="#response">response 对象</a></li>
-<li><a href="#_5">目录结构</a></li>
-<li><a href="#_6">蓝图</a><ul>
-<li><a href="#_7">定义蓝图</a></li>
-<li><a href="#_8">注册蓝图</a></li>
-<li><a href="#_9">调用蓝图</a></li>
+<li><a href="#_8">目录结构</a></li>
+<li><a href="#_9">蓝图</a><ul>
+<li><a href="#_10">定义蓝图</a></li>
+<li><a href="#_11">注册蓝图</a></li>
+<li><a href="#_12">调用蓝图</a></li>
 </ul>
 </li>
-<li><a href="#_10">前端布局</a><ul>
-<li><a href="#_11">静态文件引入</a></li>
-<li><a href="#_12">定义路由</a></li>
-<li><a href="#_13">定义数据块</a></li>
+<li><a href="#_13">前端布局</a><ul>
+<li><a href="#_14">静态文件引入</a></li>
+<li><a href="#_15">定义路由</a></li>
+<li><a href="#_16">定义数据块</a></li>
 </ul>
 </li>
 </ul>
@@ -89,10 +95,79 @@
 </blockquote>
 <h2 id="_1">自动刷新</h2>
 <p>将debug=True 开启即可</p>
-<h1 id="_2">工作原理</h1>
+<h2 id="_2">开启多线程</h2>
+<div class="hlcode"><pre><span class="n">app</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">threaded</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+</pre></div>
+
+
+<h1 id="_3">工作原理</h1>
 <p><img alt="img" src="https://snag.gy/JNTclY.jpg" /></p>
 <p>当一个请求进来，先检查<code>_app_ctx_stack</code> 的堆栈中是否为空，若没有，那么将实例化 的<code>AppContext</code> 推入到栈中，然后 实例化一个Request Context，封装的信息在Request中，然后将Request Context推入到LocalStack中，LocalStack实例化之后，存储到<code>_request_ctx_stack</code> 中</p>
 <p>在使用<code>current_app(Local Proxy)</code> 和 <code>request(Local Proxy)</code> 其实就是间接的操作两个栈顶的元素，也就是这两个上下文</p>
+<p>AppContext 将Flask作为核心对象保存起来，RequestContext 把Request对象封装并保存了起来 </p>
+<p>current_app指向的是LocalStack.top 栈顶元素的一个属性也就是 AppContext top.app = Flask 的核心对象</p>
+<p>request是指向LocalStack.top 栈顶元素下面的Request请求对象,即 RequestContext top.resquest = Request</p>
+<h2 id="localstack">LocalStack原理</h2>
+<p>Local是用字典的方式实现线程隔离，访问Local通常使用.点来访问下面的属性</p>
+<p>LocalStack封装了Local对象，把Local对象作为一个属性，从而实现了线程隔离的栈结构，访问LocalStack需要使用指定的方法push，pop，top</p>
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">werkzeug</span><span class="p">.</span><span class="n">local</span> <span class="n">import</span> <span class="n">LocalStack</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">LocalStack</span><span class="p">()</span>
+<span class="n">s</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">top</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">top</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">())</span>
+<span class="n">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">top</span><span class="p">)</span>
+
+<span class="n">s</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">s</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">top</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">top</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">())</span>
+<span class="n">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">top</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">1</span>
+<span class="mi">1</span>
+<span class="mi">1</span>
+<span class="n">None</span>
+<span class="mi">2</span>
+<span class="mi">2</span>
+<span class="mi">2</span>
+<span class="mi">1</span>
+</pre></div>
+
+
+<h2 id="_4">线程隔离</h2>
+<p>使用线程隔离的意义在于，使当前线程能够正确引用到他自己所创建的对象，而不是引用到其他线程所创建的对象</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">threading</span><span class="p">,</span> <span class="n">time</span>
+<span class="n">from</span> <span class="n">werkzeug</span><span class="p">.</span><span class="n">local</span> <span class="n">import</span> <span class="n">LocalStack</span>
+
+<span class="n">my_stack</span> <span class="o">=</span> <span class="n">LocalStack</span><span class="p">()</span>
+<span class="n">my_stack</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Main</span> <span class="kr">thread</span> <span class="n">with</span> <span class="n">push</span> <span class="n">value</span><span class="o">:</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">str</span><span class="p">(</span><span class="n">my_stack</span><span class="p">.</span><span class="n">top</span><span class="p">))</span>
+
+
+<span class="n">def</span> <span class="n">worker</span><span class="p">()</span><span class="o">:</span>
+    <span class="s">&quot;New thread&quot;</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">New</span> <span class="kr">thread</span> <span class="n">before</span> <span class="n">push</span> <span class="n">with</span> <span class="n">value</span><span class="o">:</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">str</span><span class="p">(</span><span class="n">my_stack</span><span class="p">.</span><span class="n">top</span><span class="p">))</span>
+    <span class="n">my_stack</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">New</span> <span class="kr">thread</span> <span class="n">after</span> <span class="n">push</span> <span class="n">with</span> <span class="n">value</span><span class="o">:</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">str</span><span class="p">(</span><span class="n">my_stack</span><span class="p">.</span><span class="n">top</span><span class="p">))</span>
+
+
+<span class="kt">new_t</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="err">&#39;</span><span class="n">rick_thread</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="kt">new_t</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Eventually</span><span class="p">,</span> <span class="n">main</span> <span class="kr">thread</span> <span class="n">value</span><span class="o">:</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">str</span><span class="p">(</span><span class="n">my_stack</span><span class="p">.</span><span class="n">top</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Main</span> <span class="kr">thread</span> <span class="n">with</span> <span class="n">push</span> <span class="n">value</span><span class="o">:</span> <span class="mi">1</span>
+<span class="n">New</span> <span class="kr">thread</span> <span class="n">before</span> <span class="n">push</span> <span class="n">with</span> <span class="n">value</span><span class="o">:</span> <span class="n">None</span>
+<span class="n">New</span> <span class="kr">thread</span> <span class="n">after</span> <span class="n">push</span> <span class="n">with</span> <span class="n">value</span><span class="o">:</span> <span class="mi">2</span>
+<span class="n">Eventually</span><span class="p">,</span> <span class="n">main</span> <span class="kr">thread</span> <span class="n">value</span><span class="o">:</span> <span class="mi">1</span>
+</pre></div>
+
+
 <h1 id="flask">Flask 源码结构</h1>
 <div class="hlcode"><pre><span class="err">├──</span> <span class="n">__init__</span><span class="p">.</span><span class="n">py</span>
 <span class="err">├──</span> <span class="n">__main__</span><span class="p">.</span><span class="n">py</span>
@@ -131,8 +206,10 @@
 <h3 id="requestcontext">RequestContext</h3>
 <p>请求上下文，即封装请求对象Request</p>
 <p>同样和AppContext一样，定义了4个方法，<code>push</code>， <code>pop</code>， <code>__enter__</code>  , <code>__exit__</code></p>
-<h1 id="_3">视图函数注册</h1>
-<h2 id="_4">装饰器方法</h2>
+<h2 id="_5">线程隔离</h2>
+<p>通过werkzeug 中的Local对象，实现线程隔离的数据操作</p>
+<h1 id="_6">视图函数注册</h1>
+<h2 id="_7">装饰器方法</h2>
 <p>常用方法</p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Flask</span>
 
@@ -191,7 +268,7 @@
 </pre></div>
 
 
-<h1 id="_5">目录结构</h1>
+<h1 id="_8">目录结构</h1>
 <div class="hlcode"><pre><span class="err">├──</span> <span class="n">app</span>
 <span class="err">│</span>   <span class="err">├──</span> <span class="n">__init__</span><span class="p">.</span><span class="n">py</span>
 <span class="err">│</span>   <span class="err">├──</span> <span class="n">admin</span>
@@ -213,13 +290,13 @@
 </pre></div>
 
 
-<h1 id="_6">蓝图</h1>
+<h1 id="_9">蓝图</h1>
 <p>一种应用中或者跨应用制作应用组件和支持通用的模式</p>
 <p>可以将不同的功能模块化，增强可读性，易于维护</p>
 <p>不建议将其作为试图函数的拆分</p>
 <p>蓝图不能独立存在，需要插入到app的核心对象里面</p>
 <p><img alt="img" src="https://snag.gy/2kzj6W.jpg" /></p>
-<h2 id="_7">定义蓝图</h2>
+<h2 id="_10">定义蓝图</h2>
 <p><code>app/admin/__init__.py</code></p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Blueprint</span>
 <span class="n">admin</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">,</span> <span class="n">__name__</span><span class="p">)</span>
@@ -227,32 +304,32 @@
 </pre></div>
 
 
-<h2 id="_8">注册蓝图</h2>
+<h2 id="_11">注册蓝图</h2>
 <p><code>app/__init__.py</code></p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">admin</span> <span class="n">import</span> <span class="n">admin</span> <span class="n">as</span> <span class="n">admin_blueprint</span>
 <span class="n">app</span><span class="p">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">admin_blueprint</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s">&quot;/admin&quot;</span><span class="p">)</span>
 </pre></div>
 
 
-<h2 id="_9">调用蓝图</h2>
+<h2 id="_12">调用蓝图</h2>
 <p><code>app/admin/views.py</code></p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="p">.</span> <span class="n">import</span> <span class="n">admin</span>
 <span class="err">@</span><span class="n">admin</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
 </pre></div>
 
 
-<h1 id="_10">前端布局</h1>
-<h2 id="_11">静态文件引入</h2>
+<h1 id="_13">前端布局</h1>
+<h2 id="_14">静态文件引入</h2>
 <div class="hlcode"><pre><span class="p">{{</span> <span class="n">url_for</span><span class="p">(</span><span class="err">&#39;</span><span class="k">static</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="err">&#39;</span><span class="n">FILE_PATH</span><span class="err">&#39;</span><span class="p">)</span> <span class="p">}}</span>
 </pre></div>
 
 
-<h2 id="_12">定义路由</h2>
+<h2 id="_15">定义路由</h2>
 <div class="hlcode"><pre><span class="p">{{</span> <span class="n">url_for</span><span class="p">(</span><span class="err">&#39;</span><span class="n">MODULE_NAME</span><span class="p">.</span><span class="n">VIEW_NAME</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">VARIABLE</span><span class="o">=</span><span class="n">PARAMETER</span><span class="p">)</span> <span class="p">}}</span>
 </pre></div>
 
 
-<h2 id="_13">定义数据块</h2>
+<h2 id="_16">定义数据块</h2>
 <div class="hlcode"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">BLOCK_NAME</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">INFO</span>
 <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
@@ -262,7 +339,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-29 19:37:38</p>
+        <p>Site Generated 2019-06-01 01:33:42</p>
       </span>
     </div>
 

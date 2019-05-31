@@ -520,6 +520,79 @@
 </pre></div>
 
 
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">abc</span> <span class="n">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="n">class</span> <span class="n">Employee</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">)</span><span class="o">:</span>
+    <span class="s">&quot;&quot;&quot;Employee</span>
+    <span class="s">&quot;&quot;&quot;</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="err">@</span><span class="n">property</span>
+    <span class="n">def</span> <span class="n">name</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_name</span>
+
+    <span class="err">@</span><span class="n">abstractmethod</span>
+    <span class="n">def</span> <span class="n">get_salary</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">pass</span>
+
+
+<span class="n">class</span> <span class="n">Manager</span><span class="p">(</span><span class="n">Employee</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">get_salary</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="mf">15000.00</span>
+
+
+<span class="n">class</span> <span class="n">Programmer</span><span class="p">(</span><span class="n">Employee</span><span class="p">)</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">working_hour</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_working_hour</span> <span class="o">=</span> <span class="n">working_hour</span>
+
+    <span class="err">@</span><span class="n">property</span>
+    <span class="n">def</span> <span class="n">working_hour</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_working_hour</span>
+
+    <span class="err">@</span><span class="n">working_hour</span><span class="p">.</span><span class="n">setter</span>
+    <span class="n">def</span> <span class="n">working_hour</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">working_hour</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_working_hour</span> <span class="o">=</span> <span class="n">working_hour</span> <span class="k">if</span> <span class="n">working_hour</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="n">def</span> <span class="n">get_salary</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="mf">150.00</span><span class="o">*</span> <span class="n">self</span><span class="p">.</span><span class="n">_working_hour</span>
+
+
+<span class="n">class</span> <span class="n">Salesman</span><span class="p">(</span><span class="n">Employee</span><span class="p">)</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sales</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_sales</span> <span class="o">=</span> <span class="n">sales</span>
+
+    <span class="err">@</span><span class="n">property</span>
+    <span class="n">def</span> <span class="n">sales</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_sales</span>
+
+    <span class="err">@</span><span class="n">sales</span><span class="p">.</span><span class="n">setter</span>
+    <span class="n">def</span> <span class="n">sales</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">sales</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_sales</span> <span class="o">=</span> <span class="n">sales</span> <span class="k">if</span> <span class="n">sales</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="n">def</span> <span class="n">get_salary</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="mf">1200.00</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">_sales</span> <span class="o">*</span> <span class="mf">0.05</span>
+
+
+<span class="n">def</span> <span class="n">main</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">emps</span> <span class="o">=</span> <span class="p">[</span><span class="n">Manager</span><span class="p">(</span><span class="err">&#39;</span><span class="n">William</span><span class="err">&#39;</span><span class="p">),</span> <span class="n">Programmer</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">),</span> <span class="n">Salesman</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Frank</span><span class="err">&#39;</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">emp</span> <span class="n">in</span> <span class="n">emps</span><span class="o">:</span>
+        <span class="k">if</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">emp</span><span class="p">,</span> <span class="n">Programmer</span><span class="p">)</span><span class="o">:</span>
+            <span class="n">emp</span><span class="p">.</span><span class="n">working_hour</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="n">input</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Input</span> <span class="o">%</span><span class="n">s</span> <span class="n">working</span> <span class="n">hours</span><span class="o">:</span> <span class="err">&#39;</span> <span class="o">%</span> <span class="n">emp</span><span class="p">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="n">elif</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">emp</span><span class="p">,</span> <span class="n">Salesman</span><span class="p">)</span><span class="o">:</span>
+            <span class="n">emp</span><span class="p">.</span><span class="n">sales</span> <span class="o">=</span> <span class="kt">float</span><span class="p">(</span><span class="n">input</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Input</span> <span class="o">%</span><span class="n">s</span> <span class="n">sales</span> <span class="n">rate</span><span class="o">:</span> <span class="err">&#39;</span> <span class="o">%</span> <span class="n">emp</span><span class="p">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="o">%</span><span class="n">s</span> <span class="n">monthly</span> <span class="n">pay</span> <span class="n">check</span><span class="o">:</span> <span class="o">%</span><span class="n">s</span><span class="err">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">emp</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">emp</span><span class="p">.</span><span class="n">get_salary</span><span class="p">()))</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="o">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+
 <h3 id="setter">setter 装饰器</h3>
 <p>与属性名同名，并且接受2个参数，第一个是self， 第二个是将要赋值的值。</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
@@ -656,7 +729,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-29 19:37:38</p>
+        <p>Site Generated 2019-06-01 01:33:42</p>
       </span>
     </div>
 

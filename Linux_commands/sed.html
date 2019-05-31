@@ -44,6 +44,19 @@
 </pre></div>
 
 
+<p>用命令行往文件的顶部添加文字</p>
+<div class="hlcode"><pre><span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="err">&#39;</span><span class="mi">1</span><span class="n">s</span><span class="o">/^/</span><span class="n">line</span> <span class="n">to</span> <span class="n">insert</span><span class="err">\</span><span class="n">n</span><span class="o">/</span><span class="err">&#39;</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">file</span><span class="o">/</span><span class="n">you</span><span class="o">/</span><span class="n">want</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">change</span><span class="p">.</span><span class="n">txt</span>
+</pre></div>
+
+
+<p>用命令行往配置文件里插入多行文本</p>
+<div class="hlcode"><pre><span class="n">cat</span> <span class="o">&gt;&gt;</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">file</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">append</span><span class="o">-</span><span class="n">to</span><span class="p">.</span><span class="n">txt</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;EOF&quot;</span>
+<span class="n">export</span> <span class="n">PATH</span><span class="o">=</span><span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.8.0</span><span class="n">_31</span><span class="o">/</span><span class="n">bin</span><span class="o">:</span><span class="err">$</span><span class="n">PATH</span>
+<span class="n">export</span> <span class="n">JAVA_HOME</span><span class="o">=</span><span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.8.0</span><span class="n">_31</span><span class="o">/</span>
+<span class="n">EOF</span>
+</pre></div>
+
+
 <h3 id="_2">替换</h3>
 <div class="hlcode"><pre><span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="err">&#39;</span><span class="n">columns</span><span class="o">/</span><span class="p">.</span><span class="err">*/</span><span class="n">replacement</span><span class="o">-</span><span class="n">word</span><span class="o">/</span><span class="err">&#39;</span> <span class="n">file</span><span class="p">.</span><span class="n">txt</span>
 </pre></div>
@@ -56,7 +69,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-05-29 19:37:38</p>
+        <p>Site Generated 2019-06-01 01:33:42</p>
       </span>
     </div>
 
