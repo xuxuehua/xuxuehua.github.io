@@ -28,7 +28,10 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#ubuntu">Ubuntu</a><ul>
 <li><a href="#basic-development-tools">Basic development tools</a></li>
-<li><a href="#aptsourcelist-for-18041">apt/source.list for 18.04.1</a></li>
+<li><a href="#aptsourcelist-for-18041">apt/source.list for 18.04.1</a><ul>
+<li><a href="#aliyun">aliyun</a></li>
+</ul>
+</li>
 <li><a href="#guest-additions-copypaste">Guest additions (copy&amp;paste)</a></li>
 <li><a href="#ubuntu-chinese-setup">Ubuntu Chinese Setup</a><ul>
 <li><a href="#chinese-china-input-methods">Chinese (China) input methods</a></li>
@@ -110,6 +113,24 @@
 </pre></div>
 
 
+<h3 id="aliyun">aliyun</h3>
+<p>cp /etc/apt/sources.list /etc/apt/sources.list.bak</p>
+<p>在/etc/apt/sources.list文件前面添加如下条目</p>
+<div class="hlcode"><pre><span class="k">deb</span> <span class="s">http://mirrors.aliyun.com/ubuntu/</span> <span class="kp">bionic</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb</span> <span class="s">http://mirrors.aliyun.com/ubuntu/</span> <span class="kp">bionic-security</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb</span> <span class="s">http://mirrors.aliyun.com/ubuntu/</span> <span class="kp">bionic-updates</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb</span> <span class="s">http://mirrors.aliyun.com/ubuntu/</span> <span class="kp">bionic-proposed</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb</span> <span class="s">http://mirrors.aliyun.com/ubuntu/</span> <span class="kp">bionic-backports</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb-src</span> <span class="s">http://mirrors.aliyun.com/ubuntu/</span> <span class="kp">bionic</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb-src</span> <span class="s">http://mirrors.aliyun.com/ubuntu/</span> <span class="kp">bionic-security</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb-src</span> <span class="s">http://mirrors.aliyun.com/ubuntu/</span> <span class="kp">bionic-updates</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb-src</span> <span class="s">http://mirrors.aliyun.com/ubuntu/</span> <span class="kp">bionic-proposed</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb-src</span> <span class="s">http://mirrors.aliyun.com/ubuntu/</span> <span class="kp">bionic-backports</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+</pre></div>
+
+
+<p>sudo apt-get update<br />
+sudo apt-get upgrade</p>
 <h2 id="guest-additions-copypaste">Guest additions (copy&amp;paste)</h2>
 <p>install the package <strong>virtualbox-guest-additions-iso</strong> in the <strong>host</strong> Ubuntu.</p>
 <div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">virtualbox</span><span class="o">-</span><span class="n">guest</span><span class="o">-</span><span class="n">additions</span><span class="o">-</span><span class="n">iso</span>
@@ -320,7 +341,7 @@ fi
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-01 01:33:42</p>
+        <p>Site Generated 2019-06-06 15:14:31</p>
       </span>
     </div>
 

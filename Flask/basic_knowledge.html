@@ -56,6 +56,8 @@
 </ul>
 </li>
 <li><a href="#response">response 对象</a></li>
+<li><a href="#static">static</a></li>
+<li><a href="#template">template</a></li>
 <li><a href="#_8">目录结构</a></li>
 <li><a href="#_9">蓝图</a><ul>
 <li><a href="#_10">定义蓝图</a></li>
@@ -268,6 +270,24 @@
 </pre></div>
 
 
+<h1 id="static">static</h1>
+<p>static文件分应用程序static和blueprint static</p>
+<p>Flask 核心的对象调用，默认为app目录下面的static，可以手动指定目录, 如果是共享static文件，就放到app应用程序下面</p>
+<div class="hlcode"><pre><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">,</span> <span class="n">static_folder</span><span class="o">=</span><span class="err">&#39;</span><span class="n">view_models</span><span class="o">/</span><span class="n">statics</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">static_url_path</span><span class="o">=</span><span class="err">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Blueprint 方法</p>
+<div class="hlcode"><pre><span class="n">web</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="err">&#39;</span><span class="n">web</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">__name__</span><span class="p">,</span> <span class="n">static_folder</span><span class="o">=</span><span class="err">&#39;&#39;</span><span class="p">,</span> <span class="n">static_url_path</span><span class="o">=</span><span class="err">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h1 id="template">template</h1>
+<p>在初始化Flask核心对象或者blueprint的时候, 传入参数</p>
+<div class="hlcode"><pre><span class="n">template_folder</span><span class="o">=</span><span class="err">&#39;</span><span class="n">templates</span><span class="err">&#39;</span>
+</pre></div>
+
+
 <h1 id="_8">目录结构</h1>
 <div class="hlcode"><pre><span class="err">├──</span> <span class="n">app</span>
 <span class="err">│</span>   <span class="err">├──</span> <span class="n">__init__</span><span class="p">.</span><span class="n">py</span>
@@ -339,7 +359,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-01 01:33:42</p>
+        <p>Site Generated 2019-06-06 15:14:31</p>
       </span>
     </div>
 

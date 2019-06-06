@@ -1,0 +1,174 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>jinja2 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Flask">Flask</a>&nbsp;&#187;&nbsp;jinja2
+    <span class="updated">Page Updated&nbsp;
+      2019-06-02 16:21
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">jinja2</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#jinja2">jinja2</a><ul>
+<li><a href="#_1">模版继承</a></li>
+<li><a href="#_2">过滤器</a><ul>
+<li><a href="#default">default</a></li>
+<li><a href="#length">length</a></li>
+</ul>
+</li>
+<li><a href="#url_for">url_for 函数</a></li>
+<li><a href="#message-flash">message flash</a><ul>
+<li><a href="#set">set方法</a></li>
+<li><a href="#with">with方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="jinja2">jinja2</h1>
+<h2 id="_1">模版继承</h2>
+<div class="hlcode"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;layout.html&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nb">super</span><span class="o">()</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">data.age</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">data.age</span> <span class="o">&lt;</span> <span class="m">18</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.name</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">elif</span> <span class="nv">data.age</span> <span class="o">==</span> <span class="m">30</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        I am 30 years old.</span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.age</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+
+
+<blockquote>
+<p>这里的super() 会实现继承效果</p>
+</blockquote>
+<h2 id="_2">过滤器</h2>
+<h3 id="default">default</h3>
+<p>类似于管道命令</p>
+<div class="hlcode"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;layout.html&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nb">super</span><span class="o">()</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">data.age</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">data.age</span> <span class="o">&lt;</span> <span class="m">18</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.name</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">elif</span> <span class="nv">data.age</span> <span class="o">==</span> <span class="m">30</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.school</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="s1">&#39;Unnamed&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.age</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+
+
+<blockquote>
+<p>默认data里面没有school这个键，所以会显示default所定义的Unnamed信息</p>
+</blockquote>
+<h3 id="length">length</h3>
+<p>求长度</p>
+<div class="hlcode"><pre><span class="p">{{</span> <span class="n">data</span> <span class="o">|</span> <span class="n">length</span><span class="p">()</span> <span class="p">}}</span>
+</pre></div>
+
+
+<blockquote>
+<p>获取到data的长度信息</p>
+</blockquote>
+<h2 id="url_for">url_for 函数</h2>
+<p>通过相对固定的endpoint来构建URL地址， 即生成URL地址</p>
+<div class="hlcode"><pre> <span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;{{ url_for(&#39;static&#39;, filename=&#39;test.css&#39;) }}&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<blockquote>
+<p>static 是endpoint地址</p>
+</blockquote>
+<h2 id="message-flash">message flash</h2>
+<h3 id="set">set方法</h3>
+<p>每一个flask 消息变量只会存在在一个block中</p>
+<p>在secure.py 里面设置独一无二的key</p>
+<div class="hlcode"><pre><span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="err">&#39;</span><span class="mi">123413141431341</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<p>在web的路由函数下面，生成闪现消息</p>
+<div class="hlcode"><pre><span class="err">@</span><span class="n">web</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">test</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">def</span> <span class="n">test</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="err">&#39;</span><span class="n">name</span><span class="err">&#39;</span><span class="o">:</span> <span class="err">&#39;&#39;</span><span class="p">,</span>
+        <span class="err">&#39;</span><span class="n">age</span><span class="err">&#39;</span><span class="o">:</span> <span class="mi">30</span>
+    <span class="p">}</span>
+    <span class="n">flash</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Hello</span><span class="p">,</span> <span class="n">Rick</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="err">&#39;</span><span class="n">test</span><span class="p">.</span><span class="n">html</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+
+
+<p>在模版文件中调用</p>
+<div class="hlcode"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;layout.html&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nb">super</span><span class="o">()</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">data.age</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">data.age</span> <span class="o">&lt;</span> <span class="m">18</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.name</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">elif</span> <span class="nv">data.age</span> <span class="o">==</span> <span class="m">30</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.school</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="s1">&#39;Unnamed&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">messages</span> <span class="o">=</span> <span class="nv">get_flashed_messages</span><span class="o">()</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">messages</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.age</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+
+
+<h3 id="with">with方法</h3>
+<p>消息只会在with之间有效果</p>
+<p>相比较于set，with需要语法闭合</p>
+<div class="hlcode"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;layout.html&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nb">super</span><span class="o">()</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">data.age</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">data.age</span> <span class="o">&lt;</span> <span class="m">18</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.name</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">elif</span> <span class="nv">data.age</span> <span class="o">==</span> <span class="m">30</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.school</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="s1">&#39;Unnamed&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">with</span> <span class="nv">messages</span> <span class="o">=</span> <span class="nv">get_flashed_messages</span><span class="o">()</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">messages</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">endwith</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.age</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-06-06 15:14:31</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>
