@@ -148,12 +148,15 @@
 <p>表示处理二进制文件（如：FTP发送上传ISO镜像文件，linux可忽略，windows处理二进制文件时需标注）</p>
 <h3 id="rb">rb</h3>
 <p>读取二进制文件</p>
-<div class="hlcode"><pre>
+<div class="hlcode"><pre><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;Rick.jpg&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>    
 </pre></div>
 
 
 <h3 id="wb">wb</h3>
-<div class="hlcode"><pre>
+<div class="hlcode"><pre><span class="n">with</span> <span class="n">open</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Rick</span><span class="p">.</span><span class="n">jpg</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">wb</span><span class="err">&#39;</span><span class="p">)</span> <span class="n">as</span> <span class="n">e</span><span class="o">:</span>
+    <span class="n">e</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 
 
@@ -323,7 +326,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-06 15:14:31</p>
+        <p>Site Generated 2019-06-18 11:28:27</p>
       </span>
     </div>
 

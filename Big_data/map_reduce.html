@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>map_reduce - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Big_data">Big_data</a>&nbsp;&#187;&nbsp;map_reduce
+    <span class="updated">Page Updated&nbsp;
+      2019-06-12 15:54
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">map_reduce</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">分布式计算</a></li>
+<li><a href="#map-reduce">Map Reduce 模型</a><ul>
+<li><a href="#_2">处理过程</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">分布式计算</h1>
+<p>Hadoop MapReduce的出现，使得大数据计算通用编程成为可能。我们只要遵循MapReduce编程模型编写业务处理逻辑代码，就可以运行在Hadoop分布式集群上，无需关心分布式计算是如何完成的。也就是说，我们只需要关心业务逻辑，不用关心系统调用与运行环境，这和我们目前的主流开发方式是一致的。</p>
+<h1 id="map-reduce">Map Reduce 模型</h1>
+<p><strong>MapReduce既是一个编程模型，又是一个计算框架</strong>。也就是说，开发人员必须基于MapReduce编程模型进行编程开发，然后将程序通过MapReduce计算框架分发到Hadoop集群中运行</p>
+<p>该编程模型只包含Map和Reduce两个过程，map的主要输入是一对<Key, Value>值，经过map计算后输出一对<Key, Value>值；然后将相同Key合并，形成<Key, Value集合>；再将这个<Key, Value集合>输入reduce，经过计算输出零个或多个<Key, Value>对。</p>
+<p>同时，MapReduce又是非常强大的，不管是关系代数运算（SQL计算），还是矩阵运算（图计算），大数据领域几乎所有的计算需求都可以通过MapReduce编程来实现</p>
+<h2 id="_2">处理过程</h2>
+<p>WordCount主要解决的是文本处理中词频统计的问题，就是统计文本中每一个单词出现的次数。如果只是统计一篇文章的词频，几十KB到几MB的数据，只需要写一个程序，将数据读入内存，建一个Hash表记录每个词出现的次数就可以了。</p>
+<div class="hlcode"><pre><span class="c"># 文本前期处理</span>
+<span class="n">strl_ist</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="n">count_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c"># 如果字典里有该单词则加1，否则添加入字典</span>
+<span class="k">for</span> <span class="nb">str</span> <span class="ow">in</span> <span class="n">strl_ist</span><span class="p">:</span>
+<span class="k">if</span> <span class="nb">str</span> <span class="ow">in</span> <span class="n">count_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="n">count_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">count_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">count_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+
+
+<p>简单说来，就是建一个Hash表，然后将字符串里的每个词放到这个Hash表里。如果这个词第一次放到Hash表，就新建一个Key、Value对，Key是这个词，Value是1。如果Hash表里已经有这个词了，那么就给这个词的Value + 1。</p>
+<p>小数据量用单机统计词频很简单，但是如果想统计全世界互联网所有网页（数万亿计）的词频数（而这正是Google这样的搜索引擎的典型需求），不可能写一个程序把全世界的网页都读入内存，这时候就需要用MapReduce编程来解决</p>
+<p>WordCount的MapReduce程序如下</p>
+<div class="hlcode"><pre><span class="k">public</span> <span class="nf">class</span> <span class="nx">WordCount</span> <span class="p">{</span>
+
+  <span class="k">public</span> <span class="nf">static</span> <span class="nb">class</span> <span class="nx">TokenizerMapper</span>
+       <span class="nx">extends</span> <span class="nx">Mapper</span><span class="o">&lt;</span><span class="nb">Object</span><span class="p">,</span> <span class="nx">Text</span><span class="p">,</span> <span class="nx">Text</span><span class="p">,</span> <span class="nx">IntWritable</span><span class="o">&gt;</span><span class="p">{</span>
+
+    <span class="k">private</span> <span class="nf">final</span> <span class="nx">static</span> <span class="nx">IntWritable</span> <span class="n">one</span> <span class="o">=</span> <span class="nb">new</span> <span class="nx">IntWritable</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="k">private</span> <span class="nf">Text</span> <span class="n">word</span> <span class="o">=</span> <span class="nb">new</span> <span class="nx">Text</span><span class="p">();</span>
+
+    <span class="k">public</span> <span class="nf">void</span> <span class="kt">map</span><span class="p">(</span><span class="nb">Object</span> <span class="nb">key</span><span class="p">,</span> <span class="nx">Text</span> <span class="nb">value</span><span class="p">,</span> <span class="nx">Context</span> <span class="nx">context</span>
+                    <span class="p">)</span> <span class="nx">throws</span> <span class="nx">IOException</span><span class="p">,</span> <span class="nx">InterruptedException</span> <span class="p">{</span>
+      <span class="nx">StringTokenizer</span> <span class="n">itr</span> <span class="o">=</span> <span class="nb">new</span> <span class="nx">StringTokenizer</span><span class="p">(</span><span class="nx">value.toString</span><span class="p">());</span>
+      <span class="k">while</span> <span class="p">(</span><span class="nx">itr.hasMoreTokens</span><span class="p">())</span> <span class="p">{</span>
+        <span class="nx">word.set</span><span class="p">(</span><span class="nx">itr.nextToken</span><span class="p">());</span>
+        <span class="nx">context.write</span><span class="p">(</span><span class="nx">word</span><span class="p">,</span> <span class="nx">one</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">public</span> <span class="nf">static</span> <span class="nb">class</span> <span class="nx">IntSumReducer</span>
+       <span class="nx">extends</span> <span class="nx">Reducer</span><span class="o">&lt;</span><span class="nx">Text</span><span class="p">,</span><span class="nx">IntWritable</span><span class="p">,</span><span class="nx">Text</span><span class="p">,</span><span class="nx">IntWritable</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="nf">IntWritable</span> <span class="n">result</span> <span class="o">=</span> <span class="nb">new</span> <span class="nx">IntWritable</span><span class="p">();</span>
+
+    <span class="k">public</span> <span class="nf">void</span> <span class="nx">reduce</span><span class="p">(</span><span class="nx">Text</span> <span class="nb">key</span><span class="p">,</span> <span class="nx">Iterable</span><span class="o">&lt;</span><span class="nx">IntWritable</span><span class="o">&gt;</span> <span class="nb">values</span><span class="p">,</span>
+                       <span class="nx">Context</span> <span class="nx">context</span>
+                       <span class="p">)</span> <span class="nx">throws</span> <span class="nx">IOException</span><span class="p">,</span> <span class="nx">InterruptedException</span> <span class="p">{</span>
+      <span class="nx">int</span> <span class="k">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="nb">for</span> <span class="p">(</span><span class="nx">IntWritable</span> <span class="nx">val</span> <span class="p">:</span> <span class="nb">values</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">sum</span> <span class="o">+=</span> <span class="nx">val.get</span><span class="p">();</span>
+      <span class="p">}</span>
+      <span class="nx">result.set</span><span class="p">(</span><span class="k">sum</span><span class="p">);</span>
+      <span class="nx">context.write</span><span class="p">(</span><span class="nb">key</span><span class="p">,</span> <span class="nb">result</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-06-18 11:28:27</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>
