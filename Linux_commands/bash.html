@@ -29,7 +29,10 @@
 <li><a href="#bash">bash</a><ul>
 <li><a href="#-c">-c</a></li>
 <li><a href="#-i">-i</a></li>
+<li><a href="#-n">-n 语法检查</a></li>
 <li><a href="#-s">-s</a></li>
+<li><a href="#-v">-v 跟踪命令</a></li>
+<li><a href="#-x">-x 跟踪命令并扩展信息</a></li>
 <li><a href="#-">-</a></li>
 <li><a href="#norc">norc</a></li>
 <li><a href="#noprofile">noprofile</a></li>
@@ -50,8 +53,14 @@
 <p>c字符串：若用-c参数，则bash从字符串中读入命令，如果字符串后还有变量就被设定为从$0开始的位置参数。</p>
 <h2 id="-i">-i</h2>
 <p>若用-i参数，则bash是交互的。</p>
+<h2 id="-n">-n 语法检查</h2>
+<p>可以对脚本进行检查</p>
 <h2 id="-s">-s</h2>
 <p>若用-s参数，则bash从标准输入中读入命令（在执行完-c带的命令之后。）直到输入exit。</p>
+<h2 id="-v">-v 跟踪命令</h2>
+<p>可以用-v跟踪脚本里的每个命令的执行</p>
+<h2 id="-x">-x 跟踪命令并扩展信息</h2>
+<p>可以用-x跟踪脚本里的每个命令的执行，并附加扩充信息</p>
 <h2 id="-">-</h2>
 <p>单一的<code>-</code>符号表明参数执行完毕，并且屏蔽此后所跟参数，后面的所有变量都被看作是文件名。</p>
 <h2 id="norc">norc</h2>
@@ -77,7 +86,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-18 11:32:33</p>
+        <p>Site Generated 2019-06-20 09:25:45</p>
       </span>
     </div>
 

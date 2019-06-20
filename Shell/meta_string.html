@@ -28,7 +28,11 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#meta_string">meta_string 元字符</a><ul>
 <li><a href="#_1">特殊字符</a></li>
-<li><a href="#_2">转义符</a></li>
+<li><a href="#_2">转义符</a><ul>
+<li><a href="#96">使用$() 替代反引号`</a></li>
+</ul>
+</li>
+<li><a href="#_3">使用[[ ]]代替[ ]</a></li>
 </ul>
 </li>
 </ul>
@@ -124,12 +128,48 @@
 </tr>
 </tbody>
 </table>
+<h3 id="96">使用<code>$()</code> 替代反引号`</h3>
+<p><code>$()</code> 可以支持嵌套， 而且不用转义，避免和单引号冲突</p>
+<div class="hlcode"><pre><span class="n">echo</span> <span class="s">&quot;A-`echo B-\`echo C-</span><span class="se">\\</span><span class="s">\`echo D</span><span class="se">\\</span><span class="s">\`\``&quot;</span>
+<span class="n">echo</span> <span class="s">&quot;A-$(echo B-$(echo C-$(echo D)))&quot;</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">A</span><span class="o">-</span><span class="n">B</span><span class="o">-</span><span class="n">C</span><span class="o">-</span><span class="n">D</span>
+<span class="n">A</span><span class="o">-</span><span class="n">B</span><span class="o">-</span><span class="n">C</span><span class="o">-</span><span class="n">D</span>
+</pre></div>
+
+
+<h2 id="_3">使用[[ ]]代替[ ]</h2>
+<div class="hlcode"><pre><span class="k">[ &quot;${name}&quot; \&gt; &quot;a&quot; -o &quot;${name}&quot; \&lt; &quot;m&quot; ]</span>
+
+<span class="k">[[ &quot;${name}&quot; &gt; &quot;a&quot; &amp;&amp; &quot;${name}&quot; &lt; &quot;m&quot; ]]</span>
+</pre></div>
+
+
+<p>[[ ]]更符合人性编码, 避免转义问题</p>
+<p>有不少新功能, 包含但不限于：</p>
+<p>|| ：逻辑or</p>
+<p>&amp;&amp; ：逻辑and</p>
+<p>&lt; ：字符串比较（不需要转义）</p>
+<p>== ：通配符(globbing)字符串比较</p>
+<p>=~ ：正则表达式(regular expression, RegEx)字符串比较</p>
+<p>需要注意的是，从bash3.2开始，通配符和正则表达式都不能用引号包裹了</p>
+<div class="hlcode"><pre><span class="n">t</span><span class="o">=</span><span class="s">&quot;abc123&quot;</span>
+<span class="p">[[</span> <span class="s">&quot;$t&quot;</span> <span class="o">==</span> <span class="n">abc</span><span class="o">*</span> <span class="p">]]</span>  <span class="err">#</span><span class="nb">true</span>   <span class="n">globbing</span><span class="err">比较</span>
+<span class="p">[[</span> <span class="s">&quot;$t&quot;</span> <span class="o">==</span> <span class="s">&quot;abc*&quot;</span> <span class="p">]]</span>    <span class="err">#</span><span class="nb">false</span> <span class="err">字面比较</span>
+<span class="p">[[</span> <span class="s">&quot;$t&quot;</span> <span class="o">=~</span> <span class="p">[</span><span class="n">abc</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="mi">123</span><span class="p">]</span><span class="o">+</span> <span class="p">]]</span>  <span class="err">#</span><span class="nb">true</span>   <span class="err">#正则表达式比较</span>
+<span class="p">[[</span> <span class="s">&quot;$t&quot;</span> <span class="o">=~</span> <span class="s">&quot;abc*&quot;</span> <span class="p">]]</span>    <span class="err">#</span><span class="nb">false</span>  <span class="err">#字面比较</span>
+</pre></div>
+
+
+<blockquote>
+<p>这里加了引号就是字面比较</p>
+</blockquote>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-18 11:32:33</p>
+        <p>Site Generated 2019-06-20 09:25:45</p>
       </span>
     </div>
 
