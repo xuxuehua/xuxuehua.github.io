@@ -46,7 +46,8 @@
 <li><a href="#__slots__">__slots__ 属性</a></li>
 </ul>
 </li>
-<li><a href="#_12">内置特殊方法</a><ul>
+<li><a href="#_12">内置变量属性</a><ul>
+<li><a href="#__all__">__all__</a></li>
 <li><a href="#__init__">__init__</a></li>
 <li><a href="#__dict__">__dict__</a></li>
 <li><a href="#__doc__">__doc__</a></li>
@@ -367,7 +368,18 @@
 
 <h2 id="__slots__"><code>__slots__</code> 属性</h2>
 <p>动态语言允许我们在程序运行时给对象绑定新的属性或方法，当然也可以对已经绑定的属性和方法进行解绑定。但是如果我们需要限定自定义类型的对象只能绑定某些属性，可以通过在类中定义<code>__slots__</code>变量来进行限定。需要注意的是<code>__slots__</code>的限定只对当前类的对象生效，对子类并不起任何作用。</p>
-<h1 id="_12">内置特殊方法</h1>
+<h1 id="_12">内置变量属性</h1>
+<h2 id="__all__"><code>__all__</code></h2>
+<p>指定所导入的变量</p>
+<div class="hlcode"><pre><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>指定可导入的模块</p>
+<div class="hlcode"><pre><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">Module1</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">Module2</span><span class="err">&#39;</span><span class="p">]</span>
+</pre></div>
+
+
 <h2 id="__init__"><code>__init__</code></h2>
 <p>构造方法, 通过类创建对象时，自动触发执行， 可用于绑定属性</p>
 <p>不能有返回值，也就是None</p>
@@ -407,6 +419,13 @@
     <span class="nx">a.__val</span>
 <span class="nx">AttributeError</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span> <span class="nb">object</span> <span class="nx">has</span> <span class="nx">no</span> <span class="nx">attribute</span> <span class="s1">&#39;__val&#39;</span>
 <span class="mi">3</span>
+</pre></div>
+
+
+<p>该模块中的代码在导入的时候会被自动执行，可以在其内部写入复用导入的模块名称</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">os</span>
+<span class="n">import</span> <span class="n">sys</span>
+<span class="n">import</span> <span class="n">datetime</span>
 </pre></div>
 
 
@@ -901,7 +920,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-20 09:25:45</p>
+        <p>Site Generated 2019-06-23 11:01:29</p>
       </span>
     </div>
 

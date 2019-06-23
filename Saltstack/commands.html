@@ -27,13 +27,9 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#salt">salt</a><ul>
-<li><a href="#_1"></a></li>
 <li><a href="#options">Options</a></li>
-<li><a href="#_2"></a></li>
+<li><a href="#logging-options">Logging Options 日志相关</a></li>
 <li><a href="#target">Target</a></li>
-<li><a href="#cpget_file">cp.get_file 复制文件到客户端</a></li>
-<li><a href="#cpget_dir">cp.get_dir 复制目录到客户端</a></li>
-<li><a href="#salt-run">salt-run 显示存活的客户端</a></li>
 </ul>
 </li>
 </ul>
@@ -43,7 +39,6 @@
 </pre></div>
 
 
-<h2 id="_1"></h2>
 <h2 id="options">Options</h2>
 <div class="hlcode"><pre><span class="nx">Options</span><span class="o">:</span>
   <span class="o">--</span><span class="nx">version</span>             <span class="nx">show</span> <span class="nx">program</span><span class="s1">&#39;s version number and exit</span>
@@ -105,8 +100,7 @@
 </pre></div>
 
 
-<h2 id="_2"></h2>
-<p>Logging Options 日志相关</p>
+<h2 id="logging-options">Logging Options 日志相关</h2>
 <div class="hlcode"><pre>  <span class="n">Logging</span> <span class="n">Options</span><span class="o">:</span>
     <span class="n">Logging</span> <span class="n">options</span> <span class="n">which</span> <span class="n">override</span> <span class="n">any</span> <span class="n">settings</span> <span class="n">defined</span> <span class="n">on</span> <span class="n">the</span>
     <span class="n">configuration</span> <span class="n">files</span><span class="p">.</span>
@@ -197,27 +191,12 @@
                         <span class="n">output</span><span class="p">.</span> <span class="n">One</span> <span class="n">of</span> <span class="n">full</span><span class="p">,</span> <span class="n">terse</span><span class="p">,</span> <span class="n">mixed</span><span class="p">,</span> <span class="n">changes</span> <span class="n">or</span> <span class="n">filter</span><span class="p">.</span>
                         <span class="nl">Default:</span> <span class="n">full</span><span class="p">.</span>
 </pre></div>
-
-
-<h2 id="cpget_file">cp.get_file 复制文件到客户端</h2>
-<div class="hlcode"><pre> <span class="n">salt</span> <span class="err">&#39;</span><span class="n">nb1</span><span class="err">&#39;</span> <span class="n">cp</span><span class="p">.</span><span class="n">get_file</span> <span class="n">salt</span><span class="o">:</span><span class="c1">//apache.sls /tmp/cp.txt</span>
-</pre></div>
-
-
-<h2 id="cpget_dir">cp.get_dir 复制目录到客户端</h2>
-<div class="hlcode"><pre><span class="n">salt</span> <span class="err">&#39;</span><span class="n">nb1</span><span class="err">&#39;</span> <span class="n">cp</span><span class="p">.</span><span class="n">get_dir</span> <span class="n">salt</span><span class="o">:</span><span class="c1">//test /tmp</span>
-</pre></div>
-
-
-<h2 id="salt-run">salt-run 显示存活的客户端</h2>
-<div class="hlcode"><pre><span class="n">salt</span><span class="o">-</span><span class="n">run</span> <span class="n">manage</span><span class="p">.</span><span class="n">up</span>
-</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-20 09:25:45</p>
+        <p>Site Generated 2019-06-23 11:01:29</p>
       </span>
     </div>
 

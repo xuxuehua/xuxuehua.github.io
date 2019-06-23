@@ -155,6 +155,43 @@
 
 <h3 id="filerecurse">file.recurse</h3>
 <p>保证目录存在并且为对应状态，否则change。</p>
+<div class="hlcode"><pre><span class="n">minion_yum</span><span class="o">:</span>
+  <span class="n">file</span><span class="o">.</span><span class="na">recurse</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="sr">/etc/</span><span class="n">yum</span><span class="o">.</span><span class="na">repos</span><span class="o">.</span><span class="na">d</span>
+    <span class="o">-</span> <span class="n">source</span><span class="o">:</span> <span class="n">salt</span><span class="o">://</span><span class="n">minions</span><span class="o">/</span><span class="n">yum</span><span class="o">.</span><span class="na">repos</span><span class="o">.</span><span class="na">d</span> <span class="err">##提前准备的</span><span class="n">yum</span><span class="err">文件路径</span>
+    <span class="o">-</span> <span class="n">user</span><span class="o">:</span> <span class="n">root</span>
+    <span class="o">-</span> <span class="n">group</span><span class="o">:</span> <span class="n">root</span>
+    <span class="o">-</span> <span class="n">file_mode</span><span class="o">:</span> <span class="mi">644</span>
+    <span class="o">-</span> <span class="n">dir_mode</span><span class="o">:</span> <span class="mi">755</span>
+    <span class="o">-</span> <span class="n">include_empty</span><span class="o">:</span> <span class="n">True</span>
+<span class="n">minion_install</span><span class="o">:</span>
+  <span class="n">pkg</span><span class="o">.</span><span class="na">installed</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">pkgs</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">salt</span><span class="o">-</span><span class="n">minion</span>
+    <span class="o">-</span> <span class="n">require</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">file</span><span class="o">:</span> <span class="n">minion_yum</span>
+    <span class="o">-</span> <span class="n">unless</span><span class="o">:</span> <span class="n">rpm</span> <span class="o">-</span><span class="n">qa</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">salt</span><span class="o">-</span><span class="n">minion</span>
+<span class="n">minion_conf</span><span class="o">:</span>
+  <span class="n">file</span><span class="o">.</span><span class="na">managed</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="sr">/etc/salt/</span><span class="n">minion</span>
+    <span class="o">-</span> <span class="n">source</span><span class="o">:</span> <span class="n">salt</span><span class="o">://</span><span class="n">minions</span><span class="sr">/conf/</span><span class="n">minion</span>  <span class="err">##</span><span class="n">minion</span><span class="err">端需要配置的</span><span class="n">minion</span><span class="err">主配置文件</span>
+    <span class="o">-</span><span class="n">user</span><span class="o">:</span> <span class="n">root</span>
+    <span class="o">-</span> <span class="n">group</span><span class="o">:</span> <span class="n">root</span>
+    <span class="o">-</span> <span class="n">mode</span><span class="o">:</span> <span class="mi">640</span>
+    <span class="o">-</span> <span class="n">template</span><span class="o">:</span> <span class="n">jinja</span>
+    <span class="o">-</span> <span class="n">defaults</span><span class="o">:</span>
+      <span class="n">minion_id</span><span class="o">:</span> <span class="o">{{</span> <span class="n">grains</span><span class="o">[</span><span class="s1">&#39;fqdn_ip4&#39;</span><span class="o">][</span><span class="mi">0</span><span class="o">]}}</span>        <span class="err">##这里</span><span class="n">grains</span><span class="err">是收集</span><span class="n">minion</span><span class="err">端</span><span class="sr">/etc/</span><span class="n">hosts</span><span class="err">文件</span><span class="n">IP</span><span class="err">和主机名的</span>
+    <span class="o">-</span> <span class="n">require</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">pkg</span><span class="o">:</span> <span class="n">minion_install</span>
+<span class="n">minion_service</span><span class="o">:</span>
+  <span class="n">service</span><span class="o">.</span><span class="na">running</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">salt</span><span class="o">-</span><span class="n">minion</span>
+    <span class="o">-</span> <span class="n">enable</span><span class="o">:</span> <span class="n">True</span>
+    <span class="o">-</span> <span class="n">require</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">file</span><span class="o">:</span> <span class="n">minion_conf</span>
+</pre></div>
+
+
 <h3 id="fileabsent">file.absent</h3>
 <p>确保文件不存在，如果存在就删除。</p>
 <h2 id="pkg">pkg  管理软件包状态</h2>
@@ -213,6 +250,32 @@
 <h3 id="watchwatch_in">watch/watch_in</h3>
 <p>watch关注某个状态</p>
 <p>watch_in被某个状态所关注</p>
+<div class="hlcode"><pre><span class="n">salt</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="n">install</span><span class="o">:</span>
+  <span class="n">pkg</span><span class="p">.</span><span class="n">installed</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">salt</span><span class="o">-</span><span class="n">minion</span>
+
+<span class="n">salt</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="n">conf</span><span class="o">:</span>
+  <span class="n">file</span><span class="p">.</span><span class="n">managed</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">minion</span>
+    <span class="o">-</span> <span class="n">source</span><span class="o">:</span> <span class="n">salt</span><span class="o">:</span><span class="c1">//init/files/minion</span>
+    <span class="o">-</span> <span class="n">user</span><span class="o">:</span> <span class="n">root</span>
+    <span class="o">-</span> <span class="n">group</span><span class="o">:</span> <span class="n">root</span>
+    <span class="o">-</span> <span class="n">mode</span><span class="o">:</span> <span class="mi">644</span>
+    <span class="o">-</span> <span class="n">template</span><span class="o">:</span> <span class="n">jinja</span>
+    <span class="o">-</span> <span class="k">default</span><span class="o">:</span>
+      <span class="nl">ID:</span> <span class="p">{{</span> <span class="n">grains</span><span class="p">[</span><span class="err">‘</span><span class="n">ipv4</span><span class="err">‘</span><span class="p">]</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}}</span>
+    <span class="o">-</span> <span class="n">require</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">pkg</span><span class="o">:</span> <span class="n">salt</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="n">install</span>
+
+<span class="n">salt</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="n">service</span><span class="o">:</span>
+  <span class="n">service</span><span class="p">.</span><span class="n">running</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">salt</span><span class="o">-</span><span class="n">minion</span>
+    <span class="o">-</span> <span class="n">enable</span><span class="o">:</span> <span class="n">True</span>
+    <span class="o">-</span> <span class="n">watch</span><span class="o">:</span>
+       <span class="o">-</span> <span class="n">file</span><span class="o">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">minion</span>
+</pre></div>
+
+
 <h3 id="unlessonlyif">unless/onlyif</h3>
 <h1 id="_2">常用方法</h1>
 <h2 id="_3">目录管理</h2>
@@ -484,7 +547,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-20 09:25:45</p>
+        <p>Site Generated 2019-06-23 11:01:29</p>
       </span>
     </div>
 

@@ -59,36 +59,37 @@
 </ul>
 </li>
 <li><a href="#_18">逻辑运算符</a><ul>
+<li><a href="#_19">优先级</a></li>
 <li><a href="#and">and</a></li>
 <li><a href="#or">or</a></li>
 <li><a href="#not">not</a></li>
 </ul>
 </li>
-<li><a href="#_19">赋值运算符</a><ul>
-<li><a href="#_20">=</a></li>
+<li><a href="#_20">赋值运算符</a><ul>
+<li><a href="#_21">=</a></li>
 </ul>
 </li>
-<li><a href="#_21">成员运算符</a><ul>
+<li><a href="#_22">成员运算符</a><ul>
 <li><a href="#in">in</a></li>
 <li><a href="#not-in">not in</a></li>
 </ul>
 </li>
-<li><a href="#_22">身份运算符</a><ul>
+<li><a href="#_23">身份运算符</a><ul>
 <li><a href="#is">is</a></li>
 <li><a href="#is-not">is not</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_23">进制</a><ul>
-<li><a href="#_24">二进制</a></li>
-<li><a href="#_25">八进制</a></li>
+<li><a href="#_24">进制</a><ul>
+<li><a href="#_25">二进制</a></li>
+<li><a href="#_26">八进制</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <h1 id="_1">运算符</h1>
-<h3 id="_2">运算符优先级</h3>
+<h2 id="_2">运算符优先级</h2>
 <div class="hlcode"><pre><span class="err">算数</span> <span class="o">&gt;</span> <span class="err">位</span> <span class="o">&gt;</span> <span class="err">身份</span> <span class="o">&gt;</span> <span class="err">成员</span> <span class="o">&gt;</span> <span class="err">逻辑</span>
 </pre></div>
 
@@ -128,6 +129,7 @@
 <h3 id="_12">~ 按位取反</h3>
 <h2 id="_13">比较运算符</h2>
 <h3 id="_14">==</h3>
+<p>比较变量的取值是否相等，不是内存地址</p>
 <h3 id="33">!=</h3>
 <h3 id="62_1">></h3>
 <h3 id="_15">\&lt;</h3>
@@ -143,11 +145,16 @@
 
 
 <h2 id="_18">逻辑运算符</h2>
+<h3 id="_19">优先级</h3>
+<div class="hlcode"><pre><span class="n">not</span> <span class="o">&gt;</span> <span class="n">and</span> <span class="o">&gt;</span> <span class="n">or</span> 
+</pre></div>
+
+
 <h3 id="and">and</h3>
 <h3 id="or">or</h3>
 <h3 id="not">not</h3>
-<h2 id="_19">赋值运算符</h2>
-<h3 id="_20">=</h3>
+<h2 id="_20">赋值运算符</h2>
+<h3 id="_21">=</h3>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span>
@@ -155,14 +162,15 @@
 </pre></div>
 
 
-<h2 id="_21">成员运算符</h2>
+<h2 id="_22">成员运算符</h2>
 <h3 id="in">in</h3>
 <h3 id="not-in">not in</h3>
-<h2 id="_22">身份运算符</h2>
+<h2 id="_23">身份运算符</h2>
 <h3 id="is">is</h3>
+<p>is 比较的是两个变量的身份是否相等，即内存地址是否相等</p>
 <h3 id="is-not">is not</h3>
-<h1 id="_23">进制</h1>
-<h2 id="_24">二进制</h2>
+<h1 id="_24">进制</h1>
+<h2 id="_25">二进制</h2>
 <p>前缀加0b</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="mi">0</span><span class="n">b10</span>                                                                                          
 <span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="mi">2</span>
@@ -172,7 +180,7 @@
 </pre></div>
 
 
-<h2 id="_25">八进制</h2>
+<h2 id="_26">八进制</h2>
 <p>前缀加0o</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="mi">0</span><span class="n">o10</span>                                                                                          
 <span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="mi">8</span>
@@ -195,7 +203,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-20 09:25:45</p>
+        <p>Site Generated 2019-06-23 11:01:29</p>
       </span>
     </div>
 

@@ -62,6 +62,7 @@
 <li><a href="#str">str</a></li>
 <li><a href="#sum">sum 求和</a></li>
 <li><a href="#type">type 类型</a></li>
+<li><a href="#vars">vars</a></li>
 <li><a href="#zip">zip 拉链函数</a><ul>
 <li><a href="#_2">聚合</a></li>
 <li><a href="#_3">分解</a></li>
@@ -467,6 +468,22 @@ StopIteration:
 </pre></div>
 
 
+<h2 id="vars">vars</h2>
+<p><strong>vars()</strong> 函数返回对象object的属性和属性值的字典对象</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="n">class</span> <span class="n">Rick</span><span class="o">:</span> 
+   <span class="p">...</span><span class="o">:</span>     <span class="n">age</span><span class="o">=</span><span class="mi">18</span> 
+   <span class="p">...</span><span class="o">:</span>                                                                                                 
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="n">print</span><span class="p">(</span><span class="n">vars</span><span class="p">(</span><span class="n">Rick</span><span class="p">))</span>                                                                               
+<span class="p">{</span><span class="err">&#39;</span><span class="n">age</span><span class="err">&#39;</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">__weakref__</span><span class="err">&#39;</span><span class="o">:</span> <span class="o">&lt;</span><span class="n">attribute</span> <span class="err">&#39;</span><span class="n">__weakref__</span><span class="err">&#39;</span> <span class="n">of</span> <span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span> <span class="n">objects</span><span class="o">&gt;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">__module__</span><span class="err">&#39;</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">__main__</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">__dict__</span><span class="err">&#39;</span><span class="o">:</span> <span class="o">&lt;</span><span class="n">attribute</span> <span class="err">&#39;</span><span class="n">__dict__</span><span class="err">&#39;</span> <span class="n">of</span> <span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span> <span class="n">objects</span><span class="o">&gt;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">__doc__</span><span class="err">&#39;</span><span class="o">:</span> <span class="n">None</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="n">rick</span> <span class="o">=</span> <span class="n">Rick</span><span class="p">()</span>                                                                                   
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">print</span><span class="p">(</span><span class="n">vars</span><span class="p">(</span><span class="n">rick</span><span class="p">))</span>                                                                              
+<span class="p">{}</span>
+</pre></div>
+
+
 <h2 id="zip">zip 拉链函数</h2>
 <p>把多个可迭代对象合并在一起， 返回一个迭代器</p>
 <p>将每次从不同对象中取到的元素合并成一个元组</p>
@@ -515,7 +532,7 @@ StopIteration:
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-20 09:25:45</p>
+        <p>Site Generated 2019-06-23 11:01:29</p>
       </span>
     </div>
 

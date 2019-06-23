@@ -52,30 +52,29 @@
 </li>
 </ul>
 </li>
-<li><a href="#_1"></a></li>
-<li><a href="#_2">架构</a><ul>
+<li><a href="#_1">架构</a><ul>
 <li><a href="#master-minion">Master -&gt; Minion</a><ul>
-<li><a href="#_3">配置及参数</a></li>
-<li><a href="#_4">配置文件</a></li>
-<li><a href="#_5">进程</a></li>
-<li><a href="#_6">管理密钥</a><ul>
+<li><a href="#_2">配置及参数</a></li>
+<li><a href="#_3">配置文件</a></li>
+<li><a href="#_4">进程</a></li>
+<li><a href="#_5">管理密钥</a><ul>
 <li><a href="#modules">Modules</a></li>
 <li><a href="#highstate">highstate</a></li>
 <li><a href="#salt_schedule">salt_schedule</a></li>
 </ul>
 </li>
-<li><a href="#master-syndic-minion">Master -&gt; Syndic -&gt; Minion</a></li>
 </ul>
 </li>
+<li><a href="#master-syndic-minion">Master -&gt; Syndic -&gt; Minion</a></li>
 <li><a href="#masterless-masterminion">Masterless 无Master的minion</a></li>
 </ul>
 </li>
-<li><a href="#_7">系统组件</a><ul>
+<li><a href="#_6">系统组件</a><ul>
 <li><a href="#grains">Grains</a><ul>
 <li><a href="#grains_1">grains优先级</a></li>
 <li><a href="#grains_2">grains的下发</a><ul>
-<li><a href="#_8">自定义</a></li>
-<li><a href="#_9">固定配置</a></li>
+<li><a href="#_7">自定义</a></li>
+<li><a href="#_8">固定配置</a></li>
 </ul>
 </li>
 <li><a href="#-g">-G</a></li>
@@ -194,12 +193,11 @@
 </pre></div>
 
 
-<h1 id="_1"></h1>
-<h1 id="_2">架构</h1>
+<h1 id="_1">架构</h1>
 <p><img alt="img" src="https://snag.gy/ymdafR.jpg" /></p>
 <h2 id="master-minion">Master -&gt; Minion</h2>
 <p>master 和minion 全部直连 </p>
-<h3 id="_3">配置及参数</h3>
+<h3 id="_2">配置及参数</h3>
 <p>4505 (publish_port) Salt Master pub 接口 </p>
 <p>可以通过修改/etc/salt/master配置文件的publish_port参数设置。它是salt的消息发布系统，如果查看4505端口，会发现所有的Minion连接到Master的4505端口，TCP状态持续保持为ESTABLISHED。</p>
 <p>4506 (ret_port) Salt-Master Ret 接口 </p>
@@ -223,19 +221,19 @@ file_roots: 指定file server目录,  默认为:</p>
 </pre></div>
 
 
-<h3 id="_4">配置文件</h3>
+<h3 id="_3">配置文件</h3>
 <div class="hlcode"><pre><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">master</span> 
 <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">minion</span> 
 </pre></div>
 
 
-<h3 id="_5">进程</h3>
+<h3 id="_4">进程</h3>
 <div class="hlcode"><pre><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">python</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">salt</span><span class="o">-</span><span class="n">master</span> <span class="o">-</span><span class="n">d</span> 
 <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">python</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">salt</span><span class="o">-</span><span class="n">minion</span> <span class="o">-</span><span class="n">d</span>  
 </pre></div>
 
 
-<h3 id="_6">管理密钥</h3>
+<h3 id="_5">管理密钥</h3>
 <p>Salt-key 命令来管理minion 密钥 </p>
 <div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">server</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">salt</span><span class="o">-</span><span class="n">key</span>  <span class="o">-</span><span class="n">L</span> 
 <span class="n">Accepted</span> <span class="n">Keys</span><span class="o">:</span> 
@@ -403,12 +401,19 @@ file_roots: 指定file server目录,  默认为:</p>
 
 <h4 id="salt_schedule">salt_schedule</h4>
 <p>会自动保持客户端配置</p>
-<h3 id="master-syndic-minion">Master -&gt; Syndic -&gt; Minion</h3>
+<h2 id="master-syndic-minion">Master -&gt; Syndic -&gt; Minion</h2>
 <p>通过syndic 对Minion进行管理 </p>
+<p>Syndic 建立在中心master 和minion之间，并允许多层分级Syndic</p>
+<p>Syndic运行在一个Master上，并连接到另外一个Master(比她更高级别)，然后Syndic minion所连接的高级Master就可以控制连接到运行Syndic的Master 上的minion。</p>
 <p>​    </p>
 <h2 id="masterless-masterminion">Masterless 无Master的minion</h2>
 <p>只需要在每台机器上安装Minion，然后采用本机只负责对本机的配置管理工作机制服务模式</p>
-<h1 id="_7">系统组件</h1>
+<p>直接在本地使用salt-call命令使用Saltstack的各种功能，而不用连接到master上</p>
+<div class="hlcode"><pre><span class="c"># salt-call --local state.highstate</span>
+</pre></div>
+
+
+<h1 id="_6">系统组件</h1>
 <h2 id="grains">Grains</h2>
 <p>minion端的变量,静态的</p>
 <p>Grains是SaltStack记录Minion的一些静态信息的组件，我们可以简单地理解为Grains里面记录着每台Minion的一些常用属性，比如CPU、内存、磁盘、网络信息等，我们可以通过grains.items查看某台Minion的所有Grains信息，Minions的Grains信息是Minions启动的时候采集汇报给Master的，在实际应用环境中我们需要根据自己的业务需求去自定义一些Grains</p>
@@ -416,10 +421,10 @@ file_roots: 指定file server目录,  默认为:</p>
 <h3 id="grains_1">grains优先级</h3>
 <p>通过master下发的grains优先级是最高的(/etc/salt/grains)，/etc/salt/minion次之，/etc/salt/grains最低</p>
 <h3 id="grains_2">grains的下发</h3>
-<h4 id="_8">自定义</h4>
+<h4 id="_7">自定义</h4>
 <p>可以通过<a href="http://docs.saltstack.com/ref/modules/all/salt.modules.state.html#salt.modules.state.highstate"><code>state.highstate</code></a>、<a href="http://docs.saltstack.com/ref/modules/all/salt.modules.saltutil.html#salt.modules.saltutil.sync_grains"><code>saltutil.sync_grains</code></a>、<a href="http://docs.saltstack.com/ref/modules/all/salt.modules.saltutil.html#salt.modules.saltutil.sync_all"><code>saltutil.sync_all</code></a> 等方法批量下发，切记所有在_grains目录下的所有自定义grains值都会下发到minion，这是血的教训。</p>
 <p>通过<code>state.highstate</code> 下发的grains好处是无须重启minion即可生效</p>
-<h4 id="_9">固定配置</h4>
+<h4 id="_8">固定配置</h4>
 <p>固定存放在minion端配置文件中，如grains、minion文件中，可以通过file manager的方法去批量下发/etc/salt/grains等配置文件实现grains的批量下发，当然了也通过别的方式把这个文件批量下发下去，都是ok的。</p>
 <p>通过下发/etc/salt/grains文件下发的grains值则必须重启minion端服务才可以生效</p>
 <h3 id="-g">-G</h3>
@@ -572,7 +577,7 @@ file_roots: 指定file server目录,  默认为:</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-20 09:25:45</p>
+        <p>Site Generated 2019-06-23 11:01:29</p>
       </span>
     </div>
 

@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>collections - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python_modules">Python_modules</a>&nbsp;&#187;&nbsp;collections
+    <span class="updated">Page Updated&nbsp;
+      2019-06-20 10:23
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">collections</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#defaultdict">defaultdict</a><ul>
+<li><a href="#usage">usage</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="defaultdict">defaultdict</h1>
+<p>defaultdict属于内建函数dict的一个子类</p>
+<p>构建的是一个类似<em>dictionary</em>的对象，其中<em>keys</em>的值，自行确定赋值，但是<em>values</em>的类型，是<em>function_factory</em>的类实例，而且具有默认值。</p>
+<p>比如<em>default(int)</em>则创建一个类似dictionary对象，里面任何的<em>values</em>都是<em>int</em>的实例，而且就算是一个不存在的<code>key, d[key]</code>也有一个默认值，这个默认值是<em>int()</em>的默认值0.</p>
+<h2 id="usage">usage</h2>
+<p>defaultdict可以接受一个内建函数list作为参数</p>
+<p>list()本身是内建函数，但是再经过更新后，python里面所有东西都是对象，所以list改编成了类，引入list的时候产生一个类的实例。</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">collections</span> <span class="n">import</span> <span class="n">defaultdict</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="n">s</span> <span class="o">=</span> <span class="p">[(</span><span class="err">&#39;</span><span class="n">yellow</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">blue</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">yellow</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">blue</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">red</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">list</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="o">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="p">{})</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]</span><span class="o">:</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="n">in</span> <span class="n">s</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>     <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="p">...</span><span class="o">:</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">items</span><span class="p">())</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span><span class="o">:</span> <span class="p">[(</span><span class="err">&#39;</span><span class="n">yellow</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">blue</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">red</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-06-23 11:01:29</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

@@ -27,7 +27,6 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#argparse">argparse</a><ul>
-<li><a href="#_1"></a></li>
 <li><a href="#argumentparser">解析器对象 ArgumentParser</a><ul>
 <li><a href="#prog">prog 程序名称</a></li>
 <li><a href="#usage">usage</a></li>
@@ -44,9 +43,9 @@
 </li>
 <li><a href="#add_argument">命令参数 add_argument()</a><ul>
 <li><a href="#name-or-flags">name or flags</a><ul>
-<li><a href="#_2">位置参数</a></li>
-<li><a href="#_3">可选参数</a></li>
-<li><a href="#_4">参数简写</a></li>
+<li><a href="#_1">位置参数</a></li>
+<li><a href="#_2">可选参数</a></li>
+<li><a href="#_3">参数简写</a></li>
 </ul>
 </li>
 <li><a href="#action">action</a></li>
@@ -59,9 +58,9 @@
 <li><a href="#desk">desk</a></li>
 </ul>
 </li>
-<li><a href="#_5">解析参数</a><ul>
-<li><a href="#_6">多参数共存</a></li>
-<li><a href="#_7">参数冲突</a></li>
+<li><a href="#_4">解析参数</a><ul>
+<li><a href="#_5">多参数共存</a></li>
+<li><a href="#_6">参数冲突</a></li>
 </ul>
 </li>
 </ul>
@@ -70,7 +69,7 @@
 </div>
 <h1 id="argparse">argparse</h1>
 <p>python的命令行解析工具，或者说可以在python代码中调用shell的一些命令，从而简化和系统命令之间的交互。</p>
-<h2 id="_1"></h2>
+<p></p>
 <h2 id="argumentparser">解析器对象 ArgumentParser</h2>
 <p>创建解析器对象ArgumentParser，可以添加参数。</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">usage</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">epilog</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">[],</span> <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="p">.</span><span class="n">HelpFormatter</span><span class="p">,</span> <span class="n">prefix_chars</span><span class="o">=</span><span class="sc">&#39;-&#39;</span><span class="p">,</span> <span class="n">fromfile_prefix_chars</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">argument_default</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">conflict_handler</span><span class="o">=</span><span class="err">&#39;</span><span class="n">error</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
@@ -183,7 +182,7 @@
 
 
 <h3 id="name-or-flags">name or flags</h3>
-<h4 id="_2">位置参数</h4>
+<h4 id="_1">位置参数</h4>
 <p>解析时没有位置参数就会报错</p>
 <div class="hlcode"><pre><span class="n">import</span> <span class="n">argparse</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="p">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
@@ -207,7 +206,7 @@
 <p>方法parse_args()通过分析指定的参数返回一些数据，如本例中的echo</p>
 <p>因为如果不指定参数类型，argparse默认它是字符串</p>
 </blockquote>
-<h4 id="_3">可选参数</h4>
+<h4 id="_2">可选参数</h4>
 <div class="hlcode"><pre><span class="n">import</span> <span class="n">argparse</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="p">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
 <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--verbosity&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;increase output verbosity&quot;</span><span class="p">)</span>
@@ -235,7 +234,7 @@
 <blockquote>
 <p>当指定--verbosity时程序就显示一些东西，没指定的时候就不显示。</p>
 </blockquote>
-<h4 id="_4">参数简写</h4>
+<h4 id="_3">参数简写</h4>
 <div class="hlcode"><pre><span class="n">import</span> <span class="n">argparse</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="p">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
 <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;increase output verbosity&quot;</span><span class="p">,</span>
@@ -407,7 +406,7 @@ Namespace(infile=<span class="nt">&lt;open</span> <span class="na">file</span> <
 </pre></div>
 
 
-<h2 id="_5">解析参数</h2>
+<h2 id="_4">解析参数</h2>
 <p>最常见的空格分开</p>
 <div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="p">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="err">&#39;</span><span class="n">PROG</span><span class="err">&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="err">&#39;</span><span class="o">-</span><span class="n">x</span><span class="err">&#39;</span><span class="p">)</span>
@@ -440,7 +439,7 @@ Namespace(infile=<span class="nt">&lt;open</span> <span class="na">file</span> <
 </pre></div>
 
 
-<h3 id="_6">多参数共存</h3>
+<h3 id="_5">多参数共存</h3>
 <div class="hlcode"><pre><span class="n">import</span> <span class="n">argparse</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="p">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
 <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="kt">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the base&quot;</span><span class="p">)</span>
@@ -465,7 +464,7 @@ Namespace(infile=<span class="nt">&lt;open</span> <span class="na">file</span> <
 </pre></div>
 
 
-<h3 id="_7">参数冲突</h3>
+<h3 id="_6">参数冲突</h3>
 <p>add_mutually_exclusive_group() 它可以让我们指定某个参数和其他参数冲突。</p>
 <div class="hlcode"><pre><span class="n">import</span> <span class="n">argparse</span>
 
@@ -504,7 +503,7 @@ Namespace(infile=<span class="nt">&lt;open</span> <span class="na">file</span> <
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-20 09:25:45</p>
+        <p>Site Generated 2019-06-23 11:01:29</p>
       </span>
     </div>
 

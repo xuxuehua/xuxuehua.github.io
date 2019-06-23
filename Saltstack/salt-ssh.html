@@ -97,16 +97,24 @@ raw shell command</p>
 <h2 id="roster">配置roster</h2>
 <p>翻译过来是花名册，登记簿的意思，roster定义存放主机列表文件，默认存放位置在/etc/salt/roster，里边有提供默认案例。</p>
 <p>Roster 系统编译了一个内部数据结构，称为 Targets。Targets 是一个目标系统和关于如何连接到系统属性的列表。对于一个在 Salt 中的 Roster 模块来说，唯一要求是返回 Targets 数据结构：</p>
-<div class="hlcode"><pre><span class="n">Salt</span> <span class="n">ID</span><span class="err">：</span>   <span class="err">#</span> <span class="n">ID</span><span class="err">，用于</span><span class="n">salt</span><span class="o">-</span><span class="n">ssh</span><span class="err">引用</span>
-    <span class="nl">host:</span>    <span class="err">#</span> <span class="n">IP</span><span class="err">或域名</span>
-　　 <span class="nl">user:</span>    <span class="err">#</span> <span class="err">登录用户名</span>
-    <span class="nl">passwd:</span>  <span class="err">#</span> <span class="err">登录密码</span>
+<div class="hlcode"><pre><span class="nt">&lt;Salt</span> <span class="na">ID</span><span class="nt">&gt;</span>:       # 定义引用目标系统的标识ID
+    host:        # 主机IP或域名
+    user:        # 目标主机用户名
+    passwd:      # 目标主机密码
 
-    <span class="err">#</span> <span class="err">可选参数</span>
-    <span class="nl">port:</span>    <span class="err">#</span> <span class="err">自定义的端口</span>
-    <span class="nl">sudo:</span>    <span class="err">#</span> <span class="err">是否允许</span><span class="n">sudo</span><span class="err">到</span><span class="n">root</span><span class="p">,</span><span class="err">默认不允许</span>
-    <span class="nl">priv:</span>    <span class="err">#</span> <span class="n">ssh</span><span class="err">登录</span><span class="n">key</span><span class="err">路径，默认为</span><span class="n">salt</span><span class="o">-</span><span class="n">ssh</span><span class="p">.</span><span class="n">rsa</span>
-    <span class="nl">timeout:</span>  <span class="err">#</span> <span class="err">等待超时</span>
+    #以下是可选项
+    port:                   # 主机 ssh连接端口,如果是默认22 可以省略
+    sudo:                # 是否以sudo方式 执行   (True|False)
+    tty:                    # 布尔类型: 如果设置为True 同时sudo也设置为True
+                             # 目标主机的sudoer配置文件中 requiretty 也需要配置
+
+    priv：                    ＃文件路径用ssh私钥，默认为 salt-ssh.rsa 
+                                   ＃的私钥也可以设置为agent-forwarding 
+    timeout:                   #接数字是秒,连接超时时间
+    minion_opts:          #minion 目录 
+    thin_dir:                  #目标存储目录. 默认存到 /tmp/salt-<span class="nt">&lt;hash&gt;</span>.
+    cmd_umask:        # umask to enforce for the salt-call command. Should be in
+                                 # octal (so for 0o077 in YAML you would do 0077, or 63)
 </pre></div>
 
 
@@ -122,12 +130,20 @@ raw shell command</p>
 
 <h2 id="salt-ssh_1">使用salt-ssh</h2>
 <p>第一次运行 Salt SSH 会提示进行 salt-ssh key 的部署，需要在 Rosters 中配置用户的密码，即可进行 Key 的部署</p>
+<p>Salt-roster-template.yaml</p>
+<div class="hlcode"><pre><span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">minion_id</span><span class="p">,</span> <span class="n">minion_ip</span> <span class="n">in</span> <span class="n">salt</span><span class="p">[</span><span class="err">&#39;</span><span class="n">mine</span><span class="p">.</span><span class="n">get</span><span class="err">&#39;</span><span class="p">](</span><span class="sc">&#39;*&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">network</span><span class="p">.</span><span class="n">ip_addrs</span><span class="err">&#39;</span><span class="p">).</span><span class="n">iteritems</span><span class="p">()</span> <span class="o">-</span> <span class="o">%</span><span class="p">}</span>
+<span class="p">{{</span> <span class="n">minion_id</span> <span class="p">}}</span><span class="o">:</span>
+  <span class="nl">host:</span> <span class="p">{{</span> <span class="n">minion_ip</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">}}</span>
+  <span class="nl">user:</span> <span class="n">salt</span>
+  <span class="nl">sudo:</span> <span class="n">True</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">-%</span><span class="p">}</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-20 09:25:45</p>
+        <p>Site Generated 2019-06-23 11:01:29</p>
       </span>
     </div>
 
