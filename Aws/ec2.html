@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>ec2 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Aws">Aws</a>&nbsp;&#187;&nbsp;ec2
+    <span class="updated">Page Updated&nbsp;
+      2019-06-24 09:48
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">ec2</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#elastic-compute-cloud">Elastic Compute Cloud</a><ul>
+<li><a href="#characteristic">Characteristic</a></li>
+<li><a href="#launch">Launch</a><ul>
+<li><a href="#user-data">User data</a></li>
+</ul>
+</li>
+<li><a href="#instance-technologies">Instance Technologies</a></li>
+<li><a href="#current-generation-instances">Current Generation Instances</a></li>
+<li><a href="#reboot-vs-stop-vs-terminate">Reboot vs Stop vs Terminate</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="elastic-compute-cloud">Elastic Compute Cloud</h1>
+<p>Deploy across AWS Regions and Availablity Zones for reliability</p>
+<h2 id="characteristic">Characteristic</h2>
+<p>All data is automatically deleted when an EC2 instance stops, fails or is terminated</p>
+<h2 id="launch">Launch</h2>
+<p>Can be launch from a pre-configured Amazon Machine Image (AMI)</p>
+<h3 id="user-data">User data</h3>
+<p>In Advanced Details, here we could input below data for bootstrap</p>
+<table class="hlcodetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="hlcode"><pre><span class="c">#!/bin/bash</span>
+yum -y install httpd
+systemctl start httpd 
+<span class="k">if</span> <span class="o">[</span> ! -f /var/www/html/lab2-app.tar.gz <span class="o">]</span>; <span class="k">then </span>
+<span class="nb">cd</span> /var/www/html
+wget https://us-west-2-aws-training.s3.amazonaws.com/awsu-ilt/AWS-100-ESS/v4.1/lab-2-configure-website-datastore/scripts/lab2-app.tar.gz
+
+tar xvfz lab2-app.tar.gz
+chown apache:root /var/www/html/rds.config.php
+<span class="k">fi</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="instance-technologies">Instance Technologies</h2>
+<p><img alt="img" src="https://snag.gy/WReOKS.jpg" /></p>
+<h2 id="current-generation-instances">Current Generation Instances</h2>
+<p><img alt="img" src="https://snag.gy/yG2A6Y.jpg" /></p>
+<h2 id="reboot-vs-stop-vs-terminate">Reboot vs Stop vs Terminate</h2>
+<p><img alt="img" src="https://snag.gy/aubQM7.jpg" /></p>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-06-24 20:58:46</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

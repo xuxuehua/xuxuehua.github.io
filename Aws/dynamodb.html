@@ -26,19 +26,45 @@
 <div class="page_title">dynamodb</div>
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
-<li><a href="#_1">特点</a></li>
+<li><a href="#dynamodb">DynamoDB</a><ul>
+<li><a href="#characteristic">Characteristic</a></li>
+<li><a href="#data-model">Data Model</a><ul>
+<li><a href="#primary-keys">Primary keys</a></li>
+<li><a href="#local-secondary-index">Local Secondary Index</a></li>
+<li><a href="#global-secondary-index">Global Secondary Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
-<h1 id="_1">特点</h1>
+<h1 id="dynamodb">DynamoDB</h1>
 <p>文档和键值对nosql，适合广告，游戏，IOT</p>
 <p>限制在单独的AWS region</p>
 <p>3个独立的location 复制数据（同一个表到多个region）</p>
+<h2 id="characteristic">Characteristic</h2>
+<p>Store any amount of data with no limits</p>
+<p>Fast, predictable performance using SSDs</p>
+<p>Easily provision and change the request capacity needed for each table</p>
+<p>Fully managed, NoSQL database service</p>
+<h2 id="data-model">Data Model</h2>
+<p><img alt="img" src="https://snag.gy/mLOVXZ.jpg" /></p>
+<p>Table is collection of items</p>
+<p>items is collection of attributes</p>
+<p>Each attribute is name-value pairs, which contains single values, json or set values.</p>
+<h3 id="primary-keys">Primary keys</h3>
+<p>Primary keys is unique identity of each items in the table</p>
+<p><img alt="img" src="https://snag.gy/M1ISyA.jpg" /></p>
+<h3 id="local-secondary-index">Local Secondary Index</h3>
+<p><img alt="img" src="https://snag.gy/R30Mm1.jpg" /></p>
+<h3 id="global-secondary-index">Global Secondary Index</h3>
+<p><img alt="img" src="https://snag.gy/xkaIhq.jpg" /></p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-23 11:01:29</p>
+        <p>Site Generated 2019-06-24 20:58:46</p>
       </span>
     </div>
 

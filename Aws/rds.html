@@ -26,19 +26,36 @@
 <div class="page_title">rds</div>
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
-<li><a href="#relational-database-service">Relational Database Service</a></li>
+<li><a href="#relational-database-service">Relational Database Service</a><ul>
+<li><a href="#sql-vs-nosql">SQL vs NoSQL</a></li>
+<li><a href="#db-instances">DB Instances</a></li>
+<li><a href="#rds-security">RDS Security</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="relational-database-service">Relational Database Service</h1>
 <p>关系型数据库，mysql/postgres为主，可管理，性能可预测（花钱买），无缝集成ec2（低延迟连接）</p>
 <p>5 Read Replicas for MySQL and Postgres SQL</p>
 <p>异步复制数据</p>
+<h2 id="sql-vs-nosql">SQL vs NoSQL</h2>
+<p><img alt="img" src="https://snag.gy/mTv50t.jpg" /></p>
+<h2 id="db-instances">DB Instances</h2>
+<p>Isolated database env</p>
+<p>Can contain mulple user created databases</p>
+<p>Backups works are enabled by default</p>
+<p>Restore your database to a point in time</p>
+<h2 id="rds-security">RDS Security</h2>
+<p>Run DB instance in a VPC</p>
+<p>Use IAM policies for accessing </p>
+<p>Use Security groups</p>
+<p>Use SSL connection</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-23 11:01:29</p>
+        <p>Site Generated 2019-06-24 20:58:46</p>
       </span>
     </div>
 
