@@ -273,6 +273,51 @@
 </pre></div>
 
 
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Student</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">sum1</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__score</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__class__</span><span class="p">.</span><span class="n">sum1</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">print</span><span class="p">(</span><span class="s">&quot;Total students is &quot;</span> <span class="o">+</span> <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">__class__</span><span class="p">.</span><span class="n">sum1</span><span class="p">))</span>
+
+    <span class="n">def</span> <span class="n">marking</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">score</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">score</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">:</span>
+            <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Invalid</span> <span class="n">num</span><span class="err">&#39;</span><span class="p">)</span>
+        <span class="nl">else:</span>
+            <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">score</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">score</span><span class="p">)</span>
+
+
+    <span class="n">def</span> <span class="n">do_homework</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">pass</span>
+
+    <span class="n">def</span> <span class="n">do_english_homework</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">pass</span>
+
+<span class="n">student</span> <span class="o">=</span> <span class="n">Student</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">student</span> <span class="o">=</span> <span class="n">Student</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Michelle</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">student1</span> <span class="o">=</span> <span class="n">Student</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Sam</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">student</span><span class="p">.</span><span class="n">marking</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">student1</span><span class="p">.</span><span class="n">__score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">print</span><span class="p">(</span><span class="n">student1</span><span class="p">.</span><span class="n">__dict__</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">student1</span><span class="p">.</span><span class="n">_Student__score</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Total</span> <span class="n">students</span> <span class="n">is</span> <span class="mi">1</span>
+<span class="n">Total</span> <span class="n">students</span> <span class="n">is</span> <span class="mi">2</span>
+<span class="n">Total</span> <span class="n">students</span> <span class="n">is</span> <span class="mi">3</span>
+<span class="n">Invalid</span> <span class="n">num</span>
+<span class="p">{</span><span class="err">&#39;</span><span class="n">age</span><span class="err">&#39;</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">__score</span><span class="err">&#39;</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">name</span><span class="err">&#39;</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">Sam</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">_Student__score</span><span class="err">&#39;</span><span class="o">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="mi">0</span>
+</pre></div>
+
+
+<blockquote>
+<p>这里将<code>__score</code> 的私有变量重新命名成<code>_Student__score</code> 这种类名+score 的形式</p>
+<p>但是可以强行读取到数值</p>
+</blockquote>
 <h2 id="self">self</h2>
 <p>self就是当前调用某一个方法的对象， self 代表的是一个实例，而不是一个类</p>
 <p>可以在类中定义成为任意的标识，比如this</p>
@@ -318,7 +363,7 @@
 
 
 <h2 id="_11">私有变量</h2>
-<p>仅类内部可以访问</p>
+<p>仅类内部可以访问, 无法被外部调用修改</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">C</span><span class="o">:</span>
 
     <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
@@ -1007,7 +1052,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-24 20:58:46</p>
+        <p>Site Generated 2019-06-26 08:56:03</p>
       </span>
     </div>
 

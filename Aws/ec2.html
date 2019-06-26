@@ -30,11 +30,17 @@
 <li><a href="#characteristic">Characteristic</a></li>
 <li><a href="#launch">Launch</a><ul>
 <li><a href="#user-data">User data</a></li>
+<li><a href="#metadata-service">Metadata Service</a></li>
 </ul>
 </li>
 <li><a href="#instance-technologies">Instance Technologies</a></li>
 <li><a href="#current-generation-instances">Current Generation Instances</a></li>
 <li><a href="#reboot-vs-stop-vs-terminate">Reboot vs Stop vs Terminate</a></li>
+</ul>
+</li>
+<li><a href="#auto-scaling">Auto-scaling</a><ul>
+<li><a href="#launch-configurations">Launch configurations</a></li>
+<li><a href="#load-balancer-types">Load Balancer Types</a></li>
 </ul>
 </li>
 </ul>
@@ -69,18 +75,38 @@ chown apache:root /var/www/html/rds.config.php
 </pre></div>
 </td></tr></table>
 
+<h3 id="metadata-service">Metadata Service</h3>
+<p>e.g.</p>
+<div class="hlcode"><pre><span class="nl">http:</span><span class="c1">//169.254.169.254/latest/meta-data/iam/security-credentials/rolename</span>
+</pre></div>
+
+
 <h2 id="instance-technologies">Instance Technologies</h2>
 <p><img alt="img" src="https://snag.gy/WReOKS.jpg" /></p>
 <h2 id="current-generation-instances">Current Generation Instances</h2>
 <p><img alt="img" src="https://snag.gy/yG2A6Y.jpg" /></p>
 <h2 id="reboot-vs-stop-vs-terminate">Reboot vs Stop vs Terminate</h2>
 <p><img alt="img" src="https://snag.gy/aubQM7.jpg" /></p>
+<h1 id="auto-scaling">Auto-scaling</h1>
+<h2 id="launch-configurations">Launch configurations</h2>
+<p>Specify below info when launch a instance</p>
+<div class="hlcode"><pre><span class="n">AMI</span> <span class="n">ID</span>
+<span class="n">Instance</span> <span class="n">type</span>
+<span class="n">Key</span> <span class="n">pair</span>
+<span class="n">Security</span> <span class="n">groups</span>
+<span class="n">Block</span> <span class="n">deivce</span> <span class="n">mapping</span>
+<span class="n">User</span> <span class="n">data</span>
+</pre></div>
+
+
+<p><img alt="img" src="https://snag.gy/qIGpfX.jpg" /></p>
+<h2 id="load-balancer-types">Load Balancer Types</h2>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-24 20:58:46</p>
+        <p>Site Generated 2019-06-26 08:56:03</p>
       </span>
     </div>
 

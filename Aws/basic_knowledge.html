@@ -27,8 +27,15 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#aws">AWS</a><ul>
-<li><a href="#instance-metadata">Instance Metadata</a></li>
+<li><a href="#instance-metadata">Instance Metadata</a><ul>
+<li><a href="#retrieving">Retrieving</a></li>
+</ul>
+</li>
 <li><a href="#instance-user-data">Instance User data</a></li>
+<li><a href="#aws-cli">AWS-CLI</a><ul>
+<li><a href="#mac-osx">Mac OSX</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_1"></a></li>
@@ -38,17 +45,31 @@
 <h2 id="instance-metadata">Instance Metadata</h2>
 <p>Data about your instance</p>
 <p>Can be used to configure or manage a running instance</p>
+<h3 id="retrieving">Retrieving</h3>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="n">http</span><span class="o">:</span><span class="c1">//169.254.169.254/latest/meta-data</span>
+</pre></div>
+
+
+<p>returned as text (Content-type: text/plain)</p>
 <h2 id="instance-user-data">Instance User data</h2>
 <p>Can be passed to the instance at launch</p>
 <p>Can be used to perform common automated configuration tasks</p>
 <p>Runs scripts after the instance starts</p>
+<h2 id="aws-cli">AWS-CLI</h2>
+<h3 id="mac-osx">Mac OSX</h3>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="s">&quot;https://s3.amazonaws.com/aws-cli/awscli-bundle.zip&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s">&quot;awscli-bundle.zip&quot;</span>
+
+<span class="n">unzip</span> <span class="n">awscli</span><span class="o">-</span><span class="n">bundle</span><span class="p">.</span><span class="n">zip</span>
+</pre></div>
+
+
 <h1 id="_1"></h1>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-24 20:58:46</p>
+        <p>Site Generated 2019-06-26 08:56:03</p>
       </span>
     </div>
 

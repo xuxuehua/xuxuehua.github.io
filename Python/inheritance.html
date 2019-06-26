@@ -70,11 +70,87 @@
 <h2 id="_2">继承用途</h2>
 <p>继承基类的方法，并且做出自己的改变或者扩展（代码重用）；</p>
 <p>声明某个子类兼容于某基类，定义一个接口类Interface，接口类中定义了一些接口名（就是函数名）且并未实现接口的功能，子类继承接口类，并且实现接口中的功能；</p>
+<p>C1.py</p>
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">c2</span> <span class="n">import</span> <span class="n">Human</span>
+
+<span class="n">class</span> <span class="n">Student</span><span class="p">(</span><span class="n">Human</span><span class="p">)</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">do_homework</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">English</span> <span class="n">homework</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="n">student1</span> <span class="o">=</span> <span class="n">Student</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">student1</span><span class="p">.</span><span class="n">sum</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">Student</span><span class="p">.</span><span class="n">sum</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">student1</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">student1</span><span class="p">.</span><span class="n">age</span><span class="p">)</span>
+<span class="n">student1</span><span class="p">.</span><span class="n">get_name</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">0</span>
+<span class="mi">0</span>
+<span class="n">Rick</span>
+<span class="mi">18</span>
+<span class="n">Rick</span>
+</pre></div>
+
+
+<p>c2.py</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Human</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+
+    <span class="n">def</span> <span class="n">get_name</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+
+
 <h2 id="super">super 方法</h2>
 <p>父类，也可以称为超类，基类<br />
 定一个父类的重名方法，称为重写<br />
 子类中调用父类的方法，使用super对象<br />
 super对象使用super方法生成</p>
+<p>通过子类调用父类的super方法</p>
+<p>c1.py</p>
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">c2</span> <span class="n">import</span> <span class="n">Human</span>
+
+<span class="n">class</span> <span class="n">Student</span><span class="p">(</span><span class="n">Human</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">school</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">school</span> <span class="o">=</span> <span class="n">school</span>
+        <span class="n">super</span><span class="p">(</span><span class="n">Student</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">do_homework</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">super</span><span class="p">(</span><span class="n">Student</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="n">do_homework</span><span class="p">()</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">English</span> <span class="n">homework</span><span class="err">&#39;</span><span class="p">)</span>
+
+
+<span class="n">student1</span> <span class="o">=</span> <span class="n">Student</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Xinghua</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">student1</span><span class="p">.</span><span class="n">do_homework</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">This</span> <span class="n">is</span> <span class="n">parent</span> <span class="n">method</span>
+<span class="n">English</span> <span class="n">homework</span>
+</pre></div>
+
+
+<blockquote>
+<p>子类方法和父类重名，子类方法会覆盖父类方法</p>
+<p>但也可以通过super方法调用父类的方法</p>
+</blockquote>
+<p>c2.py</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Human</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+
+    <span class="n">def</span> <span class="n">get_name</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">do_homework</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">This</span> <span class="n">is</span> <span class="n">parent</span> <span class="n">method</span><span class="err">&#39;</span><span class="p">)</span>
+</pre></div>
+
+
 <h2 id="_3">类的继承</h2>
 <p>类可以继承其他类的内容，包括成员变量和成员函数</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">People</span><span class="p">(</span><span class="n">object</span><span class="p">)</span><span class="o">:</span>
@@ -792,7 +868,7 @@ super对象使用super方法生成</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-24 20:58:46</p>
+        <p>Site Generated 2019-06-26 08:56:03</p>
       </span>
     </div>
 
