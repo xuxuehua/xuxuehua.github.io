@@ -32,9 +32,10 @@
 <li><a href="#append">append</a></li>
 </ul>
 </li>
-<li><a href="#verion">verion</a></li>
+<li><a href="#version">version</a></li>
 <li><a href="#exitn">exit(n)</a></li>
 <li><a href="#platform">platform</a></li>
+<li><a href="#path_1">path</a></li>
 <li><a href="#maxint">maxint</a></li>
 <li><a href="#setrecursionlimit">setrecursionlimit</a></li>
 </ul>
@@ -72,7 +73,7 @@
 </pre></div>
 
 
-<h2 id="verion">verion</h2>
+<h2 id="version">version</h2>
 <p>获取Python解释程序的版本信息</p>
 <h2 id="exitn">exit(n)</h2>
 <div class="hlcode"><pre><span class="err">退出程序，正常退出时</span><span class="n">exit</span><span class="p">(</span><span class="err">``</span><span class="mi">0</span><span class="err">``</span><span class="p">)</span>
@@ -83,6 +84,22 @@
 <p>返回操作系统平台名称</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="o">:</span> <span class="n">sys</span><span class="p">.</span><span class="n">platform</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">darwin</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<h2 id="path_1">path</h2>
+<p>系统环境变量PYTHONPATH</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">39</span><span class="p">]</span><span class="o">:</span> <span class="n">sys</span><span class="p">.</span><span class="n">path</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">39</span><span class="p">]</span><span class="o">:</span>
+<span class="p">[</span><span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">rxu</span><span class="o">/</span><span class="p">.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.5.3</span><span class="o">/</span><span class="n">envs</span><span class="o">/</span><span class="n">general_3</span><span class="mf">.5.3</span><span class="o">/</span><span class="n">bin</span><span class="err">&#39;</span><span class="p">,</span>
+ <span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">rxu</span><span class="o">/</span><span class="p">.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.5.3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python35</span><span class="p">.</span><span class="n">zip</span><span class="err">&#39;</span><span class="p">,</span>
+ <span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">rxu</span><span class="o">/</span><span class="p">.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.5.3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.5</span><span class="err">&#39;</span><span class="p">,</span>
+ <span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">rxu</span><span class="o">/</span><span class="p">.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.5.3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.5</span><span class="o">/</span><span class="n">plat</span><span class="o">-</span><span class="n">darwin</span><span class="err">&#39;</span><span class="p">,</span>
+ <span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">rxu</span><span class="o">/</span><span class="p">.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.5.3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.5</span><span class="o">/</span><span class="n">lib</span><span class="o">-</span><span class="n">dynload</span><span class="err">&#39;</span><span class="p">,</span>
+ <span class="err">&#39;&#39;</span><span class="p">,</span>
+ <span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">rxu</span><span class="o">/</span><span class="p">.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.5.3</span><span class="o">/</span><span class="n">envs</span><span class="o">/</span><span class="n">general_3</span><span class="mf">.5.3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.5</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="err">&#39;</span><span class="p">,</span>
+ <span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">rxu</span><span class="o">/</span><span class="p">.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.5.3</span><span class="o">/</span><span class="n">envs</span><span class="o">/</span><span class="n">general_3</span><span class="mf">.5.3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.5</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">IPython</span><span class="o">/</span><span class="n">extensions</span><span class="err">&#39;</span><span class="p">,</span>
+ <span class="err">&#39;</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">rxu</span><span class="o">/</span><span class="p">.</span><span class="n">ipython</span><span class="err">&#39;</span><span class="p">]</span>
 </pre></div>
 
 
@@ -98,7 +115,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-26 08:56:03</p>
+        <p>Site Generated 2019-07-01 11:04:49</p>
       </span>
     </div>
 

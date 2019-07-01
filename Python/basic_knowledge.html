@@ -61,30 +61,30 @@
 </ul>
 </li>
 <li><a href="#_13">注释</a></li>
-<li><a href="#_14">用户输入</a><ul>
-<li><a href="#_15">多行输入</a></li>
-<li><a href="#_16">带提示的多行输入</a></li>
+<li><a href="#input">用户输入 input 方法</a><ul>
+<li><a href="#_14">多行输入</a></li>
+<li><a href="#_15">带提示的多行输入</a></li>
 </ul>
 </li>
-<li><a href="#_17">软件目录结构规范</a><ul>
-<li><a href="#_18">特点</a></li>
-<li><a href="#_19">目录组织方式</a><ul>
+<li><a href="#_16">软件目录结构规范</a><ul>
+<li><a href="#_17">特点</a></li>
+<li><a href="#_18">目录组织方式</a><ul>
 <li><a href="#readme">README</a></li>
 <li><a href="#setuppy">setup.py</a></li>
 <li><a href="#requirementstxt">requirements.txt</a></li>
-<li><a href="#_20">配置文件</a></li>
+<li><a href="#_19">配置文件</a></li>
 </ul>
 </li>
-<li><a href="#_21">开源软件</a></li>
+<li><a href="#_20">开源软件</a></li>
 </ul>
 </li>
-<li><a href="#_22">垃圾回收</a><ul>
-<li><a href="#_23">分代回收</a></li>
-<li><a href="#_24">孤立的引用环</a></li>
+<li><a href="#_21">垃圾回收</a><ul>
+<li><a href="#_22">分代回收</a></li>
+<li><a href="#_23">孤立的引用环</a></li>
 </ul>
 </li>
-<li><a href="#_25">执行</a><ul>
-<li><a href="#_26">脚本与命令结合</a></li>
+<li><a href="#_24">执行</a><ul>
+<li><a href="#_25">脚本与命令结合</a></li>
 </ul>
 </li>
 <li><a href="#python_2">测试Python性能</a></li>
@@ -94,7 +94,7 @@
 </div>
 <h1 id="basic-knowledge">Basic knowledge</h1>
 <h2 id="_1">语言类型</h2>
-<p><img alt="img" src="https://cdn.pbrd.co/images/HY6xtAd.png" /></p>
+<p><img alt="img" src="https://snag.gy/w1efAd.jpg" /></p>
 <h3 id="_2">编译型语言</h3>
 <ul>
 <li>一个负责翻译的程序对源代码进行转换，生成可执行的代码，其过程称为编译Compile。负责编译的程序称为编译器，生成的可执行文件可以直接运行</li>
@@ -202,16 +202,14 @@
 <h2 id="_13">注释</h2>
 <p>单行注视：# 被注释内容</p>
 <p>多行注释：""" 被注释内容 """,   ''' 被注释内容 '''</p>
-<h2 id="_14">用户输入</h2>
-<ul>
-<li>input 方法</li>
-</ul>
-<h3 id="_15">多行输入</h3>
+<h2 id="input">用户输入 input 方法</h2>
+<p>input() 函数暂停程序运行，同时等待键盘输入;直到回车被按下，函数的参数即为提示语，输入的类型永远是字符串型(str)</p>
+<h3 id="_14">多行输入</h3>
 <p><code>sentinel = 'end' # 遇到这个就结束
 lines = []
 for line in iter(input, sentinel):
     lines.append(line)</code></p>
-<h3 id="_16">带提示的多行输入</h3>
+<h3 id="_15">带提示的多行输入</h3>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">functools</span> <span class="n">import</span> <span class="n">partial</span>
 
 <span class="n">inputNew</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="err">&#39;</span><span class="n">Input</span> <span class="n">something</span> <span class="n">pls</span><span class="o">:</span><span class="err">\</span><span class="n">n</span><span class="err">&#39;</span><span class="p">)</span>
@@ -222,14 +220,14 @@ for line in iter(input, sentinel):
 </pre></div>
 
 
-<h2 id="_17">软件目录结构规范</h2>
-<h3 id="_18">特点</h3>
+<h2 id="_16">软件目录结构规范</h2>
+<h3 id="_17">特点</h3>
 <p>设计一个层次清晰的目录结构，就是为了达到以下两点:</p>
 <ol>
 <li>可读性高: 不熟悉这个项目的代码的人，一眼就能看懂目录结构，知道程序启动脚本是哪个，测试目录在哪儿，配置文件在哪儿等等。从而非常快速的了解这个项目。</li>
 <li>可维护性高: 定义好组织规则后，维护者就能很明确地知道，新增的哪个文件和代码应该放在什么目录之下。这个好处是，随着时间的推移，代码/配置的规模增加，项目结构不会混乱，仍然能够组织良好。</li>
 </ol>
-<h3 id="_19">目录组织方式</h3>
+<h3 id="_18">目录组织方式</h3>
 <p>一个较好的Python工程目录结构，已经有一些得到了共识的目录结构。在Stackoverflow的<a href="http://stackoverflow.com/questions/193161/what-is-the-best-project-structure-for-a-python-application">这个问题</a>上，能看到大家对Python目录结构的讨论。</p>
 <p>假设你的项目名为foo, 我比较建议的最方便快捷目录结构这样就足够了:</p>
 <div class="hlcode"><pre><span class="n">Foo</span><span class="o">/</span>
@@ -288,16 +286,16 @@ for line in iter(input, sentinel):
 <li>方便读者明确项目使用了哪些Python包。</li>
 </ol>
 <p>这个文件的格式是每一行包含一个包依赖的说明，通常是<code>flask&gt;=0.10</code>这种格式，要求是这个格式能被<code>pip</code>识别，这样就可以简单的通过 <code>pip install -r requirements.txt</code>来把所有Python包依赖都装好了。具体格式说明： <a href="https://pip.readthedocs.org/en/1.1/requirements.html">点这里</a>。</p>
-<h4 id="_20">配置文件</h4>
+<h4 id="_19">配置文件</h4>
 <ol>
 <li>模块的配置都是可以灵活配置的，不受外部配置文件的影响。</li>
 <li>程序的配置也是可以灵活控制的。</li>
 </ol>
 <p>能够佐证这个思想的是，用过nginx和mysql的同学都知道，nginx、mysql这些程序都可以自由的指定用户配置。</p>
 <p>所以，不应当在代码中直接<code>import conf</code>来使用配置文件。上面目录结构中的<code>conf.py</code>，是给出的一个配置样例，不是在写死在程序中直接引用的配置文件。可以通过给<code>main.py</code>启动参数指定配置路径的方式来让程序读取配置内容。当然，这里的<code>conf.py</code>你可以换个类似的名字，比如<code>settings.py</code>。或者你也可以使用其他格式的内容来编写配置文件，比如<code>settings.yaml</code>之类的。</p>
-<h3 id="_21">开源软件</h3>
+<h3 id="_20">开源软件</h3>
 <p>如果你想写一个开源软件，目录该如何组织，可以参考<a href="http://www.jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/">这篇文章</a>。</p>
-<h2 id="_22">垃圾回收</h2>
+<h2 id="_21">垃圾回收</h2>
 <p>Python的某个对象的引用计数降为0时，说明没有任何引用指向改对象，该对象就要被垃圾回收</p>
 <p>在垃圾回收的时候，Python不能执行其他的任何任务。当Python运行时，会记录其中分配对象(object allocation)和取消分配对象(object deallocaiton)的次数，当两者差值高于某个阀值的时候，垃圾回收会自动启动。</p>
 <div class="hlcode"><pre><span class="cp">#700是垃圾回收的阀值，可以使用set_threshold方法重新设置</span>
@@ -309,7 +307,7 @@ for line in iter(input, sentinel):
 </pre></div>
 
 
-<h3 id="_23">分代回收</h3>
+<h3 id="_22">分代回收</h3>
 <ul>
 <li>Python将所有对象分为0， 1， 2三代。所有新建的对象都是0代。当某一代对象经历过垃圾回收，依然存活，那么它就会被归入下一代对象。</li>
 </ul>
@@ -321,7 +319,7 @@ for line in iter(input, sentinel):
 </pre></div>
 
 
-<h3 id="_24">孤立的引用环</h3>
+<h3 id="_23">孤立的引用环</h3>
 <ul>
 <li>
 <p>引用环的存在会给上面垃圾回收机制带来很大的困难。</p>
@@ -342,8 +340,8 @@ for line in iter(input, sentinel):
 </pre></div>
 
 
-<h2 id="_25">执行</h2>
-<h3 id="_26">脚本与命令结合</h3>
+<h2 id="_24">执行</h2>
+<h3 id="_25">脚本与命令结合</h3>
 <p>下面方法运行脚本，脚本结束后，会直接进入命令行。这样做的好处是脚本的对象不会被清空，可以通过命令行直接调用</p>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">python</span> <span class="o">-</span><span class="n">i</span> <span class="n">script</span><span class="p">.</span><span class="n">py</span>
 </pre></div>
@@ -357,7 +355,7 @@ for line in iter(input, sentinel):
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-26 08:56:03</p>
+        <p>Site Generated 2019-07-01 11:04:49</p>
       </span>
     </div>
 

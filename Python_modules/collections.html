@@ -33,9 +33,21 @@
 </ul>
 </div>
 <h1 id="defaultdict">defaultdict</h1>
-<p>defaultdict属于内建函数dict的一个子类</p>
+<p>defaultdict属于内建函数dict的一个子类, 提供一个default_factory 属性，该属性所指定的函数负责为不存在的key来生成value，即在没有key的情况下不会报错</p>
 <p>构建的是一个类似<em>dictionary</em>的对象，其中<em>keys</em>的值，自行确定赋值，但是<em>values</em>的类型，是<em>function_factory</em>的类实例，而且具有默认值。</p>
 <p>比如<em>default(int)</em>则创建一个类似dictionary对象，里面任何的<em>values</em>都是<em>int</em>的实例，而且就算是一个不存在的<code>key, d[key]</code>也有一个默认值，这个默认值是<em>int()</em>的默认值0.</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">collections</span> <span class="n">import</span> <span class="n">defaultdict</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="o">:</span> <span class="n">dd</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">list</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">:</span> <span class="n">dd</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="p">{})</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">:</span> <span class="n">print</span><span class="p">(</span><span class="n">dd</span><span class="p">)</span>
+<span class="n">defaultdict</span><span class="p">(</span><span class="o">&lt;</span><span class="n">class</span> <span class="err">&#39;</span><span class="n">list</span><span class="err">&#39;</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">{})</span>
+</pre></div>
+
+
 <h2 id="usage">usage</h2>
 <p>defaultdict可以接受一个内建函数list作为参数</p>
 <p>list()本身是内建函数，但是再经过更新后，python里面所有东西都是对象，所以list改编成了类，引入list的时候产生一个类的实例。</p>
@@ -55,12 +67,26 @@
 <span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">items</span><span class="p">())</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span><span class="o">:</span> <span class="p">[(</span><span class="err">&#39;</span><span class="n">yellow</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">blue</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="p">(</span><span class="err">&#39;</span><span class="n">red</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
 </pre></div>
+
+
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">collections</span> <span class="n">import</span> <span class="n">defaultdict</span>
+<span class="n">import</span> <span class="n">re</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="err">&#39;</span><span class="n">ini</span><span class="p">.</span><span class="n">txt</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="sc">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="err">&#39;</span><span class="n">utf</span><span class="o">-</span><span class="mi">8</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">defaultdict</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="n">in</span> <span class="n">f</span><span class="o">:</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="n">in</span> <span class="n">filter</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="o">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">re</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="n">r</span><span class="sc">&#39;\s&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span><span class="o">:</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-26 08:56:03</p>
+        <p>Site Generated 2019-07-01 11:04:49</p>
       </span>
     </div>
 

@@ -27,27 +27,30 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#python-string-files">字符串与文本操作 (python-string-files)</a><ul>
+<li><a href="#_1">特点</a></li>
 <li><a href="#r">非特殊处理 r前缀</a></li>
-<li><a href="#_1">元素访问 下标</a><ul>
-<li><a href="#_2">线性结构</a></li>
-<li><a href="#_3">不可变类型</a></li>
+<li><a href="#_2">元素访问 下标</a><ul>
+<li><a href="#_3">线性结构</a></li>
+<li><a href="#_4">不可变类型</a></li>
 </ul>
 </li>
-<li><a href="#_4">字符串的格式化</a><ul>
+<li><a href="#_5">字符串的格式化</a><ul>
 <li><a href="#d">%d</a></li>
 <li><a href="#e">%E</a></li>
 <li><a href="#g">%g</a></li>
 <li><a href="#flags">flags</a></li>
 <li><a href="#format">format</a></li>
 <li><a href="#format_map">format_map</a></li>
+<li><a href="#f-strings-python36">f-strings   Python3.6新的字符串格式化</a></li>
 </ul>
 </li>
-<li><a href="#_5">字符串连接</a><ul>
+<li><a href="#_6"></a></li>
+<li><a href="#_7">字符串连接</a><ul>
 <li><a href="#join">join</a></li>
 <li><a href="#43">+ 连接</a></li>
 </ul>
 </li>
-<li><a href="#_6">字符串分割</a><ul>
+<li><a href="#_8">字符串分割</a><ul>
 <li><a href="#split">split</a></li>
 <li><a href="#rsplit">rsplit</a></li>
 <li><a href="#splitlines">splitlines</a></li>
@@ -55,7 +58,7 @@
 <li><a href="#rpartition">rpartition</a></li>
 </ul>
 </li>
-<li><a href="#_7">字符串修改</a><ul>
+<li><a href="#_9">字符串修改</a><ul>
 <li><a href="#replace">replace</a></li>
 <li><a href="#capitalize">capitalize</a></li>
 <li><a href="#titile">titile</a></li>
@@ -70,7 +73,7 @@
 <li><a href="#rstrip">rstrip</a></li>
 <li><a href="#lstrip">lstrip</a></li>
 <li><a href="#expandtabs">expandtabs</a></li>
-<li><a href="#_8">字符串判断</a></li>
+<li><a href="#_10">字符串判断</a></li>
 <li><a href="#len">len</a></li>
 <li><a href="#startswith">startswith</a></li>
 <li><a href="#endswith">endswith</a></li>
@@ -94,6 +97,7 @@
 <li><a href="#str-bytes">STR 与 BYTES</a></li>
 </ul>
 </li>
+<li><a href="#_11">优化</a></li>
 </ul>
 </div>
 <h1 id="python-string-files">字符串与文本操作 (python-string-files)</h1>
@@ -101,6 +105,17 @@
 python3中的字符串是unicode的有序序列<br />
 字符串是不可变的<br />
 字符串支持下标于切片</p>
+<h2 id="_1">特点</h2>
+<p>改变字符串，往往需要O(n)的时间复杂度，其中，n为新字符串的长度。</p>
+<div class="hlcode"><pre><span class="n">s</span> <span class="o">=</span> <span class="err">&#39;&#39;</span>
+<span class="k">for</span> <span class="n">n</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span><span class="o">:</span>
+      <span class="n">s</span> <span class="o">+=</span> <span class="n">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+
+
+<blockquote>
+<p>自从Python2.5开始，每次处理字符串的拼接操作时(str1 += str2)，Python首先会检测str1还有没有其他的引用。如果没有的话，就会尝试原地扩充字符串buffer的大小，而不是重新分配一块内存来创建新的字符串并拷贝。这样的话，上述例子中的时间复杂度就仅为O(n)了。</p>
+</blockquote>
 <h2 id="r">非特殊处理 r前缀</h2>
 <p>在字符串前面加上r或者R前缀，表示该字符串不做特殊处理</p>
 <div class="hlcode"><pre><span class="n">r</span><span class="err">&#39;\</span><span class="n">r</span> <span class="err">\</span><span class="n">t</span> <span class="err">\</span><span class="n">n</span><span class="err">&#39;</span>
@@ -111,7 +126,7 @@ python3中的字符串是unicode的有序序列<br />
 <p>里面所有的转译自负当作普通字符对待</p>
 </blockquote>
 <p>​   </p>
-<h2 id="_1">元素访问 下标</h2>
+<h2 id="_2">元素访问 下标</h2>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;I love Python&#39;</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -128,7 +143,7 @@ python3中的字符串是unicode的有序序列<br />
 </pre></div>
 
 
-<h3 id="_2">线性结构</h3>
+<h3 id="_3">线性结构</h3>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">s</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="s">&#39;I love Python&#39;</span>
 
@@ -151,7 +166,7 @@ python3中的字符串是unicode的有序序列<br />
 </pre></div>
 
 
-<h3 id="_3">不可变类型</h3>
+<h3 id="_4">不可变类型</h3>
 <p>字符串是不可变的 (元组也不可变)</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">s</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="s">&#39;I love Python&#39;</span>
@@ -169,7 +184,7 @@ python3中的字符串是unicode的有序序列<br />
 </pre></div>
 
 
-<h2 id="_4">字符串的格式化</h2>
+<h2 id="_5">字符串的格式化</h2>
 <p>print style format<br />
 format 方法</p>
 <p>Print Style Format<br />
@@ -369,7 +384,120 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h2 id="_5">字符串连接</h2>
+<h3 id="f-strings-python36">f-strings   Python3.6新的字符串格式化</h3>
+<div class="hlcode"><pre><span class="nb">f</span> <span class="s1">&#39; &lt;text&gt; { &lt;expression&gt; &lt;optional !s, !r, or !a&gt; &lt;optional : format specifier&gt; } &lt;text&gt; ... &#39;</span>
+</pre></div>
+
+
+<ul>
+<li>基本用法</li>
+</ul>
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Tom&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="s">&quot;His name is {name}, he&#39;s {age} years old.&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;His name is Tom, he&#39;s 3 years old.&quot;</span>
+</pre></div>
+
+
+<ul>
+<li>支持表达式</li>
+</ul>
+<div class="hlcode"><pre><span class="cp"># 数学运算</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="err">&#39;</span><span class="n">He</span> <span class="n">will</span> <span class="n">be</span> <span class="p">{</span> <span class="n">age</span><span class="o">+</span><span class="mi">1</span> <span class="p">}</span> <span class="n">years</span> <span class="n">old</span> <span class="n">next</span> <span class="n">year</span><span class="p">.</span><span class="err">&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="err">&#39;</span><span class="n">He</span> <span class="n">will</span> <span class="n">be</span> <span class="mi">4</span> <span class="n">years</span> <span class="n">old</span> <span class="n">next</span> <span class="n">year</span><span class="p">.</span><span class="err">&#39;</span>
+
+<span class="cp"># 对象操作</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">spurs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;Guard&quot;</span><span class="o">:</span> <span class="s">&quot;Parker&quot;</span><span class="p">,</span> <span class="s">&quot;Forward&quot;</span><span class="o">:</span> <span class="s">&quot;Duncan&quot;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="s">&quot;The {len(spurs)} players are: {spurs[&#39;Guard&#39;]} the guard, and {spurs[&#39;Forward&#39;]} the forward.&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="err">&#39;</span><span class="n">The</span> <span class="mi">2</span> <span class="n">players</span> <span class="n">are</span><span class="o">:</span> <span class="n">Parker</span> <span class="n">the</span> <span class="n">guard</span><span class="p">,</span> <span class="n">and</span> <span class="n">Duncan</span> <span class="n">the</span> <span class="n">forward</span><span class="p">.</span><span class="err">&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="err">&#39;</span><span class="n">Numbers</span> <span class="n">from</span> <span class="mi">1</span><span class="o">-</span><span class="mi">10</span> <span class="n">are</span> <span class="p">{[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)]}</span><span class="err">&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="err">&#39;</span><span class="n">Numbers</span> <span class="n">from</span> <span class="mi">1</span><span class="o">-</span><span class="mi">10</span> <span class="n">are</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<ul>
+<li>排版格式</li>
+</ul>
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">def</span> <span class="n">show_players</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;{&#39;Position&#39;:^10}{&#39;Name&#39;:^10}&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">player</span> <span class="n">in</span> <span class="n">spurs</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;{player:^10}{spurs[player]:^10}&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">show_players</span><span class="p">()</span>
+ <span class="n">Position</span>    <span class="n">Name</span>   
+  <span class="n">Guard</span>     <span class="n">Parker</span>  
+ <span class="n">Forward</span>    <span class="n">Duncan</span>
+</pre></div>
+
+
+<ul>
+<li>数字操作</li>
+</ul>
+<div class="hlcode"><pre><span class="cp"># 小数精度</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">PI</span> <span class="o">=</span> <span class="mf">3.141592653</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="s">&quot;Pi is {PI:.2f}&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="err">&#39;</span><span class="n">Pi</span> <span class="n">is</span> <span class="mf">3.14</span><span class="err">&#39;</span>
+
+<span class="cp"># 进制转换</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="err">&#39;</span><span class="kt">int</span><span class="o">:</span> <span class="mi">31</span><span class="p">,</span> <span class="n">hex</span><span class="o">:</span> <span class="p">{</span><span class="mi">31</span><span class="o">:</span><span class="n">x</span><span class="p">},</span> <span class="n">oct</span><span class="o">:</span> <span class="p">{</span><span class="mi">31</span><span class="o">:</span><span class="n">o</span><span class="p">}</span><span class="err">&#39;</span>
+<span class="err">&#39;</span><span class="kt">int</span><span class="o">:</span> <span class="mi">31</span><span class="p">,</span> <span class="n">hex</span><span class="o">:</span> <span class="mf">1f</span><span class="p">,</span> <span class="n">oct</span><span class="o">:</span> <span class="mi">37</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<ul>
+<li>与原始字符串联合使用</li>
+</ul>
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">fr</span><span class="err">&#39;</span><span class="n">hello</span><span class="err">\</span><span class="n">nworld</span><span class="err">&#39;</span>
+<span class="err">&#39;</span><span class="n">hello</span><span class="err">\\</span><span class="n">nworld</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<h2 id="_6"></h2>
+<ul>
+<li><code>{}</code>内不能包含反斜杠<code>\</code></li>
+</ul>
+<div class="hlcode"><pre><span class="n">f</span><span class="err">&#39;</span><span class="n">His</span> <span class="n">name</span> <span class="n">is</span> <span class="p">{</span><span class="err">\&#39;</span><span class="n">Tom</span><span class="err">\</span><span class="sc">&#39;}&#39;</span>
+<span class="nl">SyntaxError:</span> <span class="n">f</span><span class="o">-</span><span class="n">string</span> <span class="n">expression</span> <span class="n">part</span> <span class="n">cannot</span> <span class="n">include</span> <span class="n">a</span> <span class="n">backslash</span>
+
+<span class="cp"># 而应该使用不同的引号，或使用三引号。</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="s">&quot;His name is {&#39;Tom&#39;}&quot;</span>
+<span class="err">&#39;</span><span class="n">His</span> <span class="n">name</span> <span class="n">is</span> <span class="n">Tom</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<ul>
+<li>不能与<code>'u'</code>联合使用</li>
+</ul>
+<p><code>'u'</code>是为了与Python2.7兼容的，而Python2.7不会支持f-strings，因此与<code>'u'</code>联合使用不会有任何效果。</p>
+<ul>
+<li>如何插入大括号？</li>
+</ul>
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="s">&quot;{{ {10 * 8} }}&quot;</span>
+<span class="err">&#39;</span><span class="p">{</span> <span class="mi">80</span> <span class="p">}</span><span class="err">&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="s">&quot;{{ 10 * 8 }}&quot;</span>
+<span class="err">&#39;</span><span class="p">{</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">8</span> <span class="p">}</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<ul>
+<li>与<code>str.format()</code>的一点不同</li>
+</ul>
+<p>使用<code>str.format()</code>，非数字索引将自动转化为字符串，而f-strings则不会。</p>
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="s2">&quot;Guard is {spurs[Guard]}&quot;</span><span class="bp">.</span><span class="nb">format</span><span class="p">(</span><span class="n">spurs</span><span class="o">=</span><span class="nx">spurs</span><span class="p">)</span>
+<span class="s1">&#39;Guard is Parker&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">f</span><span class="s2">&quot;Guard is {spurs[Guard]}&quot;</span>
+<span class="nx">Traceback</span> <span class="p">(</span><span class="nx">most</span> <span class="nx">recent</span> <span class="nb">call</span> <span class="nb">last</span><span class="p">):</span>
+  <span class="nb">File</span> <span class="s2">&quot;&lt;pyshell#34&gt;&quot;</span><span class="p">,</span> <span class="nb">line</span> <span class="mi">1</span><span class="p">,</span> <span class="k">in</span> <span class="o">&lt;</span><span class="nx">module</span><span class="o">&gt;</span>
+    <span class="nb">f</span><span class="s2">&quot;Guard is {spurs[Guard]}&quot;</span>
+<span class="nx">NameError</span><span class="p">:</span> <span class="nb">name</span> <span class="s1">&#39;Guard&#39;</span> <span class="nx">is</span> <span class="ow">not</span> <span class="nx">defined</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">f</span><span class="s2">&quot;Guard is {spurs[&#39;Guard&#39;]}&quot;</span>
+<span class="s1">&#39;Guard is Parker&#39;</span>
+</pre></div>
+
+
+<h2 id="_7">字符串连接</h2>
 <h3 id="join">join</h3>
 <p>将s中的元素，以str为分割符，合并成为一个字符串</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="n">L</span>
@@ -399,7 +527,7 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h2 id="_6">字符串分割</h2>
+<h2 id="_8">字符串分割</h2>
 <h3 id="split">split</h3>
 <div class="hlcode"><pre><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -538,7 +666,7 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h2 id="_7">字符串修改</h2>
+<h2 id="_9">字符串修改</h2>
 <p>(字符串是不可修改的，这里是返回一个新的字符串)</p>
 <h3 id="replace">replace</h3>
 <div class="hlcode"><pre><span class="n">replace</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">[,</span> <span class="n">count</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">str</span>
@@ -687,7 +815,7 @@ Format String Syntax</p>
 
 
 <h3 id="strip">strip</h3>
-<p>常用于处理文本, 去除空格和换行符</p>
+<p>常用于处理文本, 去除空格和去掉首尾的str字符串换行符</p>
 <div class="hlcode"><pre><span class="n">strip</span><span class="p">([</span><span class="n">chars</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">str</span>
 </pre></div>
 
@@ -695,15 +823,15 @@ Format String Syntax</p>
 <blockquote>
 <p>chars 不指定，默认为空白字符</p>
 </blockquote>
-<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">111</span><span class="p">]:</span> <span class="n">s</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">111</span><span class="p">]:</span> <span class="s">&#39;abc </span><span class="se">\n</span><span class="s">  &#39;</span>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">25</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s"> abc </span><span class="se">\n</span><span class="s">&#39;</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">112</span><span class="p">]:</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">112</span><span class="p">]:</span> <span class="s">&#39;abc&#39;</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="s">&#39;abc&#39;</span>
 </pre></div>
 
 
 <h3 id="rstrip">rstrip</h3>
+<p>表示只去掉尾部的str字符串。</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">113</span><span class="p">]:</span> <span class="n">s</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">113</span><span class="p">]:</span> <span class="s">&#39;abc </span><span class="se">\n</span><span class="s">  &#39;</span>
 
@@ -713,11 +841,11 @@ Format String Syntax</p>
 
 
 <h3 id="lstrip">lstrip</h3>
-<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">117</span><span class="p">]:</span> <span class="n">s</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">117</span><span class="p">]:</span> <span class="s">&#39;abc </span><span class="se">\n</span><span class="s">  &#39;</span>
+<p>表示只去掉开头的str字符串</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">24</span><span class="p">]:</span> <span class="n">a</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s"> abc </span><span class="se">\n</span><span class="s">&#39;</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">118</span><span class="p">]:</span> <span class="n">s</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">118</span><span class="p">]:</span> <span class="s">&#39;abc </span><span class="se">\n</span><span class="s">  &#39;</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">25</span><span class="p">]:</span> <span class="n">a</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">25</span><span class="p">]:</span> <span class="s">&#39;abc </span><span class="se">\n</span><span class="s">&#39;</span>
 </pre></div>
 
 
@@ -729,7 +857,7 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h3 id="_8">字符串判断</h3>
+<h3 id="_10">字符串判断</h3>
 <h3 id="len">len</h3>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">41</span><span class="p">]</span><span class="o">:</span> <span class="n">s</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">41</span><span class="p">]</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">this</span> <span class="n">is</span> <span class="n">Rick</span><span class="err">&#39;</span>
@@ -980,15 +1108,31 @@ bytes使用decode方法转化为str</p>
 </pre></div>
 
 
-<ol>
-<li></li>
-</ol>
+<h1 id="_11">优化</h1>
+<div class="hlcode"><pre><span class="n">s</span> <span class="o">=</span> <span class="err">&#39;&#39;</span>
+<span class="k">for</span> <span class="n">n</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">n</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">str</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="n">s</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+</pre></div>
+
+
+<p>直观上看似乎第二种方法的复杂度高一倍，但实际运行了下，第二种方法效率略高，当调高到50万的时候第二种的效率比第一种高出两倍以上。</p>
+<p>join的运行时间只占了很小一部分，不到10%，复杂度推测大致是O(logn)。综上，list的扩充速度优于str，且join的速度在大数面前可忽略。</p>
+<p>推荐方法</p>
+<div class="hlcode"><pre><span class="n">s</span> <span class="o">=</span> <span class="s">&quot; &quot;</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">map</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)))</span> 
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-26 08:56:03</p>
+        <p>Site Generated 2019-07-01 11:04:49</p>
       </span>
     </div>
 

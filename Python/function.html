@@ -362,15 +362,20 @@ Python中，函数是一等对象</p>
 <p>所谓的闭包就是一个包含有环境变量取值的函数对象。环境变量取值被保存在函数对象的<code>__closure__</code>属性中</p>
 <p>即内层函数引用到了外层函数的自由变量，就形成了闭包</p>
 <p>函数是一个对象，所以可以作为某个函数的返回结果</p>
-<div class="hlcode"><pre><span class="nx">def</span> <span class="nx">line_conf</span><span class="p">()</span><span class="o">:</span>
-    <span class="nx">def</span> <span class="nx">line</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="o">:</span>
-        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="nx">x</span><span class="o">+</span><span class="mi">1</span>
-    <span class="k">return</span> <span class="nx">line</span>   <span class="err">#</span> <span class="nx">Return</span> <span class="nx">a</span> <span class="kd">function</span> <span class="nx">object</span>
+<div class="hlcode"><pre><span class="n">def</span> <span class="n">curve_pre</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">25</span>
+    <span class="n">def</span> <span class="n">curve</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span>
+    <span class="k">return</span> <span class="n">curve</span>
 
-<span class="nx">my_line</span> <span class="o">=</span> <span class="nx">line_conf</span><span class="p">()</span>
-<span class="nx">print</span><span class="p">(</span><span class="nx">my_line</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">curve_pre</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">__closure__</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">__closure__</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">cell_contents</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 <span class="o">&gt;&gt;&gt;</span>
-<span class="mi">11</span>
+<span class="p">(</span><span class="o">&lt;</span><span class="n">cell</span> <span class="n">at</span> <span class="mh">0x10b60c468</span><span class="o">:</span> <span class="kt">int</span> <span class="n">object</span> <span class="n">at</span> <span class="mh">0x10b2e4210</span><span class="o">&gt;</span><span class="p">,)</span>
+<span class="mi">25</span>
+<span class="mi">100</span>
 </pre></div>
 
 
@@ -388,6 +393,19 @@ Python中，函数是一等对象</p>
 <span class="o">&gt;&gt;&gt;</span>
 <span class="p">(</span><span class="o">&lt;</span><span class="n">cell</span> <span class="n">at</span> <span class="mh">0x10dfd2fd8</span><span class="o">:</span> <span class="kt">int</span> <span class="n">object</span> <span class="n">at</span> <span class="mh">0x10dce7830</span><span class="o">&gt;</span><span class="p">,)</span>
 <span class="mi">15</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">def</span> <span class="n">f1</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">def</span> <span class="n">f2</span><span class="p">()</span><span class="o">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="k">return</span> <span class="n">f2</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">f1</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">__closure__</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
 </pre></div>
 
 
@@ -637,7 +655,7 @@ Python中，函数是一等对象</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-26 08:56:03</p>
+        <p>Site Generated 2019-07-01 11:04:49</p>
       </span>
     </div>
 

@@ -27,27 +27,28 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#_1">集合</a><ul>
-<li><a href="#_2">定义集合</a></li>
-<li><a href="#_3">集合常用操作</a><ul>
-<li><a href="#_4">增</a><ul>
+<li><a href="#_2">特点</a></li>
+<li><a href="#_3">定义集合</a></li>
+<li><a href="#_4">集合常用操作</a><ul>
+<li><a href="#_5">增</a><ul>
 <li><a href="#add">add</a></li>
 <li><a href="#update">update</a></li>
 </ul>
 </li>
-<li><a href="#_5"></a></li>
-<li><a href="#_6">查</a><ul>
+<li><a href="#_6"></a></li>
+<li><a href="#_7">查</a><ul>
 <li><a href="#len">len</a></li>
 <li><a href="#in">in</a></li>
 </ul>
 </li>
-<li><a href="#_7">删</a><ul>
+<li><a href="#_8">删</a><ul>
 <li><a href="#remove">remove</a></li>
 <li><a href="#discard">discard</a></li>
 <li><a href="#clear">clear</a></li>
 <li><a href="#pop">pop</a></li>
 </ul>
 </li>
-<li><a href="#_8">集合运算</a><ul>
+<li><a href="#_9">集合运算</a><ul>
 <li><a href="#union">union 并集</a></li>
 <li><a href="#intersection">intersection 交集</a></li>
 <li><a href="#difference">difference 差集</a></li>
@@ -55,17 +56,17 @@
 <li><a href="#symmetric_difference_update">symmetric_difference_update()</a></li>
 </ul>
 </li>
-<li><a href="#_9">集合判断</a><ul>
+<li><a href="#_10">集合判断</a><ul>
 <li><a href="#issubset">issubset 子集 &lt;=</a></li>
-<li><a href="#_10">真子集 &lt;</a></li>
+<li><a href="#_11">真子集 &lt;</a></li>
 <li><a href="#issuperset">issuperset 父集 &gt;=</a></li>
 <li><a href="#isdisjoint">isdisjoint</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_11">集合解析</a><ul>
-<li><a href="#_12">基本语法</a></li>
+<li><a href="#_12">集合解析</a><ul>
+<li><a href="#_13">基本语法</a></li>
 </ul>
 </li>
 </ul>
@@ -77,7 +78,44 @@
 集合不是线性的<br />
 集合的元素是唯一的<br />
 集合的元素是可以hash 的</p>
-<h2 id="_2">定义集合</h2>
+<h2 id="_2">特点</h2>
+<p>字典和集合的内部结构都是一张哈希表。 </p>
+<p>而对集合来说，区别就是哈希表内没有键和值的配对，只有单一的元素了。 </p>
+<p>初始化了含有100,000个元素的产品，并分别计算了使用列表和集合来统计产品价格数量的运行时间</p>
+<div class="hlcode"><pre><span class="n">def</span> <span class="n">find_unique_price_using_list</span><span class="p">(</span><span class="n">products</span><span class="p">)</span><span class="o">:</span>
+      <span class="n">unique_price_list</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">price</span> <span class="n">in</span> <span class="n">products</span><span class="o">:</span> <span class="err">#</span> <span class="n">A</span>
+          <span class="k">if</span> <span class="n">price</span> <span class="n">not</span> <span class="n">in</span> <span class="n">unique_price_list</span><span class="o">:</span> <span class="err">#</span><span class="n">B</span>
+              <span class="n">unique_price_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">len</span><span class="p">(</span><span class="n">unique_price_list</span><span class="p">)</span>
+
+<span class="n">def</span> <span class="n">find_unique_price_using_set</span><span class="p">(</span><span class="n">products</span><span class="p">)</span><span class="o">:</span>
+      <span class="n">unique_price_set</span> <span class="o">=</span> <span class="n">set</span><span class="p">()</span>
+      <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">price</span> <span class="n">in</span> <span class="n">products</span><span class="o">:</span>
+          <span class="n">unique_price_set</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">len</span><span class="p">(</span><span class="n">unique_price_set</span><span class="p">)</span>
+
+<span class="n">import</span> <span class="n">time</span>
+<span class="n">id</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)]</span>
+<span class="n">price</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">200000</span><span class="p">,</span> <span class="mi">300000</span><span class="p">)]</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">list</span><span class="p">(</span><span class="n">zip</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">price</span><span class="p">))</span>
+
+<span class="cp"># 计算列表版本的时间</span>
+<span class="n">start_using_list</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span>
+<span class="n">find_unique_price_using_list</span><span class="p">(</span><span class="n">products</span><span class="p">)</span>
+<span class="n">end_using_list</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="s">&quot;time elapse using list: {}&quot;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">end_using_list</span> <span class="o">-</span> <span class="n">start_using_list</span><span class="p">))</span> <span class="err">##</span> <span class="err">输出</span>
+<span class="n">time</span> <span class="n">elapse</span> <span class="n">using</span> <span class="n">list</span><span class="o">:</span> <span class="mf">41.61519479751587</span>
+
+<span class="cp"># 计算集合版本的时间</span>
+<span class="n">start_using_set</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="n">find_unique_price_using_set</span><span class="p">(</span><span class="n">products</span><span class="p">)</span>
+<span class="n">end_using_set</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="s">&quot;time elapse using set: {}&quot;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">end_using_set</span> <span class="o">-</span> <span class="n">start_using_set</span><span class="p">))</span> <span class="err">#</span> <span class="err">输出</span>
+<span class="n">time</span> <span class="n">elapse</span> <span class="n">using</span> <span class="n">set</span><span class="o">:</span> <span class="mf">0.008238077163696289</span>
+</pre></div>
+
+
+<h2 id="_3">定义集合</h2>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">73</span><span class="p">]:</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">74</span><span class="p">]:</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">})</span>
@@ -87,8 +125,8 @@
 </pre></div>
 
 
-<h2 id="_3">集合常用操作</h2>
-<h3 id="_4">增</h3>
+<h2 id="_4">集合常用操作</h2>
+<h3 id="_5">增</h3>
 <h4 id="add">add</h4>
 <p>若元素存在，就什么都不做</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">76</span><span class="p">]:</span> <span class="n">s</span>
@@ -116,8 +154,8 @@
 </pre></div>
 
 
-<h3 id="_5"></h3>
-<h3 id="_6">查</h3>
+<h3 id="_6"></h3>
+<h3 id="_7">查</h3>
 <h4 id="len">len</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">s</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
@@ -139,7 +177,7 @@
 </pre></div>
 
 
-<h3 id="_7">删</h3>
+<h3 id="_8">删</h3>
 <h4 id="remove">remove</h4>
 <p>key不存在抛出异常</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">84</span><span class="p">]:</span> <span class="n">s</span>
@@ -190,7 +228,8 @@
 
 
 <h4 id="pop">pop</h4>
-<p>移除并返回任意的元素</p>
+<p>移除并返回任意的元素， 删除集合中最后一个元素，可是集合本身是无序的，你无法知道会删除哪 </p>
+<p>个元素 </p>
 <p>空集会返回key error异常</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">})</span>
 
@@ -202,7 +241,7 @@
 </pre></div>
 
 
-<h3 id="_8">集合运算</h3>
+<h3 id="_9">集合运算</h3>
 <h4 id="union">union 并集</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">s1</span> <span class="o">=</span> <span class="nb">set</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">})</span>
 
@@ -264,7 +303,7 @@
 
 <h4 id="symmetric_difference_update">symmetric_difference_update()</h4>
 <p>移除当前集合中在另外一个指定集合相同的元素，并将另外一个指定集合中不同的元素插入到当前集合中</p>
-<h3 id="_9">集合判断</h3>
+<h3 id="_10">集合判断</h3>
 <h4 id="issubset">issubset 子集 &lt;=</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="n">s</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">}</span>
@@ -284,7 +323,7 @@
 </pre></div>
 
 
-<h4 id="_10">真子集 &lt;</h4>
+<h4 id="_11">真子集 &lt;</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">78</span><span class="p">]</span><span class="o">:</span> <span class="n">s1</span> <span class="o">=</span> <span class="p">({</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">})</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">79</span><span class="p">]</span><span class="o">:</span> <span class="n">s2</span> <span class="o">=</span> <span class="p">({</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">})</span>
@@ -338,8 +377,8 @@
 </pre></div>
 
 
-<h2 id="_11">集合解析</h2>
-<h3 id="_12">基本语法</h3>
+<h2 id="_12">集合解析</h2>
+<h3 id="_13">基本语法</h3>
 <p><code>ret = {expression for item in iterator}</code></p>
 <p>等价于</p>
 <div class="hlcode"><pre><span class="n">ret</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -364,7 +403,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-26 08:56:03</p>
+        <p>Site Generated 2019-07-01 11:04:49</p>
       </span>
     </div>
 

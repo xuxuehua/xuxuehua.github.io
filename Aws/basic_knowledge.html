@@ -27,6 +27,10 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#aws">AWS</a><ul>
+<li><a href="#bootstrapping">Bootstrapping</a><ul>
+<li><a href="#running-custom-scripts">Running custom scripts</a></li>
+</ul>
+</li>
 <li><a href="#instance-metadata">Instance Metadata</a><ul>
 <li><a href="#retrieving">Retrieving</a></li>
 </ul>
@@ -36,12 +40,25 @@
 <li><a href="#mac-osx">Mac OSX</a></li>
 </ul>
 </li>
+<li><a href="#roles">Roles</a></li>
+<li><a href="#security-groups">Security Groups</a></li>
 </ul>
 </li>
-<li><a href="#_1"></a></li>
+<li><a href="#terminology">Terminology</a><ul>
+<li><a href="#scaling-out">Scaling Out</a></li>
+<li><a href="#scaling-in">Scaling In</a></li>
+<li><a href="#scaling-up">Scaling Up</a></li>
+<li><a href="#scaling-down">Scaling Down</a></li>
+</ul>
+</li>
+<li><a href="#object-storages3-vs-file-storageefs-vs-block-storageebsec2">Object Storage(S3) vs File Storage(EFS) vs Block Storage(EBS/EC2)</a></li>
+<li><a href="#example">Example</a></li>
 </ul>
 </div>
 <h1 id="aws">AWS</h1>
+<h2 id="bootstrapping">Bootstrapping</h2>
+<p>The process to get an application up and running on an EC2 instance or other AWS services</p>
+<h3 id="running-custom-scripts">Running custom scripts</h3>
 <h2 id="instance-metadata">Instance Metadata</h2>
 <p>Data about your instance</p>
 <p>Can be used to configure or manage a running instance</p>
@@ -60,16 +77,43 @@
 <div class="hlcode"><pre><span class="n">curl</span> <span class="s">&quot;https://s3.amazonaws.com/aws-cli/awscli-bundle.zip&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s">&quot;awscli-bundle.zip&quot;</span>
 
 <span class="n">unzip</span> <span class="n">awscli</span><span class="o">-</span><span class="n">bundle</span><span class="p">.</span><span class="n">zip</span>
+
+<span class="n">sudo</span> <span class="p">.</span><span class="o">/</span><span class="n">awscli</span><span class="o">-</span><span class="n">bundle</span><span class="o">/</span><span class="n">install</span> <span class="o">-</span><span class="n">i</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">aws</span> <span class="o">-</span><span class="n">b</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">aws</span>
 </pre></div>
 
 
-<h1 id="_1"></h1>
+<h2 id="roles">Roles</h2>
+<p>Allow programs to control your AWS account</p>
+<p>Packaged permissions</p>
+<p>Apply to instances and containers</p>
+<h2 id="security-groups">Security Groups</h2>
+<p>Controlled by roles</p>
+<p>Allow network traffic between instances</p>
+<h1 id="terminology">Terminology</h1>
+<h2 id="scaling-out">Scaling Out</h2>
+<p>水平扩展 Horizontal scaling</p>
+<h2 id="scaling-in">Scaling In</h2>
+<p>水平收缩 A form of horizontal scaling</p>
+<h2 id="scaling-up">Scaling Up</h2>
+<p>垂直扩展 Vertical scaling</p>
+<h2 id="scaling-down">Scaling Down</h2>
+<p>垂直收缩 A form of vertical scaling</p>
+<h1 id="object-storages3-vs-file-storageefs-vs-block-storageebsec2">Object Storage(S3) vs File Storage(EFS) vs Block Storage(EBS/EC2)</h1>
+<p>File Storage 也称为文件级存储或基于文件的存储，数据会以单条信息的形式存储在文件夹中。需要访问该数据时，您的计算机需要知道相应的查找路径<br />
+Accessed by path<br />
+Data stored as files in folder hierarchies<br />
+Easily searchable</p>
+<p>Block Storage会将数据拆分成块，并单独存储各个块。每个数据块都有一个唯一标识符，所以存储系统能将较小的数据存放在最方便的位置。块存储通常会被配置为将数据与用户环境分离，并会将数据分布到可以更好地为其提供服务的多个环境中。然后，当用户请求数据时，底层存储软件会重新组装来自这些环境的数据块，并将它们呈现给用户。</p>
+<p>Object Storage，也称为基于对象的存储，是一种扁平结构，其中的文件被拆分成多个部分并散布在多个硬件间。在对象存储中，数据会被分解为称为“对象”的离散单元，并保存在单个存储库中，而不是作为文件夹中的文件或服务器上的块来保存。<br />
+Which can store any blob of data or files, videos, images, PDFs, text, documents</p>
+<h1 id="example">Example</h1>
+<p><img alt="img" src="" /></p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-06-26 08:56:03</p>
+        <p>Site Generated 2019-07-01 11:04:49</p>
       </span>
     </div>
 
