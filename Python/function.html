@@ -396,16 +396,18 @@ Python中，函数是一等对象</p>
 </pre></div>
 
 
-<div class="hlcode"><pre><span class="n">def</span> <span class="n">f1</span><span class="p">()</span><span class="o">:</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="n">def</span> <span class="n">f2</span><span class="p">()</span><span class="o">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="mi">20</span>
-    <span class="k">return</span> <span class="n">f2</span>
+<div class="hlcode"><pre><span class="nx">def</span> <span class="nx">f1</span><span class="p">()</span><span class="o">:</span>
+    <span class="nx">a</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="nx">def</span> <span class="nx">f2</span><span class="p">()</span><span class="o">:</span>
+        <span class="nx">a</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="k">return</span> <span class="nx">f2</span>
 
-<span class="n">f</span> <span class="o">=</span> <span class="n">f1</span><span class="p">()</span>
-<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">__closure__</span><span class="p">)</span>
+<span class="nx">f</span> <span class="o">=</span> <span class="nx">f1</span><span class="p">()</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">__closure__</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span>
+<span class="o">&lt;</span><span class="kd">function</span> <span class="nx">f1</span> <span class="nx">at</span> <span class="mh">0x1050937b8</span><span class="o">&gt;</span>
+<span class="nx">None</span>
 </pre></div>
 
 
@@ -445,6 +447,33 @@ Python中，函数是一等对象</p>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">187</span><span class="p">]</span><span class="o">:</span> <span class="n">foo</span><span class="p">()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">187</span><span class="p">]</span><span class="o">:</span> <span class="mi">3</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">origin</span> <span class="o">=</span> <span class="mi">0</span> 
+
+<span class="n">def</span> <span class="n">factory</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">go</span><span class="p">(</span><span class="n">step</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">nonlocal</span> <span class="n">pos</span>
+        <span class="n">new_pos</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">step</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">new_pos</span>
+        <span class="k">return</span> <span class="n">new_pos</span>
+    <span class="k">return</span> <span class="n">go</span>
+
+<span class="n">tourist</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">tourist</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">tourist</span><span class="p">.</span><span class="n">__closure__</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">cell_contents</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">tourist</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">tourist</span><span class="p">.</span><span class="n">__closure__</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">cell_contents</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">tourist</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">tourist</span><span class="p">.</span><span class="n">__closure__</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">cell_contents</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">2</span>
+<span class="mi">2</span>
+<span class="mi">5</span>
+<span class="mi">5</span>
+<span class="mi">10</span>
+<span class="mi">10</span>
 </pre></div>
 
 
@@ -655,7 +684,7 @@ Python中，函数是一等对象</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-01 11:04:49</p>
+        <p>Site Generated 2019-07-02 09:31:50</p>
       </span>
     </div>
 
