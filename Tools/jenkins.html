@@ -39,6 +39,7 @@
 <li><a href="#role-based-authorization-strategy">Role-based Authorization Strategy (用户权限)</a></li>
 </ul>
 </li>
+<li><a href="#reset-password">reset password</a></li>
 <li><a href="#https">https</a></li>
 </ul>
 </li>
@@ -224,6 +225,18 @@ ExecStart<span class="o">=/</span>usr<span class="o">/</span>bin<span class="o">
 
 
 <p>Go to 'Manage and Assign Roles'</p>
+<h2 id="reset-password">reset password</h2>
+<p>The simplest solution is to completely disable security - change <code>true</code> to <code>false</code> in <code>/var/lib/jenkins/config.xml</code> file.</p>
+<div class="hlcode"><pre><span class="nt">&lt;useSecurity&gt;</span>true<span class="nt">&lt;/useSecurity&gt;</span>
+</pre></div>
+
+
+<p>Then just restart Jenkins, by</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">service</span> <span class="n">jenkins</span> <span class="n">restart</span>
+</pre></div>
+
+
+<p>And then go to admin panel and set everything once again.</p>
 <h2 id="https">https</h2>
 <p>Securing via HTTPS<br />
 Install nginx if not already done<br />
@@ -268,7 +281,7 @@ replace the contents of /etc/nginx/sites-enabled/default with the following</p>
 
 
 <p>Change the /etc/default/jenkins file to include JAVA_ARGS</p>
-<p><code>JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpListenAddress=127.0.0.1 --httpPort=​$HTTP_PORT" -ajp13Port=$AJP_PORT"</code></p>
+<p><code>JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpListenAddress=127.0.0.1 --httpPort=$HTTP_PORT" -ajp13Port=$AJP_PORT"</code></p>
 <h1 id="pipline">Pipline</h1>
 <p>Jenkins 上的工作流程框架，将原本独立运行于单个或者多个节点的任务连接起来，实现单个任务难以完成的复杂流程编排与可视化</p>
 <p>Pipeline的实现方式是一套Groovy DSL，任何发布流程都可以表述为一段Groovy脚本，并且Jenkins支持从代码库直接读取脚本，从而实现了Pipeline as Code的理念。</p>
@@ -1068,7 +1081,7 @@ node {
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-02 09:31:50</p>
+        <p>Site Generated 2019-07-02 13:55:12</p>
       </span>
     </div>
 
