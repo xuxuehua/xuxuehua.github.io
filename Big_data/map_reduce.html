@@ -147,13 +147,26 @@
 <p>做的仅仅是编写一个map函数和一个reduce函数就可以了，根本不用关心这两个函数是如何被分布启动到集群上的，也不用关心数据块又是如何分配给计算任务的。<strong>这一切都由MapReduce计算框架完成</strong></p>
 <h2 id="shuffle">shuffle</h2>
 <p>在map输出与reduce输入之间，MapReduce计算框架处理数据合并与连接操作，这个操作有个专门的词汇叫<strong>shuffle</strong></p>
+<p><strong>分布式计算需要将不同服务器上的相关数据合并到一起进行下一步计算，这就是shuffle</strong>。</p>
 <p><img alt="img" src="https://snag.gy/NJDsAq.jpg" /></p>
+<p>每个Map任务的计算结果都会写入到本地文件系统，等Map任务快要计算完成的时候，MapReduce计算框架会启动shuffle过程，在Map任务进程调用一个Partitioner接口，对Map产生的每个<Key, Value>进行Reduce分区选择，然后通过HTTP通信发送给对应的Reduce进程。这样不管Map位于哪个服务器节点，相同的Key一定会被发送给相同的Reduce进程。Reduce任务进程对收到的<Key, Value>进行排序和合并，相同的Key放在一起，组成一个<Key, Value集合>传递给Reduce执行。</p>
+<p>map输出的<Key, Value>shuffle到哪个Reduce进程是这里的关键，它是由Partitioner来实现，MapReduce框架默认的Partitioner用Key的哈希值对Reduce任务数量取模，相同的Key一定会落在相同的Reduce任务ID上。</p>
+<p>从实现上来看的话，这样的Partitioner代码只需要一行。</p>
+<div class="hlcode"><pre> <span class="cm">/** Use {@link Object#hashCode()} to partition. */</span> 
+<span class="n">public</span> <span class="kt">int</span> <span class="nf">getPartition</span><span class="p">(</span><span class="n">K2</span> <span class="n">key</span><span class="p">,</span> <span class="n">V2</span> <span class="n">value</span><span class="p">,</span> <span class="kt">int</span> <span class="n">numReduceTasks</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">.</span><span class="n">hashCode</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Integer</span><span class="p">.</span><span class="n">MAX_VALUE</span><span class="p">)</span> <span class="o">%</span> <span class="n">numReduceTasks</span><span class="p">;</span> 
+ <span class="p">}</span>
+</pre></div>
+
+
+<p>不管是MapReduce还是Spark，只要是大数据批处理计算，一定都会有shuffle过程，只有<strong>让数据关联起来</strong></p>
+<p>shuffle也是整个MapReduce过程中最难、最消耗性能的地方，在MapReduce早期代码中，一半代码都是关于shuffle处理的。</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-02 13:55:12</p>
+        <p>Site Generated 2019-07-04 17:13:11</p>
       </span>
     </div>
 

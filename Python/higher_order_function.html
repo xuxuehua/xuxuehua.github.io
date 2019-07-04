@@ -28,12 +28,13 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#higher-order-function">higher order function 高阶函数</a><ul>
 <li><a href="#_1">定义</a></li>
-<li><a href="#sorted">sorted() 函数</a></li>
-<li><a href="#map">map() 函数</a></li>
-<li><a href="#filter">filter() 函数</a></li>
-<li><a href="#reduce">reduce() 函数</a></li>
-<li><a href="#lamba">lamba()</a></li>
-<li><a href="#currying">柯里化 Currying</a></li>
+<li><a href="#sorted">sorted 函数</a></li>
+<li><a href="#lamba">lamba 匿名函数</a></li>
+<li><a href="#map">map 函数</a></li>
+<li><a href="#filter">filter 函数</a></li>
+<li><a href="#reduce">reduce 函数</a></li>
+<li><a href="#currying">Currying 柯里化</a></li>
+<li><a href="#_2">三元表达式</a></li>
 </ul>
 </li>
 </ul>
@@ -79,7 +80,7 @@
 </pre></div>
 
 
-<h2 id="sorted">sorted() 函数</h2>
+<h2 id="sorted">sorted 函数</h2>
 <div class="hlcode"><pre><span class="n">sorted</span><span class="p">(</span><span class="n">iterable</span><span class="p">[,</span> <span class="n">key</span><span class="p">][,</span> <span class="n">reverse</span><span class="p">])</span>
 </pre></div>
 
@@ -92,70 +93,12 @@
 </pre></div>
 
 
-<h2 id="map">map() 函数</h2>
-<div class="hlcode"><pre><span class="n">map</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">iterable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">map</span> <span class="n">object</span>
+<h2 id="lamba">lamba 匿名函数</h2>
+<p>lambda后面不能是代码块</p>
+<div class="hlcode"><pre><span class="n">lambda</span> <span class="n">parameter_list</span><span class="o">:</span> <span class="n">expression</span>
 </pre></div>
 
 
-<p>map()函数的第一个参数是一个函数对象。</p>
-<p>map()的功能是将函数对象依次作用与表的每个元素。每次作用的结果存储与返回的表re中。</p>
-<div class="hlcode"><pre><span class="n">re</span> <span class="o">=</span> <span class="n">map</span><span class="p">((</span><span class="n">lambda</span> <span class="n">x</span><span class="o">:</span> <span class="n">x</span><span class="o">+</span><span class="mi">3</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
-<span class="n">print</span><span class="p">(</span><span class="n">re</span><span class="p">)</span>
-<span class="n">print</span><span class="p">(</span><span class="n">list</span><span class="p">(</span><span class="n">re</span><span class="p">))</span>
-<span class="o">&gt;&gt;&gt;</span>
-<span class="o">&lt;</span><span class="n">map</span> <span class="n">object</span> <span class="n">at</span> <span class="mh">0x10caf3780</span><span class="o">&gt;</span>
-<span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
-</pre></div>
-
-
-<div class="hlcode"><pre><span class="n">from</span> <span class="n">itertools</span> <span class="n">import</span> <span class="o">*</span>
-
-<span class="n">result</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">pow</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-
-<span class="k">for</span> <span class="n">num</span> <span class="n">in</span> <span class="n">result</span><span class="o">:</span>
-    <span class="n">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span>
-<span class="mi">1</span>
-<span class="mi">4</span>
-<span class="mi">27</span>
-</pre></div>
-
-
-<h2 id="filter">filter() 函数</h2>
-<div class="hlcode"><pre><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">,</span> <span class="nx">iterable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nx">filter</span> <span class="nx">object</span>
-</pre></div>
-
-
-<blockquote>
-<p>function 是有一个参数的函数，返回为bool</p>
-</blockquote>
-<p>filter函数的第一个参数也是函数对象， 将作为参数的函数对象作用于多个元素。<br />
-如果函数的返回为True，则该次的元素将被存储到返回的表中。</p>
-<p>在python3 中，filter返回的不是表，而是循环对象</p>
-<div class="hlcode"><pre><span class="n">def</span> <span class="n">func</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">:</span>
-    <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="o">:</span>
-        <span class="k">return</span> <span class="n">True</span>
-    <span class="nl">else:</span>
-        <span class="k">return</span> <span class="n">False</span>
-
-<span class="n">print</span><span class="p">(</span><span class="n">filter</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">400</span><span class="p">]))</span>
-<span class="n">print</span><span class="p">(</span><span class="n">list</span><span class="p">(</span><span class="n">filter</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">400</span><span class="p">])))</span>
-<span class="o">&gt;&gt;&gt;</span>
-<span class="o">&lt;</span><span class="n">filter</span> <span class="n">object</span> <span class="n">at</span> <span class="mh">0x10c913780</span><span class="o">&gt;</span>
-<span class="p">[</span><span class="mi">101</span><span class="p">,</span> <span class="mi">400</span><span class="p">]</span>
-</pre></div>
-
-
-<h2 id="reduce">reduce() 函数</h2>
-<p>reduce函数的第一个参数也是函数，但是要求函数自身能够接受两个参数。 reduce可以累进的将函数作用与各个参数</p>
-<div class="hlcode"><pre><span class="n">from</span> <span class="n">functools</span> <span class="n">import</span> <span class="n">reduce</span>
-<span class="n">print</span><span class="p">(</span><span class="n">reduce</span><span class="p">((</span><span class="n">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">:</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]))</span>
-<span class="o">&gt;&gt;&gt;</span>
-<span class="mi">21</span>
-</pre></div>
-
-
-<h2 id="lamba">lamba()</h2>
 <p>将lambda函数依次作用域每个元素，如果函数返回True，则手机原来的元素6，7</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">filter</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="o">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="o">&lt;</span><span class="n">filter</span> <span class="n">at</span> <span class="mh">0x1032f5240</span><span class="o">&gt;</span>
@@ -191,7 +134,93 @@
 </pre></div>
 
 
-<h2 id="currying">柯里化 Currying</h2>
+<h2 id="map">map 函数</h2>
+<div class="hlcode"><pre><span class="n">map</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">iterable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">map</span> <span class="n">object</span>
+</pre></div>
+
+
+<p>map()函数的第一个参数是一个函数对象。</p>
+<p>map()的功能是将函数对象依次作用与表的每个元素。每次作用的结果存储与返回的表re中。</p>
+<div class="hlcode"><pre><span class="n">re</span> <span class="o">=</span> <span class="n">map</span><span class="p">((</span><span class="n">lambda</span> <span class="n">x</span><span class="o">:</span> <span class="n">x</span><span class="o">+</span><span class="mi">3</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="n">print</span><span class="p">(</span><span class="n">re</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">list</span><span class="p">(</span><span class="n">re</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&lt;</span><span class="n">map</span> <span class="n">object</span> <span class="n">at</span> <span class="mh">0x10caf3780</span><span class="o">&gt;</span>
+<span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">itertools</span> <span class="n">import</span> <span class="o">*</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">pow</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">num</span> <span class="n">in</span> <span class="n">result</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">1</span>
+<span class="mi">4</span>
+<span class="mi">27</span>
+</pre></div>
+
+
+<p>map结合lambda表达式</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">list_x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="n">r</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="o">:</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">list_x</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">25</span><span class="p">]</span>
+</pre></div>
+
+
+<p>map传入参数的个数要和lambda表达式传入的参数个数要相同， 中间元素个数，取决于较小元素的个数</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">17</span><span class="p">]</span><span class="o">:</span> <span class="n">list_x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">18</span><span class="p">]</span><span class="o">:</span> <span class="n">list_y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]</span><span class="o">:</span> <span class="n">r</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">:</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="n">list_x</span><span class="p">,</span> <span class="n">list_y</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">19</span><span class="p">]</span>
+</pre></div>
+
+
+<h2 id="filter">filter 函数</h2>
+<p>过滤掉不需要的的元素</p>
+<div class="hlcode"><pre><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">,</span> <span class="nx">iterable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nx">filter</span> <span class="nx">object</span>
+</pre></div>
+
+
+<blockquote>
+<p>function 是有一个参数的函数，返回为bool</p>
+</blockquote>
+<p>filter函数的第一个参数也是函数对象， 将作为参数的函数对象作用于多个元素。<br />
+如果函数的返回为True，则该次的元素将被存储到返回的表中。</p>
+<p>在python3 中，filter返回的不是表，而是循环对象</p>
+<div class="hlcode"><pre><span class="n">def</span> <span class="n">func</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">True</span>
+    <span class="nl">else:</span>
+        <span class="k">return</span> <span class="n">False</span>
+
+<span class="n">print</span><span class="p">(</span><span class="n">filter</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">400</span><span class="p">]))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">list</span><span class="p">(</span><span class="n">filter</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">400</span><span class="p">])))</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&lt;</span><span class="n">filter</span> <span class="n">object</span> <span class="n">at</span> <span class="mh">0x10c913780</span><span class="o">&gt;</span>
+<span class="p">[</span><span class="mi">101</span><span class="p">,</span> <span class="mi">400</span><span class="p">]</span>
+</pre></div>
+
+
+<h2 id="reduce">reduce 函数</h2>
+<p>reduce函数的第一个参数也是函数，但是要求函数自身能够接受两个参数。 reduce可以累进的将函数作用与各个参数</p>
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">functools</span> <span class="n">import</span> <span class="n">reduce</span>
+<span class="n">print</span><span class="p">(</span><span class="n">reduce</span><span class="p">((</span><span class="n">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">:</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]))</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">21</span>
+</pre></div>
+
+
+<h2 id="currying">Currying 柯里化</h2>
 <p>将原来接受两个参数的函数变成接受一个参数的函数的过程，新的函数返回一个以原有函数的第二个参数作为参数的函数</p>
 <p>即 z = f(x, y)  -&gt;  z = f(x)(y)</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">def</span> <span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">:</span>
@@ -203,12 +232,22 @@
 <span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">)(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="mi">11</span>
 </pre></div>
+
+
+<h2 id="_2">三元表达式</h2>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">r</span> <span class="o">=</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="k">else</span> <span class="n">y</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">r</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="mi">2</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-02 13:55:12</p>
+        <p>Site Generated 2019-07-04 17:13:11</p>
       </span>
     </div>
 
