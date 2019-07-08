@@ -45,12 +45,13 @@
 
 
 <span class="n">ExecStartPre</span><span class="o">=/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">-</span><span class="n">c</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">vncserver</span> <span class="o">-</span><span class="n">kill</span> <span class="o">%</span><span class="n">i</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span> <span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span> <span class="o">||</span> <span class="o">:</span><span class="err">&#39;</span>
-<span class="n">ExecStart</span><span class="o">=/</span><span class="n">sbin</span><span class="o">/</span><span class="n">runuser</span> <span class="o">-</span><span class="n">l</span> <span class="n">rick</span> <span class="o">-</span><span class="n">c</span> <span class="s">&quot;/usr/bin/vncserver %i -geometry 1280x1024&quot;</span> 
-<span class="n">PIDFile</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">rick</span><span class="o">/</span><span class="p">.</span><span class="n">vnc</span><span class="o">/%</span><span class="n">H</span><span class="o">%</span><span class="n">i</span><span class="p">.</span><span class="n">pid</span>
+<span class="n">ExecStart</span><span class="o">=/</span><span class="n">sbin</span><span class="o">/</span><span class="n">runuser</span> <span class="o">-</span><span class="n">l</span> <span class="n">vnc</span> <span class="o">-</span><span class="n">c</span> <span class="s">&quot;/usr/bin/vncserver %i -geometry 1280x1024&quot;</span> 
+<span class="n">PIDFile</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">vnc</span><span class="o">/</span><span class="p">.</span><span class="n">vnc</span><span class="o">/%</span><span class="n">H</span><span class="o">%</span><span class="n">i</span><span class="p">.</span><span class="n">pid</span>
 <span class="n">ExecStop</span><span class="o">=/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">-</span><span class="n">c</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">vncserver</span> <span class="o">-</span><span class="n">kill</span> <span class="o">%</span><span class="n">i</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span> <span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span> <span class="o">||</span> <span class="o">:</span><span class="err">&#39;</span>
 
 
-<span class="n">su</span> <span class="o">-</span> <span class="n">rick</span>
+<span class="n">useradd</span> <span class="n">vnc</span>
+<span class="n">su</span> <span class="o">-</span> <span class="n">vnc</span>
 <span class="n">vncserver</span>
 </pre></div>
 
@@ -270,7 +271,7 @@ restart<span class="o">)</span>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-04 17:13:11</p>
+        <p>Site Generated 2019-07-08 11:49:54</p>
       </span>
     </div>
 

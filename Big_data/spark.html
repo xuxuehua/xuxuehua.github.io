@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>spark - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Big_data">Big_data</a>&nbsp;&#187;&nbsp;spark
+    <span class="updated">Page Updated&nbsp;
+      2019-07-05 14:06
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">spark</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#spark">Spark</a><ul>
+<li><a href="#_1">特点</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="spark">Spark</h1>
+<p>Hadoop MapReduce虽然已经可以满足大数据的应用场景，但是UC Berkeley的AMP Lab推出的Spark应运而生，Spark拥有更快的执行速度和更友好的编程接口，在推出后短短两年就迅速抢占MapReduce的市场份额，成为主流的大数据计算框架。</p>
+<h2 id="_1">特点</h2>
+<p>Spark支持Yarn和HDFS，公司迁移到Spark上的成本很小，于是很快，越来越多的公司用Spark代替MapReduce</p>
+<p>除了速度更快，Spark和MapReduce相比，还有更简单易用的编程模型。使用Scala语言在Spark上编写WordCount程序，主要代码只需要三行。</p>
+<div class="hlcode"><pre><span class="n">val</span> <span class="n">textFile</span> <span class="o">=</span> <span class="n">sc</span><span class="p">.</span><span class="n">textFile</span><span class="p">(</span><span class="s">&quot;hdfs://...&quot;</span><span class="p">)</span>
+<span class="n">val</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">textFile</span><span class="p">.</span><span class="n">flatMap</span><span class="p">(</span><span class="n">line</span> <span class="o">=&gt;</span> <span class="n">line</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">))</span>
+                 <span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="n">word</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                 <span class="p">.</span><span class="n">reduceByKey</span><span class="p">(</span><span class="n">_</span> <span class="o">+</span> <span class="n">_</span><span class="p">)</span>
+<span class="n">counts</span><span class="p">.</span><span class="n">saveAsTextFile</span><span class="p">(</span><span class="s">&quot;hdfs://...&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<blockquote>
+<p>第1行：根据HDFS路径生成一个输入数据RDD。</p>
+<p>第2行：在输入数据RDD上执行3个操作，得到一个新的RDD。</p>
+<ul>
+<li>将输入数据的每一行文本用空格拆分成单词。</li>
+<li>将每个单词进行转换，<code>word =&gt; (word, 1)</code>，生成<Key, Value>的结构。</li>
+<li>相同的Key进行统计，统计方式是对Value求和，<code>(_ + _)</code>。</li>
+</ul>
+<p>第3行：将这个RDD保存到HDFS。</p>
+</blockquote>
+<p>RDD是Spark的核心概念，是弹性数据集（Resilient Distributed Datasets）的缩写。RDD既是Spark面向开发者的编程模型，又是Spark自身架构的核心元素。</p>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-07-08 11:49:54</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

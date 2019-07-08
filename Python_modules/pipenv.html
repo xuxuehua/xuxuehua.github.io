@@ -43,14 +43,15 @@
 <li><a href="#_5">使用</a><ul>
 <li><a href="#_6">初始化</a><ul>
 <li><a href="#pipfile-pipfilelock">Pipfile &amp; Pipfile.lock</a></li>
+<li><a href="#_7">自动补齐</a></li>
 </ul>
 </li>
 <li><a href="#virtualenv">Virtualenv</a><ul>
 <li><a href="#virtualenv_1">激活 Virtualenv</a></li>
 <li><a href="#virtualenv_2">退出 Virtualenv</a></li>
-<li><a href="#_7">自定义虚拟环境的路径</a></li>
-<li><a href="#_8">指定安装包的版本</a></li>
-<li><a href="#_9">指定安装包的源</a></li>
+<li><a href="#_8">自定义虚拟环境的路径</a></li>
+<li><a href="#_9">指定安装包的版本</a></li>
+<li><a href="#_10">指定安装包的源</a></li>
 <li><a href="#-json">--json</a></li>
 </ul>
 </li>
@@ -71,13 +72,13 @@
 <li><a href="#-python">--python 指定版本</a></li>
 <li><a href="#-man">--man 帮助</a></li>
 <li><a href="#requirementstxt">操作 requirements.txt</a><ul>
-<li><a href="#_10">导入</a></li>
-<li><a href="#_11">生成</a></li>
+<li><a href="#_11">导入</a></li>
+<li><a href="#_12">生成</a></li>
 </ul>
 </li>
-<li><a href="#_12">浏览模块代码</a></li>
-<li><a href="#env">自动加载环境变量.env</a></li>
 <li><a href="#_13">浏览模块代码</a></li>
+<li><a href="#env">自动加载环境变量.env</a></li>
+<li><a href="#_14">浏览模块代码</a></li>
 <li><a href="#pypi">更新 pypi源来提高依赖库安装的速度</a></li>
 </ul>
 </li>
@@ -179,6 +180,11 @@
 <p>一个项目对应一个 Pipfile，支持开发环境与正式环境区分。默认提供 <code>default</code> 和 <code>development</code> 区分</p>
 </blockquote>
 <p>Pipfile.lock 顾名思义，这个文件时对于<code>Pipfile</code>的一个锁定。支持锁定项目不同的版本所依赖的环境.</p>
+<h4 id="_7">自动补齐</h4>
+<div class="hlcode"><pre><span class="n">eval</span> <span class="s">&quot;$(pipenv --completion)&quot;</span>
+</pre></div>
+
+
 <h3 id="virtualenv">Virtualenv</h3>
 <h4 id="virtualenv_1">激活 Virtualenv</h4>
 <p><code>pipenv shell</code></p>
@@ -199,7 +205,7 @@
 </pre></div>
 
 
-<h4 id="_7">自定义虚拟环境的路径</h4>
+<h4 id="_8">自定义虚拟环境的路径</h4>
 <p>默认情况下,<code>pipenv</code>使用<a href="https://github.com/berdario/pew"><code>pew</code></a>来管理虚拟环境的路径，我们可以自定义<code>WORKON_HOME</code>环境变量来设置虚拟环境的路径。比如:</p>
 <div class="hlcode"><pre><span class="n">export</span> <span class="n">WORKON_HOME</span><span class="o">=~/</span><span class="p">.</span><span class="n">venvs</span>
 </pre></div>
@@ -208,12 +214,12 @@
 <blockquote>
 <p>可以通过社会环境变量<code>PIPENV_VENV_IN_PROJECT</code>使虚拟环境在每个项目的根目录下<code>project/.venv</code>。</p>
 </blockquote>
-<h4 id="_8">指定安装包的版本</h4>
+<h4 id="_9">指定安装包的版本</h4>
 <p><code>pipenv install requests==2.13.0</code></p>
 <blockquote>
 <p>这个命令也会自动更新<code>Pipfile</code>文件</p>
 </blockquote>
-<h4 id="_9">指定安装包的源</h4>
+<h4 id="_10">指定安装包的源</h4>
 <p>如果我们需要在安装包时，从一个源下载一个安装包，然后从另一个源下载另一个安装包，我们可以通过下面的方式配置</p>
 <div class="hlcode"><pre><span class="k">[[source]]</span>
 <span class="na">url</span> <span class="o">=</span> <span class="s">&quot;https://pypi.python.org/simple&quot;</span>
@@ -297,7 +303,14 @@
 
 <h3 id="install">install 安装包</h3>
 <p><code>pipenv install PACKAGE_NAME</code></p>
-<div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test_pipenv</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">pipenv</span> <span class="n">install</span> <span class="n">elasticsearch</span><span class="o">-</span><span class="n">dsl</span> <span class="n">requests</span>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">pipenv</span> <span class="n">install</span> <span class="n">elasticsearch</span><span class="o">-</span><span class="n">dsl</span> <span class="n">requests</span>
+</pre></div>
+
+
+<p>指定版本</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">pipenv</span> <span class="n">install</span> <span class="o">--</span><span class="n">python</span> <span class="mi">3</span>
+<span class="err">$</span> <span class="n">pipenv</span> <span class="n">install</span> <span class="o">--</span><span class="n">python</span> <span class="mf">3.6</span>
+<span class="err">$</span> <span class="n">pipenv</span> <span class="n">install</span> <span class="o">--</span><span class="n">python</span> <span class="mf">2.7.14</span>
 </pre></div>
 
 
@@ -383,13 +396,13 @@
 <h3 id="-man">--man 帮助</h3>
 <p><code>pipenv --man</code></p>
 <h3 id="requirementstxt">操作 requirements.txt</h3>
-<h4 id="_10">导入</h4>
+<h4 id="_11">导入</h4>
 <p>当在执行<code>pipenv install</code>命令的时候，如果有一个<code>requirements.txt</code>文件，那么会自动从<code>requirements.txt</code>文件导入安装包信息并创建一个<code>Pipfile</code>文件。</p>
 <p>同样可以使用<code>$ pipenv install -r path/to/requirements.txt</code>来导入<code>requirements.txt</code>文件</p>
 <blockquote>
 <p>默认情况下，我们都是在<code>requirements.txt</code>文件里指定了安装包的版本信息的，在导入<code>requirements.txt</code>文件时，版本信息也会被自动写<code>Pipfile</code>文件里， 但是这个信息我们一般不需要保存在<code>Pipfile</code>文件里，需要手动更新<code>Pipfile</code>来删除版本信息</p>
 </blockquote>
-<h4 id="_11">生成</h4>
+<h4 id="_12">生成</h4>
 <p>我们也可以从<code>Pipfile</code>和<code>Pipfile.lock</code>文件来生成<code>requirements.txt</code></p>
 <div class="hlcode"><pre><span class="cp"># 生成requirements.txt文件</span>
 <span class="err">$</span> <span class="n">pipenv</span> <span class="n">lock</span> <span class="o">-</span><span class="n">r</span>
@@ -399,7 +412,7 @@
 </pre></div>
 
 
-<h3 id="_12">浏览模块代码</h3>
+<h3 id="_13">浏览模块代码</h3>
 <div class="hlcode"><pre><span class="cp"># 用编辑器打开requests模块</span>
 <span class="err">$</span> <span class="n">pipenv</span> <span class="n">open</span> <span class="n">requests</span>
 </pre></div>
@@ -421,7 +434,7 @@
 </pre></div>
 
 
-<h3 id="_13">浏览模块代码</h3>
+<h3 id="_14">浏览模块代码</h3>
 <div class="hlcode"><pre><span class="cp"># 用编辑器打开requests模块</span>
 <span class="err">$</span> <span class="n">pipenv</span> <span class="n">open</span> <span class="n">requests</span>
 </pre></div>
@@ -457,7 +470,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-04 17:13:11</p>
+        <p>Site Generated 2019-07-08 11:49:54</p>
       </span>
     </div>
 

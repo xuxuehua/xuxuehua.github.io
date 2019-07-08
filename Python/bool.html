@@ -26,16 +26,60 @@
 <div class="page_title">bool 布尔</div>
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
-<li><a href="#_1">布尔值</a></li>
+<li><a href="#_1">布尔值</a><ul>
+<li><a href="#__len__">__len__</a></li>
+<li><a href="#__bool__">__bool__</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="_1">布尔值</h1>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">22</span><span class="p">]</span><span class="o">:</span> <span class="kt">bool</span><span class="p">(</span><span class="n">None</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">22</span><span class="p">]</span><span class="o">:</span> <span class="n">False</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">23</span><span class="p">]</span><span class="o">:</span> <span class="kt">bool</span><span class="p">(</span><span class="n">True</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">23</span><span class="p">]</span><span class="o">:</span> <span class="n">True</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">24</span><span class="p">]</span><span class="o">:</span> <span class="kt">bool</span><span class="p">([])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">24</span><span class="p">]</span><span class="o">:</span> <span class="n">False</span>
+</pre></div>
+
+
+<h2 id="__len__"><code>__len__</code></h2>
+<p>不存在<code>__bool__</code> ， 返回结果由<code>__len__</code> 决定</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">:</span> <span class="n">class</span> <span class="n">Test</span><span class="p">()</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>     <span class="n">def</span> <span class="n">__len__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>         <span class="k">return</span> <span class="n">False</span>
+    <span class="p">...</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span> <span class="n">print</span><span class="p">(</span><span class="kt">bool</span><span class="p">(</span><span class="n">Test</span><span class="p">()))</span>
+<span class="n">False</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">33</span><span class="p">]</span><span class="o">:</span> <span class="n">class</span> <span class="n">Test</span><span class="p">()</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>     <span class="n">def</span> <span class="n">__len__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>         <span class="k">return</span> <span class="n">True</span>
+    <span class="p">...</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span> <span class="n">print</span><span class="p">(</span><span class="kt">bool</span><span class="p">(</span><span class="n">Test</span><span class="p">()))</span>
+<span class="n">True</span>
+</pre></div>
+
+
+<h2 id="__bool__"><code>__bool__</code></h2>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">34</span><span class="p">]</span><span class="o">:</span> <span class="n">class</span> <span class="n">Test</span><span class="p">()</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>     <span class="n">def</span> <span class="n">__len__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>         <span class="k">return</span> <span class="n">False</span>
+    <span class="p">...</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>     <span class="n">def</span> <span class="n">__bool__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>         <span class="k">return</span> <span class="n">True</span>
+    <span class="p">...</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span> <span class="n">print</span><span class="p">(</span><span class="kt">bool</span><span class="p">(</span><span class="n">Test</span><span class="p">()))</span>
+<span class="n">True</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-04 17:13:11</p>
+        <p>Site Generated 2019-07-08 11:49:54</p>
       </span>
     </div>
 

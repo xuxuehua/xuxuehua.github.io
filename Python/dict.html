@@ -66,6 +66,7 @@
 <li><a href="#_12">基本语法</a></li>
 </ul>
 </li>
+<li><a href="#dict-switch">dict 实现 switch 方法</a></li>
 </ul>
 </li>
 </ul>
@@ -424,12 +425,56 @@ key必须是可hash 对象</p>
 <span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]}</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
 </pre></div>
+
+
+<h2 id="dict-switch">dict 实现 switch 方法</h2>
+<div class="hlcode"><pre><span class="n">day</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">switcher</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">Sunday</span><span class="err">&#39;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">Monday</span><span class="err">&#39;</span><span class="p">,</span> 
+    <span class="mi">2</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">Tuesday</span><span class="err">&#39;</span>
+<span class="p">}</span>
+
+<span class="n">day_name</span> <span class="o">=</span> <span class="n">switcher</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">Unknown</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">day_name</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Sunday</span>
+</pre></div>
+
+
+<p>推荐方法</p>
+<div class="hlcode"><pre><span class="n">day</span> <span class="o">=</span> <span class="mi">7</span>
+
+<span class="n">def</span> <span class="n">get_sunday</span><span class="p">()</span><span class="o">:</span>
+    <span class="k">return</span> <span class="err">&#39;</span><span class="n">Sunday</span><span class="err">&#39;</span>
+
+<span class="n">def</span> <span class="n">get_monday</span><span class="p">()</span><span class="o">:</span>
+    <span class="k">return</span> <span class="err">&#39;</span><span class="n">Monday</span><span class="err">&#39;</span>
+
+<span class="n">def</span> <span class="n">get_tuesday</span><span class="p">()</span><span class="o">:</span>
+    <span class="k">return</span> <span class="err">&#39;</span><span class="n">Tuesday</span><span class="err">&#39;</span>
+
+<span class="n">def</span> <span class="n">get_default</span><span class="p">()</span><span class="o">:</span>
+    <span class="k">return</span> <span class="err">&#39;</span><span class="n">Unknown</span><span class="err">&#39;</span>
+
+<span class="n">switcher</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="o">:</span> <span class="n">get_sunday</span><span class="p">,</span>
+    <span class="mi">1</span><span class="o">:</span> <span class="n">get_monday</span><span class="p">,</span>
+    <span class="mi">2</span><span class="o">:</span> <span class="n">get_tuesday</span>
+<span class="p">}</span>
+
+<span class="n">day_name</span> <span class="o">=</span> <span class="n">switcher</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">get_default</span><span class="p">)()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">day_name</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Unknown</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-04 17:13:11</p>
+        <p>Site Generated 2019-07-08 11:49:54</p>
       </span>
     </div>
 
