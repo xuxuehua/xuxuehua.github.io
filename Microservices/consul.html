@@ -27,7 +27,10 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#_1">服务发现</a><ul>
-<li><a href="#consul">Consul 特性</a></li>
+<li><a href="#consul">Consul 特性</a><ul>
+<li><a href="#raft">raft 算法一致性</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#installation">Installation</a><ul>
@@ -91,6 +94,7 @@
 <h2 id="consul">Consul 特性</h2>
 <p>Consul 使用 Go 编写，用 binary package 发布，可以非常容易安装和使用，在此页面<br />
 https://www.consul.io/downloads.html 下载所需平台的包，下载对应的 binary 包解压并且配置 consul binary 包对应的 Path 即可使用。</p>
+<h3 id="raft">raft 算法一致性</h3>
 <p>使用 Raft 算法来保证一致性, 比复杂的 Paxos 算法更直接. 相比较而言, zookeeper 采用的是 Paxos, 而 etcd 使用的则是 Raft.</p>
 <p>Consul 的 raft 协议要求必须过半数的节点都写入成功才认为注册成功 </p>
 <p>若Leader 挂掉时，重新选举期间整个 Consul 不可用。保证了强一致性但牺牲了可用性。</p>
@@ -274,7 +278,7 @@ consul --version
 </table>
 <h1 id="example">example</h1>
 <h2 id="1server">启动节点1（server模式）</h2>
-<div class="hlcode"><pre>  <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">e</span> <span class="err">&#39;</span><span class="n">CONSUL_LOCAL_CONFIG</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;skip_leave_on_interrupt&quot;</span><span class="o">:</span> <span class="nb">true</span><span class="p">}</span><span class="err">&#39;</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">node1</span> <span class="n">consul</span> <span class="n">agent</span> <span class="o">-</span><span class="n">server</span> <span class="o">-</span><span class="n">bind</span><span class="o">=</span><span class="mf">172.17.0.2</span>  <span class="o">-</span><span class="n">bootstrap</span><span class="o">-</span><span class="n">expect</span><span class="o">=</span><span class="mi">3</span> <span class="o">-</span><span class="n">node</span><span class="o">=</span><span class="n">node1</span>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">e</span> <span class="err">&#39;</span><span class="n">CONSUL_LOCAL_CONFIG</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;skip_leave_on_interrupt&quot;</span><span class="o">:</span> <span class="nb">true</span><span class="p">}</span><span class="err">&#39;</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">node1</span> <span class="n">consul</span> <span class="n">agent</span> <span class="o">-</span><span class="n">server</span> <span class="o">-</span><span class="n">bind</span><span class="o">=</span><span class="mf">172.17.0.2</span>  <span class="o">-</span><span class="n">bootstrap</span><span class="o">-</span><span class="n">expect</span><span class="o">=</span><span class="mi">3</span> <span class="o">-</span><span class="n">node</span><span class="o">=</span><span class="n">node1</span>
 </pre></div>
 
 
@@ -594,7 +598,7 @@ consul.         <span class="m">0</span>   IN  SOA ns.consul. hostmaster.consul.
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-08 11:49:54</p>
+        <p>Site Generated 2019-07-16 14:47:29</p>
       </span>
     </div>
 

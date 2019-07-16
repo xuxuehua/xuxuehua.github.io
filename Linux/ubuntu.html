@@ -29,7 +29,9 @@
 <li><a href="#ubuntu">Ubuntu</a><ul>
 <li><a href="#basic-development-tools">Basic development tools</a></li>
 <li><a href="#aptsourcelist-for-18041">apt/source.list for 18.04.1</a><ul>
+<li><a href="#update-time">Update time</a></li>
 <li><a href="#aliyun">aliyun</a></li>
+<li><a href="#163">163</a></li>
 </ul>
 </li>
 <li><a href="#guest-additions-copypaste">Guest additions (copy&amp;paste)</a></li>
@@ -113,6 +115,13 @@
 </pre></div>
 
 
+<h3 id="update-time">Update time</h3>
+<p>确保时间已更新</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">timedatectl</span> <span class="n">set</span><span class="o">-</span><span class="n">ntp</span> <span class="n">off</span>
+<span class="n">sudo</span> <span class="n">timedatectl</span> <span class="n">set</span><span class="o">-</span><span class="n">ntp</span> <span class="n">on</span>
+</pre></div>
+
+
 <h3 id="aliyun">aliyun</h3>
 <p>cp /etc/apt/sources.list /etc/apt/sources.list.bak</p>
 <p>在/etc/apt/sources.list文件前面添加如下条目</p>
@@ -131,6 +140,20 @@
 
 <p>sudo apt-get update<br />
 sudo apt-get upgrade</p>
+<h3 id="163">163</h3>
+<div class="hlcode"><pre><span class="k">deb</span> <span class="s">http://mirrors.163.com/ubuntu/</span> <span class="kp">bionic</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb</span> <span class="s">http://mirrors.163.com/ubuntu/</span> <span class="kp">bionic-security</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb</span> <span class="s">http://mirrors.163.com/ubuntu/</span> <span class="kp">bionic-updates</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb</span> <span class="s">http://mirrors.163.com/ubuntu/</span> <span class="kp">bionic-proposed</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb</span> <span class="s">http://mirrors.163.com/ubuntu/</span> <span class="kp">bionic-backports</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb-src</span> <span class="s">http://mirrors.163.com/ubuntu/</span> <span class="kp">bionic</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb-src</span> <span class="s">http://mirrors.163.com/ubuntu/</span> <span class="kp">bionic-security</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb-src</span> <span class="s">http://mirrors.163.com/ubuntu/</span> <span class="kp">bionic-updates</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb-src</span> <span class="s">http://mirrors.163.com/ubuntu/</span> <span class="kp">bionic-proposed</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+<span class="k">deb-src</span> <span class="s">http://mirrors.163.com/ubuntu/</span> <span class="kp">bionic-backports</span> <span class="kp">main</span> <span class="kp">restricted</span> <span class="kp">universe</span> <span class="kp">multiverse</span>
+</pre></div>
+
+
 <h2 id="guest-additions-copypaste">Guest additions (copy&amp;paste)</h2>
 <p>install the package <strong>virtualbox-guest-additions-iso</strong> in the <strong>host</strong> Ubuntu.</p>
 <div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">virtualbox</span><span class="o">-</span><span class="n">guest</span><span class="o">-</span><span class="n">additions</span><span class="o">-</span><span class="n">iso</span>
@@ -341,7 +364,7 @@ fi
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-08 11:49:54</p>
+        <p>Site Generated 2019-07-16 14:47:29</p>
       </span>
     </div>
 

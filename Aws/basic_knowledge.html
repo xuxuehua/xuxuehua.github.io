@@ -36,10 +36,6 @@
 </ul>
 </li>
 <li><a href="#instance-user-data">Instance User data</a></li>
-<li><a href="#aws-cli">AWS-CLI</a><ul>
-<li><a href="#mac-osx">Mac OSX</a></li>
-</ul>
-</li>
 <li><a href="#roles">Roles</a></li>
 <li><a href="#security-groups">Security Groups</a></li>
 </ul>
@@ -52,7 +48,11 @@
 </ul>
 </li>
 <li><a href="#object-storages3-vs-file-storageefs-vs-block-storageebsec2">Object Storage(S3) vs File Storage(EFS) vs Block Storage(EBS/EC2)</a></li>
-<li><a href="#example">Example</a></li>
+<li><a href="#aws-cli">AWS CLI</a><ul>
+<li><a href="#linux">Linux</a></li>
+<li><a href="#mac-osx">Mac OSX</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="aws">AWS</h1>
@@ -72,16 +72,6 @@
 <p>Can be passed to the instance at launch</p>
 <p>Can be used to perform common automated configuration tasks</p>
 <p>Runs scripts after the instance starts</p>
-<h2 id="aws-cli">AWS-CLI</h2>
-<h3 id="mac-osx">Mac OSX</h3>
-<div class="hlcode"><pre><span class="n">curl</span> <span class="s">&quot;https://s3.amazonaws.com/aws-cli/awscli-bundle.zip&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s">&quot;awscli-bundle.zip&quot;</span>
-
-<span class="n">unzip</span> <span class="n">awscli</span><span class="o">-</span><span class="n">bundle</span><span class="p">.</span><span class="n">zip</span>
-
-<span class="n">sudo</span> <span class="p">.</span><span class="o">/</span><span class="n">awscli</span><span class="o">-</span><span class="n">bundle</span><span class="o">/</span><span class="n">install</span> <span class="o">-</span><span class="n">i</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">aws</span> <span class="o">-</span><span class="n">b</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">aws</span>
-</pre></div>
-
-
 <h2 id="roles">Roles</h2>
 <p>Allow programs to control your AWS account</p>
 <p>Packaged permissions</p>
@@ -106,14 +96,49 @@ Easily searchable</p>
 <p>Block Storage会将数据拆分成块，并单独存储各个块。每个数据块都有一个唯一标识符，所以存储系统能将较小的数据存放在最方便的位置。块存储通常会被配置为将数据与用户环境分离，并会将数据分布到可以更好地为其提供服务的多个环境中。然后，当用户请求数据时，底层存储软件会重新组装来自这些环境的数据块，并将它们呈现给用户。</p>
 <p>Object Storage，也称为基于对象的存储，是一种扁平结构，其中的文件被拆分成多个部分并散布在多个硬件间。在对象存储中，数据会被分解为称为“对象”的离散单元，并保存在单个存储库中，而不是作为文件夹中的文件或服务器上的块来保存。<br />
 Which can store any blob of data or files, videos, images, PDFs, text, documents</p>
-<h1 id="example">Example</h1>
+<h1 id="aws-cli">AWS CLI</h1>
+<h2 id="linux">Linux</h2>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">curl</span> <span class="s">&quot;https://s3.amazonaws.com/aws-cli/awscli-bundle.zip&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s">&quot;awscli-bundle.zip&quot;</span>
+<span class="err">$</span> <span class="n">unzip</span> <span class="n">awscli</span><span class="o">-</span><span class="n">bundle</span><span class="p">.</span><span class="n">zip</span>
+<span class="err">$</span> <span class="n">sudo</span> <span class="p">.</span><span class="o">/</span><span class="n">awscli</span><span class="o">-</span><span class="n">bundle</span><span class="o">/</span><span class="n">install</span> <span class="o">-</span><span class="n">i</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">aws</span> <span class="o">-</span><span class="n">b</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">aws</span>
+</pre></div>
+
+
+<p>Add your Access Key ID and Secret Access Key to ~/<code>.aws/config</code> using this format:</p>
+<div class="hlcode"><pre><span class="k">[default]</span>
+<span class="na">aws_access_key_id</span> <span class="o">=</span> <span class="s">&lt;access key id&gt;</span>
+<span class="na">aws_secret_access_key</span> <span class="o">=</span> <span class="s">&lt;secret access key&gt;</span>
+<span class="na">region</span> <span class="o">=</span> <span class="s">us-east-1</span>
+</pre></div>
+
+
+<p>Protect the config file:</p>
+<div class="hlcode"><pre><span class="n">chmod</span> <span class="mi">600</span> <span class="o">~/</span><span class="p">.</span><span class="n">aws</span><span class="o">/</span><span class="n">config</span>
+</pre></div>
+
+
+<p>Optionally, you can set an environment variable pointing to the config file. This is especially important if you want to keep it in a non-standard location. For future convenience, also add this line to your ~/.bashrc file:</p>
+<div class="hlcode"><pre><span class="n">export</span> <span class="n">AWS_CONFIG_FILE</span><span class="o">=</span><span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">aws</span><span class="o">/</span><span class="n">config</span>
+</pre></div>
+
+
+<h2 id="mac-osx">Mac OSX</h2>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="s">&quot;https://s3.amazonaws.com/aws-cli/awscli-bundle.zip&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s">&quot;awscli-bundle.zip&quot;</span>
+
+<span class="n">unzip</span> <span class="n">awscli</span><span class="o">-</span><span class="n">bundle</span><span class="p">.</span><span class="n">zip</span>
+
+<span class="n">sudo</span> <span class="p">.</span><span class="o">/</span><span class="n">awscli</span><span class="o">-</span><span class="n">bundle</span><span class="o">/</span><span class="n">install</span> <span class="o">-</span><span class="n">i</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">aws</span> <span class="o">-</span><span class="n">b</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">aws</span>
+</pre></div>
+
+
+<p>Example</p>
 <p><img alt="img" src="https://snag.gy/Rvb5Y6.jpg" /></p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-08 11:49:54</p>
+        <p>Site Generated 2019-07-16 14:47:29</p>
       </span>
     </div>
 

@@ -36,6 +36,7 @@
 <li><a href="#services-tasks">Services (管理Tasks)</a></li>
 <li><a href="#auto-scaling-groups">Auto Scaling Groups</a></li>
 <li><a href="#local-balancers">Local Balancers</a></li>
+<li><a href="#cluster">Cluster</a></li>
 </ul>
 </li>
 <li><a href="#ecs-agent">ecs-agent</a><ul>
@@ -46,6 +47,7 @@
 </ul>
 </div>
 <h1 id="elastic-container-service">Elastic Container Service</h1>
+<p><img alt="img" src="https://snag.gy/F1MYG9.jpg" /></p>
 <h2 id="task">Task</h2>
 <p>Defines work to be done</p>
 <p>Defines everything about the environment where it runs</p>
@@ -148,9 +150,15 @@
 <p>Data dispatchers for internet-facing relays</p>
 <p>Use CloudWatch to monitor the load</p>
 <p>Send grow and shrink signals to ASGs</p>
+<h2 id="cluster">Cluster</h2>
+<p>Logical group of EC2 instances that you can place containers onto</p>
 <h1 id="ecs-agent">ecs-agent</h1>
 <p>The Amazon ECS Container Agent is a component of Amazon Elastic Container Service (<a href="http://aws.amazon.com/ecs/">Amazon ECS</a>) and is responsible for managing containers on behalf of Amazon ECS.</p>
 <p><a href="https://github.com/aws/amazon-ecs-agent">https://github.com/aws/amazon-ecs-agent</a></p>
+<p>Manages the state of containers on a single Ec2 instance</p>
+<p>How ECS communicates with the docker daemon on the EC2 instance</p>
+<p>Must be on every EC2 instance in your ECS Cluster</p>
+<p>Included with the ECS-OPTIMIZED AMI</p>
 <h2 id="installation">Installation</h2>
 <div class="hlcode"><pre><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">ecs</span><span class="o">-</span><span class="n">init</span>
 <span class="n">service</span> <span class="n">docker</span> <span class="n">start</span>
@@ -178,7 +186,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-08 11:49:54</p>
+        <p>Site Generated 2019-07-16 14:47:29</p>
       </span>
     </div>
 

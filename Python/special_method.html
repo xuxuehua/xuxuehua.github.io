@@ -348,6 +348,27 @@
 <p>过字符串映射或修改程序运行时的状态、属性、方法,</p>
 <h3 id="getattr">getattr</h3>
 <p>getattr(object, name, default=None)</p>
+<p>一般情况我们这么用getattr(object,name)。一般来说这里的object是对象，name传的是字符串。</p>
+<p>对又是什么呢？可以简单的理解为：在import 引入模块时，通过dir可查询的目标就是对象，而查询得到的结果就是属性，属性就是getattr用法中name部分传入的值。</p>
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">class</span> <span class="n">test</span><span class="o">:</span>
+<span class="p">...</span>     <span class="n">cal</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">getattr</span><span class="p">(</span><span class="n">test</span><span class="p">,</span><span class="s">&quot;cal&quot;</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span><span class="p">.</span><span class="n">cal</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="nx">test</span><span class="p">)</span>
+<span class="err">[</span><span class="s1">&#39;__doc__&#39;</span><span class="p">,</span> <span class="s1">&#39;__module__&#39;</span><span class="p">,</span> <span class="s1">&#39;cal&#39;</span><span class="cp">]</span>
+&gt;&gt;&gt; getattr(test,__doc__)
+Traceback (most recent call last):
+  File &quot;<span class="nt">&lt;stdin&gt;</span>&quot;, line 1, in <span class="nt">&lt;module&gt;</span>
+TypeError: getattr(): attribute name must be string
+&gt;&gt;&gt; getattr(test,&#39;__doc__&#39;)
+</pre></div>
+
+
 <h3 id="hasattr">hasattr</h3>
 <p>hasattr(object,name)</p>
 <h3 id="setattr">setattr</h3>
@@ -481,7 +502,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-08 11:49:54</p>
+        <p>Site Generated 2019-07-16 14:47:29</p>
       </span>
     </div>
 
