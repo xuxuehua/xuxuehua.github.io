@@ -51,14 +51,17 @@
 </ul>
 </li>
 <li><a href="#_8">字符串分割</a><ul>
-<li><a href="#split">split</a></li>
+<li><a href="#split">split</a><ul>
+<li><a href="#_9">多种分隔符分割</a></li>
+</ul>
+</li>
 <li><a href="#rsplit">rsplit</a></li>
 <li><a href="#splitlines">splitlines</a></li>
 <li><a href="#partition">partition</a></li>
 <li><a href="#rpartition">rpartition</a></li>
 </ul>
 </li>
-<li><a href="#_9">字符串修改</a><ul>
+<li><a href="#_10">字符串修改</a><ul>
 <li><a href="#replace">replace</a></li>
 <li><a href="#capitalize">capitalize</a></li>
 <li><a href="#titile">titile</a></li>
@@ -75,7 +78,7 @@
 <li><a href="#expandtabs">expandtabs</a></li>
 </ul>
 </li>
-<li><a href="#_10">字符串判断</a><ul>
+<li><a href="#_11">字符串判断</a><ul>
 <li><a href="#len">len</a></li>
 <li><a href="#startswith">startswith</a></li>
 <li><a href="#endswith">endswith</a></li>
@@ -99,7 +102,7 @@
 <li><a href="#str-bytes">STR 与 BYTES</a></li>
 </ul>
 </li>
-<li><a href="#_11">优化</a></li>
+<li><a href="#_12">优化</a></li>
 </ul>
 </div>
 <h1 id="python-string-files">字符串与文本操作 (python-string-files)</h1>
@@ -531,14 +534,12 @@ Format String Syntax</p>
 
 <h2 id="_8">字符串分割</h2>
 <h3 id="split">split</h3>
+<p>sep 指分隔符，默认为空格</p>
+<p>maxsplit 指分割次数， -1表示遍历整个字符串</p>
 <div class="hlcode"><pre><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
 
-<blockquote>
-<p>sep 指分隔符，默认为空格</p>
-<p>maxsplit 指分割次数， -1表示遍历整个字符串</p>
-</blockquote>
 <p>分割成列表</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]:</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;I Love Python&#39;</span>
 
@@ -568,6 +569,17 @@ Format String Syntax</p>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">44</span><span class="p">]:</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">44</span><span class="p">]:</span> <span class="p">(</span><span class="s">&#39;URL&#39;</span><span class="p">,</span> <span class="s">&#39;http://xuxuehua.com&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h4 id="_9">多种分隔符分割</h4>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">80</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">re</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">81</span><span class="p">]</span><span class="o">:</span> <span class="n">s</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">81</span><span class="p">]</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">ab</span><span class="p">;</span><span class="n">cd</span><span class="o">|</span><span class="n">efg</span><span class="o">|</span><span class="n">hi</span><span class="p">,</span><span class="n">jkl</span><span class="o">|</span><span class="n">mn</span><span class="err">\</span><span class="n">topq</span><span class="p">;</span><span class="n">rst</span><span class="p">,</span><span class="n">uvw</span><span class="err">\</span><span class="n">txyz</span><span class="err">&#39;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">82</span><span class="p">]</span><span class="o">:</span> <span class="n">re</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="n">r</span><span class="err">&#39;</span><span class="p">[,;</span><span class="err">\</span><span class="n">t</span><span class="o">|</span><span class="p">]</span><span class="o">+</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">82</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">ab</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">cd</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">efg</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">hi</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">jkl</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">mn</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">opq</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">rst</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">uvw</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">xyz</span><span class="err">&#39;</span><span class="p">]</span>
 </pre></div>
 
 
@@ -668,7 +680,7 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h2 id="_9">字符串修改</h2>
+<h2 id="_10">字符串修改</h2>
 <p>(字符串是不可修改的，这里是返回一个新的字符串)</p>
 <h3 id="replace">replace</h3>
 <div class="hlcode"><pre><span class="n">replace</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">[,</span> <span class="n">count</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">str</span>
@@ -859,7 +871,7 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h2 id="_10">字符串判断</h2>
+<h2 id="_11">字符串判断</h2>
 <h3 id="len">len</h3>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">41</span><span class="p">]</span><span class="o">:</span> <span class="n">s</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">41</span><span class="p">]</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">this</span> <span class="n">is</span> <span class="n">Rick</span><span class="err">&#39;</span>
@@ -1110,7 +1122,7 @@ bytes使用decode方法转化为str</p>
 </pre></div>
 
 
-<h1 id="_11">优化</h1>
+<h1 id="_12">优化</h1>
 <div class="hlcode"><pre><span class="n">s</span> <span class="o">=</span> <span class="err">&#39;&#39;</span>
 <span class="k">for</span> <span class="n">n</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span><span class="o">:</span>
     <span class="n">s</span> <span class="o">+=</span> <span class="n">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -1134,7 +1146,7 @@ bytes使用decode方法转化为str</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-19 16:24:23</p>
+        <p>Site Generated 2019-07-25 08:45:59</p>
       </span>
     </div>
 

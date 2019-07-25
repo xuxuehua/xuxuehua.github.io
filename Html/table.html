@@ -32,6 +32,8 @@
 <li><a href="#cellpacing">cellpacing单元格间距</a></li>
 <li><a href="#bgcolor">bgcolor 表格颜色</a></li>
 <li><a href="#background">background 表格图片</a></li>
+<li><a href="#border">border 边框宽度</a></li>
+<li><a href="#rule">rule 边框属性</a></li>
 </ul>
 </li>
 <li><a href="#caption">&lt;caption&gt; 表格标题</a><ul>
@@ -41,12 +43,14 @@
 </li>
 <li><a href="#tbody">&lt;tbody&gt; 表内容</a><ul>
 <li><a href="#tr-row">&lt;tr&gt;  row 行</a></li>
-<li><a href="#td-data">&lt;td&gt; data 内容</a></li>
+<li><a href="#td-data">&lt;td&gt; data 内容</a><ul>
+<li><a href="#colspanrowspan">colspan/rowspan  单元格合并</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#tfoot">&lt;tfoot&gt; 页脚</a></li>
 <li><a href="#col">&lt;col&gt;  表格列属性</a></li>
-<li><a href="#_1">单元格合并</a></li>
 </ul>
 </li>
 </ul>
@@ -77,25 +81,38 @@
 </pre></div>
 
 
+<h3 id="border">border 边框宽度</h3>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">table</span> <span class="n">border</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="rule">rule 边框属性</h3>
+<p>none    没有线条</p>
+<p>groups  位于行组和列组之间的线条</p>
+<p>rows    位于行之间的线条</p>
+<p>cols    位于列之间的线条</p>
+<p>all     位于行和列之间的线条</p>
 <h2 id="caption"><code>&lt;caption&gt;</code> 表格标题</h2>
 <h3 id="thead"><code>&lt;thead&gt;</code> 表头</h3>
 <h4 id="th"><code>&lt;th&gt;</code>  头部数据</h4>
 <h3 id="tbody"><code>&lt;tbody&gt;</code> 表内容</h3>
 <h4 id="tr-row"><code>&lt;tr&gt;</code>  row 行</h4>
 <h4 id="td-data"><code>&lt;td&gt;</code> data 内容</h4>
-<h3 id="tfoot"><code>&lt;tfoot&gt;</code> 页脚</h3>
-<h3 id="col"><code>&lt;col&gt;</code>  表格列属性</h3>
-<h3 id="_1">单元格合并</h3>
+<h5 id="colspanrowspan">colspan/rowspan  单元格合并</h5>
 <div class="hlcode"><pre><span class="o">&lt;</span><span class="n">td</span> <span class="n">colspan</span><span class="o">=</span><span class="s">&quot;2&quot;</span><span class="o">&gt;</span> <span class="err">合并</span><span class="mi">2</span><span class="err">列</span> <span class="err">（横向）</span>
 
 <span class="o">&lt;</span><span class="n">td</span> <span class="n">rowspan</span><span class="o">=</span><span class="s">&quot;2&quot;</span><span class="o">&gt;</span>  <span class="err">合并</span><span class="mi">2</span><span class="err">行</span> <span class="err">（纵向）</span>
 </pre></div>
+
+
+<h3 id="tfoot"><code>&lt;tfoot&gt;</code> 页脚</h3>
+<h3 id="col"><code>&lt;col&gt;</code>  表格列属性</h3>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-19 16:24:23</p>
+        <p>Site Generated 2019-07-25 08:45:59</p>
       </span>
     </div>
 

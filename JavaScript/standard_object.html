@@ -27,15 +27,15 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#_1">标准对象</a><ul>
-<li><a href="#_2">判断对象</a></li>
-<li><a href="#_3">包装对象</a></li>
-<li><a href="#_4">总结</a></li>
+<li><a href="#typeof">typeof 判断对象</a></li>
+<li><a href="#_2">包装对象</a></li>
+<li><a href="#_3">总结</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <h1 id="_1">标准对象</h1>
-<h2 id="_2">判断对象</h2>
+<h2 id="typeof">typeof 判断对象</h2>
 <p>为了区分对象的类型，我们用<code>typeof</code>操作符获取对象的类型，它总是返回一个字符串：</p>
 <div class="hlcode"><pre><span class="k">typeof</span> <span class="mi">123</span><span class="p">;</span> <span class="c1">// &#39;number&#39;</span>
 <span class="k">typeof</span> <span class="kc">NaN</span><span class="p">;</span> <span class="c1">// &#39;number&#39;</span>
@@ -49,7 +49,7 @@
 </pre></div>
 
 
-<h2 id="_3">包装对象</h2>
+<h2 id="_2">包装对象</h2>
 <p>在JavaScript中，字符串也区分<code>string</code>类型和它的包装类型。包装对象用<code>new</code>创建：</p>
 <div class="hlcode"><pre><span class="n">var</span> <span class="n">n</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Number</span><span class="p">(</span><span class="mi">123</span><span class="p">);</span> <span class="c1">// 123,生成了新的包装类型</span>
 <span class="n">var</span> <span class="n">b</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Boolean</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span> <span class="c1">// true,生成了新的包装类型</span>
@@ -85,7 +85,7 @@
 </pre></div>
 
 
-<h2 id="_4">总结</h2>
+<h2 id="_3">总结</h2>
 <p>有这么几条规则需要遵守：</p>
 <ul>
 <li>不要使用<code>new Number()</code>、<code>new Boolean()</code>、<code>new String()</code>创建包装对象；</li>
@@ -116,7 +116,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-19 16:24:23</p>
+        <p>Site Generated 2019-07-25 08:45:59</p>
       </span>
     </div>
 

@@ -140,6 +140,18 @@
 </pre></div>
 
 
+<div class="hlcode"><pre><span class="cp">#p1 em {</span>
+    <span class="nl">color:</span> <span class="n">yellow</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">h1</span><span class="p">.</span><span class="n">special</span> <span class="n">em</span> <span class="p">{</span>
+    <span class="nl">color:</span> <span class="n">orange</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
 <h3 id="_8">并集选择器 （常用 ）</h3>
 <p>各个选择器通过逗号连接而成，任何形式的的选择器都可以作为并集选择器的一部分</p>
 <div class="hlcode"><pre><span class="p">.</span><span class="n">f</span><span class="o">-</span><span class="n">news</span> <span class="n">a</span><span class="p">,</span> <span class="p">.</span><span class="n">s</span><span class="o">-</span><span class="n">news</span> <span class="n">a</span> <span class="p">{</span>
@@ -207,9 +219,9 @@ li+li {
 </blockquote>
 <h2 id="_15">伪类选择器</h2>
 <p><code>:link</code></p>
-<p>伪类讲应用于未被访问过的链接，解决此问题，请使用a标签</p>
+<p>伪类将应用于未被访问过的链接，解决此问题，请使用a标签</p>
 <p><code>:hover</code></p>
-<p>伪类讲应用于鼠标指针悬停于其上的元素</p>
+<p>伪类将应用于鼠标指针悬停于其上的元素</p>
 <p><code>:active</code></p>
 <p>伪类讲应用于被激活的元素，如被点击的链接，被按下的按钮，但是鼠标不放开的时候</p>
 <p><code>:visited</code></p>
@@ -217,6 +229,10 @@ li+li {
 <p><code>:focus</code></p>
 <p>伪类将应用于拥有键盘输入焦点的元素， 获取到输入的焦点的时候  </p>
 <p>顺序遵循LVHA 原则</p>
+<div class="hlcode"><pre><span class="o">:</span><span class="n">link</span> <span class="o">&gt;</span> <span class="o">:</span><span class="n">visited</span> <span class="o">&gt;</span> <span class="o">:</span><span class="n">hover</span> <span class="o">&gt;</span> <span class="o">:</span><span class="n">active</span>
+</pre></div>
+
+
 <div class="hlcode"><pre>    <span class="nt">&lt;style&gt;</span>
         a {
             font-size: 300px;
@@ -298,7 +314,7 @@ li+li {
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-19 16:24:23</p>
+        <p>Site Generated 2019-07-25 08:45:59</p>
       </span>
     </div>
 

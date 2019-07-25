@@ -54,6 +54,7 @@
 <li><a href="#spark_2">Spark 执行过程</a></li>
 <li><a href="#spark_3">Spark 生态</a></li>
 <li><a href="#spark-streaming">Spark Streaming</a></li>
+<li><a href="#spark_4">Spark性能优化</a></li>
 </ul>
 </div>
 <h1 id="spark">Spark</h1>
@@ -154,12 +155,19 @@
 
 <p>当然你也可以指定更小的时间间隔，比如500ms，这样处理的速度就会更快。时间间隔的设定通常要考虑业务场景，比如你希望统计每分钟高速公路的车流量，那么时间间隔可以设为1分钟。</p>
 <p>Spark Streaming主要负责将流数据转换成小的批数据，剩下的就可以交给Spark去做了。</p>
+<h1 id="spark_4">Spark性能优化</h1>
+<p>Spark性能优化可以分解为下面几步。</p>
+<p>1.性能测试，观察Spark性能特性和资源（CPU、Memory、Disk、Net）利用情况。</p>
+<p>2.分析、寻找资源瓶颈。</p>
+<p>3.分析系统架构、代码，发现资源利用关键所在，思考优化策略。</p>
+<p>4.代码、架构、基础设施调优，优化、平衡资源利用。</p>
+<p>5.性能测试，观察系统性能特性，是否达到优化目的，以及寻找下一个瓶颈点。</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-19 16:24:23</p>
+        <p>Site Generated 2019-07-25 08:45:59</p>
       </span>
     </div>
 

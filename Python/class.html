@@ -792,6 +792,41 @@
 </pre></div>
 
 
+<p>将<code>__iter__</code> 方法实现成生成器函数， 每次yield 返回一个素数</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">PrimeNum</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span> 
+
+    <span class="n">def</span> <span class="n">Is_Prime_num</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">:</span>
+            <span class="k">return</span> <span class="n">False</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="o">:</span>
+                <span class="k">return</span> <span class="n">False</span>
+        <span class="k">return</span> <span class="n">True</span>
+
+    <span class="n">def</span> <span class="n">__iter__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">start</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">Is_Prime_num</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">:</span>
+                <span class="n">yield</span> <span class="n">k</span> 
+
+<span class="k">for</span> <span class="n">x</span> <span class="n">in</span> <span class="n">PrimeNum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">5</span>
+<span class="mi">7</span>
+<span class="mi">11</span>
+<span class="mi">13</span>
+<span class="mi">17</span>
+<span class="mi">19</span>
+</pre></div>
+
+
 <h2 id="_15">查询对象的属性</h2>
 <p>除了使用dir()来查询对象属性，还可以使用built-in函数来确认</p>
 <div class="hlcode"><pre><span class="cp"># attr_name是一个字符串</span>
@@ -1052,7 +1087,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-19 16:24:23</p>
+        <p>Site Generated 2019-07-25 08:45:59</p>
       </span>
     </div>
 

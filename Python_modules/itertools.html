@@ -28,12 +28,13 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#itertools">itertools</a><ul>
 <li><a href="#chain">chain()</a></li>
-<li><a href="#product">product()</a></li>
-<li><a href="#permutations">permutations()</a></li>
 <li><a href="#combinations">combinations()</a></li>
 <li><a href="#combinations_with_replacement">combinations_with_replacement()</a></li>
 <li><a href="#compress">compress()</a></li>
+<li><a href="#islice">islice()</a></li>
 <li><a href="#groupby">groupby()</a></li>
+<li><a href="#permutations">permutations()</a></li>
+<li><a href="#product">product()</a></li>
 </ul>
 </li>
 </ul>
@@ -48,27 +49,6 @@
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span><span class="p">(</span><span class="n">chain</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]))</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
-</pre></div>
-
-
-<h2 id="product">product()</h2>
-<p>多个循环器集合的笛卡尔积，相当于嵌套循环</p>
-<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">itertools</span> <span class="n">import</span> <span class="n">product</span>
-
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">product</span><span class="p">(</span><span class="err">&#39;</span><span class="n">abc</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="o">&lt;</span><span class="n">itertools</span><span class="p">.</span><span class="n">product</span> <span class="n">at</span> <span class="mh">0x10a399ea0</span><span class="o">&gt;</span>
-
-<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="err">&#39;</span><span class="n">abc</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="p">[(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
-</pre></div>
-
-
-<h2 id="permutations">permutations()</h2>
-<p>从'abcd'中挑选两个元素称为新的循环</p>
-<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">itertools</span> <span class="n">import</span> <span class="n">permutations</span>
-
-<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span><span class="p">(</span><span class="n">permutations</span><span class="p">(</span><span class="err">&#39;</span><span class="n">abc</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="p">[(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="sc">&#39;a&#39;</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="sc">&#39;a&#39;</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="p">)]</span>
 </pre></div>
 
 
@@ -95,6 +75,42 @@
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span><span class="p">(</span><span class="n">compress</span><span class="p">(</span><span class="err">&#39;</span><span class="n">ABCD</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="sc">&#39;A&#39;</span><span class="p">,</span> <span class="sc">&#39;B&#39;</span><span class="p">,</span> <span class="sc">&#39;C&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<h2 id="islice">islice()</h2>
+<p>切片操作， 返回一个迭代器</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">42</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">itertools</span> <span class="n">import</span> <span class="n">islice</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">43</span><span class="p">]</span><span class="o">:</span> <span class="n">l</span> <span class="o">=</span> <span class="n">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">44</span><span class="p">]</span><span class="o">:</span> <span class="n">l</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">44</span><span class="p">]</span><span class="o">:</span> <span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">45</span><span class="p">]</span><span class="o">:</span> <span class="n">t</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">46</span><span class="p">]</span><span class="o">:</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">islice</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">...</span><span class="o">:</span>
+<span class="mi">5</span>
+<span class="mi">6</span>
+<span class="mi">7</span>
+<span class="mi">8</span>
+<span class="mi">9</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">47</span><span class="p">]</span><span class="o">:</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">t</span><span class="o">:</span>
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">...</span><span class="o">:</span>
+<span class="mi">10</span>
+<span class="mi">11</span>
+<span class="mi">12</span>
+<span class="mi">13</span>
+<span class="mi">14</span>
+<span class="mi">15</span>
+<span class="mi">16</span>
+<span class="mi">17</span>
+<span class="mi">18</span>
+<span class="mi">19</span>
 </pre></div>
 
 
@@ -126,12 +142,33 @@
 <span class="n">tall</span>
 <span class="p">[</span><span class="mi">191</span><span class="p">,</span> <span class="mi">181</span><span class="p">,</span> <span class="mi">187</span><span class="p">,</span> <span class="mi">190</span><span class="p">]</span>
 </pre></div>
+
+
+<h2 id="permutations">permutations()</h2>
+<p>从'abcd'中挑选两个元素称为新的循环</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">itertools</span> <span class="n">import</span> <span class="n">permutations</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span><span class="p">(</span><span class="n">permutations</span><span class="p">(</span><span class="err">&#39;</span><span class="n">abc</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="p">[(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="sc">&#39;a&#39;</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="sc">&#39;a&#39;</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="p">)]</span>
+</pre></div>
+
+
+<h2 id="product">product()</h2>
+<p>多个循环器集合的笛卡尔积，相当于嵌套循环</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">itertools</span> <span class="n">import</span> <span class="n">product</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">product</span><span class="p">(</span><span class="err">&#39;</span><span class="n">abc</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="o">&lt;</span><span class="n">itertools</span><span class="p">.</span><span class="n">product</span> <span class="n">at</span> <span class="mh">0x10a399ea0</span><span class="o">&gt;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="err">&#39;</span><span class="n">abc</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="p">[(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-19 16:24:23</p>
+        <p>Site Generated 2019-07-25 08:45:59</p>
       </span>
     </div>
 

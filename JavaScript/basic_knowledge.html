@@ -343,8 +343,11 @@ if(x==&quot;&quot;||isNaN(x))
 <p>可以通过将变量的值设置为 null 来清空变量。</p>
 </li>
 </ul>
-<p><code>cars=null;
-  person=null;</code></p>
+<div class="hlcode"><pre><span class="n">cars</span><span class="o">=</span><span class="n">null</span><span class="p">;</span>
+<span class="n">person</span><span class="o">=</span><span class="n">null</span><span class="p">;</span>
+</pre></div>
+
+
 <h2 id="_10">变量</h2>
 <h3 id="_11">变量定义</h3>
 <ul>
@@ -368,11 +371,12 @@ if(x==&quot;&quot;||isNaN(x))
 
 
 <h4 id="_13">静态语言定义</h4>
-<blockquote>
 <p>这种变量本身类型不固定的语言称之为动态语言，与之对应的是静态语言。静态语言在定义变量时必须指定变量类型，如果赋值的时候类型不匹配，就会报错。例如Java是静态语言</p>
-<p><code>int a = 123; // a是整数类型变量，类型用int申明
-a = "ABC"; // 错误：不能把字符串赋给整型变量</code></p>
-</blockquote>
+<div class="hlcode"><pre><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span> <span class="c1">// a是整数类型变量，类型用int申明</span>
+<span class="n">a</span> <span class="o">=</span> <span class="s">&quot;ABC&quot;</span><span class="p">;</span> <span class="c1">// 错误：不能把字符串赋给整型变量</span>
+</pre></div>
+
+
 <h2 id="strict">strict 模式</h2>
 <ul>
 <li>JavaScript在设计之初，为了方便初学者学习，并不强制要求用<code>var</code>申明变量。这个设计错误带来了严重的后果：如果一个变量没有通过<code>var</code>申明就被使用，那么该变量就自动被申明为全局变量：</li>
@@ -454,7 +458,7 @@ function disp_prompt()
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-19 16:24:23</p>
+        <p>Site Generated 2019-07-25 08:45:59</p>
       </span>
     </div>
 

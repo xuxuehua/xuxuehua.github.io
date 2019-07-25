@@ -43,8 +43,6 @@
 </ul>
 </li>
 <li><a href="#_2">呈现标签</a><ul>
-<li><a href="#h1h6">&lt;h1&gt;~&lt;h6&gt;标题</a></li>
-<li><a href="#p">&lt;p&gt;段落</a></li>
 <li><a href="#-">&lt;!-- --&gt;注释</a></li>
 <li><a href="#br">&lt;br&gt;换行</a></li>
 <li><a href="#hr">&lt;hr&gt;水平线</a></li>
@@ -54,7 +52,7 @@
 <li><a href="#b">&lt;b&gt; 粗体</a></li>
 <li><a href="#big">&lt;big&gt; 大号字</a></li>
 <li><a href="#span">&lt;span&gt;文本节</a></li>
-<li><a href="#em">&lt;em&gt;倾斜</a></li>
+<li><a href="#em">&lt;em&gt; 强调倾斜</a></li>
 <li><a href="#strong">&lt;strong&gt;加粗</a></li>
 <li><a href="#sup">&lt;sup&gt;上标</a></li>
 <li><a href="#sub">&lt;sub&gt;下标</a></li>
@@ -62,7 +60,6 @@
 <li><a href="#del">&lt;del&gt;删除字</a></li>
 </ul>
 </li>
-<li><a href="#div">&lt;div&gt; 块标签</a></li>
 <li><a href="#a">&lt;a&gt;  超链接</a><ul>
 <li><a href="#name">name</a></li>
 <li><a href="#href">href</a></li>
@@ -74,17 +71,13 @@
 <li><a href="#_5">属性</a></li>
 </ul>
 </li>
-<li><a href="#form">&lt;form&gt; 表单</a><ul>
-<li><a href="#_6">属性</a></li>
-</ul>
-</li>
 <li><a href="#textarea">&lt;textarea&gt; 文本域</a><ul>
-<li><a href="#_7">属性</a></li>
+<li><a href="#_6">属性</a></li>
 </ul>
 </li>
 <li><a href="#select">&lt;select&gt; 下拉菜单</a></li>
 <li><a href="#fieldset">&lt;fieldset&gt; 组合表单</a></li>
-<li><a href="#_8">表单练习</a></li>
+<li><a href="#_7">表单练习</a></li>
 <li><a href="#iframe">&lt;iframe&gt; 内联框架 （不常用）</a></li>
 <li><a href="#link">&lt;link&gt; 头部标签</a></li>
 <li><a href="#style">&lt;style&gt; 样式</a></li>
@@ -96,21 +89,21 @@
 </ul>
 </li>
 <li><a href="#html-5">HTML 5新的语义标签</a><ul>
-<li><a href="#_9">智能表单标签</a></li>
+<li><a href="#_8">智能表单标签</a></li>
 <li><a href="#audio">&lt;audio&gt; 音频</a></li>
 <li><a href="#video">&lt;video&gt; 视频</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_10">通用属性</a><ul>
-<li><a href="#_11">行内元素</a><ul>
-<li><a href="#_12">块元素</a></li>
+<li><a href="#_9">通用属性</a><ul>
+<li><a href="#_10">行内元素</a><ul>
+<li><a href="#_11">块元素</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_13">不常用语义标签</a><ul>
+<li><a href="#_12">不常用语义标签</a><ul>
 <li><a href="#code">&lt;code&gt;</a></li>
 <li><a href="#var">&lt;var&gt;</a></li>
 <li><a href="#pre">&lt;pre&gt;</a></li>
@@ -142,6 +135,10 @@
 
 
 <p>字符集设定，当前文档的编码格式是UTF-8</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">meta</span> <span class="n">http</span><span class="o">-</span><span class="n">equiv</span><span class="o">=</span><span class="s">&quot;Content-Type&quot;</span> <span class="n">content</span><span class="o">=</span><span class="s">&quot;text/html;charset=utf-8&quot;</span> <span class="o">/&gt;</span>
+</pre></div>
+
+
 <h2 id="body"><code>&lt;body&gt;</code></h2>
 <p>包括实际内容</p>
 <p>一个html中只能有一对body</p>
@@ -159,9 +156,6 @@
 
 
 <h2 id="_2">呈现标签</h2>
-<h3 id="h1h6"><code>&lt;h1&gt;~&lt;h6&gt;</code>标题</h3>
-<h3 id="p"><code>&lt;p&gt;</code>段落</h3>
-<p>用来定义一段文字</p>
 <h3 id="-"><code>&lt;!-- --&gt;</code>注释</h3>
 <h3 id="br"><code>&lt;br&gt;</code>换行</h3>
 <h3 id="hr"><code>&lt;hr&gt;</code>水平线</h3>
@@ -170,9 +164,10 @@
 <p>定义粗体文本</p>
 <h3 id="big"><code>&lt;big&gt;</code> 大号字</h3>
 <h3 id="span"><code>&lt;span&gt;</code>文本节</h3>
-<p>行内标签</p>
+<p>行内标签， 可以一行显示</p>
 <p>内联元素，可以作为文本的容器，而且只是文本的容器</p>
-<h3 id="em"><code>&lt;em&gt;</code>倾斜</h3>
+<h3 id="em"><code>&lt;em&gt;</code> 强调倾斜</h3>
+<p>行内标签， 可以一行显示</p>
 <h3 id="strong"><code>&lt;strong&gt;</code>加粗</h3>
 <h3 id="sup"><code>&lt;sup&gt;</code>上标</h3>
 <p>2的3次方 </p>
@@ -185,10 +180,8 @@
 
 <h3 id="ins"><code>&lt;ins&gt;</code> 插入字</h3>
 <h3 id="del"><code>&lt;del&gt;</code>删除字</h3>
-<h2 id="div"><code>&lt;div&gt;</code> 块标签</h2>
-<p>网页块的包裹，与CSS 样式配合使用</p>
-<p>块元素，用于组合HTML元素的容器</p>
 <h2 id="a"><code>&lt;a&gt;</code>  超链接</h2>
+<p>行内标签， 可以一行显示</p>
 <div class="hlcode"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://www.xuxuehua.com&quot;</span><span class="nt">&gt;</span>content<span class="nt">&lt;/a&gt;</span>
 </pre></div>
 
@@ -202,6 +195,11 @@
 <h3 id="href">href</h3>
 <p>指向另一个文档链接</p>
 <div class="hlcode"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://xuxuehua.com&quot;</span> <span class="nt">&gt;</span>hello<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+
+<p>发送邮件</p>
+<div class="hlcode"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;mailto:emailAddress&quot;</span><span class="nt">&gt;&lt;/a&gt;</span>
 </pre></div>
 
 
@@ -295,6 +293,11 @@
 </pre></div>
 
 
+<p>不同页面的锚链接</p>
+<div class="hlcode"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;name#nameOfLocation&quot;</span><span class="nt">&gt;&lt;/a&gt;</span>
+</pre></div>
+
+
 <h2 id="img"><code>&lt;img&gt;</code> 图片标记</h2>
 <div class="hlcode"><pre><span class="o">&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s">&quot;&quot;</span> <span class="n">alt</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="o">&gt;</span>
 </pre></div>
@@ -312,65 +315,9 @@
 <p>align top：顶端和文本的第一行文字对齐，其他文字居图像下方</p>
 <p>align middle：水平重点和文本的第一行文字对齐，其他文字居图像下方</p>
 <p>align bottom：底部和文本的第一行文字对齐，其他文字居图像下方</p>
-<h2 id="form"><code>&lt;form&gt;</code> 表单</h2>
-<p>完整表单由表单控件，提示信息，表单域构成</p>
-<div class="hlcode"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;head&gt;</span>
-    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content=</span><span class="s">&quot;ie=edge&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;title&gt;</span>form example<span class="nt">&lt;/title&gt;</span>
-<span class="nt">&lt;/head&gt;</span>
-<span class="nt">&lt;body&gt;</span>
-    <span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;backend processing address&quot;</span> <span class="na">method=</span><span class="s">&quot;POST&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;text_name&quot;</span> <span class="na">value=</span><span class="s">&quot;123&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">value=</span><span class="s">&quot;add&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;/form&gt;</span>
-<span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
-</pre></div>
-
-
-<h3 id="_6">属性</h3>
-<p>type: text 文本框</p>
-<p>​   password 密码框</p>
-<p>​   radio 单选</p>
-<div class="hlcode"><pre><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;r&quot;</span> <span class="na">id=</span><span class="s">&quot;r1&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;r1&quot;</span><span class="nt">&gt;</span>r1<span class="nt">&lt;/label&gt;</span>
-    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;r&quot;</span> <span class="na">id=</span><span class="s">&quot;r2&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;r2&quot;</span><span class="nt">&gt;</span>r2<span class="nt">&lt;/label&gt;</span>
-<span class="nt">&lt;/form&gt;</span>
-</pre></div>
-
-
-<p>​   checkbox 复选 </p>
-<div class="hlcode"><pre>    <span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span> <span class="na">name=</span><span class="s">&quot;ckk_lq&quot;</span> <span class="na">value=</span><span class="s">&quot;1&quot;</span><span class="err">,</span> <span class="na">id=</span><span class="s">&quot;ck_lq_id&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;ch_lq_id&quot;</span><span class="nt">&gt;</span>myinfo1<span class="nt">&lt;/label&gt;</span>
-        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span> <span class="na">name=</span><span class="s">&quot;ckk_lq&quot;</span> <span class="na">id=</span><span class="s">&quot;ck_zq_id&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;ch_zq_id&quot;</span><span class="nt">&gt;</span>myinfo2<span class="nt">&lt;/label&gt;</span>
-    <span class="nt">&lt;/form&gt;</span>
-</pre></div>
-
-
-<p>​   submit</p>
-<p>​   reset</p>
-<p>​   image 图像式提交按钮</p>
-<p>​   hidden 隐藏域</p>
-<p>​   file 文件域</p>
-<p>name： 控件名称</p>
-<p>value： input控件中默认文本值</p>
-<p>size： input控件在页面中显示宽度</p>
-<p>readonly：只读，不能修改</p>
-<p>disabled：显示控件为灰色</p>
-<p>checked：默认被选中项</p>
-<p>maxlength：控件允许的最多字符数</p>
-<p>action:  路径， #表示当前页面</p>
 <h2 id="textarea"><code>&lt;textarea&gt;</code> 文本域</h2>
 <p>需要输入大量的信息是来处理</p>
-<h3 id="_7">属性</h3>
+<h3 id="_6">属性</h3>
 <p>rows -&gt; rows="4"</p>
 <p>cols -&gt; cols="20"</p>
 <div class="hlcode"><pre><span class="nt">&lt;textarea</span> <span class="na">cols=</span><span class="s">&quot;30&quot;</span> <span class="na">rows=</span><span class="s">&quot;30&quot;</span><span class="nt">&gt;</span>填写大量信息<span class="nt">&lt;/textarea&gt;</span>
@@ -409,7 +356,7 @@
 </pre></div>
 
 
-<h2 id="_8">表单练习</h2>
+<h2 id="_7">表单练习</h2>
 <p><img alt="img" src="https://cdn.pbrd.co/images/HMlCTG1.png" /></p>
 <div class="hlcode"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
@@ -576,7 +523,7 @@
 </pre></div>
 
 
-<h3 id="_9">智能表单标签</h3>
+<h3 id="_8">智能表单标签</h3>
 <p><img alt="img" src="https://cdn.pbrd.co/images/HMmH0Z2.png" /></p>
 <ul>
 <li>隐藏域</li>
@@ -598,22 +545,22 @@
 </pre></div>
 
 
-<h1 id="_10">通用属性</h1>
+<h1 id="_9">通用属性</h1>
 <p>id：唯一表识元素，在同一页面不能重复</p>
 <p>name：用于定义一组标签，可以重复</p>
 <p>style：定义标签的样式</p>
 <p>class：定义标签的样式类</p>
 <p>id，class，都是css选择器和js的dom都是开发的必备基础</p>
 <p>img标签和a标签一般都会有title属性</p>
-<h2 id="_11">行内元素</h2>
+<h2 id="_10">行内元素</h2>
 <p>不占有独立的区域，仅仅靠自身的字体大小和图像尺寸来支持结构。</p>
 <p>一般不可以设置宽度，高度，对齐等属性</p>
 <p>strong, b, em, i, del, s, ins, u, a, span</p>
 <p>span最典型</p>
-<h3 id="_12">块元素</h3>
+<h3 id="_11">块元素</h3>
 <p>通常独自占据一整行或者多整行，可以对其设置高度，宽度，对齐等属性</p>
 <p>h1~h6, p, div, ul, ol, li</p>
-<h1 id="_13">不常用语义标签</h1>
+<h1 id="_12">不常用语义标签</h1>
 <h2 id="code"><code>&lt;code&gt;</code></h2>
 <p>标注计算机代码</p>
 <h2 id="var"><code>&lt;var&gt;</code></h2>
@@ -635,7 +582,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-19 16:24:23</p>
+        <p>Site Generated 2019-07-25 08:45:59</p>
       </span>
     </div>
 

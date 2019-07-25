@@ -27,18 +27,17 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#string">String</a><ul>
-<li><a href="#_1">字符串定义</a></li>
-<li><a href="#_2">转译</a><ul>
+<li><a href="#_1">转译</a><ul>
 <li><a href="#ascii">ASCII 字符</a></li>
 <li><a href="#unicode">Unicode 字符</a></li>
 </ul>
 </li>
-<li><a href="#_3">多行字符串</a></li>
-<li><a href="#_4">操作字符串</a><ul>
-<li><a href="#_5">字符串连接</a></li>
-<li><a href="#_6">字符串长度</a></li>
-<li><a href="#_7">字符串位置</a><ul>
-<li><a href="#_8">字符串索引赋值</a></li>
+<li><a href="#_2">多行字符串</a></li>
+<li><a href="#_3">操作字符串</a><ul>
+<li><a href="#_4">字符串连接</a></li>
+<li><a href="#_5">字符串长度</a></li>
+<li><a href="#_6">字符串位置</a><ul>
+<li><a href="#_7">字符串索引赋值</a></li>
 </ul>
 </li>
 <li><a href="#touppercase">toUpperCase</a></li>
@@ -48,6 +47,7 @@
 <li><a href="#length">length</a></li>
 <li><a href="#match">match</a></li>
 <li><a href="#replace">replace</a></li>
+<li><a href="#tostring">toString 转换为字符串</a></li>
 </ul>
 </li>
 </ul>
@@ -55,14 +55,9 @@
 </ul>
 </div>
 <h1 id="string">String</h1>
-<h2 id="_1">字符串定义</h2>
-<blockquote>
 <p>字符串是以单引号'或双引号"括起来的任意文本，比如<code>'abc'</code>，<code>"xyz"</code>等等</p>
-</blockquote>
-<ul>
-<li><code>''</code>或<code>""</code>本身只是一种表示方式，不是字符串的一部分，因此，字符串<code>'abc'</code>只有<code>a</code>，<code>b</code>，<code>c</code>这3个字符</li>
-</ul>
-<h2 id="_2">转译</h2>
+<p><code>''</code>或<code>""</code>本身只是一种表示方式，不是字符串的一部分，因此，字符串<code>'abc'</code>只有<code>a</code>，<code>b</code>，<code>c</code>这3个字符</p>
+<h2 id="_1">转译</h2>
 <ul>
 <li>如果字符串内部既包含<code>'</code>又包含<code>"</code>怎么办？可以用转义字符<code>\</code>来标识，比如：</li>
 </ul>
@@ -86,7 +81,7 @@
 <li>还可以用<code>\u####</code>表示一个Unicode字符：</li>
 </ul>
 <p><code>'\u4e2d\u6587'; // 完全等同于 '中文'</code></p>
-<h2 id="_3">多行字符串</h2>
+<h2 id="_2">多行字符串</h2>
 <ul>
 <li>由于多行字符串用<code>\n</code>写起来比较费事，所以最新的ES6标准新增了一种多行字符串的表示方法，用反引号 <em><code>* ... *</code></em> 表示：</li>
 </ul>
@@ -96,8 +91,8 @@
 </pre></div>
 
 
-<h2 id="_4">操作字符串</h2>
-<h3 id="_5">字符串连接</h3>
+<h2 id="_3">操作字符串</h2>
+<h3 id="_4">字符串连接</h3>
 <p>要把多个字符串连接起来，可以用<code>+</code>号连接：</p>
 <div class="hlcode"><pre><span class="n">var</span> <span class="n">name</span><span class="o">=</span><span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">;</span>
 <span class="n">var</span> <span class="n">age</span><span class="o">=</span><span class="mi">18</span><span class="p">;</span>
@@ -107,13 +102,13 @@
 </pre></div>
 
 
-<h3 id="_6">字符串长度</h3>
+<h3 id="_5">字符串长度</h3>
 <div class="hlcode"><pre><span class="n">var</span> <span class="n">s</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">Hello</span><span class="p">,</span> <span class="n">world</span><span class="o">!</span><span class="err">&#39;</span><span class="p">;</span>
 <span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="c1">// 13</span>
 </pre></div>
 
 
-<h3 id="_7">字符串位置</h3>
+<h3 id="_6">字符串位置</h3>
 <p>要获取字符串某个指定位置的字符，使用类似Array的下标操作，索引号从0开始：</p>
 <div class="hlcode"><pre><span class="n">var</span> <span class="n">s</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">Hello</span><span class="p">,</span> <span class="n">world</span><span class="o">!</span><span class="err">&#39;</span><span class="p">;</span>
 
@@ -125,7 +120,7 @@
 </pre></div>
 
 
-<h4 id="_8">字符串索引赋值</h4>
+<h4 id="_7">字符串索引赋值</h4>
 <p>字符串是不可变的，如果对字符串的某个索引赋值，不会有任何错误，但是，也没有任何效果：</p>
 <div class="hlcode"><pre><span class="n">var</span> <span class="n">s</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">Test</span><span class="err">&#39;</span><span class="p">;</span>
 <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;X&#39;</span><span class="p">;</span>
@@ -188,12 +183,18 @@
 <span class="n">str</span>
 <span class="s">&quot;Hello World&quot;</span>
 </pre></div>
+
+
+<h3 id="tostring">toString 转换为字符串</h3>
+<p>可以是数值， 布尔值，对象和字符串</p>
+<div class="hlcode"><pre><span class="n">str</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-19 16:24:23</p>
+        <p>Site Generated 2019-07-25 08:45:59</p>
       </span>
     </div>
 
