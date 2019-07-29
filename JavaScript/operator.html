@@ -45,7 +45,7 @@
 </ul>
 </li>
 <li><a href="#jquerydom">编写jQuery插件操作DOM</a><ul>
-<li><a href="#jquery">编写一个jQuery插件的原则：</a></li>
+<li><a href="#jquery">编写一个jQuery插件的原则</a></li>
 <li><a href="#_3">针对特定元素的扩展</a></li>
 </ul>
 </li>
@@ -133,29 +133,34 @@
 
 
 <p>分别用<code>css()</code>方法和<code>addClass()</code>方法高亮显示JavaScript：</p>
-<p>```<br />
-<!-- HTML结构 --><br />
-<style><br />
-.highlight {<br />
-    color: #dd1144;<br />
-    background-color: #ffd351;<br />
-}<br />
-</style></p>
-<div id="test-highlight-css">
-    <ul>
-        <li class="py"><span>Python</span></li>
-        <li class="js"><span>JavaScript</span></li>
-        <li class="sw"><span>Swift</span></li>
-        <li class="hk"><span>Haskell</span></li>
-    </ul>
-</div>
+<div class="hlcode"><pre><span class="c">&lt;!-- HTML结构 --&gt;</span>
+<span class="nt">&lt;style&gt;</span>
+.highlight {
+    color: #dd1144;
+    background-color: #ffd351;
+}
+<span class="nt">&lt;/style&gt;</span>
 
-<p>'use strict';<br />
-var div = $('#test-highlight-css');<br />
-div.find("li[class=js]").addClass("highlight");//寫法一</p>
-<p>div.find("li[class=js]").css("color","#dd1144").css("background-color","red");//寫法二</p>
-<p>$("div li.js").css("color","#dd1144").css("background-color","red");//或者可以這樣寫<br />
- ```</p>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;test-highlight-css&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;py&quot;</span><span class="nt">&gt;&lt;span&gt;</span>Python<span class="nt">&lt;/span&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;js&quot;</span><span class="nt">&gt;&lt;span&gt;</span>JavaScript<span class="nt">&lt;/span&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;sw&quot;</span><span class="nt">&gt;&lt;span&gt;</span>Swift<span class="nt">&lt;/span&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;hk&quot;</span><span class="nt">&gt;&lt;span&gt;</span>Haskell<span class="nt">&lt;/span&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+
+&#39;use strict&#39;;
+var div = $(&#39;#test-highlight-css&#39;);
+div.find(&quot;li<span class="cp">[</span><span class="n">class</span><span class="o">=</span><span class="nx">js</span><span class="cp">]</span>&quot;).addClass(&quot;highlight&quot;);//寫法一
+
+div.find(&quot;li<span class="cp">[</span><span class="n">class</span><span class="o">=</span><span class="nx">js</span><span class="cp">]</span>&quot;).css(&quot;color&quot;,&quot;#dd1144&quot;).css(&quot;background-color&quot;,&quot;red&quot;);//寫法二
+
+$(&quot;div li.js&quot;).css(&quot;color&quot;,&quot;#dd1144&quot;).css(&quot;background-color&quot;,&quot;red&quot;);//或者可以這樣寫
+</pre></div>
+
+
 <h2 id="dom_1">显示和隐藏DOM</h2>
 <p>要隐藏一个DOM，我们可以设置CSS的<code>display</code>属性为<code>none</code>，利用<code>css()</code>方法就可以实现。不过，要显示这个DOM就需要恢复原有的<code>display</code>属性，这就得先记下来原有的<code>display</code>属性到底是<code>block</code>还是<code>inline</code>还是别的值。</p>
 <p>考虑到显示和隐藏DOM元素使用非常普遍，jQuery直接提供<code>show()</code>和<code>hide()</code>方法，我们不用关心它是如何修改<code>display</code>属性的，总之它能正常工作：</p>
@@ -337,7 +342,6 @@ div.find("li[class=js]").addClass("highlight");//寫法一</p>
 </pre></div>
 
 
-<p><img alt="alt" src="https://cdn.pbrd.co/images/Hs1eBTe.png" /></p>
 <p>细心的童鞋可能发现了，为什么最后要<code>return this;</code>？因为jQuery对象支持链式操作，我们自己写的扩展方法也要能继续链式下去：</p>
 <div class="hlcode"><pre><span class="err">$</span><span class="p">(</span><span class="err">&#39;</span><span class="n">span</span><span class="p">.</span><span class="n">hl</span><span class="err">&#39;</span><span class="p">).</span><span class="n">highlight1</span><span class="p">().</span><span class="n">slideDown</span><span class="p">();</span>
 </pre></div>
@@ -433,8 +437,7 @@ div.find("li[class=js]").addClass("highlight");//寫法一</p>
 </pre></div>
 
 
-<p><img alt="alt" src="https://cdn.pbrd.co/images/Hs1fZ9a.png" /></p>
-<h3 id="jquery">编写一个jQuery插件的原则：</h3>
+<h3 id="jquery">编写一个jQuery插件的原则</h3>
 <ol>
 <li>给<code>$.fn</code>绑定函数，实现插件的代码逻辑；</li>
 <li>插件函数最后要<code>return this;</code>以支持链式调用；</li>
@@ -475,7 +478,7 @@ div.find("li[class=js]").addClass("highlight");//寫法一</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-25 08:45:59</p>
+        <p>Site Generated 2019-07-29 22:35:10</p>
       </span>
     </div>
 

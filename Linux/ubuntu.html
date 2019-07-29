@@ -49,6 +49,7 @@
 <li><a href="#pkexec">pkexec 命令</a></li>
 </ul>
 </li>
+<li><a href="#encryped-grub">Encryped grub</a></li>
 </ul>
 </li>
 </ul>
@@ -359,12 +360,28 @@ fi
 <p>修复破坏的sudoer 文件</p>
 <div class="hlcode"><pre><span class="n">pkexec</span> <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sudoer</span>
 </pre></div>
+
+
+<h2 id="encryped-grub">Encryped grub</h2>
+<div class="hlcode"><pre><span class="n">grub</span><span class="o">-</span><span class="n">mkpasswd</span><span class="o">-</span><span class="n">pbkdf2</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">vim</span>  <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">grub</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="mi">40</span><span class="n">_custom</span>
+
+<span class="n">set</span> <span class="n">superusers</span><span class="o">=</span><span class="s">&quot;ubuntu&quot;</span>
+<span class="n">password_pbkdf2</span> <span class="n">ubuntu</span> <span class="n">HASH_VALUE</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">update</span><span class="o">-</span><span class="n">grub</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-25 08:45:59</p>
+        <p>Site Generated 2019-07-29 22:35:10</p>
       </span>
     </div>
 
