@@ -143,7 +143,7 @@ eu-west-1 (Ireland)</p>
 <p>Then <code>Create Stack</code>  and specify below template</p>
 <p>From S3 template<br />
 https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2018-08-30/amazon-eks-vpc-sample.yaml</p>
-<p>and specify the stack name <code>classEKSVPS</code></p>
+<p>and specify the stack name <code>classEKSVPC</code></p>
 <p>Capture (into an outputs file):<br />
 VPC-ID:<br />
 SECURITY-GROUP-ID:<br />
@@ -182,7 +182,7 @@ curl -sLO https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/wi
 <p>We can launch via the EKS console: https://console.aws.amazon.com/ek</p>
 <p>Input Cluster Name with <code>classCluster</code>, click next</p>
 <p>The VPC we need is 192.168.0.0/16 subnet</p>
-<p>And Security Group is the right classEKSVPS </p>
+<p>And Security Group is the right classEKSVPC </p>
 <p>After cluster activing, we go to below command line operation</p>
 <div class="hlcode"><pre><span class="n">aws</span> <span class="n">configure</span> <span class="o">--</span><span class="n">profile</span><span class="o">=</span><span class="n">clusterAdmin</span> 
 
@@ -212,12 +212,13 @@ curl -sLO https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/wi
 <p>https://console.aws.amazon.com/cloudformation/</p>
 <p>create stack with below S3 template<br />
 https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2018-08-30/amazon-eks-nodegroup.yaml</p>
+<p>(New from AWS TS https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-nodegroup.yaml )</p>
 <p>and then specify the stack name <code>eksNodeStake</code> , Clustername <code>classCluster</code> and VPC with <code>classEKSVPS-ControlPlainSecurity</code></p>
 <p>NodeGroupName with <code>workerNodes</code></p>
 <p>NodeImageID with below Oregon AMI <code>ami-0a54c984b9f908c81</code></p>
 <div class="hlcode"><pre><span class="n">Region</span>                       <span class="n">Amazon</span> <span class="n">EKS</span><span class="o">-</span><span class="n">optimized</span>   <span class="n">AMI</span> <span class="n">with</span> <span class="n">GPU</span> <span class="n">support</span>
 <span class="n">US</span> <span class="n">West</span> <span class="p">(</span><span class="n">Oregon</span><span class="p">)</span> <span class="p">(</span><span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>  <span class="n">ami</span><span class="o">-</span><span class="mi">0</span><span class="n">a54c984b9f908c81</span> <span class="n">ami</span><span class="o">-</span><span class="mo">07316</span><span class="mi">94</span><span class="n">d53ef9604b</span>
-<span class="n">US</span> <span class="n">East</span> <span class="p">(</span><span class="n">N</span><span class="p">.</span> <span class="n">Va</span><span class="p">)</span>  <span class="p">(</span><span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>    <span class="n">ami</span><span class="o">-</span><span class="mf">0440e4</span><span class="n">f6b9713faf6</span>   <span class="n">ami</span><span class="o">-</span><span class="mo">05</span><span class="mi">8</span><span class="n">bfb8c236caae89</span>
+<span class="n">US</span> <span class="n">East</span> <span class="p">(</span><span class="n">N</span><span class="p">.</span> <span class="n">Va</span><span class="p">)</span>  <span class="p">(</span><span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>    <span class="n">ami</span><span class="o">-</span><span class="mf">0440e4</span><span class="n">f6b9713faf6</span> <span class="p">(</span><span class="n">new</span> <span class="n">from</span> <span class="n">AWS</span> <span class="n">TS</span> <span class="n">ami</span><span class="o">-</span><span class="mf">0f2e8</span><span class="n">e5663e16b436</span> <span class="p">)</span>  <span class="n">ami</span><span class="o">-</span><span class="mo">05</span><span class="mi">8</span><span class="n">bfb8c236caae89</span>
 <span class="n">EU</span> <span class="p">(</span><span class="n">Ireland</span><span class="p">)</span>     <span class="p">(</span><span class="n">eu</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>    <span class="n">ami</span><span class="o">-</span><span class="mi">0</span><span class="n">c7a4976cb6fafd3a</span>   <span class="n">ami</span><span class="o">-</span><span class="mo">0706</span><span class="n">dc8a5eed2eed9</span>
 </pre></div>
 
@@ -870,7 +871,7 @@ https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-windows-amd64.zip</p
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-29 22:35:10</p>
+        <p>Site Generated 2019-07-31 09:57:19</p>
       </span>
     </div>
 
