@@ -143,6 +143,7 @@ eu-west-1 (Ireland)</p>
 <p>Then <code>Create Stack</code>  and specify below template</p>
 <p>From S3 template<br />
 https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2018-08-30/amazon-eks-vpc-sample.yaml</p>
+<p>(New version   https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-vpc-private-subnets.yaml )</p>
 <p>and specify the stack name <code>classEKSVPC</code></p>
 <p>Capture (into an outputs file):<br />
 VPC-ID:<br />
@@ -162,13 +163,17 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/w
 <h3 id="aws-iam-authenticator">aws-iam-authenticator</h3>
 <p>We also need the aws-iam-authenticator binary:<br />
 https://docs.aws.amazon.com/eks/latest/userguide/configure-kubectl.html</p>
-<p>You need the binary appropriate to your OS:<br />
-Linux:<br />
-curl -sLO https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator</p>
-<p>MacOS:<br />
-curl -sLO https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/darwin/amd64/aws-iam-authenticator</p>
-<p>Windows:<br />
-curl -sLO https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/windows/amd64/aws-iam-authenticator.exe</p>
+<p>You need the binary appropriate to your OS</p>
+<p>linux </p>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">o</span> <span class="n">aws</span><span class="o">-</span><span class="n">iam</span><span class="o">-</span><span class="n">authenticator</span> <span class="n">https</span><span class="o">:</span><span class="c1">//amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator</span>
+</pre></div>
+
+
+<p>mac</p>
+<div class="hlcode"><pre><span class="n">brew</span> <span class="n">install</span> <span class="n">aws</span><span class="o">-</span><span class="n">iam</span><span class="o">-</span><span class="n">authenticator</span>
+</pre></div>
+
+
 <p>In both cases, make the binary executable if necessary (chmod +x), and copy it to a directory in the command PATH (/usr/local/bin or %system32%/)</p>
 <h3 id="aws-cli">AWS CLI</h3>
 <div class="hlcode"><pre><span class="n">curl</span> <span class="s">&quot;https://s3.amazonaws.com/aws-cli/awscli-bundle.zip&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s">&quot;awscli-bundle.zip&quot;</span> <span class="o">&amp;&amp;</span> <span class="err">\</span> <span class="n">unzip</span> <span class="n">awscli</span><span class="o">-</span><span class="n">bundle</span><span class="p">.</span><span class="n">zip</span> <span class="o">&amp;&amp;</span> \
@@ -184,7 +189,7 @@ curl -sLO https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/wi
 <p>The VPC we need is 192.168.0.0/16 subnet</p>
 <p>And Security Group is the right classEKSVPC </p>
 <p>After cluster activing, we go to below command line operation</p>
-<div class="hlcode"><pre><span class="n">aws</span> <span class="n">configure</span> <span class="o">--</span><span class="n">profile</span><span class="o">=</span><span class="n">clusterAdmin</span> 
+<div class="hlcode"><pre><span class="n">aws</span> <span class="n">configure</span> <span class="o">--</span><span class="n">profile</span><span class="o">=</span><span class="n">clusterAdmin</span> <span class="p">(</span><span class="n">AWS</span> <span class="n">User</span> <span class="n">ID</span><span class="p">)</span>
 
 <span class="cp"># Key &amp; Secret could get it from IAM console</span>
 <span class="n">Default</span> <span class="n">region</span> <span class="n">name</span> <span class="p">[</span><span class="n">Oregon</span><span class="p">]</span><span class="o">:</span> <span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mi">2</span>
@@ -193,17 +198,22 @@ curl -sLO https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/wi
 
 
 <p>Enable variables</p>
-<div class="hlcode"><pre><span class="n">export</span> <span class="n">AWS_PROFILE</span><span class="o">=</span><span class="n">clusterAdmin</span> <span class="err">#</span> <span class="n">Re</span><span class="o">-</span><span class="n">enable</span> <span class="n">it</span> <span class="n">when</span> <span class="n">you</span> <span class="n">reset</span> <span class="n">your</span> <span class="n">terminal</span> 
+<div class="hlcode"><pre><span class="n">export</span> <span class="n">AWS_PROFILE</span><span class="o">=</span><span class="n">clusterAdmin</span> <span class="err">#</span> <span class="n">Re</span><span class="o">-</span><span class="n">enable</span> <span class="n">it</span> <span class="n">when</span> <span class="n">you</span> <span class="n">reset</span> <span class="n">your</span> <span class="n">terminal</span> <span class="p">(</span><span class="n">AWS</span> <span class="n">UID</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="hlcode"><pre><span class="n">aws</span> <span class="n">eks</span> <span class="n">update</span><span class="o">-</span><span class="n">kubeconfig</span> <span class="o">--</span><span class="n">name</span> <span class="n">classCluster</span>
+<div class="hlcode"><pre><span class="nx">aws</span> <span class="nx">eks</span> <span class="o">--</span><span class="nx">region</span> <span class="p">(</span><span class="nx">region</span><span class="p">)</span> <span class="nx">update</span><span class="na">-kubeconfig</span> <span class="o">--</span><span class="nb">name</span> <span class="nx">classCluster</span>
 
-<span class="cp"># Verify Kubernetes access</span>
-<span class="n">And</span> <span class="n">lastly</span><span class="p">,</span> <span class="n">we</span> <span class="n">should</span> <span class="n">be</span> <span class="n">able</span> <span class="n">to</span> <span class="n">confirm</span> <span class="n">our</span> <span class="n">access</span>
+<span class="err">#</span> <span class="nx">Verify</span> <span class="nx">Kubernetes</span> <span class="nx">access</span>
+<span class="ow">And</span> <span class="nx">lastly</span><span class="p">,</span> <span class="nx">we</span> <span class="nx">should</span> <span class="nx">be</span> <span class="nx">able</span> <span class="k">to</span> <span class="nx">confirm</span> <span class="nx">our</span> <span class="nx">access</span>
 
-<span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span>
-<span class="n">kubectl</span> <span class="n">get</span> <span class="n">nodes</span>
+<span class="err">$</span> <span class="nx">kubectl</span> <span class="nb">get</span> <span class="nx">svc</span>
+<span class="nb">NAME</span>         <span class="k">TYPE</span>        <span class="nx">CLUSTER</span><span class="na">-IP</span>   <span class="nx">EXTERNAL</span><span class="na">-IP</span>   <span class="nb">PORT</span><span class="p">(</span><span class="nb">S</span><span class="p">)</span>   <span class="nx">AGE</span>
+<span class="nx">kubernetes</span>   <span class="nx">ClusterIP</span>   <span class="mf">10.100.0.1</span>   <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>        <span class="mi">443</span><span class="p">/</span><span class="nx">TCP</span>   <span class="mi">4</span><span class="nx">h</span>
+
+
+<span class="nx">kubectl</span> <span class="nb">get</span> <span class="nx">pods</span>
+<span class="nx">kubectl</span> <span class="nb">get</span> <span class="nx">nodes</span>
 </pre></div>
 
 
@@ -871,7 +881,7 @@ https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-windows-amd64.zip</p
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-07-31 09:57:19</p>
+        <p>Site Generated 2019-08-01 11:33:06</p>
       </span>
     </div>
 
