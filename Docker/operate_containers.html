@@ -27,6 +27,7 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#operate_containers">operate_containers</a><ul>
+<li><a href="#create">create 创建容器</a></li>
 <li><a href="#run">run 运行容器</a><ul>
 <li><a href="#-t">-t 伪终端</a></li>
 <li><a href="#-i">-i 标准输入</a></li>
@@ -40,9 +41,12 @@
 <li><a href="#ls-id">ls 查看卷ID</a></li>
 </ul>
 </li>
+<li><a href="#start">start 启动容器</a></li>
 <li><a href="#stop">stop 终止容器</a></li>
 <li><a href="#restart">restart 重启容器</a></li>
 <li><a href="#inspect">inspect 查看容器</a></li>
+<li><a href="#logs">logs 查看容器日志</a></li>
+<li><a href="#kill">kill 杀死运行中的容器</a></li>
 <li><a href="#_1">进入容器</a><ul>
 <li><a href="#attach">attach 命令</a></li>
 <li><a href="#nsenter">nsenter 命令</a><ul>
@@ -68,6 +72,11 @@
 </div>
 <h1 id="operate_containers">operate_containers</h1>
 <p>在 Docker 1.13+ 推荐使用 docker container 子命令来管理 Docker 容器。</p>
+<h2 id="create">create 创建容器</h2>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">create</span>
+</pre></div>
+
+
 <h2 id="run">run 运行容器</h2>
 <p>docker run 就是运行容器的命令</p>
 <div class="hlcode"><pre><span class="n">docker</span> <span class="n">run</span> <span class="n">ubuntu</span><span class="o">:</span><span class="mf">14.04</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">echo</span> <span class="err">&#39;</span><span class="n">Hello</span> <span class="n">World</span><span class="o">!</span><span class="err">&#39;</span>
@@ -156,6 +165,11 @@
 </pre></div>
 
 
+<h2 id="start">start 启动容器</h2>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">start</span>
+</pre></div>
+
+
 <h2 id="stop">stop 终止容器</h2>
 <p>docker stop container_id 来终止一个运行中的容器。</p>
 <p>Stop all running containers</p>
@@ -167,6 +181,16 @@
 <p>docker restart container_id 命令会将一个运行态的容器终止，然后再重新启动它</p>
 <h2 id="inspect">inspect 查看容器</h2>
 <div class="hlcode"><pre><span class="n">docker</span> <span class="n">inspect</span> <span class="o">--</span><span class="n">format</span> <span class="err">&#39;</span><span class="p">{{</span> <span class="p">.</span><span class="n">State</span><span class="p">.</span><span class="n">Pid</span> <span class="p">}}</span><span class="err">&#39;</span> <span class="n">af3f3c9d2428</span>
+</pre></div>
+
+
+<h2 id="logs">logs 查看容器日志</h2>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">logs</span>
+</pre></div>
+
+
+<h2 id="kill">kill 杀死运行中的容器</h2>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">kill</span>
 </pre></div>
 
 
@@ -297,7 +321,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-01 11:33:06</p>
+        <p>Site Generated 2019-08-04 15:37:45</p>
       </span>
     </div>
 

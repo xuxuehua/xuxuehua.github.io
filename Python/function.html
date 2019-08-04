@@ -359,7 +359,7 @@ Python中，函数是一等对象</p>
 
 
 <h2 id="_18">闭包</h2>
-<p>推荐在框架，包，类库中推荐使用闭包</p>
+<p>推荐在框架，包，类库中推荐使用闭包，闭包常常和装饰器(decorator)一起使用</p>
 <p>所谓的闭包就是一个包含有环境变量取值的函数对象。环境变量取值被保存在函数对象的<code>__closure__</code>属性中</p>
 <p>即内层函数引用到了外层函数的自由变量，就形成了闭包</p>
 <p>函数是一个对象，所以可以作为某个函数的返回结果</p>
@@ -428,6 +428,8 @@ Python中，函数是一等对象</p>
 
 <h3 id="nonlocal">nonlocal</h3>
 <p>nonlocal 关键字，将变量标记为不在本地作用域定义，而在上面某一级局部作用域中定义，但不是在全局作用域中定义</p>
+<p>对于嵌套函数来说，内部函数可以访问外部函数定义的变量，但是无法修改，若要修改，必须加上nonlocal这个关键字</p>
+<p>如果不加上nonlocal这个关键字，而内部函数的变量又和外部函数变量同名，那么同样的，内部函数变量会覆盖外部函数的变量。</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">183</span><span class="p">]</span><span class="o">:</span> <span class="n">def</span> <span class="n">counter</span><span class="p">()</span><span class="o">:</span>
      <span class="p">...</span><span class="o">:</span>     <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
      <span class="p">...</span><span class="o">:</span>     <span class="n">def</span> <span class="n">inc</span><span class="p">()</span><span class="o">:</span>
@@ -685,7 +687,7 @@ Python中，函数是一等对象</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-01 11:33:06</p>
+        <p>Site Generated 2019-08-04 15:37:45</p>
       </span>
     </div>
 

@@ -37,6 +37,8 @@
 <li><a href="#1xx">1XX</a></li>
 <li><a href="#2xx">2XX</a><ul>
 <li><a href="#200">200</a></li>
+<li><a href="#201">201</a></li>
+<li><a href="#204">204</a></li>
 <li><a href="#206">206</a></li>
 </ul>
 </li>
@@ -49,6 +51,7 @@
 </li>
 <li><a href="#4xx">4XX</a><ul>
 <li><a href="#400">400</a></li>
+<li><a href="#401">401</a></li>
 <li><a href="#403">403</a></li>
 <li><a href="#404">404</a></li>
 </ul>
@@ -78,14 +81,18 @@
 <h3 id="2xx">2XX</h3>
 <p>“成功”类的信息</p>
 <h4 id="200">200</h4>
-<p>请求正常</p>
+<p>查询请求正常</p>
+<h4 id="201">201</h4>
+<p>创建更新成功</p>
+<h4 id="204">204</h4>
+<p>删除成功</p>
 <h4 id="206">206</h4>
 <p>partial content 客户发送了一个带有Range头的GET请求，服务器完成了它。</p>
 <h3 id="3xx">3XX</h3>
 <p>重定向类的信息</p>
 <h4 id="301">301</h4>
 <p>永久重定向</p>
-<p>Moved Permanently 所请求的页面已经转移至新的url。</p>
+<p>Moved Permanently 所请求的页面已经转移至新的url</p>
 <h4 id="302">302</h4>
 <p>临时重定向。</p>
 <p>如访问一个需要登录页面，没有登录，会重定向到登录页面</p>
@@ -96,8 +103,10 @@
 <h3 id="4xx">4XX</h3>
 <p>客户端错误类的信息</p>
 <h4 id="400">400</h4>
-<p>请求到URL在服务器上找不到，也就是请求URL 错误</p>
+<p>请求到URL在服务器上找不到，也就是请求URL 错误， 请求参数错误</p>
 <p>Bad Request 服务器未能理解请求。</p>
+<h4 id="401">401</h4>
+<p>未授权请求</p>
 <h4 id="403">403</h4>
 <p>服务器拒绝访问，权限不够</p>
 <h4 id="404">404</h4>
@@ -113,7 +122,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-01 11:33:06</p>
+        <p>Site Generated 2019-08-04 15:37:45</p>
       </span>
     </div>
 

@@ -106,6 +106,25 @@ iam_cf_policy.json</p>
 <p>AmazonEKSServicePolicy <br />
 AmazonEKSClusterPolicy </p>
 <p>View the role in details and copy <code>Role ARN</code></p>
+<p>Deny_non_office_ip</p>
+<div class="hlcode"><pre><span class="p">{</span>
+  <span class="s2">&quot;Version&quot;</span><span class="o">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="o">,</span>
+  <span class="s2">&quot;Statement&quot;</span><span class="o">:</span> <span class="cp">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;Principal&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;Service&quot;</span><span class="p">:</span> <span class="err">[</span>
+          <span class="s2">&quot;eks.amazonaws.com&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;cloudformation.amazonaws.com&quot;</span>
+        <span class="cp">]</span>
+      <span class="p">}</span><span class="o">,</span>
+      <span class="s2">&quot;Action&quot;</span><span class="o">:</span> <span class="s2">&quot;sts:AssumeRole&quot;</span>
+    <span class="err">}</span>
+  <span class="o">]</span>
+<span class="err">}</span>
+</pre></div>
+
+
 <h3 id="users">Users</h3>
 <p>create two users, an admin user and a second eks system user.</p>
 <p>User 1:<br />
@@ -143,7 +162,9 @@ eu-west-1 (Ireland)</p>
 <p>Then <code>Create Stack</code>  and specify below template</p>
 <p>From S3 template<br />
 https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2018-08-30/amazon-eks-vpc-sample.yaml</p>
-<p>(New version   https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-vpc-private-subnets.yaml )</p>
+<p>(New version  </p>
+<p>Public https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-vpc-sample.yaml</p>
+<p>Private https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-vpc-private-subnets.yaml )</p>
 <p>and specify the stack name <code>classEKSVPC</code></p>
 <p>Capture (into an outputs file):<br />
 VPC-ID:<br />
@@ -222,7 +243,8 @@ https://docs.aws.amazon.com/eks/latest/userguide/configure-kubectl.html</p>
 <p>https://console.aws.amazon.com/cloudformation/</p>
 <p>create stack with below S3 template<br />
 https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2018-08-30/amazon-eks-nodegroup.yaml</p>
-<p>(New from AWS TS https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-nodegroup.yaml )</p>
+<p>(New from AWS</p>
+<p>private https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-nodegroup.yaml )</p>
 <p>and then specify the stack name <code>eksNodeStake</code> , Clustername <code>classCluster</code> and VPC with <code>classEKSVPS-ControlPlainSecurity</code></p>
 <p>NodeGroupName with <code>workerNodes</code></p>
 <p>NodeImageID with below Oregon AMI <code>ami-0a54c984b9f908c81</code></p>
@@ -881,7 +903,7 @@ https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-windows-amd64.zip</p
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-01 11:33:06</p>
+        <p>Site Generated 2019-08-04 15:37:45</p>
       </span>
     </div>
 

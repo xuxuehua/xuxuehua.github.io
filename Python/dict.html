@@ -357,6 +357,41 @@ key必须是可hash 对象</p>
 </pre></div>
 
 
+<p>pythonic usage</p>
+<p>若第一个参数不存在，则获取第二个参数作为value</p>
+<p>若第一个参数存在，则抛出第一个参数</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="sc">&#39;a&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="sc">&#39;a&#39;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;a&#39;</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sc">&#39;a&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="mi">5</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="n">d</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span><span class="sc">&#39;b&#39;</span><span class="o">:</span> <span class="mi">2</span><span class="p">}</span>
+</pre></div>
+
+
+<p>详见Flask  blueprint register 用法</p>
+<div class="hlcode"><pre>    <span class="nx">def</span> <span class="nx">route</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">rule</span><span class="p">,</span> <span class="o">**</span><span class="nx">options</span><span class="p">)</span><span class="o">:</span>
+        <span class="s2">&quot;&quot;&quot;Like :meth:`Flask.route` but for a blueprint.  The endpoint for the</span>
+<span class="s2">        :func:`url_for` function is prefixed with the name of the blueprint.</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+
+        <span class="nx">def</span> <span class="nx">decorator</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span><span class="o">:</span>
+            <span class="nx">endpoint</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">pop</span><span class="p">(</span><span class="s2">&quot;endpoint&quot;</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">__name__</span><span class="p">)</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">add_url_rule</span><span class="p">(</span><span class="nx">rule</span><span class="p">,</span> <span class="nx">endpoint</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="o">**</span><span class="nx">options</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nx">f</span>
+
+        <span class="k">return</span> <span class="nx">decorator</span>
+</pre></div>
+
+
 <h4 id="popitem">popitem</h4>
 <p>随机删除任意的键值对</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">44</span><span class="p">]:</span> <span class="n">d</span>
@@ -474,7 +509,7 @@ key必须是可hash 对象</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-01 11:33:06</p>
+        <p>Site Generated 2019-08-04 15:37:45</p>
       </span>
     </div>
 

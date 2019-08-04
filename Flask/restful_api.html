@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
-    <title>pymongo - Xu XueHua</title>
+    <title>restful_api - Xu XueHua</title>
     <meta name="keywords" content="Xu XueHua"/>
     <meta name="description" content="Xu XueHua's public notes"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -16,32 +16,36 @@
     <div id="container">
       
 <div id="header">
-  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python_modules">Python_modules</a>&nbsp;&#187;&nbsp;pymongo
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Flask">Flask</a>&nbsp;&#187;&nbsp;restful_api
     <span class="updated">Page Updated&nbsp;
-      2018-09-27 18:01
+      2019-08-03 16:32
     </span></div>
 </div>
 <div class="clearfix"></div>
 
-<div class="page_title">pymongo</div>
+<div class="page_title">restful_api</div>
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
-<li><a href="#pymongo">pymongo</a><ul>
-<li><a href="#_1">安装</a></li>
-<li><a href="#_2">连接</a></li>
+<li><a href="#restful-api">Restful API</a><ul>
+<li><a href="#_1">优点</a></li>
+<li><a href="#_2">缺点</a></li>
+<li><a href="#api">内部开发API</a></li>
+<li><a href="#api_1">开放性的API</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<h1 id="pymongo">pymongo</h1>
-<h2 id="_1">安装</h2>
-<div class="hlcode"><pre><span class="n">pip</span> <span class="n">install</span> <span class="n">pymongo</span>
-</pre></div>
-
-
-<h2 id="_2">连接</h2>
-<div class="hlcode"><pre>
-</pre></div>
+<h1 id="restful-api">Restful API</h1>
+<h2 id="_1">优点</h2>
+<p>强制输入输出为json，可读性很强</p>
+<p>指定版本号，可以放在header的key value 中，或者query里面指定版本号</p>
+<h2 id="_2">缺点</h2>
+<p>接口力度比较粗</p>
+<p>造成HTTP请求数量大量增加</p>
+<h2 id="api">内部开发API</h2>
+<p>内部调用的API</p>
+<h2 id="api_1">开放性的API</h2>
+<p>可以公网的访问的API，如Github </p>
     </div>
     <div id="footer">
       <span>

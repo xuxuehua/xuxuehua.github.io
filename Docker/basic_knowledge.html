@@ -955,13 +955,9 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 
 <h3 id="coreos_2">CoreOS 工具介绍</h3>
 <h4 id="_30">服务发现</h4>
-<ul>
-<li>
 <p>CoreOS 的第一个重要组件就是使用 etcd 来实现的服务发现。</p>
-</li>
-<li>
-<p>配置文件里有一个 token，你可以通过访问 https://discovery.etcd.io/new 来获取一个包含你 teoken 的 URL。</p>
-</li>
+<ul>
+<li>配置文件里有一个 token，你可以通过访问 https://discovery.etcd.io/new 来获取一个包含你 teoken 的 URL。</li>
 </ul>
 <div class="hlcode"><pre><span class="vi">#cloud</span><span class="na">-config</span>
 
@@ -981,22 +977,14 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
 
 
 <h4 id="_31">容器管理</h4>
-<ul>
-<li>第二个组件就是 Docker，它用来运行你的代码和应用。CoreOS 内置 Docker</li>
-</ul>
+<p>第二个组件就是 Docker，它用来运行你的代码和应用。CoreOS 内置 Docker</p>
 <h3 id="coreos_3">快速搭建 CoreOS 集群</h3>
 <h2 id="kubernetes">Kubernetes</h2>
-<ul>
-<li>建于 Docker 之上的 Kubernetes 可以构建一个容器的调度服务，其目的是让用户透过 Kubernetes 集群来进行云端容器集群的管理，而无需用户进行复杂的设置工作。系统会自动选取合适的工作节点来执行具体的容器集群调度处理工作。其核心概念是 Container Pod。一个 Pod 由一组工作于同一物理工作节点的容器构成。这些组容器拥有相同的网络命名空间、IP以及存储配额，也可以根据实际情况对每一个 Pod 进行端口映射。此外，Kubernetes 工作节点会由主系统进行管理，节点包含了能够运行 Docker 容器所用到的服务。</li>
-</ul>
+<p>建于 Docker 之上的 Kubernetes 可以构建一个容器的调度服务，其目的是让用户透过 Kubernetes 集群来进行云端容器集群的管理，而无需用户进行复杂的设置工作。系统会自动选取合适的工作节点来执行具体的容器集群调度处理工作。其核心概念是 Container Pod。一个 Pod 由一组工作于同一物理工作节点的容器构成。这些组容器拥有相同的网络命名空间、IP以及存储配额，也可以根据实际情况对每一个 Pod 进行端口映射。此外，Kubernetes 工作节点会由主系统进行管理，节点包含了能够运行 Docker 容器所用到的服务。</p>
 <h3 id="_32">项目简介</h3>
-<ul>
-<li>Kubernetes 是 Google 团队发起的开源项目，它的目标是管理跨多个主机的容器，提供基本的部署，维护以及运用伸缩，主要实现语言为 Go 语言。</li>
-</ul>
+<p>Kubernetes 是 Google 团队发起的开源项目，它的目标是管理跨多个主机的容器，提供基本的部署，维护以及运用伸缩，主要实现语言为 Go 语言。</p>
 <h4 id="_33">快速上手</h4>
-<ul>
-<li>Kubernetes 依赖 Etcd 服务来维护所有主节点的状态。 </li>
-</ul>
+<p>Kubernetes 依赖 Etcd 服务来维护所有主节点的状态。 </p>
 <h5 id="etcd_2">启动 Etcd 服务</h5>
 <div class="hlcode"><pre><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">net</span><span class="o">=</span><span class="n">host</span> <span class="o">-</span><span class="n">d</span> <span class="n">gcr</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">google_containers</span><span class="o">/</span><span class="n">etcd</span><span class="o">:</span><span class="mf">3.1.10</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">etcd</span> <span class="o">--</span><span class="n">addr</span><span class="o">=</span><span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">4001</span> <span class="o">--</span><span class="n">bind</span><span class="o">-</span><span class="n">addr</span><span class="o">=</span><span class="mf">0.0.0.0</span><span class="o">:</span><span class="mi">4001</span> <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">etcd</span><span class="o">/</span><span class="n">data</span>
 </pre></div>
@@ -1037,7 +1025,7 @@ docker build 也同样可以导致这种现象。由于新旧镜像同名，旧�
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-01 11:33:06</p>
+        <p>Site Generated 2019-08-04 15:37:45</p>
       </span>
     </div>
 

@@ -38,6 +38,10 @@
 <li><a href="#ubuntu-chinese-setup">Ubuntu Chinese Setup</a><ul>
 <li><a href="#chinese-china-input-methods">Chinese (China) input methods</a></li>
 <li><a href="#chinese-hong-kong-input-methods">Chinese (Hong Kong) input methods</a></li>
+<li><a href="#fcitx">fcitx</a><ul>
+<li><a href="#telegram">telegram</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#bashrc">新用户 启动.bashrc</a><ul>
@@ -213,6 +217,34 @@ After logging in, click again on "Activities" at the upper left or tap the Super
 <p>Maybe IBus just doesn't take you where you need to go. Fcitx has been the standard in China for Ubuntu Kylin for quite some time now, and if you'd like to install it see this article posted by a member of the fcitx team when this problem presented itself in 17.10:</p>
 <p><a href="https://www.csslayer.info/wordpress/fcitx-dev/how-to-use-fcitx-on-ubuntu-17-10/">https://www.csslayer.info/wordpress/fcitx-dev/how-to-use-fcitx-on-ubuntu-17-10/ <img alt="open new site in new window" src="https://www.pinyinjoe.com/images/arrow-new-site.jpg" /></a></p>
 <p>For either framework, to learn more about input methods, fonts, or OpenOffice/LibreOffice features see the next steps below.</p>
+<h3 id="fcitx">fcitx</h3>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">fcitx</span><span class="o">*</span>
+</pre></div>
+
+
+<h4 id="telegram">telegram</h4>
+<ol>
+<li>修改快捷方式</li>
+</ol>
+<div class="hlcode"><pre><span class="n">vim</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="p">.</span><span class="n">local</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">applications</span><span class="o">/</span><span class="n">telegramdesktop</span><span class="p">.</span><span class="n">desktop</span>
+
+<span class="n">Exec</span><span class="o">=</span><span class="n">env</span> <span class="n">QT_IM_MODULE</span><span class="o">=</span><span class="n">fcitx</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">telegram</span><span class="o">/</span><span class="n">Telegram</span> <span class="o">--</span> <span class="o">%</span><span class="n">u</span>
+</pre></div>
+
+
+<ol>
+<li>强制增加变量</li>
+</ol>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">vim</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="p">.</span><span class="n">bashrc</span>
+
+<span class="n">export</span> <span class="n">XIM_PROGRAM</span><span class="o">=</span><span class="n">fcitx</span>
+<span class="n">export</span> <span class="n">XIM</span><span class="o">=</span><span class="n">fcitx</span>
+<span class="n">export</span> <span class="n">GTK_IM_MODULE</span><span class="o">=</span><span class="n">fcitx</span>
+<span class="n">export</span> <span class="n">QT_IM_MODULE</span><span class="o">=</span><span class="n">fcitx</span>
+<span class="n">export</span> <span class="n">XMODIFIERS</span><span class="o">=</span><span class="s">&quot;@im=fcitx&quot;</span>
+</pre></div>
+
+
 <h2 id="bashrc">新用户 启动.bashrc</h2>
 <h3 id="profile">.profile</h3>
 <div class="hlcode"><pre><span class="cp"># ~/.profile: executed by Bourne-compatible login shells.</span>
@@ -381,7 +413,7 @@ fi
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-01 11:33:06</p>
+        <p>Site Generated 2019-08-04 15:37:45</p>
       </span>
     </div>
 

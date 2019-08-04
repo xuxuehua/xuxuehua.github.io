@@ -94,12 +94,13 @@
 
 
 <h2 id="lamba">lamba 匿名函数</h2>
+<p>Python之所以发明lambda，就是为了让它和常规函数各司其职:lambda专注于简单的任务，而常规函数则负责更复杂的多行逻辑</p>
 <p>lambda后面不能是代码块</p>
 <div class="hlcode"><pre><span class="n">lambda</span> <span class="n">parameter_list</span><span class="o">:</span> <span class="n">expression</span>
 </pre></div>
 
 
-<p>将lambda函数依次作用域每个元素，如果函数返回True，则手机原来的元素6，7</p>
+<p>将lambda函数依次作用域每个元素，如果函数返回True，则返回原来的元素6，7，被用作某些函数的参数</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">filter</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="o">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="o">&lt;</span><span class="n">filter</span> <span class="n">at</span> <span class="mh">0x1032f5240</span><span class="o">&gt;</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="n">list</span><span class="p">(</span><span class="n">filter</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="o">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]))</span>
@@ -247,7 +248,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-01 11:33:06</p>
+        <p>Site Generated 2019-08-04 15:37:45</p>
       </span>
     </div>
 
