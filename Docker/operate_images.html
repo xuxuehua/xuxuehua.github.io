@@ -28,14 +28,15 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#_1">操作镜像</a><ul>
 <li><a href="#image">image 列出镜像</a><ul>
-<li><a href="#_2">显示虚悬镜像</a></li>
-<li><a href="#_3">中间层镜像</a></li>
+<li><a href="#_2">完成镜像名</a></li>
+<li><a href="#_3">显示虚悬镜像</a></li>
+<li><a href="#_4">中间层镜像</a></li>
 </ul>
 </li>
 <li><a href="#pull">pull 获取镜像</a></li>
 <li><a href="#-filter-f">--filter/-f 过滤</a></li>
 <li><a href="#-q">-q 特定格式显示</a></li>
-<li><a href="#_4">删除本地镜像</a><ul>
+<li><a href="#_5">删除本地镜像</a><ul>
 <li><a href="#id">用 ID、镜像名、摘要删除镜像</a><ul>
 <li><a href="#centosrhel">CentOS/RHEL 的用户需要注意的事项</a></li>
 </ul>
@@ -46,7 +47,7 @@
 <li><a href="#import">Import 导入镜像</a></li>
 </ul>
 </li>
-<li><a href="#_5">管理镜像</a><ul>
+<li><a href="#_6">管理镜像</a><ul>
 <li><a href="#save">save 保存镜像到本地</a><ul>
 <li><a href="#-o-output">-o output 写入到文件</a></li>
 </ul>
@@ -131,7 +132,16 @@
 </pre></div>
 
 
-<h3 id="_2">显示虚悬镜像</h3>
+<h3 id="_2">完成镜像名</h3>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">docker</span> <span class="n">image</span> <span class="n">ls</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">trunc</span>
+<span class="n">REPOSITORY</span>                   <span class="n">TAG</span>                 <span class="n">IMAGE</span> <span class="n">ID</span>                                                                  <span class="n">CREATED</span>             <span class="n">SIZE</span>
+<span class="n">selenium</span><span class="o">/</span><span class="n">standalone</span><span class="o">-</span><span class="n">chrome</span>   <span class="n">latest</span>              <span class="n">sha256</span><span class="o">:</span><span class="mf">9e599</span><span class="n">fb82f84937004eedba8fa498886f095a959421e5f522af9c1b5e04c522a</span>   <span class="mi">9</span> <span class="n">days</span> <span class="n">ago</span>          <span class="mi">840</span><span class="n">MB</span>
+<span class="n">browserless</span><span class="o">/</span><span class="n">chrome</span>           <span class="n">latest</span>              <span class="n">sha256</span><span class="o">:</span><span class="n">d2904ed5f20f33d85c102029561483aee7d9bf94138c1b1888ea6e84d0306819</span>   <span class="mi">2</span> <span class="n">weeks</span> <span class="n">ago</span>         <span class="mf">2.14</span><span class="n">GB</span>
+<span class="n">consul</span>                       <span class="n">latest</span>              <span class="n">sha256</span><span class="o">:</span><span class="mi">7</span><span class="n">d52b83f718fbd487246da5f655b048a2078cfb8d21fb6b06539608a3961dcba</span>   <span class="mi">6</span> <span class="n">weeks</span> <span class="n">ago</span>         <span class="mi">115</span><span class="n">MB</span>
+</pre></div>
+
+
+<h3 id="_3">显示虚悬镜像</h3>
 <div class="hlcode"><pre><span class="err">$</span> <span class="nx">docker</span> <span class="nx">images</span> <span class="na">-f</span> <span class="n">dangling</span><span class="o">=</span><span class="kc">true</span>
 <span class="nx">REPOSITORY</span>          <span class="kt">TAG</span>                 <span class="nb">IMAGE</span> <span class="nb">ID</span>            <span class="nx">CREATED</span>             <span class="nb">SIZE</span>
 <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>              <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>              <span class="mi">00285</span><span class="nx">df0df87</span>        <span class="mi">5</span> <span class="nb">days</span> <span class="nx">ago</span>          <span class="mi">342</span> <span class="nx">MB</span>
@@ -143,7 +153,7 @@
 </pre></div>
 
 
-<h3 id="_3">中间层镜像</h3>
+<h3 id="_4">中间层镜像</h3>
 <p>为了加速镜像构建、重复利用资源，Docker 会利用 中间层镜像。所以在使用一段时间后，可能会看到一些依赖的中间层镜像。默认的 docker images 列表中只会显示顶层镜像，如果希望显示包括中间层镜像在内的所有镜像的话，需要加 -a 参数。</p>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">docker</span> <span class="n">images</span> <span class="o">-</span><span class="n">a</span>
 </pre></div>
@@ -215,14 +225,23 @@
 </pre></div>
 
 
-<h2 id="_4">删除本地镜像</h2>
+<h2 id="_5">删除本地镜像</h2>
 <p><code>docker rmi [选项] &lt;镜像1&gt; [&lt;镜像2&gt; ...]</code></p>
 <p>使用 docker images -q 来配合使用 docker rmi，这样可以成批的删除希望删除的镜像。</p>
-<p><code>$ docker rmi $(docker images -q -f dangling=true)</code></p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">docker</span> <span class="n">rmi</span> <span class="err">$</span><span class="p">(</span><span class="n">docker</span> <span class="n">images</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">f</span> <span class="n">dangling</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+</pre></div>
+
+
 <p>删除所有仓库名为 redis 的镜像：</p>
-<p><code>$ docker rmi $(docker images -q redis)</code></p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">docker</span> <span class="n">rmi</span> <span class="err">$</span><span class="p">(</span><span class="n">docker</span> <span class="n">images</span> <span class="o">-</span><span class="n">q</span> <span class="n">redis</span><span class="p">)</span>
+</pre></div>
+
+
 <p>删除所有在 mongo:3.2 之前的镜像：</p>
-<p><code>$ docker rmi $(docker images -q -f before=mongo:3.2)</code></p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">docker</span> <span class="n">rmi</span> <span class="err">$</span><span class="p">(</span><span class="n">docker</span> <span class="n">images</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">f</span> <span class="n">before</span><span class="o">=</span><span class="n">mongo</span><span class="o">:</span><span class="mf">3.2</span><span class="p">)</span>
+</pre></div>
+
+
 <h3 id="id">用 ID、镜像名、摘要删除镜像</h3>
 <p>&lt;镜像&gt; 可以是 镜像短 ID、镜像长 ID、镜像名 或者 镜像摘要</p>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">docker</span> <span class="n">images</span> <span class="o">--</span><span class="n">digests</span>
@@ -263,7 +282,7 @@
 </pre></div>
 
 
-<h1 id="_5">管理镜像</h1>
+<h1 id="_6">管理镜像</h1>
 <h2 id="save">save 保存镜像到本地</h2>
 <p>以将镜像保存为一个 tar 文件，然后传输到另一个位置上，再加载进来。这是在没有 Docker Registry 时的做法，现在已经不推荐，镜像迁移应该直接使用 Docker Registry，无论是直接使用 Docker Hub 还是使用内网私有 Registry 都可以。</p>
 <p><code>$ docker save alpine | gzip &gt; alpine-latest.tar.gz</code></p>
@@ -466,7 +485,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-04 15:37:45</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
       </span>
     </div>
 

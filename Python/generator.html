@@ -35,14 +35,11 @@
 <li><a href="#_5">应用</a><ul>
 <li><a href="#_6">斐波那契数列</a></li>
 <li><a href="#yield-from">yield from</a></li>
-<li><a href="#coroutine">协程 coroutine</a><ul>
-<li><a href="#_7">实现</a></li>
+<li><a href="#coroutine">协程 coroutine</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#_8">生成器表达式</a><ul>
-<li><a href="#_9">字符串连接</a></li>
+<li><a href="#_7">生成器表达式</a><ul>
+<li><a href="#_8">字符串连接</a></li>
 </ul>
 </li>
 </ul>
@@ -50,7 +47,7 @@
 <h1 id="_1">生成器</h1>
 <h2 id="_2">定义</h2>
 <p>生成器(generator)的编写方法和函数定义类似。只是在return的地方改成yield。并且可以有多个yield。<br />
-当生成器遇到一个yield的时候，会暂停运行生成器，返回yield的后面的值。再次调用的时候，会从刚刚暂停的地方继续运行，直到下一个yield。</p>
+当生成器遇到一个yield的时候，会暂停运行生成器，返回yield的后面的值, 该值一般被next()函数调用。再次调用的时候，会从刚刚暂停的地方继续运行，直到下一个yield。</p>
 <h2 id="_3">生成器对象</h2>
 <p>生成器对象是一个可迭代对象，是一个迭代器</p>
 <h2 id="_4">生成器调用</h2>
@@ -168,11 +165,8 @@ StopIteration:
 <p>比进程，线程轻量级</p>
 <p>是在用户空间调度函数的一种实现</p>
 <p>asyncio是协程的实现</p>
-<h3 id="_7">实现</h3>
-<p>即两个生成器A B</p>
-<p>next(A) 之后，A执行到yield语句暂停，然后去执行next(B), B执行到yield之后也暂停，然后再次调用next(A)， 周而复始，实现调度效果。</p>
-<p>可通过调度策略来实现切换操作</p>
-<h1 id="_8">生成器表达式</h1>
+<p>生成器在 Python 2 的版本上，是协程的一种重要实现方式；而 Python 3.7 引入 async await 语法糖后，生成器实现协程的方式就已经落后了</p>
+<h1 id="_7">生成器表达式</h1>
 <p>生成器本身并没有返回任何值，只是返回了一个生成器对象</p>
 <p>其返回一个生成器，为惰性求值，需要的时候才计算值</p>
 <div class="hlcode"><pre><span class="p">(</span><span class="err">返回值</span> <span class="k">for</span> <span class="err">元素</span> <span class="n">in</span> <span class="err">可迭代对象</span> <span class="k">if</span> <span class="err">条件</span><span class="p">)</span>
@@ -201,7 +195,7 @@ StopIteration:
 </pre></div>
 
 
-<h2 id="_9">字符串连接</h2>
+<h2 id="_8">字符串连接</h2>
 <div class="hlcode"><pre><span class="k">In</span> <span class="err">[</span><span class="mi">83</span><span class="cp">]</span>: l = <span class="cp">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="cp">]</span>
 
 In <span class="cp">[</span><span class="mi">84</span><span class="cp">]</span>: (str(x) for x in l)
@@ -215,7 +209,7 @@ Out<span class="cp">[</span><span class="mi">85</span><span class="cp">]</span>:
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-04 15:37:45</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
       </span>
     </div>
 

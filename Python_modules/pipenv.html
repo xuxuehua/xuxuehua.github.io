@@ -172,6 +172,11 @@
 </pre></div>
 
 
+<p>指定具体版本</p>
+<div class="hlcode"><pre><span class="n">pipenv</span> <span class="o">--</span><span class="n">python</span> <span class="mf">3.7.0</span>
+</pre></div>
+
+
 <h4 id="pipfile-pipfilelock">Pipfile &amp; Pipfile.lock</h4>
 <p>Pipfile 存放着当前虚拟环境的配置信息，包含python版本，pypi源，以及项目安装的依赖库</p>
 <blockquote>
@@ -186,6 +191,8 @@
 
 
 <h3 id="virtualenv">Virtualenv</h3>
+<p>Linux 默认会在<code>~/.local/share/virtualenvs/</code> 下面创建</p>
+<p>在项目目录内创建虚拟环境文件夹，可以设置环境变量<code>PIPENV_VENV_IN_PROJECT</code> ，名为<code>.venv</code> 的虚拟环境文件夹将在项目根目录被创建</p>
 <h4 id="virtualenv_1">激活 Virtualenv</h4>
 <p><code>pipenv shell</code></p>
 <div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test_pipenv</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">pipenv</span> <span class="n">shell</span>
@@ -261,6 +268,7 @@
 
 <h2 id="pipenv_1">pipenv 命令参数</h2>
 <h3 id="run">run 虚拟环境运行</h3>
+<p>即不显示激活虚拟环境即可在当前项目的虚拟环境中执行命令</p>
 <p><code>pipenv run which python</code></p>
 <p>pipenv run 可以激活虚拟环境，并使用shell命令</p>
 <div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:</span><span class="n">test_pipenv</span> <span class="n">xhxu</span><span class="err">$</span> <span class="n">pipenv</span> <span class="n">run</span> <span class="n">python</span> <span class="n">manage</span><span class="p">.</span><span class="n">py</span> <span class="n">runserver</span>
@@ -470,7 +478,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-04 15:37:45</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
       </span>
     </div>
 

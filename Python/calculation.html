@@ -81,9 +81,13 @@
 </li>
 </ul>
 </li>
-<li><a href="#_24">进制</a><ul>
-<li><a href="#_25">二进制</a></li>
-<li><a href="#_26">八进制</a></li>
+<li><a href="#is_1">==  比较 is</a><ul>
+<li><a href="#_24">元组</a></li>
+</ul>
+</li>
+<li><a href="#_25">进制</a><ul>
+<li><a href="#_26">二进制</a></li>
+<li><a href="#_27">八进制</a></li>
 </ul>
 </li>
 </ul>
@@ -167,10 +171,50 @@
 <h3 id="not-in">not in</h3>
 <h2 id="_23">身份运算符</h2>
 <h3 id="is">is</h3>
-<p>is 比较的是两个变量的身份是否相等，即内存地址是否相等</p>
+<p>is 比较的是两个变量的身份是否相等，即是否为同一个对象，内存地址是否相等</p>
+<p>对于整型数字来说， a is b 为true的结论，只适用于-5到256范围内的数字</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">a1</span> <span class="o">=</span> <span class="mi">256</span>                                                                                      
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">a2</span> <span class="o">=</span> <span class="mi">256</span>                                                                                      
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">b1</span> <span class="o">=</span> <span class="mi">257</span>                                                                                      
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">b2</span> <span class="o">=</span> <span class="mi">257</span>                                                                                      
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">id</span><span class="p">(</span><span class="n">a1</span><span class="p">)</span>                                                                                        
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="mi">4327773952</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="n">id</span><span class="p">(</span><span class="n">a2</span><span class="p">)</span>                                                                                        
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="mi">4327773952</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="n">id</span><span class="p">(</span><span class="n">b1</span><span class="p">)</span>                                                                                        
+<span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="mi">4359476880</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="n">id</span><span class="p">(</span><span class="n">b2</span><span class="p">)</span>                                                                                        
+<span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="mi">4360330800</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="n">a1</span> <span class="n">is</span> <span class="n">a2</span>                                                                                      
+<span class="n">Out</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="n">True</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">b1</span> <span class="n">is</span> <span class="n">b2</span>                                                                                     
+<span class="n">Out</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">False</span>
+</pre></div>
+
+
+<blockquote>
+<p>出于对性能优化的考虑，Python内部会对-5到256的整型维持一个数组，起到一个缓存的作用。这<br />
+样，每次你试图创建一个-5到256范围内的整型数字时，Python都会从这个数组中返回相对应的引用，而不<br />
+是重新开辟一块新的内存空间。</p>
+<p>上述例子中的257，Python则会为两个257开辟两块内存区域</p>
+</blockquote>
 <h3 id="is-not">is not</h3>
-<h1 id="_24">进制</h1>
-<h2 id="_25">二进制</h2>
+<h1 id="is_1"><code>==</code>  比较 is</h1>
+<p>比较操作符'is'的速度效率，通常要优于'=='。因为'is'操作符不能被重载，这样，Python就不需要去寻找，程序中是否有其他地方重载了比较操作符，并去调用。执行比较操作符'is'，就仅仅是比较两个变量的ID而已。</p>
+<p>但是'=='操作符却不同，执行a == b相当于是去执行<code>a.__eq__(b)</code>，而Python大部分的数据类型都会去重载<code>__eq__</code>这个函数，其内部的处理通常会复杂一些。比如，对于列表，<code>__eq__</code>函数会去遍历列表中的元素，比较它们的顺序和值是否相等。</p>
+<h2 id="_24">元组</h2>
+<p>元组是不可变的，但元组可以嵌套，它里面的元素可以是列表类型，列表是可变的，所以如果我们修改了元组中的某个可变元素，那么元组本身也就改变了，之前用'is'或者'=='操作符取得的结果，可能就不适用了。</p>
+<h1 id="_25">进制</h1>
+<h2 id="_26">二进制</h2>
 <p>前缀加0b</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="mi">0</span><span class="n">b10</span>                                                                                          
 <span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="mi">2</span>
@@ -180,7 +224,7 @@
 </pre></div>
 
 
-<h2 id="_26">八进制</h2>
+<h2 id="_27">八进制</h2>
 <p>前缀加0o</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="mi">0</span><span class="n">o10</span>                                                                                          
 <span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="mi">8</span>
@@ -203,7 +247,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-04 15:37:45</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
       </span>
     </div>
 

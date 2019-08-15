@@ -31,10 +31,13 @@
 <li><a href="#r">非特殊处理 r前缀</a></li>
 <li><a href="#_2">元素访问 下标</a><ul>
 <li><a href="#_3">线性结构</a></li>
-<li><a href="#_4">不可变类型</a></li>
+<li><a href="#_4">不可变类型</a><ul>
+<li><a href="#_5">变量引用</a></li>
 </ul>
 </li>
-<li><a href="#_5">字符串的格式化</a><ul>
+</ul>
+</li>
+<li><a href="#_6">字符串的格式化</a><ul>
 <li><a href="#d">%d</a></li>
 <li><a href="#e">%E</a></li>
 <li><a href="#g">%g</a></li>
@@ -44,15 +47,15 @@
 <li><a href="#f-strings-python36">f-strings   Python3.6新的字符串格式化</a></li>
 </ul>
 </li>
-<li><a href="#_6"></a></li>
-<li><a href="#_7">字符串连接</a><ul>
+<li><a href="#_7"></a></li>
+<li><a href="#_8">字符串连接</a><ul>
 <li><a href="#join">join</a></li>
 <li><a href="#43">+ 连接</a></li>
 </ul>
 </li>
-<li><a href="#_8">字符串分割</a><ul>
+<li><a href="#_9">字符串分割</a><ul>
 <li><a href="#split">split</a><ul>
-<li><a href="#_9">多种分隔符分割</a></li>
+<li><a href="#_10">多种分隔符分割</a></li>
 </ul>
 </li>
 <li><a href="#rsplit">rsplit</a></li>
@@ -61,7 +64,7 @@
 <li><a href="#rpartition">rpartition</a></li>
 </ul>
 </li>
-<li><a href="#_10">字符串修改</a><ul>
+<li><a href="#_11">字符串修改</a><ul>
 <li><a href="#replace">replace</a></li>
 <li><a href="#capitalize">capitalize</a></li>
 <li><a href="#titile">titile</a></li>
@@ -78,7 +81,7 @@
 <li><a href="#expandtabs">expandtabs</a></li>
 </ul>
 </li>
-<li><a href="#_11">字符串判断</a><ul>
+<li><a href="#_12">字符串判断</a><ul>
 <li><a href="#len">len</a></li>
 <li><a href="#startswith">startswith</a></li>
 <li><a href="#endswith">endswith</a></li>
@@ -102,7 +105,7 @@
 <li><a href="#str-bytes">STR 与 BYTES</a></li>
 </ul>
 </li>
-<li><a href="#_12">优化</a></li>
+<li><a href="#_13">优化</a></li>
 </ul>
 </div>
 <h1 id="python-string-files">字符串与文本操作 (python-string-files)</h1>
@@ -189,7 +192,26 @@ python3中的字符串是unicode的有序序列<br />
 </pre></div>
 
 
-<h2 id="_5">字符串的格式化</h2>
+<h4 id="_5">变量引用</h4>
+<p>对象被多个变量所指向或者引用，由于int 和string 类型是不可变的，所以新创建的变量为新的，不会影响其他变量的值</p>
+<p>变量的赋值，只是表示让变量指向了某个对象，并不表示拷贝对象给变量;而一个对象，可以被多个变量所指向。</p>
+<p>对于不可变对象(字符串，整型，元祖等等)，所有指向该对象的变量的值总是一样的，也不会改变。但是通过某些操作(+=等等)更新不可变对象的值时，会返回一个新的对象</p>
+<p>变量可以被删除，但是对象无法被删除</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>                                                                                                                                                                                         
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span>                                                                                                                                                                                         
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span>                                                                                                                                                                                     
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span>                                                                                                                                                                                             
+<span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="mi">2</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="n">b</span>                                                                                                                                                                                             
+<span class="n">Out</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="mi">1</span>
+</pre></div>
+
+
+<h2 id="_6">字符串的格式化</h2>
 <p>print style format<br />
 format 方法</p>
 <p>Print Style Format<br />
@@ -457,7 +479,7 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h2 id="_6"></h2>
+<h2 id="_7"></h2>
 <ul>
 <li><code>{}</code>内不能包含反斜杠<code>\</code></li>
 </ul>
@@ -502,7 +524,7 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h2 id="_7">字符串连接</h2>
+<h2 id="_8">字符串连接</h2>
 <h3 id="join">join</h3>
 <p>将s中的元素，以str为分割符，合并成为一个字符串</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="n">L</span>
@@ -532,7 +554,7 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h2 id="_8">字符串分割</h2>
+<h2 id="_9">字符串分割</h2>
 <h3 id="split">split</h3>
 <p>sep 指分隔符，默认为空格</p>
 <p>maxsplit 指分割次数， -1表示遍历整个字符串</p>
@@ -572,7 +594,7 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h4 id="_9">多种分隔符分割</h4>
+<h4 id="_10">多种分隔符分割</h4>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">80</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">re</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">81</span><span class="p">]</span><span class="o">:</span> <span class="n">s</span>
@@ -680,7 +702,7 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h2 id="_10">字符串修改</h2>
+<h2 id="_11">字符串修改</h2>
 <p>(字符串是不可修改的，这里是返回一个新的字符串)</p>
 <h3 id="replace">replace</h3>
 <div class="hlcode"><pre><span class="n">replace</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">[,</span> <span class="n">count</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">str</span>
@@ -871,7 +893,7 @@ Format String Syntax</p>
 </pre></div>
 
 
-<h2 id="_11">字符串判断</h2>
+<h2 id="_12">字符串判断</h2>
 <h3 id="len">len</h3>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">41</span><span class="p">]</span><span class="o">:</span> <span class="n">s</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">41</span><span class="p">]</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">this</span> <span class="n">is</span> <span class="n">Rick</span><span class="err">&#39;</span>
@@ -1122,7 +1144,7 @@ bytes使用decode方法转化为str</p>
 </pre></div>
 
 
-<h1 id="_12">优化</h1>
+<h1 id="_13">优化</h1>
 <div class="hlcode"><pre><span class="n">s</span> <span class="o">=</span> <span class="err">&#39;&#39;</span>
 <span class="k">for</span> <span class="n">n</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span><span class="o">:</span>
     <span class="n">s</span> <span class="o">+=</span> <span class="n">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -1146,7 +1168,7 @@ bytes使用decode方法转化为str</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-04 15:37:45</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
       </span>
     </div>
 

@@ -32,6 +32,7 @@
 <li><a href="#iter">iter()</a></li>
 </ul>
 </li>
+<li><a href="#iter_1">判断iter类型</a></li>
 <li><a href="#_3">特点</a></li>
 </ul>
 </li>
@@ -74,6 +75,37 @@
 </pre></div>
 
 
+<h2 id="iter_1">判断iter类型</h2>
+<div class="hlcode"><pre><span class="nt">def</span> <span class="nt">is_iterable</span><span class="o">(</span><span class="nt">param</span><span class="o">):</span>
+    <span class="nt">try</span><span class="o">:</span>
+        <span class="nt">iter</span><span class="o">(</span><span class="nt">param</span><span class="o">)</span>
+        <span class="nt">return</span> <span class="nt">True</span>
+    <span class="nt">except</span> <span class="nt">TypeError</span><span class="o">:</span>
+        <span class="nt">return</span> <span class="nt">False</span>
+
+
+<span class="nt">params</span> <span class="o">=</span> <span class="cp">[</span>
+    <span class="mi">1234</span><span class="p">,</span>
+    <span class="s1">&#39;1234&#39;</span><span class="p">,</span>
+    <span class="err">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span><span class="o">,</span>
+    <span class="nt">set</span><span class="o">(</span><span class="cp">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span><span class="o">),</span>
+    <span class="p">{</span><span class="m">1</span><span class="o">:</span><span class="m">1</span><span class="o">,</span> <span class="m">2</span><span class="o">:</span><span class="m">2</span><span class="o">,</span> <span class="m">3</span><span class="o">:</span><span class="m">3</span><span class="o">,</span> <span class="m">4</span><span class="o">:</span><span class="m">4</span><span class="p">}</span><span class="o">,</span>
+    <span class="o">(</span><span class="nt">1</span><span class="o">,</span> <span class="nt">2</span><span class="o">,</span> <span class="nt">3</span><span class="o">,</span> <span class="nt">4</span><span class="o">)</span>
+<span class="o">]</span>
+
+<span class="nt">for</span> <span class="nt">param</span> <span class="nt">in</span> <span class="nt">params</span><span class="o">:</span>
+    <span class="nt">print</span><span class="o">(</span><span class="s1">&#39;{} is iterable? {}&#39;</span><span class="nc">.format</span><span class="o">(</span><span class="nt">param</span><span class="o">,</span> <span class="nt">is_iterable</span><span class="o">(</span><span class="nt">param</span><span class="o">)))</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="nt">1234</span> <span class="nt">is</span> <span class="nt">iterable</span><span class="o">?</span> <span class="nt">False</span>
+<span class="nt">1234</span> <span class="nt">is</span> <span class="nt">iterable</span><span class="o">?</span> <span class="nt">True</span>
+<span class="cp">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="cp">]</span> <span class="nt">is</span> <span class="nt">iterable</span><span class="o">?</span> <span class="nt">True</span>
+<span class="p">{</span><span class="m">1</span><span class="o">,</span> <span class="m">2</span><span class="o">,</span> <span class="m">3</span><span class="o">,</span> <span class="m">4</span><span class="p">}</span> <span class="nt">is</span> <span class="nt">iterable</span><span class="o">?</span> <span class="nt">True</span>
+<span class="p">{</span><span class="m">1</span><span class="o">:</span> <span class="m">1</span><span class="o">,</span> <span class="m">2</span><span class="o">:</span> <span class="m">2</span><span class="o">,</span> <span class="m">3</span><span class="o">:</span> <span class="m">3</span><span class="o">,</span> <span class="m">4</span><span class="o">:</span> <span class="m">4</span><span class="p">}</span> <span class="nt">is</span> <span class="nt">iterable</span><span class="o">?</span> <span class="nt">True</span>
+<span class="o">(</span><span class="nt">1</span><span class="o">,</span> <span class="nt">2</span><span class="o">,</span> <span class="nt">3</span><span class="o">,</span> <span class="nt">4</span><span class="o">)</span> <span class="nt">is</span> <span class="nt">iterable</span><span class="o">?</span> <span class="nt">True</span>
+</pre></div>
+
+
 <h2 id="_3">特点</h2>
 <p>Python的<code>Iterator</code>对象表示的是一个数据流，Iterator对象可以被<code>next()</code>函数调用并不断返回下一个数据，直到没有数据时抛出<code>StopIteration</code>错误。可以把这个数据流看做是一个有序序列，但我们却不能提前知道序列的长度，只能不断通过<code>next()</code>函数实现按需计算下一个数据，所以<code>Iterator</code>的计算是惰性的，只有在需要返回下一个数据时它才会计算。</p>
 <p><code>Iterator</code>甚至可以表示一个无限大的数据流，例如全体自然数。而使用list是永远不可能存储全体自然数的。</p>
@@ -108,7 +140,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-04 15:37:45</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
       </span>
     </div>
 

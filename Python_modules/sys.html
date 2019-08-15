@@ -110,12 +110,34 @@
 <p>这里可以设置最大递归次数</p>
 <div class="hlcode"><pre><span class="n">sys</span><span class="p">.</span><span class="n">setrecursionlimit</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)</span>
 </pre></div>
+
+
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">def</span> <span class="nx">factorial</span><span class="p">(</span><span class="nb">n</span><span class="p">):</span>
+<span class="nx">...</span>     <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="nb">n</span><span class="o">&lt;=</span><span class="mi">1</span> <span class="k">else</span> <span class="nb">n</span><span class="o">*</span><span class="nx">factorial</span><span class="p">(</span><span class="nb">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nx">factorial</span><span class="p">(</span><span class="mi">5000</span><span class="p">)</span>
+<span class="nx">Traceback</span> <span class="p">(</span><span class="nx">most</span> <span class="nx">recent</span> <span class="nb">call</span> <span class="nb">last</span><span class="p">):</span>
+  <span class="nb">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="nb">line</span> <span class="mi">1</span><span class="p">,</span> <span class="k">in</span> <span class="o">&lt;</span><span class="nx">module</span><span class="o">&gt;</span>
+  <span class="nb">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="nb">line</span> <span class="mi">2</span><span class="p">,</span> <span class="k">in</span> <span class="nx">factorial</span>
+  <span class="nb">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="nb">line</span> <span class="mi">2</span><span class="p">,</span> <span class="k">in</span> <span class="nx">factorial</span>
+  <span class="nb">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="nb">line</span> <span class="mi">2</span><span class="p">,</span> <span class="k">in</span> <span class="nx">factorial</span>
+  <span class="err">[</span><span class="nx">Previous</span> <span class="nb">line</span> <span class="nx">repeated</span> <span class="mi">995</span> <span class="nx">more</span> <span class="nx">times</span><span class="cp">]</span>
+RecursionError: maximum recursion depth exceeded in comparison
+
+&gt;&gt;&gt; sys.setrecursionlimit(1000000)
+&gt;&gt;&gt; factorial(5000)
+</pre></div>
+
+
+<blockquote>
+<p>mac内存是16G，如果把递归层数设定到1百万，大概跑到35000层左右，服务就挂了</p>
+</blockquote>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-04 15:37:45</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
       </span>
     </div>
 

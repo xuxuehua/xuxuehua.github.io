@@ -27,11 +27,12 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#_1">模块基本使用</a><ul>
-<li><a href="#_2">定义</a></li>
-<li><a href="#_3">包</a></li>
-<li><a href="#_4">搜索路径</a></li>
-<li><a href="#_5">导入方法</a><ul>
-<li><a href="#_6">优化多个调用</a></li>
+<li><a href="#_2">路径</a></li>
+<li><a href="#_3">定义</a></li>
+<li><a href="#_4">包</a></li>
+<li><a href="#_5">搜索路径</a></li>
+<li><a href="#_6">导入方法</a><ul>
+<li><a href="#_7">优化多个调用</a></li>
 </ul>
 </li>
 <li><a href="#__name__">使用__name__</a></li>
@@ -40,7 +41,10 @@
 </ul>
 </div>
 <h1 id="_1">模块基本使用</h1>
-<h2 id="_2">定义</h2>
+<h2 id="_2">路径</h2>
+<p>大型工程尽可能使用绝对路径</p>
+<p>独立项目，所有模块从项目根目录开始追溯，称相对的绝对路径</p>
+<h2 id="_3">定义</h2>
 <p>.py 文件组成的代码集合就称为模块</p>
 <p>模块分为三种：</p>
 <ul>
@@ -49,19 +53,15 @@
 <li>开源模块</li>
 </ul>
 <p>自定义模块 和开源模块的使用参考 http://www.cnblogs.com/wupeiqi/articles/4963027.html</p>
-<h2 id="_3">包</h2>
+<h2 id="_4">包</h2>
 <p>用来从逻辑上组织模块的，本质就是一个目录(含有<code>__init__</code>)</p>
-<p>导入包的本质，就是解释<code>__init__</code> 文件</p>
-<ul>
-<li><code>__init__.py</code> (package_testing 包)</li>
-</ul>
+<p>导入包的本质，就是解释<code>__init__</code> 文件， 即运行该文件</p>
+<p><code>__init__.py</code> (package_testing 包)</p>
 <div class="hlcode"><pre><span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Package</span> <span class="n">testing</span> <span class="n">file</span><span class="err">&#39;</span><span class="p">)</span>
 </pre></div>
 
 
-<ul>
-<li>My_testing.py</li>
-</ul>
+<p>My_testing.py</p>
 <div class="hlcode"><pre><span class="n">import</span> <span class="n">package_testing</span>
 
 <span class="o">&gt;&gt;&gt;</span>
@@ -74,14 +74,14 @@
 </pre></div>
 
 
-<h2 id="_4">搜索路径</h2>
+<h2 id="_5">搜索路径</h2>
 <p>Python默认会通过下列路径搜索需要的模块</p>
 <ol>
 <li>程序所在的文件夹</li>
 <li>操作系统环境变量PYTHONPATH所包含的路径</li>
 <li>标准库的安装路径</li>
 </ol>
-<h2 id="_5">导入方法</h2>
+<h2 id="_6">导入方法</h2>
 <p>import 的本质就是路径检索</p>
 <p>导入模块的本质就是把Python文件解释一遍</p>
 <div class="hlcode"><pre><span class="n">import</span> <span class="n">module_name</span>
@@ -91,7 +91,7 @@
 </pre></div>
 
 
-<h3 id="_6">优化多个调用</h3>
+<h3 id="_7">优化多个调用</h3>
 <p>当导入的模块被多次函数调用，建议是使用</p>
 <div class="hlcode"><pre><span class="nx">from</span> <span class="nx">module_name</span> <span class="kr">import</span> <span class="nx">my_function</span>
 </pre></div>
@@ -121,7 +121,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-04 15:37:45</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
       </span>
     </div>
 

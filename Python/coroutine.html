@@ -1,0 +1,371 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>coroutine - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python">Python</a>&nbsp;&#187;&nbsp;coroutine
+    <span class="updated">Page Updated&nbsp;
+      2019-08-15 08:51
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">coroutine</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#coroutine">coroutine 协程</a><ul>
+<li><a href="#async">async</a></li>
+<li><a href="#await">await</a></li>
+<li><a href="#asyncio">asyncio</a><ul>
+<li><a href="#create_task">create_task()</a><ul>
+<li><a href="#add_done_callback">add_done_callback()</a></li>
+</ul>
+</li>
+<li><a href="#gather">gather()</a></li>
+<li><a href="#run">run()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_1">原理</a><ul>
+<li><a href="#_2">错误处理</a></li>
+<li><a href="#_3">生产者消费者模型</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="coroutine">coroutine 协程</h1>
+<p>协程是实现并发编程的一种方式。</p>
+<p>协程相对于多线程，其为单线程</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">24</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">asyncio</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="n">async</span> <span class="n">def</span> <span class="n">crawl_page</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">:</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">crawling</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">sleep_time</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="n">url</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="sc">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_time</span><span class="p">)</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">OK</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="n">async</span> <span class="n">def</span> <span class="n">main</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span><span class="o">:</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="k">for</span> <span class="n">url</span> <span class="n">in</span> <span class="n">urls</span><span class="o">:</span> 
+    <span class="p">...</span><span class="o">:</span>         <span class="n">await</span> <span class="n">crawl_page</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="o">%</span><span class="n">time</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">([</span><span class="err">&#39;</span><span class="n">url_1</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_2</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_3</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_4</span><span class="err">&#39;</span><span class="p">]))</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>                                                                                              
+<span class="n">crawling</span> <span class="n">url_1</span>
+<span class="n">OK</span> <span class="n">url_1</span>
+<span class="n">crawling</span> <span class="n">url_2</span>
+<span class="n">OK</span> <span class="n">url_2</span>
+<span class="n">crawling</span> <span class="n">url_3</span>
+<span class="n">OK</span> <span class="n">url_3</span>
+<span class="n">crawling</span> <span class="n">url_4</span>
+<span class="n">OK</span> <span class="n">url_4</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="o">:</span> <span class="n">user</span> <span class="mf">2.16</span> <span class="n">ms</span><span class="p">,</span> <span class="n">sys</span><span class="o">:</span> <span class="mf">2.87</span> <span class="n">ms</span><span class="p">,</span> <span class="n">total</span><span class="o">:</span> <span class="mf">5.04</span> <span class="n">ms</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="o">:</span> <span class="mi">10</span> <span class="n">s</span>
+</pre></div>
+
+
+<h2 id="async">async</h2>
+<p>声明异步函数， 而调用异步函数，便可以得到一个协程对象coroutine object</p>
+<h2 id="await">await</h2>
+<p>可以通过await方法调用协程对象，await 执行的效果，和 Python 正常执行是一样的，也就是说程序会阻塞在这里，进入被调用的协程函数，执行完毕返回后再继续，而这也是 await 的字面意思</p>
+<p>await是同步调用，所以结果为10s</p>
+<h2 id="asyncio">asyncio</h2>
+<h3 id="create_task">create_task()</h3>
+<p>可以通过 asyncio.create_task() 来创建任务</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">asyncio</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="n">async</span> <span class="n">def</span> <span class="n">crawl_page</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">:</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">crawling</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">sleep_time</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="n">url</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="sc">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_time</span><span class="p">)</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">OK</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="n">async</span> <span class="n">def</span> <span class="n">main</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span><span class="o">:</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">crawl_page</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> <span class="k">for</span> <span class="n">url</span> <span class="n">in</span> <span class="n">urls</span><span class="p">]</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="k">for</span> <span class="n">task</span> <span class="n">in</span> <span class="n">tasks</span><span class="o">:</span> 
+    <span class="p">...</span><span class="o">:</span>         <span class="n">await</span> <span class="n">task</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="o">%</span><span class="n">time</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">([</span><span class="err">&#39;</span><span class="n">url_1</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_2</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_3</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_4</span><span class="err">&#39;</span><span class="p">]))</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>                                                                                              
+<span class="n">crawling</span> <span class="n">url_1</span>
+<span class="n">crawling</span> <span class="n">url_2</span>
+<span class="n">crawling</span> <span class="n">url_3</span>
+<span class="n">crawling</span> <span class="n">url_4</span>
+<span class="n">OK</span> <span class="n">url_1</span>
+<span class="n">OK</span> <span class="n">url_2</span>
+<span class="n">OK</span> <span class="n">url_3</span>
+<span class="n">OK</span> <span class="n">url_4</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="o">:</span> <span class="n">user</span> <span class="mf">2.52</span> <span class="n">ms</span><span class="p">,</span> <span class="n">sys</span><span class="o">:</span> <span class="mf">1.77</span> <span class="n">ms</span><span class="p">,</span> <span class="n">total</span><span class="o">:</span> <span class="mf">4.29</span> <span class="n">ms</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="o">:</span> <span class="mf">4.01</span> <span class="n">s</span>
+</pre></div>
+
+
+<h4 id="add_done_callback">add_done_callback()</h4>
+<p>协程实现callback函数, 即绑定特定回调函数获得返回值</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">asyncio</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="n">async</span> <span class="n">def</span> <span class="n">crawl_page</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">:</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">crawling</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">sleep_time</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="n">url</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="sc">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_time</span><span class="p">)</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">OK</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="n">async</span> <span class="n">def</span> <span class="n">main</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span><span class="o">:</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">crawl_page</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> <span class="k">for</span> <span class="n">url</span> <span class="n">in</span> <span class="n">urls</span><span class="p">]</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="k">for</span> <span class="n">task</span> <span class="n">in</span> <span class="n">tasks</span><span class="o">:</span> 
+    <span class="p">...</span><span class="o">:</span>         <span class="n">task</span><span class="p">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">lambda</span> <span class="n">future</span><span class="o">:</span> <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">result</span><span class="o">:</span> <span class="err">&#39;</span><span class="p">,</span> <span class="n">future</span><span class="p">.</span><span class="n">result</span><span class="p">()))</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="o">%</span><span class="n">time</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">([</span><span class="err">&#39;</span><span class="n">url_1</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_2</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_3</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_4</span><span class="err">&#39;</span><span class="p">]))</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>                                                                                              
+<span class="n">crawling</span> <span class="n">url_1</span>
+<span class="n">crawling</span> <span class="n">url_2</span>
+<span class="n">crawling</span> <span class="n">url_3</span>
+<span class="n">crawling</span> <span class="n">url_4</span>
+<span class="n">OK</span> <span class="n">url_1</span>
+<span class="nl">result:</span>  <span class="n">None</span>
+<span class="n">OK</span> <span class="n">url_2</span>
+<span class="nl">result:</span>  <span class="n">None</span>
+<span class="n">OK</span> <span class="n">url_3</span>
+<span class="nl">result:</span>  <span class="n">None</span>
+<span class="n">OK</span> <span class="n">url_4</span>
+<span class="nl">result:</span>  <span class="n">None</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="o">:</span> <span class="n">user</span> <span class="mf">2.12</span> <span class="n">ms</span><span class="p">,</span> <span class="n">sys</span><span class="o">:</span> <span class="mf">1.85</span> <span class="n">ms</span><span class="p">,</span> <span class="n">total</span><span class="o">:</span> <span class="mf">3.97</span> <span class="n">ms</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="o">:</span> <span class="mi">4</span> <span class="n">s</span>
+</pre></div>
+
+
+<h3 id="gather">gather()</h3>
+<p>另一种task写法</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">27</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">asyncio</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="n">async</span> <span class="n">def</span> <span class="n">crawl_page</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">:</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">crawling</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">sleep_time</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="n">url</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="sc">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_time</span><span class="p">)</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">OK</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="n">async</span> <span class="n">def</span> <span class="n">main</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span><span class="o">:</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">crawl_page</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> <span class="k">for</span> <span class="n">url</span> <span class="n">in</span> <span class="n">urls</span><span class="p">]</span> 
+    <span class="p">...</span><span class="o">:</span>     <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span> <span class="o">%</span><span class="n">time</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">([</span><span class="err">&#39;</span><span class="n">url_1</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_2</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_3</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">url_4</span><span class="err">&#39;</span><span class="p">]))</span> 
+    <span class="p">...</span><span class="o">:</span>  
+    <span class="p">...</span><span class="o">:</span>                                                                                              
+<span class="n">crawling</span> <span class="n">url_1</span>
+<span class="n">crawling</span> <span class="n">url_2</span>
+<span class="n">crawling</span> <span class="n">url_3</span>
+<span class="n">crawling</span> <span class="n">url_4</span>
+<span class="n">OK</span> <span class="n">url_1</span>
+<span class="n">OK</span> <span class="n">url_2</span>
+<span class="n">OK</span> <span class="n">url_3</span>
+<span class="n">OK</span> <span class="n">url_4</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="o">:</span> <span class="n">user</span> <span class="mf">2.56</span> <span class="n">ms</span><span class="p">,</span> <span class="n">sys</span><span class="o">:</span> <span class="mf">2.5</span> <span class="n">ms</span><span class="p">,</span> <span class="n">total</span><span class="o">:</span> <span class="mf">5.05</span> <span class="n">ms</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="o">:</span> <span class="mf">4.01</span> <span class="n">s</span>
+</pre></div>
+
+
+<h3 id="run">run()</h3>
+<p>asyncio.run 来触发运行。asyncio.run 这个函数是 Python 3.7 之后才有的特性，可以让 Python 的协程接口变得非常简单，你不用去理会事件循环怎么定义和怎么使用的问题，一个非常好的编程规范是，asyncio.run(main()) 作为主程序的入口函数，在程序运行周期内，只调用一次 asyncio.run。</p>
+<h1 id="_1">原理</h1>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">asyncio</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">worker_1</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">worker_1</span> <span class="n">start</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">worker_1</span> <span class="n">done</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">worker_2</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">worker_2</span> <span class="n">start</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">worker_2</span> <span class="n">done</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">main</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">before</span> <span class="n">await</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="n">await</span> <span class="n">worker_1</span><span class="p">()</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">awaited</span> <span class="n">worker_1</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="n">await</span> <span class="n">worker_2</span><span class="p">()</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">awaited</span> <span class="n">worker_2</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="o">%</span><span class="n">time</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">before</span> <span class="n">await</span>
+<span class="n">worker_1</span> <span class="n">start</span>
+<span class="n">worker_1</span> <span class="n">done</span>
+<span class="n">awaited</span> <span class="n">worker_1</span>
+<span class="n">worker_2</span> <span class="n">start</span>
+<span class="n">worker_2</span> <span class="n">done</span>
+<span class="n">awaited</span> <span class="n">worker_2</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="o">:</span> <span class="mi">3</span> <span class="n">s</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">asyncio</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">worker_1</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">worker_1</span> <span class="n">start</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="err">#</span> <span class="mf">2.</span> <span class="err">从当前任务切出，调度</span><span class="n">worker2</span>  <span class="err">#</span> <span class="mf">3.</span> <span class="err">事件调度器这时候开始暂停调度，等待</span><span class="mi">1</span><span class="err">秒后，</span><span class="n">sleep</span><span class="err">完成，事件调度器控制器交给</span><span class="n">task1</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">worker_1</span> <span class="n">done</span><span class="err">&#39;</span><span class="p">)</span> <span class="err">#</span> <span class="mf">4.</span> <span class="err">完成任务退出</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">worker_2</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">worker_2</span> <span class="n">start</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="err">#</span> <span class="mf">3.</span> <span class="err">从当前任务切出</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">worker_2</span> <span class="n">done</span><span class="err">&#39;</span><span class="p">)</span> <span class="err">#</span> <span class="mf">6.</span> <span class="mi">2</span><span class="err">秒后事件调度器将控制器交给</span><span class="n">task2</span><span class="err">，</span> <span class="err">输出结果</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">main</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">task1</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">worker_1</span><span class="p">())</span> 
+    <span class="n">task2</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">worker_2</span><span class="p">())</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">before</span> <span class="n">await</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="n">await</span> <span class="n">task1</span>     <span class="err">#</span> <span class="mf">1.</span> <span class="err">从</span><span class="n">main</span><span class="err">任务中切出，调度</span><span class="n">worker1</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">awaited</span> <span class="n">worker_1</span><span class="err">&#39;</span><span class="p">)</span> <span class="err">#</span> <span class="mf">5.</span> <span class="err">完成</span><span class="n">task1</span><span class="err">，</span> <span class="err">控制器交给主任务，</span> <span class="err">输出结果</span>
+    <span class="n">await</span> <span class="n">task2</span> 
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">awaited</span> <span class="n">worker_2</span><span class="err">&#39;</span><span class="p">)</span> <span class="err">#</span> <span class="mf">7.</span> <span class="err">输出结果，协程结束</span>
+
+<span class="o">%</span><span class="n">time</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>   
+
+<span class="o">&gt;&gt;&gt;</span>
+
+<span class="n">before</span> <span class="n">await</span>
+<span class="n">worker_1</span> <span class="n">start</span>
+<span class="n">worker_2</span> <span class="n">start</span>
+<span class="n">worker_1</span> <span class="n">done</span>
+<span class="n">awaited</span> <span class="n">worker_1</span>
+<span class="n">worker_2</span> <span class="n">done</span>
+<span class="n">awaited</span> <span class="n">worker_2</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="o">:</span> <span class="mf">2.01</span> <span class="n">s</span>
+</pre></div>
+
+
+<h2 id="_2">错误处理</h2>
+<p>worker3执行过长会被cancel掉</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">asyncio</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">worker_1</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">worker_2</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">0</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">worker_3</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">3</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">main</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">task_1</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">worker_1</span><span class="p">())</span>
+    <span class="n">task_2</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">worker_2</span><span class="p">())</span>
+    <span class="n">task_3</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">worker_3</span><span class="p">())</span>
+
+    <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">task_3</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">gather</span><span class="p">(</span><span class="n">task_1</span><span class="p">,</span> <span class="n">task_2</span><span class="p">,</span> <span class="n">task_3</span><span class="p">,</span> <span class="n">return_exceptions</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="o">%</span><span class="n">time</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">ZeroDivisionError</span><span class="p">(</span><span class="err">&#39;</span><span class="n">division</span> <span class="n">by</span> <span class="n">zero</span><span class="err">&#39;</span><span class="p">),</span> <span class="n">CancelledError</span><span class="p">()]</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="o">:</span> <span class="mi">2</span> <span class="n">s</span>
+</pre></div>
+
+
+<h2 id="_3">生产者消费者模型</h2>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">asyncio</span>
+<span class="n">import</span> <span class="n">random</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">consumer</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">id</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">while</span> <span class="n">True</span><span class="o">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">await</span> <span class="n">queue</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="p">{}</span> <span class="n">get</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+        <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">producer</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">id</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">await</span> <span class="n">queue</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="p">{}</span> <span class="n">put</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+        <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">async</span> <span class="n">def</span> <span class="n">main</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">Queue</span><span class="p">()</span>
+
+    <span class="n">consumer_1</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">consumer</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">consumer_1</span><span class="err">&#39;</span><span class="p">))</span>
+    <span class="n">consumer_2</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">consumer</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">consumer_2</span><span class="err">&#39;</span><span class="p">))</span>
+
+    <span class="n">producer_1</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">producer</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">producer_1</span><span class="err">&#39;</span><span class="p">))</span>
+    <span class="n">producer_2</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">producer</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">producer_2</span><span class="err">&#39;</span><span class="p">))</span>
+
+    <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">consumer_1</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
+    <span class="n">consumer_2</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
+
+    <span class="n">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">gather</span><span class="p">(</span><span class="n">consumer_1</span><span class="p">,</span> <span class="n">consumer_2</span><span class="p">,</span> <span class="n">producer_1</span><span class="p">,</span> <span class="n">producer_2</span><span class="p">,</span> <span class="n">return_exceptions</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+
+<span class="o">%</span><span class="n">time</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+
+<span class="n">producer_1</span> <span class="n">put</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">5</span>
+<span class="n">producer_2</span> <span class="n">put</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">3</span>
+<span class="n">consumer_1</span> <span class="n">get</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">5</span>
+<span class="n">consumer_2</span> <span class="n">get</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">3</span>
+<span class="n">producer_1</span> <span class="n">put</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">1</span>
+<span class="n">producer_2</span> <span class="n">put</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">3</span>
+<span class="n">consumer_2</span> <span class="n">get</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">1</span>
+<span class="n">consumer_1</span> <span class="n">get</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">3</span>
+<span class="n">producer_1</span> <span class="n">put</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">6</span>
+<span class="n">producer_2</span> <span class="n">put</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">10</span>
+<span class="n">consumer_1</span> <span class="n">get</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">6</span>
+<span class="n">consumer_2</span> <span class="n">get</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">10</span>
+<span class="n">producer_1</span> <span class="n">put</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">4</span>
+<span class="n">producer_2</span> <span class="n">put</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">5</span>
+<span class="n">consumer_2</span> <span class="n">get</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">4</span>
+<span class="n">consumer_1</span> <span class="n">get</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">5</span>
+<span class="n">producer_1</span> <span class="n">put</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">2</span>
+<span class="n">producer_2</span> <span class="n">put</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">8</span>
+<span class="n">consumer_1</span> <span class="n">get</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">2</span>
+<span class="n">consumer_2</span> <span class="n">get</span> <span class="n">a</span> <span class="n">val</span><span class="o">:</span> <span class="mi">8</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="o">:</span> <span class="mi">10</span> <span class="n">s</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

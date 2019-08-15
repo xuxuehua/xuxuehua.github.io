@@ -110,6 +110,7 @@
 定一个父类的重名方法，称为重写<br />
 子类中调用父类的方法，使用super对象<br />
 super对象使用super方法生成</p>
+<p>不过使用super这种方法时，要求继承链的最顶层父类必须要继承 object</p>
 <p>通过子类调用父类的super方法</p>
 <p>c1.py</p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">c2</span> <span class="n">import</span> <span class="n">Human</span>
@@ -534,6 +535,7 @@ super对象使用super方法生成</p>
 
 <h2 id="_9">多继承</h2>
 <p>多继承是毒药，不到万不得已不要使用</p>
+<p>多重继承，是基于mro进行查找，使用的是一种C3的算法。</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">method_from_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">print</span><span class="p">(</span><span class="s">&#39;Method of A&#39;</span><span class="p">)</span>
@@ -868,7 +870,7 @@ super对象使用super方法生成</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-04 15:37:45</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
       </span>
     </div>
 

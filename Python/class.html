@@ -45,13 +45,14 @@
 </li>
 <li><a href="#_9">类的属性</a><ul>
 <li><a href="#_10">实例变量</a></li>
-<li><a href="#_11">私有变量</a></li>
-<li><a href="#_12">类变量</a></li>
-<li><a href="#_13">私有类变量</a></li>
+<li><a href="#_11">保护变量（单下划线）</a></li>
+<li><a href="#_12">私有变量 (双下划线)</a></li>
+<li><a href="#_13">类变量</a></li>
+<li><a href="#_14">私有类变量 (双下划线)</a></li>
 <li><a href="#__slots__">__slots__ 属性</a></li>
 </ul>
 </li>
-<li><a href="#_14">内置变量属性</a><ul>
+<li><a href="#_15">内置变量属性</a><ul>
 <li><a href="#__all__">__all__</a></li>
 <li><a href="#__init__">__init__</a></li>
 <li><a href="#__dict__">__dict__</a></li>
@@ -66,18 +67,23 @@
 <li><a href="#__str__">__str__ 默认输出其返回值</a></li>
 <li><a href="#__getitem____setitem____delitem__">__getitem__、__setitem__、__delitem__</a></li>
 <li><a href="#__iter__">__iter__</a></li>
-<li><a href="#_15">查询对象的属性</a></li>
+<li><a href="#_16">查询对象的属性</a></li>
 </ul>
 </li>
-<li><a href="#_16">实例化</a></li>
-<li><a href="#_17">实例化类原理</a></li>
-<li><a href="#_18">封装</a><ul>
-<li><a href="#_19">数据及行为封装</a></li>
+<li><a href="#_17">实例化</a></li>
+<li><a href="#_18">实例化类原理</a></li>
+<li><a href="#_19">封装</a><ul>
+<li><a href="#_20">数据及行为封装</a></li>
 </ul>
 </li>
 <li><a href="#type">type 类</a></li>
-<li><a href="#_20">元类</a></li>
+<li><a href="#metaclass">元类 metaclass</a><ul>
+<li><a href="#_21">特性</a></li>
+<li><a href="#metaclass_1">metaclass底层实现</a></li>
+</ul>
+</li>
 <li><a href="#instance">instance() 函数判断对象类型</a></li>
+<li><a href="#_22">函数重载</a></li>
 </ul>
 </div>
 <h1 id="_1">类之间的关系</h1>
@@ -362,7 +368,12 @@
 </pre></div>
 
 
-<h2 id="_11">私有变量</h2>
+<h2 id="_11">保护变量（单下划线）</h2>
+<p>"单下划线" 开始的成员变量叫做保护变量，意思是只有类对象和子类对象自己能访问到这些变量</p>
+<p>不过根据python的约定，应该将其视作private，而不要在外部使用它们</p>
+<p>​   </p>
+<h2 id="_12">私有变量 (双下划线)</h2>
+<p>"双下划线" 开始的是私有成员，意思是只有类对象自己能访问，连子类对象也不能访问到这个数据</p>
 <p>仅类内部可以访问, 无法被外部调用修改</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">C</span><span class="o">:</span>
 
@@ -387,7 +398,7 @@
 </pre></div>
 
 
-<h2 id="_12">类变量</h2>
+<h2 id="_13">类变量</h2>
 <p>类变量对所有的实例都是可见的，可以共享，且初值都是一样的</p>
 <p>定义在方法体之外，可以通过类名访问，对所有方法共享</p>
 <p>实例变量没有，会找类变量调用</p>
@@ -472,7 +483,7 @@
 </pre></div>
 
 
-<h2 id="_13">私有类变量</h2>
+<h2 id="_14">私有类变量 (双下划线)</h2>
 <p>私有类变量不能被实例访问</p>
 <p>类内部可以通过方法访问</p>
 <p><code>__private_attrs</code>：两个下划线开头，声明该属性为私有，不能在类的外部被使用或直接访问。在类内部的方法中使用时 <code>self.__private_attrs</code>。</p>
@@ -499,7 +510,7 @@
 
 <h2 id="__slots__"><code>__slots__</code> 属性</h2>
 <p>动态语言允许我们在程序运行时给对象绑定新的属性或方法，当然也可以对已经绑定的属性和方法进行解绑定。但是如果我们需要限定自定义类型的对象只能绑定某些属性，可以通过在类中定义<code>__slots__</code>变量来进行限定。需要注意的是<code>__slots__</code>的限定只对当前类的对象生效，对子类并不起任何作用。</p>
-<h1 id="_14">内置变量属性</h1>
+<h1 id="_15">内置变量属性</h1>
 <h2 id="__all__"><code>__all__</code></h2>
 <p>指定所导入的变量</p>
 <div class="hlcode"><pre><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="p">]</span>
@@ -626,7 +637,7 @@
 
 
 <h2 id="__name__"><code>__name__</code></h2>
-<p><code>__name__</code>: 类名， 即对象的名称</p>
+<p><code>__name__</code>: 类名， 即模块对象的名称， Python的魔术内置参数，即被赋值为该模块的名字</p>
 <p>查询对象所属的类和类名称</p>
 <div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 
@@ -827,7 +838,7 @@
 </pre></div>
 
 
-<h2 id="_15">查询对象的属性</h2>
+<h2 id="_16">查询对象的属性</h2>
 <p>除了使用dir()来查询对象属性，还可以使用built-in函数来确认</p>
 <div class="hlcode"><pre><span class="cp"># attr_name是一个字符串</span>
 <span class="n">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">)</span> 
@@ -839,7 +850,7 @@
 </pre></div>
 
 
-<h1 id="_16">实例化</h1>
+<h1 id="_17">实例化</h1>
 <p><code>__init__</code> 只是初始化类变量的作用</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
@@ -855,7 +866,7 @@
 </pre></div>
 
 
-<h1 id="_17">实例化类原理</h1>
+<h1 id="_18">实例化类原理</h1>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
     <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">:</span>
         <span class="n">print</span><span class="p">(</span><span class="s">&quot;call __new__&quot;</span><span class="p">)</span>
@@ -908,7 +919,7 @@
 </pre></div>
 
 
-<h1 id="_18">封装</h1>
+<h1 id="_19">封装</h1>
 <p>封装只能在类的内部访问</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
@@ -935,7 +946,7 @@
 </pre></div>
 
 
-<h2 id="_19">数据及行为封装</h2>
+<h2 id="_20">数据及行为封装</h2>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">Door</span><span class="p">():</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">number</span> <span class="o">=</span> <span class="n">number</span>
@@ -1027,7 +1038,7 @@
 <p>type类中实现的创建类</p>
 <p>类中有一个属性 <strong>metaclass</strong>，其用来表示该类由 谁 来实例化创建，所以，我们可以为 <strong>metaclass</strong> 设置一个type类的派生类，从而查看 类 创建的过程。</p>
 <p><img alt="img" src="https://cdn.pbrd.co/images/HCW5oNi.png" /></p>
-<h1 id="_20">元类</h1>
+<h1 id="metaclass">元类 metaclass</h1>
 <p>类的生成 调用 顺序依次是 <code>__new__</code> --&gt; <code>__init__</code> --&gt; <code>__call__</code></p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">MyType</span><span class="p">(</span><span class="n">type</span><span class="p">)</span><span class="o">:</span>
     <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">:</span>
@@ -1067,6 +1078,108 @@
 </pre></div>
 
 
+<h2 id="_21">特性</h2>
+<p>yaml是一个家喻户晓的 Python 工具，可以方便地序列化 / 逆序列化结构数据。YAMLObject 的任意子类支持序列化和反序列化（serialization &amp; deserialization）。比如说下面这段代码：</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Monster</span><span class="p">(</span><span class="n">yaml</span><span class="p">.</span><span class="n">YAMLObject</span><span class="p">)</span><span class="o">:</span>
+  <span class="n">yaml_tag</span> <span class="o">=</span> <span class="n">u</span><span class="err">&#39;</span><span class="o">!</span><span class="n">Monster</span><span class="err">&#39;</span>
+  <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">hp</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="n">attacks</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">hp</span> <span class="o">=</span> <span class="n">hp</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">ac</span> <span class="o">=</span> <span class="n">ac</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">attacks</span> <span class="o">=</span> <span class="n">attacks</span>
+  <span class="n">def</span> <span class="n">__repr__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">return</span> <span class="s">&quot;%s(name=%r, hp=%r, ac=%r, attacks=%r)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+       <span class="n">self</span><span class="p">.</span><span class="n">__class__</span><span class="p">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">hp</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">ac</span><span class="p">,</span>      
+       <span class="n">self</span><span class="p">.</span><span class="n">attacks</span><span class="p">)</span>
+
+<span class="n">yaml</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="o">---</span> <span class="o">!</span><span class="n">Monster</span>
+<span class="nl">name:</span> <span class="n">Cave</span> <span class="n">spider</span>
+<span class="nl">hp:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>    <span class="err">#</span> <span class="mi">2</span><span class="n">d6</span>
+<span class="nl">ac:</span> <span class="mi">16</span>
+<span class="nl">attacks:</span> <span class="p">[</span><span class="n">BITE</span><span class="p">,</span> <span class="n">HURT</span><span class="p">]</span>
+<span class="s">&quot;&quot;&quot;)</span>
+
+<span class="n">Monster</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="err">&#39;</span><span class="n">Cave</span> <span class="n">spider</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">hp</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">ac</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">attacks</span><span class="o">=</span><span class="p">[</span><span class="err">&#39;</span><span class="n">BITE</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">HURT</span><span class="err">&#39;</span><span class="p">])</span>
+
+<span class="n">print</span> <span class="n">yaml</span><span class="p">.</span><span class="n">dump</span><span class="p">(</span><span class="n">Monster</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="err">&#39;</span><span class="n">Cave</span> <span class="n">lizard</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">hp</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="n">ac</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">attacks</span><span class="o">=</span><span class="p">[</span><span class="err">&#39;</span><span class="n">BITE</span><span class="sc">&#39;,&#39;</span><span class="n">HURT</span><span class="err">&#39;</span><span class="p">]))</span>
+
+<span class="cp"># 输出</span>
+<span class="o">!</span><span class="n">Monster</span>
+<span class="nl">ac:</span> <span class="mi">16</span>
+<span class="nl">attacks:</span> <span class="p">[</span><span class="n">BITE</span><span class="p">,</span> <span class="n">HURT</span><span class="p">]</span>
+<span class="nl">hp:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<span class="nl">name:</span> <span class="n">Cave</span> <span class="n">lizard</span>
+</pre></div>
+
+
+<p>调用统一的 yaml.load()，就能把任意一个 yaml 序列载入成一个 Python Object；而调用统一的 yaml.dump()，就能把一个 YAMLObject 子类序列化。对于 load() 和 dump() 的使用者来说，他们完全不需要提前知道任何类型信息，这让超动态配置编程成了可能。在我的实战经验中，许多大型项目都需要应用这种超动态配置的理念。</p>
+<p>比方说，在一个智能语音助手的大型项目中，我们有 1 万个语音对话场景，每一个场景都是不同团队开发的。作为智能语音助手的核心团队成员，我不可能去了解每个子场景的实现细节。</p>
+<p>在动态配置实验不同场景时，经常是今天我要实验场景 A 和 B 的配置，明天实验 B 和 C 的配置，光配置文件就有几万行量级，工作量不可谓不小。而应用这样的动态配置理念，我就可以让引擎根据我的文本配置文件，动态加载所需要的 Python 类。</p>
+<p>对于 YAML 的使用者，这一点也很方便，你只要简单地继承 yaml.YAMLObject，就能让你的 Python Object 具有序列化和逆序列化能力。是不是相比普通 Python 类，有一点“变态”，有一点“超越”？</p>
+<h2 id="metaclass_1">metaclass底层实现</h2>
+<p>在 Python 的类型世界里，type 这个类就是造物的上帝</p>
+<div class="hlcode"><pre><span class="cp"># Python 3 和 Python 2 类似</span>
+<span class="n">class</span> <span class="n">MyClass</span><span class="o">:</span>
+  <span class="n">pass</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
+
+<span class="n">type</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+<span class="cp"># 输出</span>
+<span class="o">&lt;</span><span class="n">class</span> <span class="err">&#39;</span><span class="n">__main__</span><span class="p">.</span><span class="n">C</span><span class="err">&#39;</span><span class="o">&gt;</span>
+
+<span class="n">type</span><span class="p">(</span><span class="n">MyClass</span><span class="p">)</span>
+<span class="cp"># 输出</span>
+<span class="o">&lt;</span><span class="n">class</span> <span class="err">&#39;</span><span class="n">type</span><span class="err">&#39;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<blockquote>
+<p>instance 是 MyClass 的实例，而 MyClass 不过是“上帝”type 的实例</p>
+</blockquote>
+<p>当我们定义一个类的语句结束时，真正发生的情况，是 Python 调用 type 的<code>__call__</code>, 运算符。简单来说，当你定义一个类时，写成下面这样时：</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">MyClass</span><span class="o">:</span>
+  <span class="n">data</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+
+
+<p>Python 真正执行的是下面这段代码：</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="o">=</span> <span class="n">type</span><span class="p">(</span><span class="n">classname</span><span class="p">,</span> <span class="n">superclasses</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">)</span>
+</pre></div>
+
+
+<p>这里等号右边的<code>type(classname, superclasses, attributedict)</code>  ，就是 type 的 <code>__call__</code> 运算符重载，它会进一步调用：</p>
+<div class="hlcode"><pre><span class="n">type</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">typeclass</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">superclasses</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">)</span>
+<span class="n">type</span><span class="p">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">class</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">superclasses</span><span class="p">,</span> <span class="n">attributedict</span><span class="p">)</span>
+</pre></div>
+
+
+<p>代码验证 </p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">MyClass</span><span class="o">:</span>
+  <span class="n">data</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
+<span class="n">MyClass</span><span class="p">,</span> <span class="n">instance</span>
+<span class="cp"># 输出</span>
+<span class="p">(</span><span class="n">__main__</span><span class="p">.</span><span class="n">MyClass</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">__main__</span><span class="p">.</span><span class="n">MyClass</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7fe4f0b00ab8</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="n">instance</span><span class="p">.</span><span class="n">data</span>
+<span class="cp"># 输出</span>
+<span class="mi">1</span>
+
+<span class="n">MyClass</span> <span class="o">=</span> <span class="n">type</span><span class="p">(</span><span class="err">&#39;</span><span class="n">MyClass</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">(),</span> <span class="p">{</span><span class="err">&#39;</span><span class="n">data</span><span class="err">&#39;</span><span class="o">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
+<span class="n">MyClass</span><span class="p">,</span> <span class="n">instance</span>
+<span class="cp"># 输出</span>
+<span class="p">(</span><span class="n">__main__</span><span class="p">.</span><span class="n">MyClass</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">__main__</span><span class="p">.</span><span class="n">MyClass</span> <span class="n">at</span> <span class="mh">0x7fe4f0aea5d0</span><span class="o">&gt;</span><span class="p">)</span>
+
+<span class="n">instance</span><span class="p">.</span><span class="n">data</span>
+<span class="cp"># 输出</span>
+<span class="mi">1</span>
+</pre></div>
+
+
 <h1 id="instance">instance() 函数判断对象类型</h1>
 <p>使用instance()函数检测一个给定的对象是否属于（继承）某个类或类型，是为True，否为False</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
@@ -1082,12 +1195,36 @@
 <span class="bp">True</span>
 <span class="bp">True</span>
 </pre></div>
+
+
+<h1 id="_22">函数重载</h1>
+<p>使子类必须重新写一遍 方法，来覆盖掉原有函数， 这里通过raise 一个exception来提示</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Entity</span><span class="p">()</span><span class="o">:</span>
+      <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">object_type</span><span class="p">)</span><span class="o">:</span>
+          <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">parent</span> <span class="n">class</span> <span class="n">init</span> <span class="n">called</span><span class="err">&#39;</span><span class="p">)</span>
+          <span class="n">self</span><span class="p">.</span><span class="n">object_type</span> <span class="o">=</span> <span class="n">object_type</span>
+      <span class="n">def</span> <span class="n">get_context_length</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+          <span class="n">raise</span> <span class="n">Exception</span><span class="p">(</span><span class="err">&#39;</span><span class="n">get_context_length</span> <span class="n">not</span> <span class="n">implemented</span><span class="err">&#39;</span><span class="p">)</span>
+      <span class="n">def</span> <span class="n">print_title</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+          <span class="n">print</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">title</span><span class="p">)</span>
+
+
+<span class="n">class</span> <span class="n">Document</span><span class="p">(</span><span class="n">Entity</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Document</span> <span class="n">class</span> <span class="n">init</span> <span class="n">called</span><span class="err">&#39;</span><span class="p">)</span>
+        <span class="n">Entity</span><span class="p">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">document</span><span class="err">&#39;</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">author</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__context</span> <span class="o">=</span> <span class="n">context</span>
+    <span class="n">def</span> <span class="n">get_context_length</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">len</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">__context</span><span class="p">)</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-04 15:37:45</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
       </span>
     </div>
 

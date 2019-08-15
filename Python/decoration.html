@@ -37,7 +37,7 @@
 </ul>
 </li>
 <li><a href="#_9">叠放装饰器</a></li>
-<li><a href="#_10">装饰类</a></li>
+<li><a href="#_10">类装饰器</a></li>
 <li><a href="#doc-string">doc string</a></li>
 </ul>
 </li>
@@ -54,6 +54,13 @@
 </ul>
 </li>
 <li><a href="#wraps">wraps 装饰器</a></li>
+<li><a href="#example">example</a><ul>
+<li><a href="#_12">认证</a></li>
+<li><a href="#_13">日志记录</a></li>
+<li><a href="#_14">输入合理性检查</a></li>
+<li><a href="#_15">缓存</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="_1">装饰器</h1>
@@ -216,7 +223,20 @@
 
 
 <h2 id="_9">叠放装饰器</h2>
-<p>如果一个函数被多个装饰器修饰，其实应该是该函数先被最里面的装饰器修饰</p>
+<p>如果一个函数被多个装饰器修饰，其实应该是该函数先被最里面的装饰器修饰, 即从里到外执行</p>
+<div class="hlcode"><pre><span class="err">@</span><span class="n">deco1</span>
+<span class="err">@</span><span class="n">deco2</span>
+<span class="err">@</span><span class="n">deco3</span>
+<span class="n">def</span> <span class="n">func</span><span class="p">()</span>
+    <span class="n">pass</span>
+
+
+<span class="err">等价于</span>
+
+<span class="n">deco1</span><span class="p">(</span><span class="n">deco2</span><span class="p">(</span><span class="n">deco3</span><span class="p">(</span><span class="n">func</span><span class="p">)))</span>
+</pre></div>
+
+
 <div class="hlcode"><pre><span class="nx">def</span> <span class="nx">outer</span><span class="p">(</span><span class="nx">func</span><span class="p">):</span>
     <span class="nx">print</span><span class="p">(</span><span class="s1">&#39;Enter outer&#39;</span><span class="p">,</span> <span class="nx">func</span><span class="p">)</span>
     <span class="nx">def</span> <span class="nx">wrapper</span><span class="p">():</span>
@@ -251,7 +271,7 @@
 <blockquote>
 <p>函数main()先被inner装饰，变成新的函数，变成另一个函数后，再次被装饰器修饰</p>
 </blockquote>
-<h2 id="_10">装饰类</h2>
+<h2 id="_10">类装饰器</h2>
 <p>一个装饰器可以接收一个类，并返回一个类，起到加工的作用。</p>
 <div class="hlcode"><pre><span class="k">def</span> <span class="nf">deco</span><span class="p">(</span><span class="n">aClass</span><span class="p">):</span>
     <span class="k">class</span> <span class="nc">newClass</span><span class="p">:</span>
@@ -291,6 +311,34 @@
 </pre></div>
 
 
+<p>类装饰器主要依赖于函数<code>__call__()</code>, 每当调用一个类实例，函数<code>__call__()</code> 就会被执行一次</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Count</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">num_calls</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">def</span> <span class="n">__call__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">num_calls</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Num</span> <span class="n">of</span> <span class="n">calls</span> <span class="n">is</span> <span class="o">:</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">num_calls</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="err">@</span><span class="n">Count</span>
+<span class="n">def</span> <span class="n">example</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello</span> <span class="n">world</span><span class="err">&#39;</span><span class="p">)</span>
+
+
+<span class="n">example</span><span class="p">()</span>
+<span class="n">example</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Num</span> <span class="n">of</span> <span class="n">calls</span> <span class="n">is</span> <span class="o">:</span> <span class="mi">1</span>
+<span class="n">hello</span> <span class="n">world</span>
+<span class="n">Num</span> <span class="n">of</span> <span class="n">calls</span> <span class="n">is</span> <span class="o">:</span> <span class="mi">2</span>
+<span class="n">hello</span> <span class="n">world</span>
+</pre></div>
+
+
 <h2 id="doc-string">doc string</h2>
 <p>在函数语句块的第一行书写，习惯使用三个引号封装</p>
 <p>使用特殊属性<code>__doc__</code> 访问这个文档</p>
@@ -308,6 +356,7 @@
 <h1 id="_11">类的装饰器</h1>
 <h2 id="staticmethod">staticmethod 静态方法</h2>
 <p>静态方法并不能访问私有变量，只是给类方法加了类的属性</p>
+<p>静态函数可以用来做一些简单独立的任务，既方便测试，也能优化代码结构</p>
 <p>即和类以及对象都没有关系， 和普通的函数没有太多区别，常用于和类对象无任何关系的时候使用</p>
 <div class="hlcode"><pre><span class="nb">class</span> <span class="nx">A</span><span class="p">:</span>
     <span class="n">__val</span> <span class="o">=</span> <span class="mi">3</span>
@@ -354,6 +403,7 @@
 <p>至少一个cls参数；</p>
 <p>执行类方法时，自动将调用该方法的类复制给cls, cls指代调用者即类对象自身,通过这个cls参数我们可以获取和类相关的信息并且可以创建出类的对象</p>
 <p>类方法传递类本身， 可以访问私有的类变量</p>
+<p>类函数最常用的功能是实现不同的 init 构造函数</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
     <span class="n">__val</span> <span class="o">=</span> <span class="mi">3</span>
 
@@ -724,12 +774,131 @@
 
 <h1 id="wraps">wraps 装饰器</h1>
 <p>使用装饰器会产生我们可能不希望出现的副作用，　例如：改变被修饰函数名称，对于调试器或者对象序列化器等需要使用内省机制的那些工具，可能会无法正常运行；其实调用装饰器后，会将同一个作用域中原来函数同名的那个变量（例如下面的func_1）,重新赋值为装饰器返回的对象；使用＠wraps后，会把与内部函数（被修饰函数，例如下面的func_1）相关的重要元数据全部复制到外围函数</p>
+<p>这里函数的元信息改变了</p>
+<div class="hlcode"><pre><span class="n">def</span> <span class="n">my_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Wrapper</span> <span class="n">of</span> <span class="n">decorator</span><span class="err">&#39;</span><span class="p">)</span>
+        <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<span class="err">@</span><span class="n">my_decorator</span>
+<span class="n">def</span> <span class="n">greet</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+
+<span class="n">greet</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello</span> <span class="n">world</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">greet</span><span class="p">.</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Wrapper</span> <span class="n">of</span> <span class="n">decorator</span>
+<span class="n">hello</span> <span class="n">world</span>
+<span class="n">wrapper</span>
+</pre></div>
+
+
+<p>使用内置的wraps 保留原函数的元信息</p>
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">functools</span> <span class="n">import</span> <span class="n">wraps</span>
+
+
+<span class="n">def</span> <span class="n">my_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">:</span>
+    <span class="err">@</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="n">def</span> <span class="n">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Wrapper</span> <span class="n">of</span> <span class="n">decorator</span><span class="err">&#39;</span><span class="p">)</span>
+        <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<span class="err">@</span><span class="n">my_decorator</span>
+<span class="n">def</span> <span class="n">greet</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+
+<span class="n">greet</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hello</span> <span class="n">world</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">greet</span><span class="p">.</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Wrapper</span> <span class="n">of</span> <span class="n">decorator</span>
+<span class="n">hello</span> <span class="n">world</span>
+<span class="n">greet</span>
+</pre></div>
+
+
+<h1 id="example">example</h1>
+<h2 id="_12">认证</h2>
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">functools</span> <span class="n">import</span> <span class="n">wraps</span>
+
+
+<span class="n">def</span> <span class="n">authenticate</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">:</span>
+    <span class="err">@</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="n">def</span> <span class="n">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">check_user_logged_in</span><span class="p">(</span><span class="n">request</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nl">else:</span>
+            <span class="n">raise</span> <span class="n">Exception</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Authentication</span> <span class="n">failed</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<span class="err">@</span><span class="n">authenticate</span>
+<span class="n">def</span> <span class="n">post_message</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">...)</span><span class="o">:</span>
+    <span class="n">pass</span>
+</pre></div>
+
+
+<h2 id="_13">日志记录</h2>
+<p>在实际工作中，如果你怀疑某些函数的耗时过长，导致整个系统的latency(延迟)增加，所以想在线上测试某些函数的执行时间，那么，装饰器就是一种很常用的手段。</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">time</span>
+<span class="n">import</span> <span class="n">functools</span>
+
+
+<span class="n">def</span> <span class="n">log_executed_time</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">:</span>
+    <span class="err">@</span><span class="n">functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="n">def</span> <span class="n">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="p">{}</span> <span class="n">took</span> <span class="p">{}</span> <span class="n">ms</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">.</span><span class="n">__name__</span><span class="p">,</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="err">@</span><span class="n">log_executed_time</span>
+<span class="n">def</span> <span class="n">calculate_similarity</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+    <span class="n">pass</span>
+</pre></div>
+
+
+<h2 id="_14">输入合理性检查</h2>
+<p>在大型公司的机器学习框架中，调用机器集群进行模型训练前，往往会用装饰器对其输入(往往是很长的json文件)进行合理性检查。这样就可以大大避免，输入不正确对机器造成的巨大开销。</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">functools</span>
+<span class="n">def</span> <span class="n">validation_check</span><span class="p">(</span><span class="n">input</span><span class="p">)</span><span class="o">:</span>
+    <span class="err">@</span><span class="n">functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="n">def</span> <span class="n">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="p">...</span> <span class="err">#</span> <span class="err">检查输入是否合法</span>
+
+<span class="err">@</span><span class="n">validation_check</span>
+<span class="n">def</span> <span class="n">neural_network_training</span><span class="p">(</span><span class="n">param1</span><span class="p">,</span> <span class="n">param2</span><span class="p">,</span> <span class="p">...)</span><span class="o">:</span>
+<span class="p">...</span>
+</pre></div>
+
+
+<h2 id="_15">缓存</h2>
+<p>关于缓存装饰器的用法，其实十分常见，以Python内置的LRU cache为例来说明</p>
+<p>LRU cache，在Python中的表示形式是@lru_cache。@lru_cache会缓存进程中的函数参数和结果，当缓 存满了以后，会删除least recenly used 的数据。 </p>
+<p>正确使用缓存装饰器，往往能极大地提高程序运行效率。为什么呢?我举一个常见的例子来说明。</p>
+<p>大型公司服务器端的代码中往往存在很多关于设备的检查，比如你使用的设备是安卓还是iPhone，版本号 是多少。这其中的一个原因，就是一些新的feature，往往只在某些特定的手机系统或版本上才有(比如 Android v200+)。 </p>
+<p>这样一来，我们通常使用缓存装饰器，来包裹这些检查函数，避免其被反复调用，进而提高程序运行效率，<br />
+比如写成下面这样</p>
+<div class="hlcode"><pre><span class="err">@</span><span class="n">lru_cache</span>
+<span class="n">def</span> <span class="n">check</span><span class="p">(</span><span class="n">param1</span><span class="p">,</span> <span class="n">param2</span><span class="p">)</span><span class="o">:</span> <span class="err">#</span> <span class="err">检查用戶设备类型，版本号等等</span>
+    <span class="n">pass</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-04 15:37:45</p>
+        <p>Site Generated 2019-08-15 22:36:46</p>
       </span>
     </div>
 
