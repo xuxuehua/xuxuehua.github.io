@@ -1,0 +1,289 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>Futures 并发编程 - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python">Python</a>&nbsp;&#187;&nbsp;Futures 并发编程
+    <span class="updated">Page Updated&nbsp;
+      2019-08-16 09:00
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">Futures 并发编程</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#futures">Futures</a><ul>
+<li><a href="#concurrency">Concurrency 并发</a></li>
+<li><a href="#parallelism">Parallelism 并行</a></li>
+<li><a href="#vs">单线程vs多线程</a></li>
+</ul>
+</li>
+<li><a href="#futures_1">Futures 操作</a><ul>
+<li><a href="#executor">Executor 类</a></li>
+<li><a href="#done">done() 方法</a></li>
+<li><a href="#result">result() 函数</a></li>
+<li><a href="#_1">操作代码</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="futures">Futures</h1>
+<p>Python 中的 Futures 模块，位于 concurrent.futures 和 asyncio 中，它们都表示带有延迟的操作。Futures 会将处于等待状态的操作包裹起来放到队列中，这些操作的状态随时可以查询，当然，它们的结果或是异常，也能够在操作完成后被获取。</p>
+<p>通常来说，作为用户，我们不用考虑如何去创建 Futures，这些 Futures 底层都会帮我们处理好。我们要做的，实际上是去 schedule 这些 Futures 的执行。</p>
+<p>Python实现多线程/多进程，大家常常会用到标准库中的threading和multiprocessing模块。<br />
+但从Python3.2开始，标准库为我们提供了concurrent.futures模块，它提供了ThreadPoolExecutor和ProcessPoolExecutor两个类，实现了对threading和multiprocessing的进一步抽象，使得开发者只需编写少量代码即可让程序实现并行计算。</p>
+<p>学习并发编程时，常常同时听到并发（Concurrency）和并行（Parallelism）这两个术语，这两者经常一起使用，导致很多人以为它们是一个意思，其实不然。</p>
+<h2 id="concurrency">Concurrency 并发</h2>
+<p>首先要辨别一个误区，在 Python 中，并发并不是指同一时刻有多个操作（thread、task）同时进行。相反，某个特定的时刻，它只允许有一个操作发生，只不过线程 / 任务之间会互相切换，直到完成。</p>
+<p><img alt="img" src="https://snag.gy/2OSEHj.jpg" /></p>
+<blockquote>
+<p>图中出现了 thread 和 task 两种切换顺序的不同方式，分别对应 Python 中并发的两种形式——threading 和 asyncio。</p>
+</blockquote>
+<p>对于 threading，操作系统知道每个线程的所有信息，因此它会做主在适当的时候做线程切换。很显然，这样的好处是代码容易书写，因为程序员不需要做任何切换操作的处理；但是切换线程的操作，也有可能出现在一个语句执行的过程中（比如 x += 1），这样就容易出现 race condition 的情况。</p>
+<p>而对于 asyncio，主程序想要切换任务时，必须得到此任务可以被切换的通知，这样一来也就可以避免刚刚提到的 race condition 的情况。</p>
+<p>并发通常应用于 I/O 操作频繁的场景，比如你要从网站上下载多个文件，I/O 操作的时间可能会比 CPU 运行处理的时间长得多</p>
+<h2 id="parallelism">Parallelism 并行</h2>
+<p>至于所谓的并行，指的才是同一时刻、同时发生。Python 中的 multi-processing 便是这个意思，对于 multi-processing，你可以简单地这么理解：比如电脑是 6 核处理器，那么在运行程序时，就可以强制 Python 开 6 个进程，同时执行，以加快运行速度</p>
+<p>并行则更多应用于 CPU heavy 的场景，比如 MapReduce 中的并行计算，为了加快运行速度，一般会用多台机器、多个处理器来完成</p>
+<h2 id="vs">单线程vs多线程</h2>
+<div class="hlcode"><pre><span class="nt">import</span> <span class="nt">requests</span>
+<span class="nt">import</span> <span class="nt">time</span>
+
+<span class="nt">def</span> <span class="nt">download_one</span><span class="o">(</span><span class="nt">url</span><span class="o">):</span>
+    <span class="nt">resp</span> <span class="o">=</span> <span class="nt">requests</span><span class="nc">.get</span><span class="o">(</span><span class="nt">url</span><span class="o">)</span>
+    <span class="nt">print</span><span class="o">(</span><span class="s1">&#39;Read {} from {}&#39;</span><span class="nc">.format</span><span class="o">(</span><span class="nt">len</span><span class="o">(</span><span class="nt">resp</span><span class="nc">.content</span><span class="o">),</span> <span class="nt">url</span><span class="o">))</span>
+
+<span class="nt">def</span> <span class="nt">download_all</span><span class="o">(</span><span class="nt">sites</span><span class="o">):</span>
+    <span class="nt">for</span> <span class="nt">site</span> <span class="nt">in</span> <span class="nt">sites</span><span class="o">:</span>
+        <span class="nt">download_one</span><span class="o">(</span><span class="nt">site</span><span class="o">)</span>
+
+<span class="nt">def</span> <span class="nt">main</span><span class="o">():</span>
+    <span class="nt">sites</span> <span class="o">=</span> <span class="cp">[</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Arts&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:History&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Society&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Biography&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Mathematics&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Technology&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Geography&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Science&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Computer_science&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Python_(programming_language)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Java_(programming_language)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/PHP&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Node.js&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/The_C_Programming_Language&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Go_(programming_language)&#39;</span>
+    <span class="cp">]</span>
+    <span class="nt">start_time</span> <span class="o">=</span> <span class="nt">time</span><span class="nc">.perf_counter</span><span class="o">()</span>
+    <span class="nt">download_all</span><span class="o">(</span><span class="nt">sites</span><span class="o">)</span>
+    <span class="nt">end_time</span> <span class="o">=</span> <span class="nt">time</span><span class="nc">.perf_counter</span><span class="o">()</span>
+    <span class="nt">print</span><span class="o">(</span><span class="s1">&#39;Download {} sites in {} seconds&#39;</span><span class="nc">.format</span><span class="o">(</span><span class="nt">len</span><span class="o">(</span><span class="nt">sites</span><span class="o">),</span> <span class="nt">end_time</span> <span class="nt">-</span> <span class="nt">start_time</span><span class="o">))</span>
+
+<span class="nt">if</span> <span class="nt">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="o">:</span>
+    <span class="nt">main</span><span class="o">()</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="nt">Read</span> <span class="nt">129886</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Arts</span>
+<span class="nt">Read</span> <span class="nt">184343</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:History</span>
+<span class="nt">Read</span> <span class="nt">224118</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Society</span>
+<span class="nt">Read</span> <span class="nt">107637</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Biography</span>
+<span class="nt">Read</span> <span class="nt">151021</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Mathematics</span>
+<span class="nt">Read</span> <span class="nt">157811</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Technology</span>
+<span class="nt">Read</span> <span class="nt">167923</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Geography</span>
+<span class="nt">Read</span> <span class="nt">93347</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Science</span>
+<span class="nt">Read</span> <span class="nt">321352</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Computer_science</span>
+<span class="nt">Read</span> <span class="nt">391905</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Python_</span><span class="o">(</span><span class="nt">programming_language</span><span class="o">)</span>
+<span class="nt">Read</span> <span class="nt">321417</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Java_</span><span class="o">(</span><span class="nt">programming_language</span><span class="o">)</span>
+<span class="nt">Read</span> <span class="nt">468461</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">PHP</span>
+<span class="nt">Read</span> <span class="nt">180298</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Node</span><span class="nc">.js</span>
+<span class="nt">Read</span> <span class="nt">56765</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">The_C_Programming_Language</span>
+<span class="nt">Read</span> <span class="nt">324039</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Go_</span><span class="o">(</span><span class="nt">programming_language</span><span class="o">)</span>
+<span class="nt">Download</span> <span class="nt">15</span> <span class="nt">sites</span> <span class="nt">in</span> <span class="nt">2</span><span class="nc">.464231112999869</span> <span class="nt">seconds</span>
+</pre></div>
+
+
+<p>可以看到总共耗时约 2.4s。单线程的优点是简单明了，但是明显效率低下，因为上述程序的绝大多数时间，都浪费在了 I/O 等待上。程序每次对一个网站执行下载操作，都必须等到前一个网站下载完成后才能开始。如果放在实际生产环境中，我们需要下载的网站数量至少是以万为单位的，不难想象，这种方案根本行不通。</p>
+<div class="hlcode"><pre><span class="nt">import</span> <span class="nt">concurrent</span><span class="nc">.futures</span>
+<span class="nt">import</span> <span class="nt">requests</span>
+<span class="nt">import</span> <span class="nt">threading</span>
+<span class="nt">import</span> <span class="nt">time</span>
+
+<span class="nt">def</span> <span class="nt">download_one</span><span class="o">(</span><span class="nt">url</span><span class="o">):</span>
+    <span class="nt">resp</span> <span class="o">=</span> <span class="nt">requests</span><span class="nc">.get</span><span class="o">(</span><span class="nt">url</span><span class="o">)</span>
+    <span class="nt">print</span><span class="o">(</span><span class="s1">&#39;Read {} from {}&#39;</span><span class="nc">.format</span><span class="o">(</span><span class="nt">len</span><span class="o">(</span><span class="nt">resp</span><span class="nc">.content</span><span class="o">),</span> <span class="nt">url</span><span class="o">))</span>
+
+
+<span class="nt">def</span> <span class="nt">download_all</span><span class="o">(</span><span class="nt">sites</span><span class="o">):</span>
+    <span class="nt">with</span> <span class="nt">concurrent</span><span class="nc">.futures.ThreadPoolExecutor</span><span class="o">(</span><span class="nt">max_workers</span><span class="o">=</span><span class="nt">5</span><span class="o">)</span> <span class="nt">as</span> <span class="nt">executor</span><span class="o">:</span>
+        <span class="nt">executor</span><span class="nc">.map</span><span class="o">(</span><span class="nt">download_one</span><span class="o">,</span> <span class="nt">sites</span><span class="o">)</span>
+
+<span class="nt">def</span> <span class="nt">main</span><span class="o">():</span>
+    <span class="nt">sites</span> <span class="o">=</span> <span class="cp">[</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Arts&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:History&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Society&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Biography&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Mathematics&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Technology&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Geography&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Science&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Computer_science&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Python_(programming_language)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Java_(programming_language)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/PHP&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Node.js&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/The_C_Programming_Language&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Go_(programming_language)&#39;</span>
+    <span class="cp">]</span>
+    <span class="nt">start_time</span> <span class="o">=</span> <span class="nt">time</span><span class="nc">.perf_counter</span><span class="o">()</span>
+    <span class="nt">download_all</span><span class="o">(</span><span class="nt">sites</span><span class="o">)</span>
+    <span class="nt">end_time</span> <span class="o">=</span> <span class="nt">time</span><span class="nc">.perf_counter</span><span class="o">()</span>
+    <span class="nt">print</span><span class="o">(</span><span class="s1">&#39;Download {} sites in {} seconds&#39;</span><span class="nc">.format</span><span class="o">(</span><span class="nt">len</span><span class="o">(</span><span class="nt">sites</span><span class="o">),</span> <span class="nt">end_time</span> <span class="nt">-</span> <span class="nt">start_time</span><span class="o">))</span>
+
+<span class="nt">if</span> <span class="nt">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="o">:</span>
+    <span class="nt">main</span><span class="o">()</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="nt">Read</span> <span class="nt">151021</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Mathematics</span>
+<span class="nt">Read</span> <span class="nt">129886</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Arts</span>
+<span class="nt">Read</span> <span class="nt">107637</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Biography</span>
+<span class="nt">Read</span> <span class="nt">224118</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Society</span>
+<span class="nt">Read</span> <span class="nt">184343</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:History</span>
+<span class="nt">Read</span> <span class="nt">167923</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Geography</span>
+<span class="nt">Read</span> <span class="nt">157811</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Technology</span>
+<span class="nt">Read</span> <span class="nt">91533</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Science</span>
+<span class="nt">Read</span> <span class="nt">321352</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Computer_science</span>
+<span class="nt">Read</span> <span class="nt">391905</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Python_</span><span class="o">(</span><span class="nt">programming_language</span><span class="o">)</span>
+<span class="nt">Read</span> <span class="nt">180298</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Node</span><span class="nc">.js</span>
+<span class="nt">Read</span> <span class="nt">56765</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">The_C_Programming_Language</span>
+<span class="nt">Read</span> <span class="nt">468461</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">PHP</span>
+<span class="nt">Read</span> <span class="nt">321417</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Java_</span><span class="o">(</span><span class="nt">programming_language</span><span class="o">)</span>
+<span class="nt">Read</span> <span class="nt">324039</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Go_</span><span class="o">(</span><span class="nt">programming_language</span><span class="o">)</span>
+<span class="nt">Download</span> <span class="nt">15</span> <span class="nt">sites</span> <span class="nt">in</span> <span class="nt">0</span><span class="nc">.19936635800002023</span> <span class="nt">seconds</span>
+</pre></div>
+
+
+<p>非常明显，总耗时是 0.2s 左右，效率一下子提升了 10 倍多。</p>
+<p>主要区别如下</p>
+<div class="hlcode"><pre><span class="n">with</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">futures</span><span class="p">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="n">as</span> <span class="n">executor</span><span class="o">:</span>
+     <span class="n">executor</span><span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="n">download_one</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span>
+</pre></div>
+
+
+<blockquote>
+<p>这里我们创建了一个线程池，总共有 5 个线程可以分配使用。executer.map() 与前面所讲的 Python 内置的 map() 函数类似，表示对 sites 中的每一个元素，并发地调用函数 download_one()。</p>
+<p>在 download_one() 函数中，我们使用的 requests.get() 方法是线程安全的（thread-safe），因此在多线程的环境下，它也可以安全使用，并不会出现 race condition 的情况。</p>
+<p>另外，虽然线程的数量可以自己定义，但是线程数并不是越多越好，因为线程的创建、维护和删除也会有一定的开销。所以如果你设置的很大，反而可能会导致速度变慢。我们往往需要根据实际的需求做一些测试，来寻找最优的线程数量。</p>
+</blockquote>
+<p>当然，也可以用并行的方式去提高程序运行效率。你只需要在 download_all() 函数中，做出下面的变化即可：</p>
+<div class="hlcode"><pre><span class="n">with</span> <span class="n">futures</span><span class="p">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">workers</span><span class="p">)</span> <span class="n">as</span> <span class="n">executor</span>
+<span class="o">=&gt;</span>
+<span class="n">with</span> <span class="n">futures</span><span class="p">.</span><span class="n">ProcessPoolExecutor</span><span class="p">()</span> <span class="n">as</span> <span class="n">executor</span><span class="o">:</span> 
+</pre></div>
+
+
+<p>在需要修改的这部分代码中，函数 ProcessPoolExecutor() 表示创建进程池，使用多个进程并行的执行程序。不过，这里我们通常省略参数 workers，因为系统会自动返回 CPU 的数量作为可以调用的进程数。</p>
+<p>并行的方式一般用在 CPU heavy 的场景中，因为对于 I/O heavy 的操作，多数时间都会用于等待，相比于多线程，使用多进程并不会提升效率。反而很多时候，因为 CPU 数量的限制，会导致其执行效率不如多线程版本。</p>
+<h1 id="futures_1">Futures 操作</h1>
+<h2 id="executor">Executor 类</h2>
+<p>Futures 中的 Executor 类，当我们执行 executor.submit(func) 时，它便会安排里面的 func() 函数执行，并返回创建好的 future 实例，以便你之后查询调用。</p>
+<h2 id="done">done() 方法</h2>
+<p>Futures 中的方法 done()，表示相对应的操作是否完成——True 表示完成，False 表示没有完成。不过，要注意，done() 是 non-blocking 的，会立即返回结果。相对应的 add_done_callback(fn)，则表示 Futures 完成后，相对应的参数函数 fn，会被通知并执行调用。</p>
+<h2 id="result">result() 函数</h2>
+<p>Futures 中还有一个重要的函数 result()，它表示当 future 完成后，返回其对应的结果或异常。而 as_completed(fs)，则是针对给定的 future 迭代器 fs，在其完成后，返回完成后的迭代器。</p>
+<h2 id="_1">操作代码</h2>
+<div class="hlcode"><pre><span class="nt">import</span> <span class="nt">concurrent</span><span class="nc">.futures</span>
+<span class="nt">import</span> <span class="nt">requests</span>
+<span class="nt">import</span> <span class="nt">time</span>
+
+<span class="nt">def</span> <span class="nt">download_one</span><span class="o">(</span><span class="nt">url</span><span class="o">):</span>
+    <span class="nt">resp</span> <span class="o">=</span> <span class="nt">requests</span><span class="nc">.get</span><span class="o">(</span><span class="nt">url</span><span class="o">)</span>
+    <span class="nt">print</span><span class="o">(</span><span class="s1">&#39;Read {} from {}&#39;</span><span class="nc">.format</span><span class="o">(</span><span class="nt">len</span><span class="o">(</span><span class="nt">resp</span><span class="nc">.content</span><span class="o">),</span> <span class="nt">url</span><span class="o">))</span>
+
+<span class="nt">def</span> <span class="nt">download_all</span><span class="o">(</span><span class="nt">sites</span><span class="o">):</span>
+    <span class="nt">with</span> <span class="nt">concurrent</span><span class="nc">.futures.ThreadPoolExecutor</span><span class="o">(</span><span class="nt">max_workers</span><span class="o">=</span><span class="nt">5</span><span class="o">)</span> <span class="nt">as</span> <span class="nt">executor</span><span class="o">:</span>
+        <span class="nt">to_do</span> <span class="o">=</span> <span class="cp">[]</span>
+        <span class="nt">for</span> <span class="nt">site</span> <span class="nt">in</span> <span class="nt">sites</span><span class="o">:</span>
+            <span class="nt">future</span> <span class="o">=</span> <span class="nt">executor</span><span class="nc">.submit</span><span class="o">(</span><span class="nt">download_one</span><span class="o">,</span> <span class="nt">site</span><span class="o">)</span>
+            <span class="nt">to_do</span><span class="nc">.append</span><span class="o">(</span><span class="nt">future</span><span class="o">)</span>
+
+        <span class="nt">for</span> <span class="nt">future</span> <span class="nt">in</span> <span class="nt">concurrent</span><span class="nc">.futures.as_completed</span><span class="o">(</span><span class="nt">to_do</span><span class="o">):</span>
+            <span class="nt">future</span><span class="nc">.result</span><span class="o">()</span>
+<span class="nt">def</span> <span class="nt">main</span><span class="o">():</span>
+    <span class="nt">sites</span> <span class="o">=</span> <span class="cp">[</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Arts&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:History&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Society&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Biography&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Mathematics&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Technology&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Geography&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Portal:Science&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Computer_science&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Python_(programming_language)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Java_(programming_language)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/PHP&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Node.js&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/The_C_Programming_Language&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://en.wikipedia.org/wiki/Go_(programming_language)&#39;</span>
+    <span class="cp">]</span>
+    <span class="nt">start_time</span> <span class="o">=</span> <span class="nt">time</span><span class="nc">.perf_counter</span><span class="o">()</span>
+    <span class="nt">download_all</span><span class="o">(</span><span class="nt">sites</span><span class="o">)</span>
+    <span class="nt">end_time</span> <span class="o">=</span> <span class="nt">time</span><span class="nc">.perf_counter</span><span class="o">()</span>
+    <span class="nt">print</span><span class="o">(</span><span class="s1">&#39;Download {} sites in {} seconds&#39;</span><span class="nc">.format</span><span class="o">(</span><span class="nt">len</span><span class="o">(</span><span class="nt">sites</span><span class="o">),</span> <span class="nt">end_time</span> <span class="nt">-</span> <span class="nt">start_time</span><span class="o">))</span>
+
+<span class="nt">if</span> <span class="nt">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="o">:</span>
+    <span class="nt">main</span><span class="o">()</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="nt">Read</span> <span class="nt">129886</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Arts</span>
+<span class="nt">Read</span> <span class="nt">107634</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Biography</span>
+<span class="nt">Read</span> <span class="nt">224118</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Society</span>
+<span class="nt">Read</span> <span class="nt">158984</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Mathematics</span>
+<span class="nt">Read</span> <span class="nt">184343</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:History</span>
+<span class="nt">Read</span> <span class="nt">157949</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Technology</span>
+<span class="nt">Read</span> <span class="nt">167923</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Geography</span>
+<span class="nt">Read</span> <span class="nt">94228</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Portal</span><span class="nd">:Science</span>
+<span class="nt">Read</span> <span class="nt">391905</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Python_</span><span class="o">(</span><span class="nt">programming_language</span><span class="o">)</span>
+<span class="nt">Read</span> <span class="nt">321352</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Computer_science</span>
+<span class="nt">Read</span> <span class="nt">180298</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Node</span><span class="nc">.js</span>
+<span class="nt">Read</span> <span class="nt">321417</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Java_</span><span class="o">(</span><span class="nt">programming_language</span><span class="o">)</span>
+<span class="nt">Read</span> <span class="nt">468421</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">PHP</span>
+<span class="nt">Read</span> <span class="nt">56765</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">The_C_Programming_Language</span>
+<span class="nt">Read</span> <span class="nt">324039</span> <span class="nt">from</span> <span class="nt">https</span><span class="o">://</span><span class="nt">en</span><span class="nc">.wikipedia.org</span><span class="o">/</span><span class="nt">wiki</span><span class="o">/</span><span class="nt">Go_</span><span class="o">(</span><span class="nt">programming_language</span><span class="o">)</span>
+<span class="nt">Download</span> <span class="nt">15</span> <span class="nt">sites</span> <span class="nt">in</span> <span class="nt">0</span><span class="nc">.21698231499976828</span> <span class="nt">seconds</span>
+</pre></div>
+
+
+<blockquote>
+<p>这里，我们首先调用 executor.submit()，将下载每一个网站的内容都放进 future 队列 to_do，等待执行。然后是 as_completed() 函数，在 future 完成后，便输出结果。</p>
+<p>不过，这里要注意，future 列表中每个 future 完成的顺序，和它在列表中的顺序并不一定完全一致。到底哪个先完成、哪个后完成，取决于系统的调度和每个 future 的执行时间。</p>
+</blockquote>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-08-18 17:28:02</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

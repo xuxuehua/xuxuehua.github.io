@@ -87,6 +87,23 @@
 </ul>
 </li>
 <li><a href="#wsgi">WSGI</a></li>
+<li><a href="#_19">服务器端推送</a><ul>
+<li><a href="#sse">SSE</a></li>
+<li><a href="#ajax">传统轮询 AJAX</a></li>
+<li><a href="#_20">长轮询</a></li>
+<li><a href="#websocket">Websocket</a></li>
+</ul>
+</li>
+<li><a href="#_21">安全防护</a><ul>
+<li><a href="#sql">SQL 注入</a></li>
+<li><a href="#xss">XSS</a><ul>
+<li><a href="#_22">反射型</a></li>
+<li><a href="#_23">存储型</a></li>
+</ul>
+</li>
+<li><a href="#csrf">CSRF</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="installation">Installation</h1>
@@ -218,6 +235,7 @@
 <p>保存配置文件信息， 注册路由，以及试图函数的功能</p>
 <h2 id="context-ctxpy">Context 上下文 ctx.py</h2>
 <p>上下文可以理解为环境，为了程序的正常运行，一些操作的相关状态和数据需要被临时保存下来，这些状态和数据被统称为上下文</p>
+<p>而“切换”指的就是保存某个线程当前的运行状态，之后再从之前的状态中恢复</p>
 <p>flask中有两种，分别为应用上下文和请求上下文</p>
 <h3 id="appcontext">AppContext</h3>
 <p>应用上下文， 对Flask 核心对象的封装</p>
@@ -378,12 +396,64 @@
 <h1 id="wsgi">WSGI</h1>
 <p>Web Server Gateway Interface </p>
 <p>Flask 通过Werkzeug实现请求解析（request）和响应封装（response）, 通过WSGI将HTTP的请求数据转换成Flask程序能够接受的python数据， flask 根据URL对应的视图函数获取返回值生成响应，再经过WSGI转换生成HTTP响应返回给客户端</p>
+<h1 id="_19">服务器端推送</h1>
+<h2 id="sse">SSE</h2>
+<p>Server-Sent Event</p>
+<p>通过HTML5种的EventSource API实现，SSE会在客户端和服务器端建立一个单向的通道，客户端监听服务器端的数据，而服务器端可以在任意时间发送数据，二者建立类似订阅发布的通信模式</p>
+<h2 id="ajax">传统轮询 AJAX</h2>
+<p>客户端使用AJAX技术不断向服务器发送HTTP请求，然后获取新的数据并更新页面</p>
+<h2 id="_20">长轮询</h2>
+<p>类似于传统轮询，服务器端若没有返回数据，就一直保持连接开启，直到有数据返回，取回数据</p>
+<h2 id="websocket">Websocket</h2>
+<p>基于TCP协议的全双工通信协议，对比上述3种，实时性更强</p>
+<h1 id="_21">安全防护</h1>
+<h2 id="sql">SQL 注入</h2>
+<p>通过ORM(Object Relational Mapper) 可以一定程度避免SQL注入的问题</p>
+<h2 id="xss">XSS</h2>
+<p>Cross-site Scripting</p>
+<h3 id="_22">反射型</h3>
+<p>通过URL注入攻击脚本，用户访问URL时会执行攻击脚本</p>
+<div class="hlcode"><pre><span class="p">@</span><span class="nx">app.route</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">)</span>
+<span class="nx">def</span> <span class="nx">hello</span><span class="p">():</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="nx">request.args.get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;&lt;h1&gt;Hello, %s!&lt;/h1&gt;&#39;</span> <span class="o">%</span> <span class="nb">name</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="nx">http</span><span class="p">:</span><span class="c1">//example.com/hello?name=&lt;script&gt;alert(&#39;Bingo!&#39;); &lt;/script&gt;</span>
+
+<span class="nx">客户端接收的响应会变成为</span>
+<span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Hello</span><span class="p">,</span> <span class="o">&lt;</span><span class="nb">script</span><span class="o">&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Bingo! &#39;</span><span class="p">);</span> <span class="o">&lt;/</span><span class="nb">script</span><span class="o">&gt;!</span> <span class="o">&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p>如果站点A存在XSS漏洞，攻击者将包含攻击的代码链接发送给网站A用户Rick，当Rick访问这个链接就会被执行攻击代码</p>
+<h3 id="_23">存储型</h3>
+<p>任何用户访问包含攻击代码的页面都会被殃及。如果用户的表单数据不经过任何处理存到数据库，很容易插入Javascript代码</p>
+<div class="hlcode"><pre><span class="nt">&lt;script&gt;</span>window.location.href=&quot;http://attacker.com&quot;;<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+
+<p>通过对用户输入的内容进行转义，可以防范。即把变量的标记内容转换为文本而不是HTML代码， 如Jinja2 的escape()函数</p>
+<div class="hlcode"><pre><span class="nb">from</span> <span class="nx">jinja2</span> <span class="k">import</span> <span class="nx">escape</span>
+
+
+<span class="p">@</span><span class="nx">app.route</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">)</span>
+<span class="nx">def</span> <span class="nx">hell</span><span class="p">():</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="nx">request.args.get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;&lt;h1&gt;Hello, %s! &lt;/h1&gt;&#39;</span> <span class="o">%</span> <span class="nx">escape</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+</pre></div>
+
+
+<h2 id="csrf">CSRF</h2>
+<p>Cross Site Request Forgery  跨站请求伪造</p>
+<p>若用户登陆A站点，认证信息保存在cookie中。攻击者</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-15 22:36:46</p>
+        <p>Site Generated 2019-08-18 17:28:02</p>
       </span>
     </div>
 

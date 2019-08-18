@@ -27,7 +27,6 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#dockerfile">dockerfile</a><ul>
-<li><a href="#dockerfile_1">Dockerfile 指令</a><ul>
 <li><a href="#from">FROM</a></li>
 <li><a href="#run">RUN 指令安装</a><ul>
 <li><a href="#shell">shell 格式</a></li>
@@ -36,16 +35,18 @@
 </li>
 <li><a href="#copy">COPY 复制文件</a></li>
 <li><a href="#add">ADD</a></li>
-<li><a href="#maintainer">MAINTAINER 维护者</a></li>
+<li><a href="#maintainer-deprecated">MAINTAINER 维护者 （deprecated ）</a></li>
 <li><a href="#cmd">CMD 容器启动命令</a><ul>
 <li><a href="#shell_1">shell 格式</a></li>
-<li><a href="#exec_1">exec 格式 （推荐）</a></li>
+<li><a href="#exec_1">exec 格式 （推荐）</a><ul>
 <li><a href="#_1">参数列表格式</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#entrypoint">ENTRYPOINT 入口点</a><ul>
 <li><a href="#exec_2">exec 格式</a></li>
-<li><a href="#docker-run">docker run 操作</a></li>
+<li><a href="#docker-run">docker run 操作</a><ul>
 <li><a href="#shell_2">shell 格式</a></li>
 <li><a href="#shopt-s-nullglob">shopt -s nullglob</a></li>
 <li><a href="#if-101-then">if [ “${1:0:1}” = ‘-‘ ]; then…</a></li>
@@ -56,7 +57,12 @@
 <li><a href="#exec-gosu-mysql-bash_source">exec gosu mysql “$BASH_SOURCE” “$@”</a></li>
 </ul>
 </li>
-<li><a href="#env">ENV 设置环境变量</a></li>
+</ul>
+</li>
+<li><a href="#env">ENV 设置环境变量</a><ul>
+<li><a href="#_3">变量替换</a></li>
+</ul>
+</li>
 <li><a href="#arg">ARG 构建参数</a></li>
 <li><a href="#label">LABEL 定义标签</a></li>
 <li><a href="#volume">VOLUME 挂载点</a></li>
@@ -66,16 +72,18 @@
 <li><a href="#healthcheck">HEALTHCHECK 健康检查</a></li>
 <li><a href="#onbuild">ONBUILD 在子镜像中执行</a></li>
 <li><a href="#dockerignore">.dockerignore 文件</a></li>
+<li><a href="#_4">应用运行前的准备工作</a></li>
 </ul>
 </li>
-<li><a href="#_3">应用运行前的准备工作</a></li>
 <li><a href="#example">example</a><ul>
 <li><a href="#mysql_1">mysql 构建过程</a></li>
-<li><a href="#_4">让镜像变成像命令一样使用</a></li>
+<li><a href="#_5">让镜像变成像命令一样使用</a><ul>
 <li><a href="#tomcat">tomcat</a><ul>
-<li><a href="#dockerfile_2">构建Dockerfile</a></li>
+<li><a href="#dockerfile_1">构建Dockerfile</a></li>
 <li><a href="#tomcat7sh">tomcat7.sh</a></li>
-<li><a href="#_5">构建镜像</a></li>
+<li><a href="#_6">构建镜像</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#wordpress-nginx">构建Wordpress + nginx运行环境</a></li>
@@ -85,12 +93,10 @@
 </ul>
 </li>
 </ul>
-</li>
-</ul>
 </div>
 <h1 id="dockerfile">dockerfile</h1>
-<h2 id="dockerfile_1">Dockerfile 指令</h2>
-<h3 id="from">FROM</h3>
+<p>纯文本文件，通过其命令构建一个镜像</p>
+<h2 id="from">FROM</h2>
 <p>在Dockerfile中第一条非注释INSTRUCTION一定是<code>FROM</code>，它决定了以哪一个镜像作为基准，<code>&lt;image&gt;</code>首选本地是否存在，如果不存在则会从公共仓库下载（当然也可以使用私有仓库的格式）</p>
 <div class="hlcode"><pre><span class="nb">FROM</span>  <span class="o">&lt;</span><span class="nb">image</span><span class="o">&gt;</span>
 <span class="nx">或</span>
@@ -98,8 +104,8 @@
 </pre></div>
 
 
-<h3 id="run">RUN 指令安装</h3>
-<p>构建指令，RUN可以运行任何被基础image支持的命令。如基础image选择了ubuntu，那么软件管理部分只能使用ubuntu的命令。</p>
+<h2 id="run">RUN 指令安装</h2>
+<p>在docker build 期间的构建指令，RUN可以运行任何被基础image支持的命令。如基础image选择了ubuntu，那么软件管理部分只能使用ubuntu的命令。</p>
 <ul>
 <li>RUN命令将在当前image中执行任意合法命令并提交执行结果。命令执行提交后，就会自动执行Dockerfile中的下一个指令。</li>
 <li>层级 RUN 指令和生成提交是符合Docker核心理念的做法。它允许像版本控制那样，在任意一个点，对image 镜像进行定制化构建。</li>
@@ -112,39 +118,50 @@
 </pre></div>
 
 
-<h4 id="shell">shell 格式</h4>
-<p>shell格式，相当于执行<code>/bin/sh -c "&lt;command&gt;"</code>：</p>
+<h3 id="shell">shell 格式</h3>
+<p>shell格式，相当于执行<code>/bin/sh -c "&lt;command&gt;"</code> 这样意味着此进程在容器中的PID不为1，不能接收Unix信号， 当使用docker stop <container_id> 命令停止容器时，此进程接收不到SIGTERM信号</p>
 <div class="hlcode"><pre><span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">vim</span> <span class="o">-</span><span class="n">y</span>
 </pre></div>
 
 
-<h4 id="exec">exec 格式</h4>
-<p>exec格式，不会触发shell，所以<code>$HOME</code>这样的环境变量无法使用，但它可以在没有<code>bash</code>的镜像中执行，而且可以避免错误的解析命令字符串：</p>
+<h3 id="exec">exec 格式</h3>
+<p>exec格式，不会触发以/bin/sh -c来发起的操作，常见的shell 操作如变量替换以及通配符等替换不会执行，所以<code>$HOME</code>这样的环境变量无法使用，不过可以在内部显式替换以生效</p>
 <div class="hlcode"><pre><span class="n">RUN</span> <span class="p">[</span><span class="s">&quot;apt-get&quot;</span><span class="p">,</span> <span class="s">&quot;install&quot;</span><span class="p">,</span> <span class="s">&quot;vim&quot;</span><span class="p">,</span> <span class="s">&quot;-y&quot;</span><span class="p">]</span>
 <span class="err">或</span>
 <span class="n">RUN</span> <span class="p">[</span><span class="s">&quot;/bin/bash&quot;</span><span class="p">,</span> <span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="s">&quot;apt-get install vim -y&quot;</span><span class="p">]</span>  <span class="err">与</span><span class="n">shell</span><span class="err">风格相同</span>
 </pre></div>
 
 
-<h3 id="copy">COPY 复制文件</h3>
-<p>复制本地主机的src文件为container的dest</p>
-<div class="hlcode"><pre><span class="nx">COPY</span> <span class="o">&lt;</span><span class="nx">源路径</span><span class="o">&gt;</span><span class="nx">...</span> <span class="o">&lt;</span><span class="nx">目标路径</span><span class="o">&gt;</span>
+<h2 id="copy">COPY 复制文件</h2>
+<p>复制本地主机的当前的src文件 到container的dest</p>
+<div class="hlcode"><pre><span class="nx">COPY</span> <span class="o">&lt;</span><span class="nb">src</span><span class="o">&gt;</span><span class="nx">...</span> <span class="o">&lt;</span><span class="nx">desk</span><span class="o">&gt;</span>
 <span class="nx">COPY</span> <span class="err">[</span><span class="s2">&quot;&lt;源路径1&gt;&quot;</span><span class="p">,</span><span class="nx">...</span> <span class="s2">&quot;&lt;目标路径&gt;&quot;</span><span class="cp">]</span>
 </pre></div>
 
 
+<p>src 必须是build上下文中的路径，不能是其父目录中的文件， Dockerfile所在的目录</p>
+<p>如果src是目录，其内部文件或子目录会被递归，但src目录自身不会被复制 </p>
+<div class="hlcode"><pre><span class="n">COPY</span> <span class="n">yum</span><span class="p">.</span><span class="n">repos</span><span class="p">.</span><span class="n">d</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">yum</span><span class="p">.</span><span class="n">repos</span><span class="p">.</span><span class="n">d</span><span class="o">/</span>
+</pre></div>
+
+
+<p>如果指定多个src，或在src中使用通配符，dest必须是同一个目录，必须以/结尾</p>
+<p>如果dest不存在，会被自动创建，包括父目录路径</p>
 <p>Same as ‘ADD’ but without the tar and remote url handling.</p>
 <p><code>COPY</code>的语法与功能与<code>ADD</code>相同，只是不支持上面讲到的<code>&lt;src&gt;</code>是远程URL、自动解压这两个特性，但是<a href="https://docs.docker.com/articles/dockerfile_best-practices/">Best Practices for Writing Dockerfiles</a>建议<strong>尽量使用COPY</strong>，并使用<code>RUN</code>与<code>COPY</code>的组合来代替<code>ADD</code>，这是因为虽然<code>COPY</code>只支持本地文件拷贝到container，但它的处理比<code>ADD</code>更加透明，建议只在复制tar文件时使用<code>ADD</code>，如<code>ADD trusty-core-amd64.tar.gz /</code>。</p>
-<h3 id="add">ADD</h3>
+<h2 id="add">ADD</h2>
 <div class="hlcode"><pre><span class="nb">ADD</span> <span class="o">&lt;</span><span class="nb">src</span><span class="o">&gt;</span><span class="nx">...</span> <span class="o">&lt;</span><span class="nx">dest</span><span class="o">&gt;</span>
 </pre></div>
 
 
 <p>将文件<code>&lt;src&gt;</code>拷贝到container的文件系统对应的路径<code>&lt;dest&gt;</code>下。</p>
-<blockquote>
-<p><code>&lt;src&gt;</code>可以是文件、文件夹、URL，对于文件和文件夹<code>&lt;src&gt;</code>必须是在Dockerfile的相对路径下（build context path），即只能是相对路径且不能包含<code>../path/</code>。<br />
-<code>&lt;dest&gt;</code>只能是容器中的绝对路径。如果路径不存在则会自动级联创建，根据你的需要是<code>&lt;dest&gt;</code>里是否需要反斜杠<code>/</code>，习惯使用<code>/</code>结尾从而避免被当成文件。</p>
-</blockquote>
+<p>ADD 支持TAR文件和URL路径</p>
+<p>操作同COPY指令</p>
+<p>如果src为URL且dest不以/结尾，则src指定的文件将被下载并直接被创建为dest</p>
+<p>如果dest以/结尾，则文件名URL指定的文件将被直接下载并保存为dest/filename</p>
+<p>如果src是一个本地系统上说他人文件，将被展开为一个目录，其行为类似于tar -x，然而通过URL获取的tar文件不会自动展开</p>
+<p>如果src有多个，或间接直接使用了通配符，则dest必须是一个以/结尾的目录路径，</p>
+<p>如果dest不以/结尾，则被视为一个普通文件，src的内容将被直接写入到dest</p>
 <p>构建指令，所有拷贝到container中的文件和文件夹权限为0755，uid和gid为0；如果是一个目录，那么会将该目录下的所有文件添加到container中，不包括目录</p>
 <div class="hlcode"><pre><span class="err">支持模糊匹配</span>
 <span class="n">ADD</span> <span class="n">hom</span><span class="o">*</span> <span class="o">/</span><span class="n">mydir</span><span class="o">/</span>        <span class="err">#</span> <span class="n">adds</span> <span class="n">all</span> <span class="n">files</span> <span class="n">starting</span> <span class="n">with</span> <span class="s">&quot;hom&quot;</span>
@@ -159,22 +176,23 @@
 <p>另外<code>ADD</code>支持远程URL获取文件，但官方认为是<code>strongly discouraged</code>，建议使用<code>wget</code>或<code>curl</code>代替。<br />
 <code>ADD</code>还支持自动解压tar文件，比如<code>ADD trusty-core-amd64.tar.gz /</code>会线自动解压内容再COPY到在容器的<code>/</code>目录下。</p>
 <p>ADD只有在build镜像的时候运行一次，后面运行container的时候不会再重新加载，也就是你不能在运行时通过这种方式向容器中传送文件，<code>-v</code>选项映射本地到容器的目录。</p>
-<h3 id="maintainer">MAINTAINER 维护者</h3>
+<h2 id="maintainer-deprecated">MAINTAINER 维护者 （deprecated ）</h2>
 <div class="hlcode"><pre><span class="nx">MAINTAINER</span> <span class="o">&lt;</span><span class="nb">name</span><span class="o">&gt;</span>
 </pre></div>
 
 
 <p>构建指令，用于将image的制作者相关的信息写入到image中。当我们对该image执行docker inspect命令时，输出中有相应的字段记录该信息。</p>
-<h3 id="cmd">CMD 容器启动命令</h3>
-<p>用于container启动时指定的操作。该操作可以是执行自定义脚本，也可以是执行系统命令。该指令只能在文件中存在一次，如果有多个，则只执行最后一条。</p>
+<h2 id="cmd">CMD 容器启动命令</h2>
+<p>用于container启动时指定的操作， 即docker run期间的操作。该操作可以是执行自定义脚本，也可以是执行系统命令。该指令只能在文件中存在一次，如果有多个，则只执行最后一条。</p>
 <p>CMD 可在 Dockerfile 中配置，在启动容器时会被  <code>docker run &lt;image&gt;</code> 后的参数覆盖</p>
 <p>CMD 的 exec 格式中，第一个元素是 shell 的 <code>$0</code>, 其余元素是 shell 的 <code>$@</code>。当 ENTRYPOINT 中用 shell 格式或显式的 sh(bash等)就可以引用 <code>$0</code>, <code>$@</code></p>
-<h4 id="shell_1">shell 格式</h4>
+<h3 id="shell_1">shell 格式</h3>
+<p>shell格式，相当于执行<code>/bin/sh -c "&lt;command&gt;"</code> 这样意味着此进程在容器中的PID不为1，不能接收Unix信号， 当使用docker stop <container_id> 命令停止容器时，此进程接收不到SIGTERM信号</p>
 <div class="hlcode"><pre><span class="n">CMD</span> <span class="n">command</span> <span class="n">param1</span> <span class="n">param2</span>  <span class="p">(</span><span class="n">shell</span><span class="err">格式</span><span class="p">)</span>
 </pre></div>
 
 
-<h4 id="exec_1">exec 格式 （推荐）</h4>
+<h3 id="exec_1">exec 格式 （推荐）</h3>
 <p>推荐使用 exec 格式，这类格式在解析时会被解析为 JSON 数组</p>
 <div class="hlcode"><pre><span class="n">CMD</span> <span class="p">[</span><span class="s">&quot;executable&quot;</span><span class="p">,</span><span class="s">&quot;param1&quot;</span><span class="p">,</span><span class="s">&quot;param2&quot;</span><span class="p">]</span>  <span class="err">（数组</span><span class="o">/</span><span class="n">exec</span><span class="err">格式）</span>
 <span class="n">CMD</span> <span class="p">[</span><span class="s">&quot;param1&quot;</span><span class="p">,</span><span class="s">&quot;param2&quot;</span><span class="p">]</span>  <span class="p">(</span><span class="n">as</span> <span class="k">default</span> <span class="n">parameters</span> <span class="n">to</span> <span class="n">ENTRYPOINT</span><span class="p">)</span>
@@ -196,10 +214,16 @@
 <h4 id="_1">参数列表格式</h4>
 <p>在指定了 ENTRYPOINT 指令后，用 CMD 指定具体的参数。</p>
 <p><code>CMD ["参数1", "参数2"...]</code></p>
-<h3 id="entrypoint">ENTRYPOINT 入口点</h3>
+<h2 id="entrypoint">ENTRYPOINT 入口点</h2>
 <p>ENTRYPOINT 的目的和 CMD 一样，都是在指定容器启动程序及参数。</p>
-<p>当然可以在<code>run</code>时使用<code>--entrypoint</code>来覆盖<code>ENTRYPOINT</code>指令。</p>
-<h4 id="exec_2">exec 格式</h4>
+<p>与CMD不同的是，ENTRYPOINT启动的程序不会被docker run命令行指定的参数所覆盖，而且这些命令行参数会被当作参数传递给ENTRYPOINT指定的程序</p>
+<p>当然可以在<code>docker run</code>时使用<code>--entrypoint</code>来覆盖<code>ENTRYPOINT</code>指令。</p>
+<p>默认ENTRYPOINT 启动的就是<code>/bin/sh -c</code> ，可以强制显式指定</p>
+<div class="hlcode"><pre><span class="n">ENTRYPOINT</span> <span class="p">[</span><span class="s">&quot;/bin/sh&quot;</span><span class="p">,</span> <span class="s">&quot;-c&quot;</span><span class="p">]</span>
+</pre></div>
+
+
+<h3 id="exec_2">exec 格式</h3>
 <p>ENTRYPOINT 和 CMD 合并前需转换为 exec 格式(用 <code>docker inspect &lt;image&gt;</code> 查看)，合并后(相当于数组) 第一个元素是命令，其他都为参数</p>
 <div class="hlcode"><pre><span class="n">Dockerfile</span><span class="o">:</span>
     <span class="n">ENTRYPOINT</span> <span class="o">[</span><span class="s2">&quot;echo&quot;</span><span class="o">,</span> <span class="s2">&quot;ENTRYPOINT_args&quot;</span><span class="o">]</span>
@@ -214,7 +238,7 @@
 <p>因为<code>echo run_arg</code>追加到<code>ENTRYPOIINT</code>的<code>echo</code>后面了。如果在<code>ENTRYPOINT</code>后再加入一行<code>CMD ["CMD_args"]</code>，则结果依旧，除非去掉run后的所有参数。<br />
 当出现<code>ENTRYPOINT</code>指令时<code>CMD</code>指令只可能(当<code>ENTRYPOINT</code>指令使用exec方式执行时)被当做<code>ENTRYPOINT</code>指令的参数使用，其他情况则会被忽略。</p>
 </blockquote>
-<h4 id="docker-run">docker run 操作</h4>
+<h3 id="docker-run">docker run 操作</h3>
 <p>定义了 ENTRYPOINT, CMD 由 docker run 提供</p>
 <div class="hlcode"><pre><span class="n">ENTRYPOINT</span>  <span class="p">[</span><span class="s">&quot;echo&quot;</span><span class="p">,</span> <span class="s">&quot;hello&quot;</span><span class="p">]</span>
 </pre></div>
@@ -300,8 +324,9 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 <p>这里的 gosu 命令, 是 Linux 中 sudo 命令的轻量级”替代品”</p>
 <p>gosu 是一个 golang 语言开发的工具, 用来取代 shell 中的 sudo 命令. su 和 sudo 命令有一些缺陷, 主要是会引起不确定的 TTY, 对信号量的转发也存在问题. 如果仅仅为了使用特定的用户运行程序, 使用 su 或 sudo 显得太重了, 为此 gosu 应运而生.</p>
 <p>gosu 直接借用了 libcontainer 在容器中启动应用程序的原理, 使用 <code>/etc/passwd</code> 处理应用程序. gosu 首先找出指定的用户或用户组, 然后切换到该用户或用户组. 接下来, 使用 exec 启动应用程序. 到此为止, gosu 完成了它的工作, 不会参与到应用程序后面的声明周期中. 使用这种方式避免了 gosu 处理 TTY 和转发信号量的问题, 把这两个工作直接交给了应用程序去完成</p>
-<h3 id="env">ENV 设置环境变量</h3>
+<h2 id="env">ENV 设置环境变量</h2>
 <p>ENV设置的环境变量，可以使用docker inspect命令来查看。同时还可以使用<code>docker run --env &lt;key&gt;=&lt;value&gt;</code>来修改环境变量。</p>
+<p>用于其后的其他指令所调用，如ENV ADD COPY等</p>
 <div class="hlcode"><pre><span class="nb">ENV</span> <span class="o">&lt;</span><span class="nb">key</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">value</span><span class="o">&gt;</span>
 </pre></div>
 
@@ -344,21 +369,39 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<h3 id="arg">ARG 构建参数</h3>
+<h3 id="_3">变量替换</h3>
+<div class="hlcode"><pre><span class="err">$</span><span class="p">{</span><span class="nn">variable</span><span class="p">:</span><span class="o">-</span><span class="s-Atom">word</span><span class="p">}</span> <span class="s-Atom">变量设置，即为word，变量未设置，结果为word</span>
+<span class="err">$</span><span class="p">{</span><span class="nn">variable</span><span class="p">:</span><span class="o">+</span><span class="s-Atom">word</span><span class="p">}</span> <span class="s-Atom">变量设置，即为word，变量未设置，结果为空</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="s-Atom">rxus</span><span class="o">-</span><span class="nv">MacBook</span><span class="o">-</span><span class="nv">Pro</span><span class="s-Atom">:~</span> <span class="s-Atom">rxu$</span> <span class="s-Atom">echo</span> <span class="err">$</span><span class="p">{</span><span class="nv">NAME</span><span class="p">:-</span><span class="s-Atom">rick</span><span class="p">}</span>
+<span class="s-Atom">rick</span>
+<span class="s-Atom">rxus</span><span class="o">-</span><span class="nv">MacBook</span><span class="o">-</span><span class="nv">Pro</span><span class="s-Atom">:~</span> <span class="s-Atom">rxu$</span> <span class="nv">NAME</span><span class="o">=</span><span class="nv">Rick</span>
+<span class="s-Atom">rxus</span><span class="o">-</span><span class="nv">MacBook</span><span class="o">-</span><span class="nv">Pro</span><span class="s-Atom">:~</span> <span class="s-Atom">rxu$</span> <span class="s-Atom">echo</span> <span class="err">$</span><span class="p">{</span><span class="nv">NAME</span><span class="p">:-</span><span class="s-Atom">rick</span><span class="p">}</span>
+<span class="nv">Rick</span>
+<span class="s-Atom">rxus</span><span class="o">-</span><span class="nv">MacBook</span><span class="o">-</span><span class="nv">Pro</span><span class="s-Atom">:~</span> <span class="s-Atom">rxu$</span> <span class="s-Atom">echo</span> <span class="err">$</span><span class="p">{</span><span class="nv">NAME</span><span class="s-Atom">:+rick</span><span class="p">}</span>
+<span class="s-Atom">rick</span>
+<span class="s-Atom">rxus</span><span class="o">-</span><span class="nv">MacBook</span><span class="o">-</span><span class="nv">Pro</span><span class="s-Atom">:~</span> <span class="s-Atom">rxu$</span> <span class="s-Atom">unset</span> <span class="nv">NAME</span>
+<span class="s-Atom">rxus</span><span class="o">-</span><span class="nv">MacBook</span><span class="o">-</span><span class="nv">Pro</span><span class="s-Atom">:~</span> <span class="s-Atom">rxu$</span> <span class="s-Atom">echo</span> <span class="err">$</span><span class="p">{</span><span class="nv">NAME</span><span class="s-Atom">:+rick</span><span class="p">}</span>
+</pre></div>
+
+
+<h2 id="arg">ARG 构建参数</h2>
 <p>ARG 定义的变量只在建立 image 时有效，建立完成后变量就失效消失</p>
 <div class="hlcode"><pre><span class="nx">ARG</span> <span class="o">&lt;</span><span class="nx">参数名</span><span class="o">&gt;</span><span class="err">[</span><span class="o">=&lt;</span><span class="nx">默认值</span><span class="o">&gt;</span><span class="cp">]</span>
 </pre></div>
 
 
-<h3 id="label">LABEL 定义标签</h3>
+<h2 id="label">LABEL 定义标签</h2>
 <p>定义一个 image 标签 Owner，并赋值，其值为变量 Name 的值。</p>
 <div class="hlcode"><pre><span class="n">LABEL</span> <span class="n">Owner</span><span class="o">=</span><span class="err">$</span><span class="n">Name</span>
 </pre></div>
 
 
-<h3 id="volume">VOLUME 挂载点</h3>
-<p>创建一个可以从本地主机或其他容器挂载的挂载点，一般用来存放数据库和需要保持的数据等。</p>
-<p>为了防止运行时用户忘记将动态文件所保存目录挂载为卷，在 Dockerfile 中，我们可以事先指定某些目录挂载为匿名卷，这样在运行时如果用户不指定挂载，其应用也可以正常运行，不会向容器存储层写入大量数据。</p>
+<h2 id="volume">VOLUME 挂载点</h2>
+<p>用于在image中创建一个挂在点目录，以挂在Docker host上的卷或其他容器上的卷</p>
+<p>如果挂在点目录路径下此前文件存在，docker run命令会在卷挂在完成后将此前的所有文件复制到新挂在的卷中</p>
 <div class="hlcode"><pre><span class="nx">VOLUME</span> <span class="err">[</span><span class="s2">&quot;&lt;路径1&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;路径2&gt;&quot;</span><span class="nx">...</span><span class="cp">]</span>
 </pre></div>
 
@@ -373,7 +416,7 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<h3 id="expose">EXPOSE 声明端口</h3>
+<h2 id="expose">EXPOSE 声明端口</h2>
 <p><code>EXPOSE &lt;端口1&gt; [&lt;端口2&gt;...]</code></p>
 <p>EXPOSE 指令是声明运行时容器提供服务端口，这只是一个声明，在运行时并不会因为这个声明应用就会开启这个端口的服务。</p>
 <p><code>EXPOSE</code>指令告诉容器在运行时要监听的端口，但是这个端口是用于多个容器之间通信用的（links），外面的host是访问不到的。要把端口暴露给外面的主机，在启动容器时使用<code>-p</code>选项。</p>
@@ -389,7 +432,7 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">p</span> <span class="n">port1</span> <span class="n">image</span>  
 
 <span class="cp"># 映射多个端口  </span>
-<span class="n">EXPOSE</span> <span class="n">port1</span> <span class="n">port2</span> <span class="n">port3</span>  
+<span class="n">EXPOSE</span> <span class="mi">11211</span><span class="o">/</span><span class="n">udp</span> <span class="mi">11211</span><span class="o">/</span><span class="n">tcp</span>
 <span class="cp"># 相应的运行容器使用的命令  </span>
 <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">p</span> <span class="n">port1</span> <span class="o">-</span><span class="n">p</span> <span class="n">port2</span> <span class="o">-</span><span class="n">p</span> <span class="n">port3</span> <span class="n">image</span>  
 <span class="cp"># 还可以指定需要映射到宿主机器上的某个端口号  </span>
@@ -397,7 +440,7 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<h3 id="workdir">WORKDIR 指定工作目录</h3>
+<h2 id="workdir">WORKDIR 指定工作目录</h2>
 <p>设置指令，可以多次切换(相当于cd命令)，对RUN,CMD,ENTRYPOINT生效</p>
 <div class="hlcode"><pre><span class="nx">WORKDIR</span> <span class="o">&lt;</span><span class="nx">工作目录路径</span><span class="o">&gt;</span>
 </pre></div>
@@ -411,9 +454,10 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 
 <p>之前说过每一个 RUN 都是启动一个容器、执行命令、然后提交存储层文件变更。第一层 RUN cd /app 的执行仅仅是当前进程的工作目录变更，一个内存上的变化而已，其结果不会造成任何文件变更。而到第二层的时候，启动的是一个全新的容器，跟第一层的容器更完全没关系，自然不可能继承前一层构建过程中的内存变化。</p>
 <p><code>WORKDIR指</code>令用于设置<code>Dockerfile</code>中的<code>RUN</code>、<code>CMD</code>和<code>ENTRYPOINT</code>指令执行命令的工作目录(默认为<code>/</code>目录)，该指令在<code>Dockerfile</code>文件中可以出现多次，如果使用相对路径则为相对于<code>WORKDIR</code>上一次的值，例如<code>WORKDIR /a</code>，<code>WORKDIR b</code>，<code>RUN pwd</code>最终输出的当前目录是<code>/a/b</code>。（<code>RUN cd /a/b</code>，<code>RUN pwd</code>是得不到<code>/a/b</code>的）</p>
-<h3 id="user">USER 指定当前用户</h3>
+<h2 id="user">USER 指定当前用户</h2>
 <p>设置指令，设置启动容器的用户，默认是root用户</p>
 <p>USER 指令和 WORKDIR 相似，都是改变环境状态并影响以后的层。</p>
+<p>UID必须是/etc/passwd中某用户的有效UID，否则docker run命令将运行失败</p>
 <p><code>USER &lt;用户名&gt;</code></p>
 <div class="hlcode"><pre><span class="n">RUN</span> <span class="n">groupadd</span> <span class="o">-</span><span class="n">r</span> <span class="n">redis</span> <span class="o">&amp;&amp;</span> <span class="n">useradd</span> <span class="o">-</span><span class="n">r</span> <span class="o">-</span><span class="n">g</span> <span class="n">redis</span> <span class="n">redis</span>
 <span class="n">USER</span> <span class="n">redis</span>
@@ -440,7 +484,7 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<h3 id="healthcheck">HEALTHCHECK 健康检查</h3>
+<h2 id="healthcheck">HEALTHCHECK 健康检查</h2>
 <p>设置检查容器健康状况的命令</p>
 <p><code>HEALTHCHECK [选项] CMD &lt;命令&gt;</code></p>
 <p>如果基础镜像有健康检查指令，使用这行可以屏蔽掉其健康检查指令</p>
@@ -484,15 +528,16 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<h3 id="onbuild">ONBUILD 在子镜像中执行</h3>
-<p><code>ONBUILD</code>指令用来设置一些触发的指令，用于在当该镜像被作为基础镜像来创建其他镜像时(也就是<code>Dockerfile</code>中的<code>FROM</code>为当前镜像时)执行一些操作，<code>ONBUILD中</code>定义的指令会在用于生成其他镜像的<code>Dockerfile</code>文件的<code>FROM</code>指令之后被执行，上述介绍的任何一个指令都可以用于<code>ONBUILD</code>指令，可以用来执行一些因为环境而变化的操作，使镜像更加通用。</p>
+<h2 id="onbuild">ONBUILD 在子镜像中执行</h2>
+<p><code>ONBUILD</code>指令用来设置一些触发的指令，用于在当该镜像被作为基础镜像来创建其他镜像时(也就是<code>Dockerfile</code>中的<code>FROM</code>为当前镜像时)执行一些操作，<code>ONBUILD中</code>定义的指令会在用于生成其他镜像的<code>Dockerfile</code>文件的<code>FROM</code>指令之后被执行，上述介绍的任何一个指令都可以用于<code>ONBUILD</code>指令，可以用来执行一些因为环境而变化的操作，使镜像更加通用</p>
 <ol>
 <li>ONBUILD中定义的指令在当前镜像的build中不会被执行。</li>
 <li>可以通过查看<code>docker inspect &lt;image&gt;</code>命令执行结果的OnBuild键来查看某个镜像ONBUILD指令定义的内容。</li>
 <li>ONBUILD中定义的指令会当做引用该镜像的Dockerfile文件的FROM指令的一部分来执行，执行顺序会按ONBUILD定义的先后顺序执行，如果ONBUILD中定义的任何一个指令运行失败，则会使FROM指令中断并导致整个build失败，当所有的ONBUILD中定义的指令成功完成后，会按正常顺序继续执行build。</li>
 <li>ONBUILD中定义的指令不会继承到当前引用的镜像中，也就是当引用ONBUILD的镜像创建完成后将会清除所有引用的ONBUILD指令。</li>
 <li>ONBUILD指令不允许嵌套，例如<code>ONBUILD ONBUILD ADD . /data</code>是不允许的。</li>
-<li>ONBUILD指令不会执行其定义的FROM或MAINTAINER指令。</li>
+<li>ONBUILD指令不会执行其定义的FROM或MAINTAINER指令</li>
+<li>在ONBUILD指令中使用ADD或COPY指令要小心，因为新构建过程的上下文在缺少指定的源文件时会失败</li>
 </ol>
 <p>例如，<code>Dockerfile</code>使用如下的内容创建了镜像 image-A ：</p>
 <div class="hlcode"><pre><span class="k">[...]</span>
@@ -511,7 +556,7 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<h3 id="dockerignore">.dockerignore 文件</h3>
+<h2 id="dockerignore">.dockerignore 文件</h2>
 <p><code>.dockerignore</code>用来忽略上下文目录中包含的一些image用不到的文件，它们不会传送到docker daemon。规则使用go语言的匹配语法。如：</p>
 <div class="hlcode"><pre><span class="err">$</span> <span class="n">cat</span> <span class="p">.</span><span class="n">dockerignore</span>
 <span class="p">.</span><span class="n">git</span>
@@ -519,8 +564,7 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<p>更多内容参考<a href="http://seanlook.com/2014/12/20/dockerfile_best_practice1">Dockerfile最佳实践</a>系列。官方有个<a href="http://seanlook.com/2014/11/17/dockerfile-introduction/%E6%A0%BC%E5%BC%8F">Dockerfile tutorial</a>练习Dockerfile的写法，非常简单但对于养成良好的格式、注释有一些帮助。</p>
-<h2 id="_3">应用运行前的准备工作</h2>
+<h2 id="_4">应用运行前的准备工作</h2>
 <p>准备工作是和容器 CMD 无关的，无论 CMD 为什么，都需要事先进行一个预处理的工作。这种情况下，可以写一个脚本，然后放入 ENTRYPOINT 中去执行，而这个脚本会将接到的参数（也就是 <CMD>）作为命令，在脚本最后执行。比如官方镜像 redis 中就是这么做的：</p>
 <div class="hlcode"><pre><span class="n">FROM</span> <span class="n">alpine</span><span class="o">:</span><span class="mf">3.4</span>
 <span class="p">...</span>
@@ -533,8 +577,8 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<h2 id="example">example</h2>
-<h3 id="mysql_1">mysql 构建过程</h3>
+<h1 id="example">example</h1>
+<h2 id="mysql_1">mysql 构建过程</h2>
 <p>下面的<code>Dockerfile</code>是MySQL官方镜像的构建过程。从ubuntu基础镜像开始构建，安装mysql-server、配置权限、映射目录和端口，<code>CMD</code>在从这个镜像运行到容器时启动mysql。其中<code>VOLUME</code>定义的两个可挂载点，用于在host中挂载，因为数据库保存在主机上而非容器中才是比较安全的。</p>
 <div class="hlcode"><pre><span class="cp">#</span>
 <span class="cp"># MySQL Dockerfile</span>
@@ -588,7 +632,7 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<h3 id="_4">让镜像变成像命令一样使用</h3>
+<h2 id="_5">让镜像变成像命令一样使用</h2>
 <ul>
 <li>查看当前公网 IP 的镜像</li>
 </ul>
@@ -647,7 +691,7 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 
 
 <h3 id="tomcat">tomcat</h3>
-<h4 id="dockerfile_2">构建Dockerfile</h4>
+<h4 id="dockerfile_1">构建Dockerfile</h4>
 <div class="hlcode"><pre><span class="cp"># 指定基于的基础镜像</span>
 <span class="n">FROM</span> <span class="n">ubuntu</span><span class="o">:</span><span class="mf">13.10</span>  
 
@@ -714,13 +758,13 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<h4 id="_5">构建镜像</h4>
+<h4 id="_6">构建镜像</h4>
 <div class="hlcode"><pre><span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">wechat</span><span class="o">-</span><span class="n">tomcat</span>
 <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8090</span><span class="o">:</span><span class="mi">8080</span> <span class="n">wechat</span><span class="o">-</span><span class="n">tomcat</span> 
 </pre></div>
 
 
-<h3 id="wordpress-nginx">构建Wordpress + nginx运行环境</h3>
+<h2 id="wordpress-nginx">构建Wordpress + nginx运行环境</h2>
 <div class="hlcode"><pre><span class="cp"># 指定基于的基础镜像</span>
 <span class="n">FROM</span> <span class="n">ubuntu</span><span class="o">:</span><span class="mf">14.04</span>
 
@@ -791,7 +835,7 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<h3 id="ruby-on-rails">构建Ruby on Rails环境</h3>
+<h2 id="ruby-on-rails">构建Ruby on Rails环境</h2>
 <div class="hlcode"><pre><span class="cp"># 指定基础镜像</span>
 <span class="n">FROM</span> <span class="n">fcat</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">-</span><span class="n">universe</span><span class="o">:</span><span class="mf">12.04</span>
 
@@ -834,7 +878,7 @@ mysql --protocol=socket -uroot -hlocalhost --socket=
 </pre></div>
 
 
-<h3 id="nginx">构建Nginx运行环境</h3>
+<h2 id="nginx">构建Nginx运行环境</h2>
 <div class="hlcode"><pre># 指定基础镜像
 FROM sameersbn/ubuntu:14.04.20161014
 
@@ -880,7 +924,7 @@ CMD [&quot;/usr/sbin/nginx&quot;]
 </pre></div>
 
 
-<h3 id="postgres">构建Postgres镜像</h3>
+<h2 id="postgres">构建Postgres镜像</h2>
 <div class="hlcode"><pre># 指定基础镜像
 FROM sameersbn/ubuntu:14.04.20161014
 
@@ -932,7 +976,7 @@ ENTRYPOINT [&quot;/sbin/entrypoint.sh&quot;]
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-15 22:36:46</p>
+        <p>Site Generated 2019-08-18 17:28:02</p>
       </span>
     </div>
 

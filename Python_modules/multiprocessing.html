@@ -38,6 +38,8 @@
 </ul>
 </div>
 <h1 id="multiprocessing">multiprocessing</h1>
+<p>Python实现多线程/多进程，大家常常会用到标准库中的threading和multiprocessing模块。<br />
+但从Python3.2开始，标准库为我们提供了concurrent.futures模块，它提供了ThreadPoolExecutor和ProcessPoolExecutor两个类，实现了对threading和multiprocessing的进一步抽象，使得开发者只需编写少量代码即可让程序实现并行计算。</p>
 <p>避免的subprocess包的局限性<br />
 1. 总是通过subprocess运行外部的程序，而不是运行一个Python脚本内部编写的函数<br />
 2. 进程之间只能通过管道方法进行文本交流</p>
@@ -281,7 +283,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-15 22:36:46</p>
+        <p>Site Generated 2019-08-18 17:28:02</p>
       </span>
     </div>
 
