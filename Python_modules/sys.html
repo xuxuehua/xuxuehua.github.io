@@ -34,6 +34,7 @@
 </li>
 <li><a href="#version">version</a></li>
 <li><a href="#exitn">exit(n)</a></li>
+<li><a href="#getrefcount">getrefcount()</a></li>
 <li><a href="#platform">platform</a></li>
 <li><a href="#path_1">path</a></li>
 <li><a href="#maxint">maxint</a></li>
@@ -77,6 +78,19 @@
 <p>获取Python解释程序的版本信息</p>
 <h2 id="exitn">exit(n)</h2>
 <div class="hlcode"><pre><span class="err">退出程序，正常退出时</span><span class="n">exit</span><span class="p">(</span><span class="err">``</span><span class="mi">0</span><span class="err">``</span><span class="p">)</span>
+</pre></div>
+
+
+<h2 id="getrefcount">getrefcount()</h2>
+<p>引用计数</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">sys</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">sys</span><span class="p">.</span><span class="n">getrefcount</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="mi">27</span>
 </pre></div>
 
 
@@ -137,7 +151,7 @@ RecursionError: maximum recursion depth exceeded in comparison
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-18 17:28:02</p>
+        <p>Site Generated 2019-08-23 09:10:32</p>
       </span>
     </div>
 

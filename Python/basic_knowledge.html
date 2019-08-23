@@ -43,7 +43,11 @@
 <li><a href="#python">Python特点</a></li>
 <li><a href="#python_1">Python解释器</a><ul>
 <li><a href="#cpython">CPython</a><ul>
-<li><a href="#gil-global-interpreter-lock">GIL (Global Interpreter Lock)</a></li>
+<li><a href="#gil-global-interpreter-lock">GIL (Global Interpreter Lock)</a><ul>
+<li><a href="#gil">GIL 原理</a></li>
+<li><a href="#gil_1">GIL 特点</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#ipython">IPython</a></li>
@@ -160,6 +164,38 @@
 <p>这个解释器锁是有必要的，因为cpython解释器的内存管理不是线程安全的, 即同一时刻，Python 主程序只允许有一个线程执行，所以 Python 的并发，是通过多线程的切换完成的。</p>
 <p>为了解决由此带来的 race condition 等问题，Python 便引入了全局解释器锁，也就是同一时刻，只允许一个线程执行。当然，在执行 I/O 操作时，如果一个线程被 block 了，全局解释器锁便会被释放，从而让另一个线程能够继续执行</p>
 <p>GIL虽然是一个假的多线程，但是在处理一些IO操作(文件读写，网络请求)可以提高效率，建议使用多线程提高效率。但CPU计算操作不建议使用多线程，建议使用多进程。</p>
+<p>GIL，是最流行的 Python 解释器 CPython 中的一个技术术语。它的意思是全局解释器锁，本质上是类似操作系统的 Mutex。每一个 Python 线程，在 CPython 解释器中执行时，都会先锁住自己的线程，阻止别的线程执行。</p>
+<p>一是设计者为了规避类似于内存管理这样的复杂的竞争风险问题（race condition）；</p>
+<p>二是因为 CPython 大量使用 C 语言库，但大部分 C 语言库都不是原生线程安全的（线程安全会降低性能和增加复杂度）。</p>
+<h5 id="gil">GIL 原理</h5>
+<p><img alt="img" src="https://snipboard.io/C14cu2.jpg" /></p>
+<p>一个 GIL 在 Python 程序的工作示例。其中，Thread 1、2、3 轮流执行，每一个线程在开始执行时，都会锁住 GIL，以阻止别的线程执行；同样的，每一个线程执行完一段后，会释放 GIL，以允许别的线程开始利用资源。</p>
+<p>CPython 中还有另一个机制，叫做 check_interval，意思是 CPython 解释器会去轮询检查线程 GIL 的锁住情况。每隔一段时间，Python 解释器就会强制当前线程去释放 GIL，这样别的线程才能有执行的机会。</p>
+<p><strong>GIL 的设计，主要是为了方便 CPython 解释器层面的编写者，而不是 Python 应用层面的程序员</strong>。作为 Python 的使用者，我们还是需要 lock 等工具，来确保线程安全。</p>
+<div class="hlcode"><pre><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> 
+<span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Lock</span><span class="p">()</span>
+
+<span class="n">def</span> <span class="n">foo</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">global</span> <span class="n">n</span>
+    <span class="n">with</span> <span class="n">lock</span><span class="o">:</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+
+
+<h5 id="gil_1">GIL 特点</h5>
+<p>Python 的 GIL，是通过 CPython 的解释器加的限制。如果你的代码并不需要 CPython 解释器来执行，就不再受 GIL 的限制。</p>
+<p>事实上，很多高性能应用场景都已经有大量的 C 实现的 Python 库，例如 NumPy 的矩阵运算，就都是通过 C 来实现的，并不受 GIL 影响。</p>
+<p>所以，大部分应用情况下，你并不需要过多考虑 GIL。因为如果多线程计算成为性能瓶颈，往往已经有 Python 库来解决这个问题了。</p>
+<p>换句话说，如果你的应用真的对性能有超级严格的要求，比如 100us 就对你的应用有很大影响，那我必须要说，Python 可能不是你的最优选择。</p>
+<p>当然，可以理解的是，我们难以避免的有时候就是想临时给自己松松绑，摆脱 GIL，比如在深度学习应用里，大部分代码就都是 Python 的。在实际工作中，如果我们想实现一个自定义的微分算子，或者是一个特定硬件的加速器，那我们就不得不把这些关键性能（performance-critical）代码在 C++ 中实现（不再受 GIL 所限），然后再提供 Python 的调用接口。</p>
+<p>总的来说，你只需要重点记住，绕过 GIL 的大致思路有这么两种就够了：</p>
+<ol>
+<li>绕过 CPython，使用 JPython（Java 实现的 Python 解释器）等别的实现；</li>
+<li>把关键性能代码，放到别的语言（一般是 C++）中实现。</li>
+</ol>
+<p>在python3中，GIL不使用ticks计数，改为使用计时器（执行时间达到阈值后interval=15毫秒，当前线程释放GIL），这样对CPU密集型程序更加友好，但依然没有解决GIL导致的同一时间只能执行一个线程的问题，所以效率依然不尽如人意。多核多线程比单核多线程更差，原因是单核下多线程，每次释放GIL，唤醒的那个线程都能获取到GIL锁，所以能够无缝执行，但多核下，CPU0释放GIL后，其他CPU上的线程都会进行竞争，但GIL可能会马上又被CPU0拿到，导致其他几个CPU上被唤醒后的线程会醒着等待到切换时间后又进入待调度状态，这样会造成线程颠簸(thrashing)，导致效率更低。</p>
+<p>经常会听到老手说：“python下想要充分利用多核CPU，就用多进程”，原因是什么呢？原因是：每个进程有各自独立的GIL，互不干扰，这样就可以真正意义上的并行执行，所以在python中，多进程的执行效率优于多线程(仅仅针对多核CPU而言)。所以我们能够得出结论：多核下，想做并行提升效率，比较通用的方法是使用多进程，能够有效提高执行效率。</p>
+<p>​   </p>
 <h3 id="ipython">IPython</h3>
 <p>IPython是基于CPython之上的一个交互式解释器，也就是说，IPython只是在交互方式上有所增强，但是执行Python代码的功能和CPython是完全一样的。好比很多国产浏览器虽然外观不同，但内核其实都是调用了IE。</p>
 <p>CPython用<code>&gt;&gt;&gt;</code>作为提示符，而IPython用<code>In [序号]:</code>作为提示符。</p>
@@ -349,14 +385,14 @@ for line in iter(input, sentinel):
 
 
 <h2 id="python_2">测试Python性能</h2>
-<div class="hlcode"><pre><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">cProfile</span> <span class="o">-</span><span class="n">s</span> <span class="n">time</span> <span class="n">PYTHON_SCRIPT</span>
+<div class="hlcode"><pre>    <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">cProfile</span> <span class="o">-</span><span class="n">s</span> <span class="n">time</span> <span class="n">PYTHON_SCRIPT</span>
 </pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-18 17:28:02</p>
+        <p>Site Generated 2019-08-23 09:10:32</p>
       </span>
     </div>
 

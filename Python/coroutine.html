@@ -56,6 +56,7 @@
 </ul>
 </li>
 <li><a href="#vs-asyncio">多线程 vs Asyncio</a></li>
+<li><a href="#_7">多进程</a></li>
 </ul>
 </div>
 <h1 id="coroutine">coroutine 协程</h1>
@@ -498,12 +499,34 @@
 <p>如果是 I/O bound，并且 I/O 操作很慢，需要很多任务 / 线程协同实现，那么使用 Asyncio 更合适。</p>
 <p>如果是 I/O bound，但是 I/O 操作很快，只需要有限数量的任务 / 线程，那么使用多线程就可以了。</p>
 <p>如果是 CPU bound，则需要使用多进程来提高程序运行效率。</p>
+<h1 id="_7">多进程</h1>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">time</span>
+<span class="n">def</span> <span class="n">cpu_bound</span><span class="p">(</span><span class="n">number</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">number</span><span class="p">)))</span>
+
+<span class="n">def</span> <span class="n">calculate_sums</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">for</span> <span class="n">number</span> <span class="n">in</span> <span class="n">numbers</span><span class="o">:</span>
+        <span class="n">cpu_bound</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+
+<span class="n">def</span> <span class="n">main</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span>  
+    <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10000000</span> <span class="o">+</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)]</span>
+    <span class="n">calculate_sums</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Calculation</span> <span class="n">takes</span> <span class="p">{}</span> <span class="n">seconds</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="err">&#39;</span><span class="n">__main__</span><span class="err">&#39;</span><span class="o">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Calculation</span> <span class="n">takes</span> <span class="mf">17.826206894</span> <span class="n">seconds</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-18 17:28:02</p>
+        <p>Site Generated 2019-08-23 09:10:32</p>
       </span>
     </div>
 

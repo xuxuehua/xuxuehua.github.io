@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>wtforms - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Flask">Flask</a>&nbsp;&#187;&nbsp;wtforms
+    <span class="updated">Page Updated&nbsp;
+      2019-08-23 07:58
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">wtforms</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#wtforms">WTForms</a><ul>
+<li><a href="#_1">字段属性</a><ul>
+<li><a href="#booleanfield">BooleanField</a></li>
+<li><a href="#datafield">DataField</a></li>
+<li><a href="#datetimefield">DateTimeField</a></li>
+<li><a href="#filefield">FileField</a></li>
+<li><a href="#floatfield">FloatField</a></li>
+<li><a href="#integerfield">IntegerField</a></li>
+<li><a href="#radiofield">RadioField</a></li>
+<li><a href="#selectfield">SelectField</a></li>
+<li><a href="#selectmultiplefield">SelectMultipleField</a></li>
+<li><a href="#submitfield">SubmitField</a></li>
+<li><a href="#stringfield">StringField</a></li>
+<li><a href="#hiddenfield">HiddenField</a></li>
+<li><a href="#passwordfield">PasswordField</a></li>
+<li><a href="#textareafield">TextAreaField</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#flask-wtf">Flask-WTF</a><ul>
+<li><a href="#csrf">CSRF</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="wtforms">WTForms</h1>
+<p>对表单的定义，验证(服务器端)，处理等操作</p>
+<h2 id="_1">字段属性</h2>
+<p>字段属性的名称会作为对应HTML input元素的name 属性以及ID属性值</p>
+<p>WTForms会在表单提交后根据表单类中字段的类型对数据进行处理，转换成对应的Python类型</p>
+<h3 id="booleanfield">BooleanField</h3>
+<p>复选框，值会被处理为True 或者False</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;checkbox&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="datafield">DataField</h3>
+<p>文本字段，值会被处理为datetime.date对象</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="datetimefield">DateTimeField</h3>
+<p>文本字段，值会被处理为datetime.datetime对象</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="filefield">FileField</h3>
+<p>文件上传字段</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="floatfield">FloatField</h3>
+<p>浮点数字段，值会被处理为浮点类型</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="integerfield">IntegerField</h3>
+<p>整数字段，值会被处理为整型</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="radiofield">RadioField</h3>
+<p>一组单选按钮</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;radio&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="selectfield">SelectField</h3>
+<p>下拉列表</p>
+<div class="hlcode"><pre><span class="nt">&lt;select&gt;&lt;option&gt;&lt;/option&gt;&lt;/select&gt;</span>
+</pre></div>
+
+
+<h3 id="selectmultiplefield">SelectMultipleField</h3>
+<p>多选下拉列表</p>
+<div class="hlcode"><pre><span class="nt">&lt;select</span> <span class="err">multiple</span><span class="nt">&gt;&lt;option&gt;&lt;/option&gt;&lt;/select&gt;</span>
+</pre></div>
+
+
+<h3 id="submitfield">SubmitField</h3>
+<p>提交按钮</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="stringfield">StringField</h3>
+<p>文本字段</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="hiddenfield">HiddenField</h3>
+<p>隐藏文本字段</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;hidden&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="passwordfield">PasswordField</h3>
+<p>密码文本字段</p>
+<div class="hlcode"><pre><span class="o">&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;password&quot;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="textareafield">TextAreaField</h3>
+<p>多行文本字段</p>
+<div class="hlcode"><pre><span class="nt">&lt;textarea&gt;&lt;/textarea&gt;</span>
+</pre></div>
+
+
+<h1 id="flask-wtf">Flask-WTF</h1>
+<p>集成了WTForms，可以在Flask中更方便的使用WTForms，附加了reCAPTHCA 支持</p>
+<div class="hlcode"><pre><span class="n">pipenv</span> <span class="n">install</span> <span class="n">flask</span><span class="o">-</span><span class="n">wtf</span>
+</pre></div>
+
+
+<h2 id="csrf">CSRF</h2>
+<p>Flask-WTF 默认为每个表单启用了CSRF保护， 自动生成和验证CSRF令牌，需要程序密钥来进行签名</p>
+<div class="hlcode"><pre><span class="n">app</span><span class="p">.</span><span class="n">secret_key</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">secret</span> <span class="n">string</span><span class="err">&#39;</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-08-23 09:10:32</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>
