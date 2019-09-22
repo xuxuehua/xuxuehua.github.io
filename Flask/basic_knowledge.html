@@ -67,43 +67,40 @@
 <li><a href="#static">static</a></li>
 <li><a href="#template">template</a></li>
 <li><a href="#_8">目录结构</a></li>
-<li><a href="#_9">蓝图</a><ul>
-<li><a href="#_10">定义蓝图</a></li>
-<li><a href="#_11">注册蓝图</a></li>
-<li><a href="#_12">调用蓝图</a></li>
+<li><a href="#_9">蓝图</a></li>
+<li><a href="#_10">前端布局</a><ul>
+<li><a href="#_11">静态文件引入</a></li>
+<li><a href="#_12">定义路由</a></li>
+<li><a href="#_13">定义数据块</a></li>
 </ul>
 </li>
-<li><a href="#_13">前端布局</a><ul>
-<li><a href="#_14">静态文件引入</a></li>
-<li><a href="#_15">定义路由</a></li>
-<li><a href="#_16">定义数据块</a></li>
-</ul>
-</li>
-<li><a href="#_17">插件</a><ul>
+<li><a href="#_14">插件</a><ul>
 <li><a href="#wtforms">wtforms</a><ul>
-<li><a href="#_18">验证层</a></li>
+<li><a href="#_15">验证层</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a href="#wsgi">WSGI</a></li>
-<li><a href="#_19">服务器端推送</a><ul>
+<li><a href="#_16">服务器端推送</a><ul>
 <li><a href="#sse">SSE</a></li>
 <li><a href="#ajax">传统轮询 AJAX</a></li>
-<li><a href="#_20">长轮询</a></li>
+<li><a href="#_17">长轮询</a></li>
 <li><a href="#websocket">Websocket</a></li>
 </ul>
 </li>
-<li><a href="#_21">安全防护</a><ul>
+<li><a href="#_18">安全防护</a><ul>
 <li><a href="#sql">SQL 注入</a></li>
 <li><a href="#xss">XSS</a><ul>
-<li><a href="#_22">反射型</a></li>
-<li><a href="#_23">存储型</a></li>
+<li><a href="#_19">反射型</a></li>
+<li><a href="#_20">存储型</a></li>
 </ul>
 </li>
 <li><a href="#csrf">CSRF</a></li>
 </ul>
 </li>
+<li><a href="#debug-toolbar">Debug Toolbar</a></li>
+<li><a href="#_21">工厂函数</a></li>
 </ul>
 </div>
 <h1 id="installation">Installation</h1>
@@ -348,71 +345,49 @@
 <p>不建议将其作为试图函数的拆分</p>
 <p>蓝图不能独立存在，需要插入到app的核心对象里面</p>
 <p><img alt="img" src="https://snag.gy/2kzj6W.jpg" /></p>
-<h2 id="_10">定义蓝图</h2>
-<p><code>app/admin/__init__.py</code></p>
-<div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Blueprint</span>
-<span class="n">admin</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">,</span> <span class="n">__name__</span><span class="p">)</span>
-<span class="n">import</span> <span class="n">views</span>
-</pre></div>
-
-
-<h2 id="_11">注册蓝图</h2>
-<p><code>app/__init__.py</code></p>
-<div class="hlcode"><pre><span class="n">from</span> <span class="n">admin</span> <span class="n">import</span> <span class="n">admin</span> <span class="n">as</span> <span class="n">admin_blueprint</span>
-<span class="n">app</span><span class="p">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">admin_blueprint</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s">&quot;/admin&quot;</span><span class="p">)</span>
-</pre></div>
-
-
-<h2 id="_12">调用蓝图</h2>
-<p><code>app/admin/views.py</code></p>
-<div class="hlcode"><pre><span class="n">from</span> <span class="p">.</span> <span class="n">import</span> <span class="n">admin</span>
-<span class="err">@</span><span class="n">admin</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
-</pre></div>
-
-
-<h1 id="_13">前端布局</h1>
-<h2 id="_14">静态文件引入</h2>
+<h1 id="_10">前端布局</h1>
+<h2 id="_11">静态文件引入</h2>
 <div class="hlcode"><pre><span class="p">{{</span> <span class="n">url_for</span><span class="p">(</span><span class="err">&#39;</span><span class="k">static</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="err">&#39;</span><span class="n">FILE_PATH</span><span class="err">&#39;</span><span class="p">)</span> <span class="p">}}</span>
 </pre></div>
 
 
-<h2 id="_15">定义路由</h2>
+<h2 id="_12">定义路由</h2>
 <div class="hlcode"><pre><span class="p">{{</span> <span class="n">url_for</span><span class="p">(</span><span class="err">&#39;</span><span class="n">MODULE_NAME</span><span class="p">.</span><span class="n">VIEW_NAME</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">VARIABLE</span><span class="o">=</span><span class="n">PARAMETER</span><span class="p">)</span> <span class="p">}}</span>
 </pre></div>
 
 
-<h2 id="_16">定义数据块</h2>
+<h2 id="_13">定义数据块</h2>
 <div class="hlcode"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">BLOCK_NAME</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">INFO</span>
 <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
 </pre></div>
 
 
-<h1 id="_17">插件</h1>
+<h1 id="_14">插件</h1>
 <h2 id="wtforms">wtforms</h2>
 <p>对传入的http参数进行验证</p>
-<h3 id="_18">验证层</h3>
+<h3 id="_15">验证层</h3>
 <p>对参数校验， 一般防止在app下面，叫forms</p>
 <h1 id="wsgi">WSGI</h1>
 <p>Web Server Gateway Interface </p>
 <p>Flask 通过Werkzeug实现请求解析（request）和响应封装（response）, 通过WSGI将HTTP的请求数据转换成Flask程序能够接受的python数据， flask 根据URL对应的视图函数获取返回值生成响应，再经过WSGI转换生成HTTP响应返回给客户端</p>
-<h1 id="_19">服务器端推送</h1>
+<h1 id="_16">服务器端推送</h1>
 <h2 id="sse">SSE</h2>
 <p>Server-Sent Event</p>
 <p>通过HTML5种的EventSource API实现，SSE会在客户端和服务器端建立一个单向的通道，客户端监听服务器端的数据，而服务器端可以在任意时间发送数据，二者建立类似订阅发布的通信模式</p>
 <h2 id="ajax">传统轮询 AJAX</h2>
 <p>客户端使用AJAX技术不断向服务器发送HTTP请求，然后获取新的数据并更新页面</p>
-<h2 id="_20">长轮询</h2>
+<h2 id="_17">长轮询</h2>
 <p>类似于传统轮询，服务器端若没有返回数据，就一直保持连接开启，直到有数据返回，取回数据</p>
 <h2 id="websocket">Websocket</h2>
 <p>基于TCP协议的全双工通信协议，对比上述3种，实时性更强</p>
-<h1 id="_21">安全防护</h1>
+<h1 id="_18">安全防护</h1>
 <h2 id="sql">SQL 注入</h2>
 <p>通过ORM(Object Relational Mapper) 可以一定程度避免SQL注入的问题</p>
 <p>安全检查清单，参考OWASP Top 10 或是CWE Top 25 <a href="https://cwe.mitre.org/top25">https://cwe.mitre.org/top25</a> , 漏洞检测工具<a href="https://github.com/OWASP/OWASP-WebScarab">https://github.com/OWASP/OWASP-WebScarab</a></p>
 <h2 id="xss">XSS</h2>
 <p>Cross-site Scripting</p>
-<h3 id="_22">反射型</h3>
+<h3 id="_19">反射型</h3>
 <p>通过URL注入攻击脚本，用户访问URL时会执行攻击脚本</p>
 <div class="hlcode"><pre><span class="p">@</span><span class="nx">app.route</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">)</span>
 <span class="nx">def</span> <span class="nx">hello</span><span class="p">():</span>
@@ -429,7 +404,7 @@
 
 
 <p>如果站点A存在XSS漏洞，攻击者将包含攻击的代码链接发送给网站A用户Rick，当Rick访问这个链接就会被执行攻击代码</p>
-<h3 id="_23">存储型</h3>
+<h3 id="_20">存储型</h3>
 <p>任何用户访问包含攻击代码的页面都会被殃及。如果用户的表单数据不经过任何处理存到数据库，很容易插入Javascript代码</p>
 <div class="hlcode"><pre><span class="nt">&lt;script&gt;</span>window.location.href=&quot;http://attacker.com&quot;;<span class="nt">&lt;/script&gt;</span>
 </pre></div>
@@ -453,12 +428,70 @@
 <p>一般通过在客户端页面加入伪随机数来防御CSRF攻击，这个数称为CSRF token</p>
 <p>POST方法请求通过表单创建，把服务器创建的伪随机数天假到表单中的隐藏字段的里和session变量中，当用户提交表单是，令牌会和表单数据一起提交，在服务器端处理POST请求时，对表单中的令牌进行验证来确认session的令牌</p>
 <p>对于AJAX请求，可以在XMLHttp Request请求首部天假一个自定义字段X-CSRFtoken保存CSRF令牌</p>
+<h1 id="debug-toolbar">Debug Toolbar</h1>
+<div class="hlcode"><pre><span class="n">pipenv</span> <span class="n">install</span> <span class="n">flask</span><span class="o">-</span><span class="n">debugtoolbar</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Flask</span>
+<span class="n">from</span> <span class="n">flask_debugtoolbar</span> <span class="n">import</span> <span class="n">DebugToolbarExtension</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">toolbar</span> <span class="o">=</span> <span class="n">DebugToolbarExtension</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</pre></div>
+
+
+<h1 id="_21">工厂函数</h1>
+<div class="hlcode"><pre><span class="n">def</span> <span class="n">create_app</span><span class="p">(</span><span class="n">config_name</span><span class="o">=</span><span class="n">None</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">if</span> <span class="n">config_name</span> <span class="n">is</span> <span class="n">None</span><span class="o">:</span>
+            <span class="n">config_name</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="err">&#39;</span><span class="n">FLASK_CONFIG</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">development</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="err">&#39;</span><span class="n">bluelog</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">from_object</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">config_name</span><span class="p">])</span>
+    <span class="n">register_logging</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">register_extenstions</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">register_blueprints</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">register_commands</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">register_errors</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">register_shell_context</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">register_template_context</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">app</span>
+
+<span class="n">def</span> <span class="n">register_logging</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">pass</span>
+
+<span class="n">def</span> <span class="n">register_extensions</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">bootstrap</span><span class="p">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">db</span><span class="p">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">ckeditor</span><span class="p">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">mail</span><span class="p">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">moment</span><span class="p">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="n">def</span> <span class="n">register_blueprints</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">blog</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">admin</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="err">&#39;</span><span class="o">/</span><span class="n">admin</span><span class="err">&#39;</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">admin</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="err">&#39;</span><span class="o">/</span><span class="n">auth</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="n">def</span> <span class="n">register_shell_context</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">:</span>
+    <span class="err">@</span><span class="n">app</span><span class="p">.</span><span class="n">shell_context_processor</span>
+    <span class="n">def</span> <span class="n">make_shell_context</span><span class="p">()</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">dict</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
+
+<span class="n">def</span> <span class="n">register_template_context</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">pass</span>
+
+<span class="n">def</span> <span class="n">register_errors</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">:</span>
+    <span class="err">@</span><span class="n">app</span><span class="p">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+    <span class="n">def</span> <span class="n">bad_request</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="err">&#39;</span><span class="n">error</span><span class="o">/</span><span class="mf">400.</span><span class="n">html</span><span class="err">&#39;</span><span class="p">),</span> <span class="mi">400</span>
+
+<span class="n">def</span> <span class="n">register_commands</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">pass</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

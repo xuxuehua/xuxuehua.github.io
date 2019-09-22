@@ -37,9 +37,14 @@
 </li>
 <li><a href="#_5">操作</a><ul>
 <li><a href="#_6">控制台命令</a></li>
+<li><a href="#privilege">Privilege</a></li>
 </ul>
 </li>
 <li><a href="#_7">数据库操作</a></li>
+<li><a href="#concept">Concept</a><ul>
+<li><a href="#role">Role</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="_1">安装</h1>
@@ -108,11 +113,31 @@
 <span class="err">\</span><span class="n">l</span><span class="err">：列出所有数据库。</span>
 <span class="err">\</span><span class="n">c</span> <span class="p">[</span><span class="n">database_name</span><span class="p">]</span><span class="err">：连接其他数据库。</span>
 <span class="err">\</span><span class="n">d</span><span class="err">：列出当前数据库的所有表格。</span>
-<span class="err">\</span><span class="n">d</span> <span class="p">[</span><span class="n">table_name</span><span class="p">]</span><span class="err">：列出某一张表格的结构。</span>
+<span class="err">\</span><span class="n">d</span> <span class="p">[</span><span class="n">table_name</span><span class="p">]</span><span class="err">：列出某一张表格的结构</span>
+<span class="err">\</span><span class="n">dn</span><span class="o">:</span> <span class="n">list</span> <span class="n">schema</span>
+<span class="err">\</span><span class="n">dt</span><span class="o">:</span> <span class="n">list</span> <span class="n">tables</span>
+<span class="err">\</span><span class="n">dt</span> <span class="n">SCHEMA</span><span class="p">.</span><span class="o">*</span>  <span class="err">列出</span><span class="n">schema</span><span class="err">所有的</span><span class="n">tables</span>
 <span class="err">\</span><span class="n">du</span><span class="err">：列出所有用户。</span>
 <span class="err">\</span><span class="n">e</span><span class="err">：打开文本编辑器。</span>
 <span class="err">\</span><span class="n">conninfo</span><span class="err">：列出当前数据库和连接的信息。</span>
 <span class="err">\</span><span class="n">q</span>  <span class="err">退出</span>
+</pre></div>
+
+
+<h2 id="privilege">Privilege</h2>
+<div class="hlcode"><pre><span class="mi">1</span><span class="err">、查看某用户的表权限</span>
+<span class="n">select</span> <span class="o">*</span> <span class="n">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">table_privileges</span> <span class="n">where</span> <span class="n">grantee</span><span class="o">=</span><span class="err">&#39;</span><span class="n">user_name</span><span class="err">&#39;</span><span class="p">;</span>
+
+<span class="mi">2</span><span class="err">、查看</span><span class="n">usage</span><span class="err">权限表</span>
+<span class="n">select</span> <span class="o">*</span> <span class="n">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">usage_privileges</span> <span class="n">where</span> <span class="n">grantee</span><span class="o">=</span><span class="err">&#39;</span><span class="n">user_name</span><span class="err">&#39;</span><span class="p">;</span>
+
+<span class="mi">3</span><span class="err">、查看存储过程函数相关权限表</span>
+<span class="n">select</span> <span class="o">*</span> <span class="n">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">routine_privileges</span> <span class="n">where</span> <span class="n">grantee</span><span class="o">=</span><span class="err">&#39;</span><span class="n">user_name</span><span class="err">&#39;</span><span class="p">;</span>
+
+<span class="mi">4</span><span class="err">、建用户授权</span>
+<span class="n">create</span> <span class="n">user</span> <span class="n">user_name</span><span class="p">;</span>
+<span class="n">alter</span> <span class="n">user</span> <span class="n">user_name</span> <span class="n">with</span> <span class="n">password</span> <span class="err">&#39;&#39;</span><span class="p">;</span>
+<span class="n">alter</span> <span class="n">user</span> <span class="n">user_name</span> <span class="n">with</span> <span class="n">CONNECTION</span> <span class="n">LIMIT</span>  <span class="mi">20</span><span class="p">;</span><span class="err">#连接数限制</span>
 </pre></div>
 
 
@@ -150,12 +175,18 @@
 <span class="cp"># 删除表格</span>
 <span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">backup_tbl</span><span class="p">;</span>
 </pre></div>
+
+
+<h1 id="concept">Concept</h1>
+<h2 id="role">Role</h2>
+<p>PostgreSQL manages database access permissions using the concept of <em>roles</em>. A role can be thought of as either a database user, or a group of database users, depending on how the role is set up. </p>
+<p>After version 8.1 Any role can act as a user, a group, or both.</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

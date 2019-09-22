@@ -79,26 +79,42 @@
 <h1 id="jinja2">jinja2</h1>
 <p>使用.来获取变量属性</p>
 <p>如user.username 等同于获取字典中user['username']</p>
+<ol>
+<li>模板不支持多继承，也就是子模板中定义的块，不可能同时被两个父模板替换。</li>
+<li>模板中不能定义多个同名的块，子模板和父模板都不行，因为这样无法知道要替换哪一个部分的内容。</li>
+</ol>
+<p>建议在<code>endblock</code>关键字后也加上块名，比如<code>{% endblock block_name %}</code>。虽然对程序没什么作用，但是当有多个块嵌套时，可读性好很多。</p>
 <h2 id="_1">模版继承</h2>
 <p>super函数可以向基类模板中的块追加内容, 即父类块中添加内容</p>
-<div class="hlcode"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;layout.html&#39;</span> <span class="cp">%}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    </span><span class="cp">{{</span> <span class="nb">super</span><span class="o">()</span> <span class="cp">}}</span><span class="x"></span>
-<span class="x">    </span><span class="cp">{{</span> <span class="nv">data.age</span> <span class="cp">}}</span><span class="x"></span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">data.age</span> <span class="o">&lt;</span> <span class="m">18</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.name</span> <span class="cp">}}</span><span class="x"></span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">elif</span> <span class="nv">data.age</span> <span class="o">==</span> <span class="m">30</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">        I am 30 years old.</span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">        </span><span class="cp">{{</span> <span class="nv">data.age</span> <span class="cp">}}</span><span class="x"></span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<p>将父模板”layout.html”改为</p>
+<div class="hlcode"><pre><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="cp">{%</span> <span class="k">block</span> <span class="nv">head</span> <span class="cp">%}</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">url_for</span><span class="o">(</span><span class="s1">&#39;static&#39;</span><span class="o">,</span> <span class="nv">filename</span><span class="o">=</span><span class="s1">&#39;style.css&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="nt">&lt;/title&gt;</span>
+    <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;page&quot;</span><span class="nt">&gt;</span>
+    <span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
 </pre></div>
 
 
-<blockquote>
-<p>这里的super() 会实现继承效果</p>
-</blockquote>
+<p>并在子模板里，加上”head”块和”title”块</p>
+<div class="hlcode"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span>Block Sample<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">head</span> <span class="cp">%}</span>
+    <span class="cp">{{</span> <span class="nb">super</span><span class="o">()</span> <span class="cp">}}</span>
+    <span class="nt">&lt;style</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
+        h1 { color: #336699; }
+    <span class="nt">&lt;/style&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre></div>
+
+
+<p>父模板同子模板的”head”块中都有内容。运行后，你可以看到，父模板中的”head”块语句先被加载，而后是子模板中的”head”块语句。这就得益于我们在子模板的”head”块中加上了表达式<code>{{ super() }}</code>。</p>
 <h3 id="_2">子模板</h3>
 <p>避免块混乱，结束标签可以指明块名称</p>
 <div class="hlcode"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
@@ -231,6 +247,29 @@
 </pre></div>
 
 
+<p>宏接收表单类实例的字段属性和附加的关键字参数作为输入，返回包含label标签，表单字段，错误消息列表的HTML表单字段代码</p>
+<div class="hlcode"><pre><span class="cp">{%</span> <span class="k">macro</span> <span class="nv">form_field</span><span class="o">(</span><span class="nv">field</span><span class="o">)</span> <span class="cp">%}</span>
+  <span class="cp">{{</span> <span class="nv">field.label</span> <span class="cp">}}</span><span class="nt">&lt;br&gt;</span>
+  <span class="cp">{{</span> <span class="nv">field</span><span class="o">(**</span><span class="nv">kwargs</span><span class="o">)</span> <span class="cp">}}</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">{%</span> <span class="k">if</span> <span class="nv">field.errors</span> <span class="cp">%}</span>
+        <span class="cp">{%</span> <span class="k">for</span> <span class="nv">error</span> <span class="k">in</span> <span class="nv">field.errors</span> <span class="cp">%}</span>
+        <span class="nt">&lt;small</span> <span class="na">class=</span><span class="s">&quot;error&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">error</span> <span class="cp">}}</span><span class="nt">&lt;/small&gt;&lt;br&gt;</span>
+        <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endmacro</span> <span class="cp">%}</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="p">{</span><span class="o">%</span> <span class="nb">from</span> <span class="s1">&#39;macros.html&#39;</span> <span class="k">import</span> <span class="nx">form_field</span> <span class="o">%</span><span class="p">}</span>
+<span class="o">&lt;</span><span class="nb">form</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="o">&gt;</span>
+    <span class="p">{{</span> <span class="nx">form.csrf_token</span> <span class="p">}}</span>
+    <span class="p">{{</span> <span class="nx">form_field</span><span class="p">(</span><span class="nx">form.username</span><span class="p">)</span> <span class="p">}}</span>
+    <span class="p">{{</span> <span class="nx">form_field</span><span class="p">(</span><span class="nx">form.password</span><span class="p">)</span> <span class="p">}}</span>
+        <span class="nx">...</span>
+<span class="o">&lt;/</span><span class="nb">form</span><span class="o">&gt;</span>
+</pre></div>
+
+
 <h2 id="_5">加载静态资源</h2>
 <div class="hlcode"><pre><span class="cp">{%</span> <span class="k">macro</span> <span class="nv">static_file</span><span class="o">(</span><span class="nv">type</span><span class="o">,</span> <span class="nv">filename_or_url</span><span class="o">,</span> <span class="nv">local</span><span class="o">=</span><span class="kp">True</span><span class="o">)</span> <span class="cp">%}</span>
     <span class="cp">{%</span> <span class="k">if</span> <span class="nv">local</span> <span class="cp">%}</span>
@@ -294,7 +333,7 @@
 </blockquote>
 <h2 id="safe">safe</h2>
 <p>将变量值标记为安全，避免转义</p>
-<p>不要直接对用户输入的内容实用safe过滤器，否则很容器被植入恶意代码，导致XSS攻击</p>
+<p>不要直接对用户输入的内容使用safe过滤器，否则很容器被植入恶意代码，导致XSS攻击</p>
 <h2 id="template_filter">自定义过滤器 template_filter()</h2>
 <p>使用app.template_filter() 装饰器可以自定义过滤器</p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Markup</span>
@@ -489,7 +528,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

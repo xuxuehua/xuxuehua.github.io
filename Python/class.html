@@ -65,7 +65,8 @@
 <li><a href="#__del__">__del__</a></li>
 <li><a href="#__call__">__call__</a></li>
 <li><a href="#__str__">__str__ 默认输出其返回值</a></li>
-<li><a href="#__getitem____setitem____delitem__">__getitem__、__setitem__、__delitem__</a></li>
+<li><a href="#__repr__">__repr__</a></li>
+<li><a href="#getitemsetitemdelitem">getitem、setitem、delitem`</a></li>
 <li><a href="#__iter__">__iter__</a></li>
 <li><a href="#_16">查询对象的属性</a></li>
 </ul>
@@ -84,6 +85,7 @@
 </li>
 <li><a href="#instance">instance() 函数判断对象类型</a></li>
 <li><a href="#_22">函数重载</a></li>
+<li><a href="#_23">类拆分 （优化）</a></li>
 </ul>
 </div>
 <h1 id="_1">类之间的关系</h1>
@@ -755,7 +757,11 @@
 </pre></div>
 
 
-<h2 id="__getitem____setitem____delitem__"><code>__getitem__、__setitem__、__delitem__</code></h2>
+<h2 id="__repr__"><code>__repr__</code></h2>
+<p><code>__repr__</code>和<code>__str__</code>这两个方法都是用于显示的，<code>__str__</code>是面向用户的，而<code>__repr__</code>面向程序员。</p>
+<p>打印操作会首先尝试<code>__str__</code>和str内置函数(print运行的内部等价形式)，它通常应该返回一个友好的显示。<code>__repr__</code>用于所有其他的环境中：用于交互模式下提示回应以及repr函数，如果没有使用<code>__str__</code>，会使用print和str。它通常应该返回一个编码字符串，可以用来重新创建对象，或者给开发者详细的显示。</p>
+<p>当我们想所有环境下都统一显示的话，可以重构<code>__repr__</code>方法；当我们想在不同环境下支持不同的显示，例如终端用户显示使用<code>__str__</code>，而程序员在开发期间则使用底层的<code>__repr__</code>来显示，实际上<code>__str__</code>只是覆盖了<code>__repr__</code>以得到更友好的用户显示。</p>
+<h2 id="getitemsetitemdelitem"><strong>getitem</strong>、<strong>setitem</strong>、<strong>delitem</strong>`</h2>
 <p>用于索引操作，如字典。以上分别表示获取、设置、删除数据</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
 
@@ -1219,12 +1225,41 @@
     <span class="n">def</span> <span class="n">get_context_length</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
         <span class="k">return</span> <span class="n">len</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">__context</span><span class="p">)</span>
 </pre></div>
+
+
+<h1 id="_23">类拆分 （优化）</h1>
+<p>job 在其中出现了很多次，而且它们表达的是一个意义实体，这种情况下，我们可以考虑将这部分分解出来，作为单独的类。</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Person</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sex</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">job_title</span><span class="p">,</span> <span class="n">job_description</span><span class="p">,</span> <span class="n">company_name</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">sex</span> <span class="o">=</span> <span class="n">sex</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">job_title</span> <span class="o">=</span> <span class="n">job_title</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">job_description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">company_name</span> <span class="o">=</span> <span class="n">company_name</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Person</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sex</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">job_title</span><span class="p">,</span> <span class="n">job_description</span><span class="p">,</span> <span class="n">company_name</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">sex</span> <span class="o">=</span> <span class="n">sex</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">job</span> <span class="o">=</span> <span class="n">Job</span><span class="p">(</span><span class="n">job_title</span><span class="p">,</span> <span class="n">job_description</span><span class="p">,</span> <span class="n">company_name</span><span class="p">)</span>
+
+<span class="n">class</span> <span class="n">Job</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">job_title</span><span class="p">,</span> <span class="n">job_description</span><span class="p">,</span> <span class="n">company_name</span><span class="p">)</span><span class="o">:</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">job_title</span> <span class="o">=</span> <span class="n">job_title</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">job_description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">company_name</span> <span class="o">=</span> <span class="n">company_name</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

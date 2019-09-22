@@ -54,9 +54,17 @@
 </li>
 <li><a href="#_4">文件</a><ul>
 <li><a href="#libcso6">libc.so.6</a></li>
+<li><a href="#varlogauthlog">/var/log/auth.log</a></li>
+<li><a href="#varlogbootlog">/var/log/boot.log</a></li>
+<li><a href="#varlogcronlog">/var/log/cron.log</a></li>
+<li><a href="#varlogkernellog">/var/log/kernel.log</a></li>
+<li><a href="#varlogmaillog">/var/log/maillog</a></li>
+<li><a href="#varlogmessage">/var/log/message</a></li>
 <li><a href="#varloglastlog">/var/log/lastlog</a></li>
+<li><a href="#varlogsecure">/var/log/secure</a></li>
 <li><a href="#varlogutmp">/var/log/utmp</a></li>
 <li><a href="#varlogwtmp">/var/log/wtmp</a></li>
+<li><a href="#varlogyumlog">/var/log/yum.log</a></li>
 </ul>
 </li>
 </ul>
@@ -206,18 +214,34 @@
 <p>/lib64/libc.so.6 是重要依赖的库文件，删除后很多命令无法使用，包括关机都无法执行。</p>
 <p>重启会卡在登录界面。</p>
 <p>需要进入救援模式来恢复</p>
+<h2 id="varlogauthlog">/var/log/auth.log</h2>
+<p>身份认证日志</p>
+<h2 id="varlogbootlog">/var/log/boot.log</h2>
+<p>系统启动日志</p>
+<h2 id="varlogcronlog">/var/log/cron.log</h2>
+<p>Cron 日志信息</p>
+<h2 id="varlogkernellog">/var/log/kernel.log</h2>
+<p>内核日志</p>
+<h2 id="varlogmaillog">/var/log/maillog</h2>
+<p>邮件服务器日志</p>
+<h2 id="varlogmessage">/var/log/message</h2>
+<p>记录系统日志或当前活动日志</p>
 <h2 id="varloglastlog">/var/log/lastlog</h2>
 <p>最近登录成功事件</p>
+<h2 id="varlogsecure">/var/log/secure</h2>
+<p>认证日志</p>
 <h2 id="varlogutmp">/var/log/utmp</h2>
 <p>当前机器登录的全部用户的日志</p>
 <h2 id="varlogwtmp">/var/log/wtmp</h2>
 <p>系统创建以来登录过的用户</p>
+<h2 id="varlogyumlog">/var/log/yum.log</h2>
+<p>yum</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

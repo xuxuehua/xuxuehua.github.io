@@ -39,6 +39,11 @@
 <li><a href="#dml">DML 操作语言</a></li>
 </ul>
 </li>
+<li><a href="#schema">模式 schema</a></li>
+<li><a href="#table">表 table</a></li>
+<li><a href="#columnfield">列/字段 (column/field)</a></li>
+<li><a href="#rowrecord">行/记录 (row/record)</a></li>
+<li><a href="#scalar">标量 scalar</a></li>
 </ul>
 </li>
 <li><a href="#mysql">MySQL</a><ul>
@@ -126,8 +131,7 @@
 </div>
 <h1 id="_1">基础知识</h1>
 <h2 id="rdbms">RDBMS 关系型数据库管理系统</h2>
-<p><code>关系型数据库</code>又称<code>为关系型数据库管理系统</code>(RDBMS),它是利用数据概念实现对数据处理的算法，达到对数据及其快速的增删改查操作</p>
-<p>例子：</p>
+<p><strong>关系型数据库</strong>又称<code>为关系型数据库管理系统</code>(RDBMS),它是利用数据概念实现对数据处理的算法，达到对数据及其快速的增删改查操作</p>
 <p><code>表单A</code> 中有一个名为user_id的字段</p>
 <p><code>表单B</code> 中也有一个名为user_id的字段</p>
 <p>现在我把他们建立一种联系，当我去修改<code>表单A</code>的user_id的值时，<code>表单B</code> 中的user_id的值也会自动进行修改，因为他们建立的一种<code>关系</code>，因为这种关系，<code>使得数据具有一致性</code></p>
@@ -137,6 +141,7 @@
 <h2 id="_3">外键</h2>
 <p>主要用于两个表直接的关联, 必须使用InnoDB 表引擎</p>
 <p>外键可以方便的解决数据关联和一致性的问题，但是由于目前互联网数据流量很大，一般在中间层实现约束和控制，尤其是面向Web 应用，</p>
+<p>用于A表存储B表的主键值以便和B表建立联系的关系字段</p>
 <p>比如我现在有一个名为<code>A</code> 和 <code>B</code> 的表单，在<code>A</code> 中有一个名为 <strong>username</strong>的字段，在<code>B</code>中有一个名为<strong>user_email</strong>的字段，这时<strong>username去关联user_emai</strong>l的字段，这时的<strong>username</strong>字段就叫做<strong>外键.</strong></p>
 <p>user 表：id 为主键</p>
 <p>profile 表： uid 为主键</p>
@@ -148,6 +153,16 @@
 <h2 id="_6">数据库</h2>
 <h3 id="ddl">DDL 定义语言</h3>
 <h3 id="dml">DML 操作语言</h3>
+<h2 id="schema">模式 schema</h2>
+<p>用于定义表结构信息</p>
+<h2 id="table">表 table</h2>
+<p>存储数据的特定结构</p>
+<h2 id="columnfield">列/字段 (column/field)</h2>
+<p>表中的列，存储一系列特定的数据，列组成表</p>
+<h2 id="rowrecord">行/记录 (row/record)</h2>
+<p>表中的行，代表一条记录</p>
+<h2 id="scalar">标量 scalar</h2>
+<p>指单一数据，与之相对的是集合collection</p>
 <h1 id="mysql">MySQL</h1>
 <p>与MariaDB的接口基本兼容</p>
 <p>使用插件式存储引擎</p>
@@ -450,7 +465,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

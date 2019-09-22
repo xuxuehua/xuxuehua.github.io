@@ -28,6 +28,7 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#ac">ac</a><ul>
 <li><a href="#-d-daily-totals">-d, --daily-totals</a></li>
+<li><a href="#silence">silence</a></li>
 <li><a href="#-p-individual-totals">-p, --individual-totals</a></li>
 </ul>
 </li>
@@ -36,26 +37,35 @@
 <h1 id="ac">ac</h1>
 <p>打印用户连接时间</p>
 <p>print statistics about users' connect time</p>
+<p>显示所有用户连接总时间</p>
 <h2 id="-d-daily-totals">-d, --daily-totals</h2>
-<p>​              Print totals for each day rather than just one big total at the end.  The output looks like this:<br />
-​                      Jul  3  total     1.17<br />
-​                      Jul  4  total     2.10<br />
-​                      Jul  5  total     8.23<br />
-​                      Jul  6  total     2.10<br />
-​                      Jul  7  total     0.30</p>
+<p>显示每天所有用户连接总时间</p>
+<p>Print totals for each day rather than just one big total at the end.  The output looks like this:<br />
+Jul  3  total     1.17<br />
+Jul  4  total     2.10<br />
+Jul  5  total     8.23<br />
+Jul  6  total     2.10<br />
+Jul  7  total     0.30</p>
+<h2 id="silence">silence</h2>
+<p>显示指定用户连接时间</p>
+<div class="hlcode"><pre><span class="n">ac</span> <span class="o">-</span><span class="n">d</span> <span class="n">silence</span>   <span class="err">#显示指定用户每天连接时间</span>
+</pre></div>
+
+
 <h2 id="-p-individual-totals">-p, --individual-totals</h2>
-<p>​              Print time totals for each user in addition to the usual everything-lumped-into-one value.  It looks like:<br />
-​                      bob       8.06<br />
-​                      goff      0.60<br />
-​                      maley     7.37<br />
-​                      root      0.12<br />
-​                      total    16.15</p>
+<p>显示每个用户连接时间</p>
+<p>Print time totals for each user in addition to the usual everything-lumped-into-one value.  It looks like:<br />
+bob       8.06<br />
+goff      0.60<br />
+maley     7.37<br />
+root      0.12<br />
+total    16.15</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

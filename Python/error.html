@@ -39,6 +39,11 @@
 <li><a href="#_5">自定义异常</a></li>
 </ul>
 </li>
+<li><a href="#assert">assert</a><ul>
+<li><a href="#_6">单行</a></li>
+<li><a href="#_7">多行</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="_1">异常处理</h1>
@@ -406,12 +411,39 @@ finally block中的语句都会被执行，哪怕前面的try和excep block中�
 <span class="n">except</span> <span class="n">MyInputError</span> <span class="n">as</span> <span class="n">err</span><span class="o">:</span>
     <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">error</span><span class="o">:</span> <span class="p">{}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
 </pre></div>
+
+
+<h1 id="assert">assert</h1>
+<p>Python 的 assert 语句，可以说是一个 debug 的好工具，主要用于测试一个条件是否满足。如果测试的条件满足，则什么也不做，相当于执行了 pass 语句；如果测试条件不满足，便会抛出异常 AssertionError，并返回具体的错误信息（optional）。</p>
+<p>assert 并不适用 run-time error 的检查。比如你试图打开一个文件，但文件不存在；再或者是你试图从网上下载一个东西，但中途断网了了等等，这些情况下，还是应该使用错误异常，进行正确处理。</p>
+<p>使用 assert 时，一定不要加上括号，否则无论表达式对与错，assert 检查永远不会 fail。</p>
+<h2 id="_6">单行</h2>
+<p>这里的<code>__debug__</code>是一个常数。如果 Python 程序执行时附带了<code>-O</code>这个选项，比如<code>Python test.py -O</code>，那么程序中所有的 assert 语句都会失效，常数<code>__debug__</code>便为 False；反之<code>__debug__</code>则为 True。</p>
+<div class="hlcode"><pre><span class="n">assert</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span>
+</pre></div>
+
+
+<p>它就相当于下面这两行代码：</p>
+<div class="hlcode"><pre><span class="k">if</span> <span class="n">__debug__</span><span class="o">:</span>
+    <span class="k">if</span> <span class="n">not</span> <span class="n">expression</span><span class="o">:</span> <span class="n">raise</span> <span class="n">AssertionError</span>
+</pre></div>
+
+
+<h2 id="_7">多行</h2>
+<div class="hlcode"><pre><span class="n">assert</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span>  <span class="err">&#39;</span><span class="n">assertion</span> <span class="n">is</span> <span class="n">wrong</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<p>它就相当于下面这两行代码：</p>
+<div class="hlcode"><pre><span class="k">if</span> <span class="n">__debug__</span><span class="o">:</span>
+    <span class="k">if</span> <span class="n">not</span> <span class="n">expression1</span><span class="o">:</span> <span class="n">raise</span> <span class="n">AssertionError</span><span class="p">(</span><span class="n">expression2</span><span class="p">)</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

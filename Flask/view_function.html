@@ -201,7 +201,11 @@
 
 
 <h2 id="add_url_rule">add_url_rule</h2>
-<p>在使用基于类的视图，即插式图，需要使用该方法</p>
+<p>在使用基于类的视图，即插式图，需要使用该方法， 实现了route装饰器的效果</p>
+<div class="hlcode"><pre><span class="nx">add_url_rule</span><span class="p">(</span><span class="nx">rule</span><span class="p">,</span> <span class="nx">endpoint</span><span class="p">,</span> <span class="nx">view_function</span><span class="p">)</span>
+</pre></div>
+
+
 <p>但装饰器里面不需要输入view_func </p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Flask</span>
 
@@ -214,6 +218,11 @@
 <span class="n">app</span><span class="p">.</span><span class="n">add_url_rule</span><span class="p">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">hello</span><span class="o">/</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">view_func</span><span class="o">=</span><span class="n">hello</span><span class="p">)</span>
 
 <span class="n">app</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+</pre></div>
+
+
+<p>查看当前程序注册的所有路由</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">flask</span> <span class="n">routes</span>
 </pre></div>
 
 
@@ -522,6 +531,9 @@
 </pre></div>
 
 
+<blockquote>
+<p>这里的hello是视图函数</p>
+</blockquote>
 <h2 id="abort">abort</h2>
 <p>该函数不需要使用return语句，一旦被调用，后面的代码就不会被执行</p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">abort</span>
@@ -610,7 +622,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

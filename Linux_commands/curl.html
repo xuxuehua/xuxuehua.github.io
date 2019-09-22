@@ -154,6 +154,19 @@
 </pre></div>
 
 
+<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span>  \
+<span class="o">--</span><span class="n">header</span> <span class="err">&#39;</span><span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="o">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span><span class="err">&#39;</span> \
+<span class="o">--</span><span class="n">header</span> <span class="err">&#39;</span><span class="n">Accept</span><span class="o">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span><span class="err">&#39;</span>  \
+<span class="o">--</span><span class="n">header</span> <span class="err">&#39;</span><span class="n">appkey</span><span class="o">:</span><span class="n">key</span><span class="err">&#39;</span>  \
+<span class="o">--</span><span class="n">header</span> <span class="err">&#39;</span><span class="n">appsign</span><span class="o">=</span><span class="n">sign</span><span class="err">&#39;</span>  \
+<span class="o">--</span><span class="n">header</span> <span class="err">&#39;</span><span class="n">signmethod</span><span class="o">:</span><span class="n">md5</span><span class="err">&#39;</span>  \
+<span class="o">--</span><span class="n">header</span> <span class="err">&#39;</span><span class="n">deviceType</span><span class="o">:</span><span class="mi">1</span><span class="err">&#39;</span>  \
+<span class="o">--</span><span class="n">header</span> <span class="err">&#39;</span><span class="n">deviceId</span><span class="o">:</span><span class="mi">1</span><span class="err">&#39;</span>  \
+<span class="o">-</span><span class="n">d</span> <span class="err">&#39;</span><span class="p">{</span><span class="s">&quot;city&quot;</span><span class="o">:</span><span class="s">&quot;shanghai&quot;</span><span class="p">,</span><span class="s">&quot;country&quot;</span><span class="o">:</span><span class="s">&quot;China&quot;</span><span class="p">,</span><span class="s">&quot;headimg&quot;</span><span class="o">:</span><span class="s">&quot;https://1.com/1.png&quot;</span><span class="p">,</span><span class="s">&quot;nick&quot;</span><span class="o">:</span><span class="s">&quot;123&quot;</span><span class="p">,</span><span class="s">&quot;openid&quot;</span><span class="o">:</span><span class="s">&quot;xxxxx&quot;</span><span class="p">,</span><span class="s">&quot;province&quot;</span><span class="o">:</span><span class="s">&quot;Shanghai&quot;</span><span class="p">,</span><span class="s">&quot;sex&quot;</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span><span class="s">&quot;unionid&quot;</span><span class="o">:</span><span class="s">&quot;om-xxxxxx&quot;</span><span class="p">}</span><span class="err">&#39;</span> \
+<span class="err">&#39;</span><span class="n">https</span><span class="o">:</span><span class="c1">//xurick.com/user/transfer&#39;</span>
+</pre></div>
+
+
 <h3 id="-e-referer">-e/--referer 告知来源地址</h3>
 <p>很多服务器会检查http访问的referer从而来控制访问。比如：你是先访问首页，然后再访问首页中的邮箱页面，这里访问邮箱的referer地址就是访问首页成功后的页面地址，如果服务器发现对邮箱页面访问的referer地址不是首页的地址，就断定那是个盗连了<br />
 curl中内置option：-e可以让我们设定referer</p>
@@ -612,7 +625,7 @@ curl中内置option：-e可以让我们设定referer</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

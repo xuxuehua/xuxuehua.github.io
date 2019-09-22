@@ -100,13 +100,18 @@
 <li><a href="#pod-controller">Pod 控制器 Controller</a><ul>
 <li><a href="#replication-controller">Replication Controller (淘汰)</a></li>
 <li><a href="#replicaset">ReplicaSet</a></li>
-<li><a href="#deployment">Deployment （常用）</a></li>
-<li><a href="#services">Services</a><ul>
-<li><a href="#services_1">Services 类型</a></li>
+<li><a href="#deployment">Deployment （常用）</a><ul>
+<li><a href="#hpa">HPA</a></li>
 </ul>
 </li>
+<li><a href="#statefulset">StatefulSet</a></li>
 <li><a href="#job">Job</a></li>
+<li><a href="#cronjob">CronJob</a></li>
 <li><a href="#daemonset">DaemonSet</a></li>
+</ul>
+</li>
+<li><a href="#services">Services</a><ul>
+<li><a href="#services_1">Services 类型</a></li>
 </ul>
 </li>
 <li><a href="#_7">环境变量</a><ul>
@@ -392,7 +397,7 @@
 <p>将主应用容器中的内容进行标准化输出</p>
 <p>如日志数据或者指标数据的输出，</p>
 <h2 id="pod-controller">Pod 控制器 Controller</h2>
-<p>借助Controller 对Pod进行管理，实现一次性的Pod对象管理</p>
+<p>借助Controller 对Pod进行管理，实现一次性的Pod对象管理, 对同一类pod进行管理</p>
 <p>包括以下多种调度器</p>
 <h3 id="replication-controller">Replication Controller (淘汰)</h3>
 <p>定义了一个期望的场景，声明某种pod的副本数量在任意时刻都符合某个预期值</p>
@@ -402,8 +407,23 @@
 <h3 id="deployment">Deployment （常用）</h3>
 <p>Deployment 为Pod和ReplicaSet提供一个声明方法，用来替代Replication Controller 来方便管理</p>
 <p>可以声明一个yaml文件，确保deployment的状态信息</p>
-<h3 id="services">Services</h3>
+<p>管理无状态的应用</p>
+<h4 id="hpa">HPA</h4>
+<p>Horizontal Pod Autoscaler</p>
+<p>根据资源要求，自动扩展资源</p>
+<h3 id="statefulset">StatefulSet</h3>
+<p>管理有状态应用</p>
+<h3 id="job">Job</h3>
+<p>Pods管理程序，包含一系列job</p>
+<p>类似于cronjob</p>
+<h3 id="cronjob">CronJob</h3>
+<p>计划的任务</p>
+<h3 id="daemonset">DaemonSet</h3>
+<p>确保所有nodes 运行同一个指定类型的pod</p>
+<h2 id="services">Services</h2>
 <p>允许多个deployments之间通信，从而确保pods之间通信</p>
+<p>Services 通过标签选择器来关联后端的pod</p>
+<p>其本质就是iptables的DNAT规则， 在1.11版本之后，使用ipvs来实现更好的负载均衡效果</p>
 <p>实例</p>
 <div class="hlcode"><pre><span class="n">kind</span><span class="o">:</span> <span class="n">Service</span>
 <span class="n">opiVersion</span><span class="o">:</span> <span class="n">v1</span>
@@ -419,7 +439,7 @@
 </pre></div>
 
 
-<h4 id="services_1">Services 类型</h4>
+<h3 id="services_1">Services 类型</h3>
 <div class="hlcode"><pre><span class="n">Internal</span><span class="o">:</span><span class="err">仅用于集群内部通信的</span><span class="n">ClusterIP</span><span class="err">类型，即</span><span class="kd">internal</span> <span class="n">IP</span>
 
 <span class="n">External</span><span class="o">:</span> <span class="err">接入集群外部请求的</span><span class="n">NodePort</span><span class="err">类型，</span> <span class="err">工作于每个节点的主机</span><span class="n">IP</span><span class="err">之上，</span>
@@ -428,11 +448,6 @@
 </pre></div>
 
 
-<h3 id="job">Job</h3>
-<p>Pods管理程序，包含一系列job</p>
-<p>类似于cronjob</p>
-<h3 id="daemonset">DaemonSet</h3>
-<p>确保所有nodes 运行同一个指定类型的pod</p>
 <h2 id="_7">环境变量</h2>
 <p>通过环境变量在容器启动时传递配置信息</p>
 <h3 id="env">env</h3>
@@ -521,7 +536,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

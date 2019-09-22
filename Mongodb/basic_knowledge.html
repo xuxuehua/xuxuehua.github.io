@@ -130,39 +130,39 @@
 <table>
 <thead>
 <tr>
-<th>类型</th>
+<th align="left">类型</th>
 <th>部分代表</th>
 <th>特点</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>列存储</td>
-<td>HbaseCassandraHypertable</td>
-<td>顾名思义，是按列存储数据的。最大的特点是方便存储结构化和半结构化数据，方便做数据压缩，对针对某一列或者某几列的查询有非常大的IO优势。</td>
+<td align="left">列存储</td>
+<td>Hbase Cassandra Hypertable</td>
+<td>顾名思义，是按列存储数据的。最大的特点是方便存储结构化和半结构化数据，方便做数据压缩，对针对某一列或者某几列的查询有非常大的IO优势，查询速度快，可扩展性强。但是功能相对局限</td>
 </tr>
 <tr>
-<td>文档存储</td>
+<td align="left">文档存储</td>
 <td>MongoDBCouchDB</td>
-<td>文档存储一般用类似json的格式存储，存储的内容是文档型的。这样也就有机会对某些字段建立索引，实现关系数据库的某些功能。</td>
+<td>文档存储一般用类似json的格式存储，存储的内容是文档型的。这样也就有机会对某些字段建立索引，实现关系数据库的某些功能。查询性能不高，缺乏统一的查询语句</td>
 </tr>
 <tr>
-<td>key-value存储</td>
+<td align="left">key-value存储</td>
 <td>Tokyo Cabinet / TyrantBerkeley DBMemcacheDBRedis</td>
-<td>可以通过key快速查询到其value。一般来说，存储不管value的格式，照单全收。（Redis包含了其他功能）</td>
+<td>可以通过key快速查询到其value。一般来说，存储不管value的格式，照单全收。（Redis包含了其他功能）， 数据无结构化，只能被当作字符串或者二进制数据</td>
 </tr>
 <tr>
-<td>图存储</td>
+<td align="left">图存储</td>
 <td>Neo4JFlockDB</td>
 <td>图形关系的最佳存储。使用传统关系数据库来解决的话性能低下，而且设计使用不方便。</td>
 </tr>
 <tr>
-<td>对象存储</td>
+<td align="left">对象存储</td>
 <td>db4oVersant</td>
 <td>通过类似面向对象语言的语法操作数据库，通过对象的方式存取数据。</td>
 </tr>
 <tr>
-<td>xml数据库</td>
+<td align="left">xml数据库</td>
 <td>Berkeley DB XMLBaseX</td>
 <td>高效的存储XML数据，并支持XML的内部查询语法，比如XQuery,Xpath。</td>
 </tr>
@@ -218,7 +218,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

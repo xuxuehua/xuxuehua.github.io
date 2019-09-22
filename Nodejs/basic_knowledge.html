@@ -42,6 +42,7 @@
 </ul>
 </li>
 <li><a href="#npm">npm</a></li>
+<li><a href="#npx">npx</a></li>
 </ul>
 </li>
 <li><a href="#npm-vs-cnpm">npm VS cnpm</a><ul>
@@ -58,14 +59,9 @@
 </ul>
 </li>
 <li><a href="#strict">全局strict 模式</a></li>
-<li><a href="#_5">模块</a><ul>
-<li><a href="#_6">导出模块</a></li>
-<li><a href="#_7">调用模块</a></li>
 </ul>
 </li>
 <li><a href="#javascript">判断JavaScript执行环境</a></li>
-</ul>
-</li>
 </ul>
 </div>
 <h1 id="web-developing">Web developing</h1>
@@ -103,10 +99,31 @@
 
 <h3 id="npm">npm</h3>
 <p>Node Package Management</p>
+<p><strong>but</strong> doesn't make life easy <em>executing</em> any</p>
 <div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="n">https</span><span class="o">:</span><span class="c1">//www.npmjs.com/install.sh | sh</span>
 </pre></div>
 
 
+<p><code>NPM</code> by itself does not simply run any package. it doesn't run any package in a matter of fact. If you want to run a package using NPM, you must specify that package in your <code>package.json</code> file.</p>
+<p>When executables are installed via NPM packages, NPM links to them:</p>
+<ol>
+<li><em>local</em> installs have "links" created at <code>./node_modules/.bin/</code> directory.</li>
+<li><em>global</em> installs have "links" created from the global <code>bin/</code> directory (e.g. <code>/usr/local/bin</code>) on Linux or at <code>%AppData%/npm</code> on Windows.</li>
+</ol>
+<h3 id="npx">npx</h3>
+<p>A tool for <em>executing</em> Node packages</p>
+<p><code>npx</code> will check whether <code>&lt;command&gt;</code> exists in <code>$PATH</code>, or in the local project binaries, and execute it.</p>
+<p>if you wish to execute the locally-installed package <code>some-package</code> all you need to do is type:</p>
+<div class="hlcode"><pre><span class="n">npx</span> <span class="n">some</span><span class="o">-</span><span class="n">package</span>
+</pre></div>
+
+
+<p>Another <strong>major</strong> advantage of <code>npx</code> is the ability to execute a package which wasn't previously installed:</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">npx</span> <span class="n">create</span><span class="o">-</span><span class="n">react</span><span class="o">-</span><span class="n">app</span> <span class="n">my</span><span class="o">-</span><span class="n">app</span>
+</pre></div>
+
+
+<p>The above example will generate a <code>react</code> app boilerplate <em>within</em> the path the command had run in, and ensures that you always use the latest version of a generator or build tool without having to upgrade each time you’re about to use it.</p>
 <h2 id="npm-vs-cnpm">npm VS cnpm</h2>
 <p>npm其实是Node.js的包管理工具（package manager）</p>
 <p>因为npm安装插件是从国外服务器下载，受网络影响大，可能出现异常，如果npm的服务器在中国就好了，所以我们乐于分享的淘宝团队干了cnpm这事。</p>
@@ -194,41 +211,12 @@
 
 
 <h2 id="strict">全局strict 模式</h2>
+<p>省去每个js文件都加上'use strict'; </p>
 <div class="hlcode"><pre><span class="n">node</span> <span class="o">--</span><span class="n">use_strict</span> <span class="n">example</span><span class="p">.</span><span class="n">js</span>
 </pre></div>
 
 
-<h2 id="_5">模块</h2>
-<h3 id="_6">导出模块</h3>
-<p><code>var ref = require('module_name');</code></p>
-<ul>
-<li>暴露变量也是<code>module.exports = variable;</code></li>
-</ul>
-<div class="hlcode"><pre><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
-
-<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
-
-<span class="kd">function</span> <span class="nx">greet</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">s</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">greet</span><span class="p">;</span>
-</pre></div>
-
-
-<h3 id="_7">调用模块</h3>
-<div class="hlcode"><pre><span class="n">var</span> <span class="n">greet</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="err">&#39;</span><span class="p">.</span><span class="o">/</span><span class="n">hello</span><span class="err">&#39;</span><span class="p">);</span>
-
-<span class="n">var</span> <span class="n">s</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">Rick</span><span class="err">&#39;</span><span class="p">;</span>
-
-<span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">greet</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
-</pre></div>
-
-
-<blockquote>
-<p>这里调用的时候是相对目录</p>
-</blockquote>
-<h2 id="javascript">判断JavaScript执行环境</h2>
+<h1 id="javascript">判断JavaScript执行环境</h1>
 <p>有很多JavaScript代码既能在浏览器中执行，也能在Node环境执行，但有些时候，程序本身需要判断自己到底是在什么环境下执行的，常用的方式就是根据浏览器和Node环境提供的全局变量名称来判断：</p>
 <div class="hlcode"><pre><span class="k">if</span> <span class="p">(</span><span class="n">typeof</span><span class="p">(</span><span class="n">window</span><span class="p">)</span> <span class="o">===</span> <span class="err">&#39;</span><span class="n">undefined</span><span class="err">&#39;</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="err">&#39;</span><span class="n">node</span><span class="p">.</span><span class="n">js</span><span class="err">&#39;</span><span class="p">);</span>
@@ -241,7 +229,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

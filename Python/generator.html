@@ -34,7 +34,10 @@
 </li>
 <li><a href="#_5">应用</a><ul>
 <li><a href="#_6">斐波那契数列</a></li>
-<li><a href="#yield-from">yield from</a></li>
+<li><a href="#yield-from">yield from</a><ul>
+<li><a href="#log">读取log</a></li>
+</ul>
+</li>
 <li><a href="#coroutine">协程 coroutine</a></li>
 </ul>
 </li>
@@ -161,6 +164,24 @@ StopIteration:
 </pre></div>
 
 
+<h3 id="log">读取log</h3>
+<div class="hlcode"><pre><span class="n">def</span> <span class="n">read</span><span class="p">(</span><span class="n">log</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">with</span> <span class="n">open</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span> <span class="n">as</span> <span class="n">f</span><span class="o">:</span>
+                <span class="n">yield</span> <span class="n">from</span> <span class="n">f</span>
+
+
+<span class="n">def</span> <span class="n">generate_result</span><span class="p">(</span><span class="n">log</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="n">in</span> <span class="n">read</span><span class="p">(</span><span class="n">log</span><span class="p">)</span><span class="o">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">8</span><span class="o">:</span>
+                        <span class="n">key</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                        <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+
+
 <h2 id="coroutine">协程 coroutine</h2>
 <p>比进程，线程轻量级</p>
 <p>是在用户空间调度函数的一种实现</p>
@@ -209,7 +230,7 @@ Out<span class="cp">[</span><span class="mi">85</span><span class="cp">]</span>:
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

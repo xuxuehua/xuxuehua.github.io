@@ -45,7 +45,7 @@
 它可以保证时间和空间的唯一性，也称为GUID，全称为：</p>
 <p>UUID —— Universally Unique IDentifier      Python 中叫 UUID<br />
 GUID —— Globally Unique IDentifier          C#  中叫 GUID</p>
-<p>它通过MAC地址、时间戳、命名空间、随机数、伪随机数来保证生成ID的唯一性。</p>
+<p>它通过MAC地址、时间戳、命名空间、随机数、伪随机数来保证生成ID的唯一性, 可以用作数据库表的主键</p>
 <h2 id="_1">实现方法</h2>
 <h3 id="uuid1">uuid1() 基于时间戳 （常用）</h3>
 <p>由MAC地址、当前时间戳、随机数生成。可以保证全球范围内的唯一性，<br />
@@ -59,7 +59,8 @@ GUID —— Globally Unique IDentifier          C#  中叫 GUID</p>
 <p>通过计算名字和命名空间的MD5散列值得到，保证了同一命名空间中不同名字的唯一性，<br />
 和不同命名空间的唯一性，但同一命名空间的同一名字生成相同的uuid。    </p>
 <h3 id="uuid4">uuid4() 基于随机数</h3>
-<p>由伪随机数得到，有一定的重复概率，该概率可以计算出来。最好不用；</p>
+<p>由伪随机数得到，有一定的重复概率，该概率可以计算出来。最好不用</p>
+<p>第4个版本，不接收参数而生成随机UUID</p>
 <h3 id="uuid5-sha-1">uuid5() 基于名字的SHA-1散列值</h3>
 <p>算法与uuid3相同，不同的是使用 Secure Hash Algorithm 1 算法</p>
 <p>若有名字的唯一性要求，最好用uuid3或uuid5</p>
@@ -84,7 +85,7 @@ GUID —— Globally Unique IDentifier          C#  中叫 GUID</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 

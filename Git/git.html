@@ -33,6 +33,7 @@
 <li><a href="#-d">-D 强力删除</a></li>
 <li><a href="#-d_1">-d 删除</a></li>
 <li><a href="#-v-verbose">-v verbose</a></li>
+<li><a href="#-vv">-vv</a></li>
 <li><a href="#-set-upstream-to">--set-upstream-to 关联分支</a></li>
 </ul>
 </li>
@@ -75,6 +76,7 @@
 <li><a href="#-n">-n 行数</a></li>
 <li><a href="#-oneline">--oneline 一行信息</a></li>
 <li><a href="#-pretty">--pretty 编辑输出信息</a></li>
+<li><a href="#-p-diff">-p 显示历史diff</a></li>
 </ul>
 </li>
 <li><a href="#merge">merge 合并</a><ul>
@@ -160,6 +162,14 @@
 <h3 id="-v-verbose">-v verbose</h3>
 <p>查看本地分支</p>
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+
+
+<h3 id="-vv">-vv</h3>
+<p>查看当前所有被tracking的分支</p>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">vv</span>
+  <span class="n">main</span>   <span class="n">aaf02f0</span> <span class="p">[</span><span class="n">main</span><span class="o">/</span><span class="n">master</span><span class="o">:</span> <span class="n">ahead</span> <span class="mi">25</span><span class="p">]</span> <span class="n">Some</span> <span class="n">other</span> <span class="n">commit</span>
+<span class="o">*</span> <span class="n">master</span> <span class="n">add0a03</span> <span class="p">[</span><span class="n">jdsumsion</span><span class="o">/</span><span class="n">master</span><span class="p">]</span> <span class="n">Some</span> <span class="n">commit</span>
 </pre></div>
 
 
@@ -306,6 +316,8 @@
 </pre></div>
 
 
+<h3 id="-p-diff">-p 显示历史diff</h3>
+<p>This option will add a <strong>diff</strong> with the introduced <strong>changes</strong> to each <strong>commit</strong> in the <strong>log</strong></p>
 <h2 id="merge">merge 合并</h2>
 <p>git merge命令用于合并指定分支到当前分支上</p>
 <p>在master 分支上合并dev 分支内容</p>
@@ -554,7 +566,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-08-23 09:10:32</p>
+        <p>Site Generated 2019-09-22 23:06:24</p>
       </span>
     </div>
 
