@@ -51,6 +51,7 @@
 <p>对于flow-control(流程控制)的代码逻辑，我们一般不用异常处理，直接用条件语句解决就可以了</p>
 <h2 id="_2">语法</h2>
 <p>在try语句块中放入容易犯错的部分，跟上except，说明语句在发生错误的时候会执行的返回值</p>
+<p>如果抛出异常，会被程序捕获（catch），程序还会继续运行</p>
 <div class="hlcode"><pre><span class="n">re</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
 
 <span class="nl">try:</span>
@@ -373,7 +374,7 @@ finally block中的语句都会被执行，哪怕前面的try和excep block中�
 
 
 <h2 id="raise">raise 抛出异常</h2>
-<p>raise 语句可以抛出异常</p>
+<p>raise 语句可以抛出异常,一旦抛出异常，那么程序就会终止</p>
 <div class="hlcode"><pre><span class="nx">print</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
 <span class="nx">raise</span> <span class="nx">StopIteration</span>
 <span class="nx">print</span><span class="p">(</span><span class="s1">&#39;yes&#39;</span><span class="p">)</span>
@@ -443,7 +444,7 @@ finally block中的语句都会被执行，哪怕前面的try和excep block中�
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-09-22 23:06:24</p>
+        <p>Site Generated 2019-11-02 11:47:59</p>
       </span>
     </div>
 

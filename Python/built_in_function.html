@@ -68,6 +68,7 @@
 <li><a href="#_3">分解</a></li>
 </ul>
 </li>
+<li><a href="#__import__">__import__ 动态加载</a></li>
 </ul>
 </li>
 </ul>
@@ -527,12 +528,43 @@ StopIteration:
 <span class="o">&lt;</span><span class="nb">zip</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x1034855c8</span><span class="o">&gt;</span>
 <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 </pre></div>
+
+
+<h2 id="__import__"><code>__import__</code> 动态加载</h2>
+<p><code>__import__()</code>函数用于动态加载类和函数 。</p>
+<p>如果一个模块经常变化就可以使用 <code>__import__()</code> 来动态载入</p>
+<div class="hlcode"><pre><span class="n">__import__</span><span class="p">(</span><span class="n">name</span><span class="p">[,</span> <span class="n">globals</span><span class="p">[,</span> <span class="n">locals</span><span class="p">[,</span> <span class="n">fromlist</span><span class="p">[,</span> <span class="n">level</span><span class="p">]]]])</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">a</span><span class="p">.</span><span class="n">py</span>
+<span class="cp">### </span>
+<span class="cp">#!/usr/bin/env python    </span>
+<span class="cp">#encoding: utf-8  </span>
+
+<span class="n">import</span> <span class="n">os</span>  
+
+<span class="n">print</span> <span class="p">(</span><span class="err">&#39;在</span> <span class="n">a</span><span class="p">.</span><span class="n">py</span> <span class="err">文件中</span> <span class="o">%</span><span class="n">s</span><span class="err">&#39;</span> <span class="o">%</span> <span class="n">id</span><span class="p">(</span><span class="n">os</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">test</span><span class="p">.</span><span class="n">py</span>
+<span class="cp">###</span>
+<span class="cp">#!/usr/bin/env python    </span>
+<span class="cp">#encoding: utf-8  </span>
+
+<span class="n">import</span> <span class="n">sys</span>  
+<span class="n">__import__</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">)</span>        <span class="err">#</span> <span class="err">导入</span> <span class="n">a</span><span class="p">.</span><span class="n">py</span> <span class="err">模块</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="err">在</span> <span class="n">a</span><span class="p">.</span><span class="n">py</span> <span class="err">文件中</span> <span class="mi">4394716136</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-09-22 23:06:24</p>
+        <p>Site Generated 2019-11-02 11:47:59</p>
       </span>
     </div>
 

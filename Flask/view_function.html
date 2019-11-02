@@ -573,7 +573,7 @@
 
 
 <h2 id="set_cookie">set_cookie()</h2>
-<p>用来设置一个cookie</p>
+<p>Flask 操作cookie，是通过response 对象来操作，可以在response返回之前，通过response.set_cookie 来设置</p>
 <div class="hlcode"><pre><span class="nb">from</span> <span class="nx">flask</span> <span class="k">import</span> <span class="nx">Flask</span><span class="p">,</span> <span class="nx">make_response</span>
 
 <span class="p">@</span><span class="nx">app.route</span><span class="p">(</span><span class="s1">&#39;/set/&lt;name&gt;&#39;</span><span class="p">)</span>
@@ -587,6 +587,23 @@
 <blockquote>
 <p>生成的Set-Cookie字段为 "Set-Cookie: name=Grey;Path=/"</p>
 </blockquote>
+<p>其几个参数需要注意</p>
+<div class="hlcode"><pre><span class="n">key</span><span class="err">：设置的</span><span class="n">cookie</span><span class="err">的</span><span class="n">key</span><span class="err">。</span>
+<span class="n">value</span><span class="err">：</span><span class="n">key</span><span class="err">对应的</span><span class="n">value</span><span class="err">。</span>
+<span class="n">max_age</span><span class="err">：改</span><span class="n">cookie</span><span class="err">的过期时间，如果不设置，则浏览器关闭后就会自动过期。</span>
+<span class="n">expires</span><span class="err">：过期时间，应该是一个</span><span class="n">datetime</span><span class="err">类型。</span>
+<span class="n">domain</span><span class="err">：该</span><span class="n">cookie</span><span class="err">在哪个域名中有效。一般设置子域名，比如</span><span class="n">cms</span><span class="p">.</span><span class="n">example</span><span class="p">.</span><span class="n">com</span><span class="err">。</span>
+<span class="n">path</span><span class="err">：该</span><span class="n">cookie</span><span class="err">在哪个路径下有效。</span>
+</pre></div>
+
+
+<p>使用：</p>
+<div class="hlcode"><pre><span class="err">获取：</span><span class="n">request</span><span class="p">.</span><span class="n">cookies</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="err">&#39;默认值&#39;</span><span class="p">)</span>
+<span class="err">设置：</span><span class="n">resp</span><span class="p">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">max_age</span><span class="o">=</span><span class="err">整数</span><span class="p">)</span>
+<span class="err">删除：</span><span class="n">resp</span><span class="p">.</span><span class="n">delete_cookie</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</pre></div>
+
+
 <h3 id="secret_key">secret_key</h3>
 <p>把密钥写进系统环境变量中</p>
 <div class="hlcode"><pre><span class="n">SECRET_KEY</span><span class="o">=</span><span class="n">secret</span> <span class="n">string</span>
@@ -602,7 +619,7 @@
 <p>这里的secret string 需要时一段特殊的随机密钥值</p>
 </blockquote>
 <h2 id="session">session</h2>
-<p>session可以保存cookie信息</p>
+<p>将session数据加密，然后存储在cookie中，这种专业术语叫做client side session， flask采用这种方式</p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">url_for</span>
 
 <span class="err">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">login</span><span class="err">&#39;</span><span class="p">)</span>
@@ -613,8 +630,74 @@
 
 
 <blockquote>
-<p>session 中的数据可以像字典一样通过键读取，或时使用get方法</p>
+<p>session 中的数据可以像字典一样通过键读取，或时使用get方法<br />
+</p>
 </blockquote>
+<p>sqlalchemy</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">redis</span>
+<span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">session</span>
+<span class="n">from</span> <span class="n">flask_session</span> <span class="n">import</span> <span class="n">Session</span> 
+<span class="n">from</span> <span class="n">flask_sqlalchemy</span> <span class="n">import</span> <span class="n">SQLAlchemy</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="p">.</span><span class="n">debug</span> <span class="o">=</span> <span class="n">True</span>
+<span class="n">app</span><span class="p">.</span><span class="n">secret_key</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">adavafa</span><span class="err">&#39;</span>
+
+<span class="cp"># 设置数据库链接</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SQLALCHEMY_DATABASE_URI</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">mysql</span><span class="o">+</span><span class="n">pymysql</span><span class="o">:</span><span class="c1">//root:dev@127.0.0.1:3306/devops?charset=utf8&#39;</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SQLALCHEMY_TRACK_MODIFICATIONS</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">True</span>
+<span class="cp"># 实例化SQLAlchemy</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SESSION_TYPE</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">sqlalchemy</span><span class="err">&#39;</span> <span class="err">#</span> <span class="n">session</span><span class="err">类型为</span><span class="n">sqlalchemy</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SESSION_SQLALCHEMY</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span> <span class="err">#</span> <span class="n">SQLAlchemy</span><span class="err">对象</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SESSION_SQLALCHEMY_TABLE</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="err">&#39;表名&#39;</span> <span class="err">#</span> <span class="n">session</span><span class="err">要保存的表名称</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SESSION_PERMANENT</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">True</span> <span class="err">#</span> <span class="err">如果设置为</span><span class="n">True</span><span class="err">，则关闭浏览器</span><span class="n">session</span><span class="err">就失效。</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">PERMANENT_SESSION_LIFETIME</span><span class="err">&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="cp">#一个持久化的会话的生存时间，是一个datetime.timedelta对象，也可以用一个整数来表示秒,前提设置了PERMANENT_SESSION_LIFETIME为True</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SESSION_USE_SIGNER</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">False</span> <span class="err">#</span> <span class="err">是否对发送到浏览器上</span><span class="n">session</span><span class="err">的</span><span class="n">cookie</span><span class="err">值进行加密</span><span class="p">,</span><span class="err">默认</span><span class="n">False</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SESSION_KEY_PREFIX</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">flask</span><span class="o">-</span><span class="n">session</span><span class="err">&#39;</span> <span class="err">#</span> <span class="err">保存的</span><span class="n">session</span><span class="err">的</span><span class="n">key</span><span class="err">的前缀</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SESSION_COOKIE_NAME</span><span class="err">&#39;</span><span class="p">]</span><span class="o">=</span> <span class="err">&#39;</span><span class="n">session_id</span><span class="err">&#39;</span>  <span class="err">#</span> <span class="err">保存在浏览器的</span><span class="n">cookie</span><span class="err">名称</span>
+
+
+<span class="cp">#其他配置，不经常使用</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SESSION_COOKIE_DOMAIN</span><span class="err">&#39;</span><span class="p">]</span><span class="o">=</span><span class="err">&#39;</span><span class="mf">127.0.0.1</span><span class="err">&#39;</span> <span class="err">#</span> <span class="err">设置</span><span class="n">cookie</span><span class="err">的域名，不建议设置默认为</span><span class="n">server_name</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SESSION_COOKIE_PATH</span><span class="err">&#39;</span><span class="p">]</span><span class="o">=</span><span class="sc">&#39;/&#39;</span> <span class="err">#</span> <span class="err">会话</span><span class="n">cookie</span><span class="err">的路径。</span> <span class="err">如果未设置，则</span><span class="n">cookie</span><span class="err">将对所有</span><span class="n">url</span><span class="err">有效，默认为</span><span class="sc">&#39;/&#39;</span>
+<span class="n">app</span><span class="p">.</span><span class="n">config</span><span class="p">[</span><span class="err">&#39;</span><span class="n">SESSION_COOKIE_HTTPONLY</span><span class="err">&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">True</span> <span class="err">#</span> <span class="err">是否启动</span><span class="n">httponly</span><span class="p">,</span><span class="err">默认为</span><span class="nb">true</span><span class="err">，为了防止</span><span class="n">xss</span><span class="err">脚本访问</span><span class="n">cookie</span>
+
+
+
+
+<span class="n">Session</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="err">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">login</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">def</span> <span class="n">index</span><span class="p">()</span><span class="o">:</span>
+ <span class="n">session</span><span class="p">[</span><span class="s">&quot;username&quot;</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;jack&quot;</span>
+ <span class="k">return</span> <span class="err">&#39;</span><span class="n">login</span><span class="err">&#39;</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="err">&#39;</span><span class="n">__main__</span><span class="err">&#39;</span><span class="o">:</span>
+ <span class="n">app</span><span class="p">.</span><span class="n">run</span><span class="p">()</span>
+
+
+<span class="cp">###使用SQLAlchemy时候先确保数据库和表都存在</span>
+<span class="err">在命令行中创建表</span>
+<span class="cp">#&gt;&gt;&gt; from app import db</span>
+<span class="cp">#&gt;&gt;&gt; db.create_all()</span>
+</pre></div>
+
+
+<p>设置数据库</p>
+<div class="hlcode"><pre><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">public</span><span class="p">.</span><span class="n">flask_session_table</span> <span class="p">(</span>
+    <span class="n">id</span> <span class="n">integer</span> <span class="n">PRIMARY</span> <span class="n">KEY</span> <span class="n">NOT</span> <span class="nb">NULL</span><span class="p">,</span>
+    <span class="n">session_id</span> <span class="n">character</span> <span class="n">varying</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
+    <span class="n">data</span> <span class="n">bytea</span><span class="p">,</span>
+    <span class="n">expiry</span> <span class="n">timestamp</span> <span class="n">without</span> <span class="n">time</span> <span class="n">zone</span>
+<span class="p">);</span>
+</pre></div>
+
+
 <h3 id="_8">注意点</h3>
 <p>尽管session对象对Cookie进行签名并加密，这种方式仅能够保证session的内容不会被篡改，加密后的数据借助工具仍然可以被轻易读取，所以不能在session中存储敏感信息</p>
     </div>
@@ -622,7 +705,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-09-22 23:06:24</p>
+        <p>Site Generated 2019-11-02 11:47:59</p>
       </span>
     </div>
 

@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>unittest - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python">Python</a>&nbsp;&#187;&nbsp;unittest
+    <span class="updated">Page Updated&nbsp;
+      2019-09-24 08:43
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">unittest</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">单元测试</a><ul>
+<li><a href="#mock">mock</a></li>
+<li><a href="#mock-side-effect">Mock Side Effect</a></li>
+<li><a href="#patch">patch</a></li>
+<li><a href="#_2">模块化</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">单元测试</h1>
+<p>单元测试，通俗易懂地讲，就是编写测试来验证某一个模块的功能正确性，一般会指定输入，验证输出是否<br />
+符合预期</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">unittest</span>
+<span class="cp"># 将要被测试的排序函数 def sort(arr):</span>
+      <span class="n">l</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span><span class="o">:</span>
+          <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span><span class="o">:</span>
+              <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">:</span>
+                  <span class="n">tmp</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                  <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                  <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+<span class="cp"># 编写子类继承unittest.TestCase </span>
+<span class="n">class</span> <span class="n">TestSort</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">)</span><span class="o">:</span>
+<span class="cp"># 以test开头的函数将会被测试 </span>
+        <span class="n">def</span> <span class="n">test_sort</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+                <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+                <span class="n">sort</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+                <span class="err">#</span> <span class="n">assert</span> <span class="err">结果跟我们期待的一样</span> 
+                <span class="n">self</span><span class="p">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="err">&#39;</span><span class="n">__main__</span><span class="err">&#39;</span><span class="o">:</span>
+        <span class="err">##</span> <span class="err">如果在</span><span class="n">Jupyter</span><span class="err">下，请用如下方式运行单元测试</span> 
+        <span class="n">unittest</span><span class="p">.</span><span class="n">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[</span><span class="err">&#39;</span><span class="n">first</span><span class="o">-</span><span class="n">arg</span><span class="o">-</span><span class="n">is</span><span class="o">-</span><span class="n">ignored</span><span class="err">&#39;</span><span class="p">],</span> <span class="n">exit</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
+<span class="cp"># 如果是命令行下运行，则: </span>
+        <span class="err">##</span> <span class="n">unittest</span><span class="p">.</span><span class="n">main</span><span class="p">()</span>
+<span class="cp">## 输出</span>
+<span class="o">----------------------------------------------------------------------</span>
+<span class="n">Ran</span> <span class="mi">2</span> <span class="n">tests</span> <span class="n">in</span> <span class="mf">0.002</span><span class="n">s</span>
+<span class="n">OK</span>
+</pre></div>
+
+
+<h2 id="mock">mock</h2>
+<p>mock是单元测试中最核心重要的一环。mock的意思，便是通过一个虚假对象，来代替被测试函数或模块需 要的对象。 </p>
+<p>举个例子，比如你要测一个后端API逻辑的功能性，但一般后端API都依赖于数据库、文件系统、网络等。这 样，你就需要通过mock，来创建一些虚假的数据库层、文件系统层、网络层对象，以便可以简单地对核心 后端逻辑单元进行测试。</p>
+<p>Python mock则主要使用mock或者MagicMock对象</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">unittest</span>
+
+<span class="n">from</span> <span class="n">unittest</span><span class="p">.</span><span class="n">mock</span> <span class="n">import</span> <span class="n">MagicMock</span>
+
+
+<span class="n">class</span> <span class="n">A</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">m1</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">m2</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">m3</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">m2</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">pass</span>
+
+    <span class="n">def</span> <span class="n">m3</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">pass</span>
+
+    <span class="n">def</span> <span class="n">test_m1</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+        <span class="n">a</span><span class="p">.</span><span class="n">m2</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="err">&#39;</span><span class="n">custom_val</span><span class="err">&#39;</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">.</span><span class="n">m3</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
+        <span class="n">a</span><span class="p">.</span><span class="n">m1</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">m2</span><span class="p">.</span><span class="n">called</span><span class="p">)</span> <span class="err">#验证</span><span class="n">m2</span><span class="err">被</span><span class="n">call</span><span class="err">过</span>
+        <span class="n">a</span><span class="p">.</span><span class="n">m3</span><span class="p">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="s">&quot;custom_val&quot;</span><span class="p">)</span> <span class="err">#验证</span><span class="n">m3</span><span class="err">被指定参数</span><span class="n">call</span><span class="err">过</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="o">:</span>
+    <span class="n">unittest</span><span class="p">.</span><span class="n">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[</span><span class="err">&#39;</span><span class="n">first</span><span class="o">-</span><span class="n">arg</span><span class="o">-</span><span class="n">is</span><span class="o">-</span><span class="n">ignored</span><span class="err">&#39;</span><span class="p">],</span> <span class="n">exit</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Ran</span> <span class="mi">1</span> <span class="n">test</span> <span class="n">in</span> <span class="mf">0.001</span><span class="n">s</span>
+
+<span class="n">OK</span>
+</pre></div>
+
+
+<blockquote>
+<p>我们需要对m1()进行单元测试，但是m1()取决于m2()和m3()。如果m2()和m3()的内部比较复杂, 你就不能只是简单地调用m1()函数来进行测试，可能需要解决很多依赖项的问题。</p>
+<p>有了mock其实就很好办了。我们可以把m2()替换为一个返回具体数值的value，把m3()替换为另一个mock(空函数)。这样，测试m1()就很容易了，我们可以测试m1()调用m2()，并且用m2()的返回值调用m3()。</p>
+</blockquote>
+<h2 id="mock-side-effect">Mock Side Effect</h2>
+<p>就是 mock的函数，属性是可以根据不同的输入，返回不同的数值，而不只是一个return_value</p>
+<p>测试的是输入参数是否为负数，输入小于0则输出为1 ，否则输出为2</p>
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">unittest</span><span class="p">.</span><span class="n">mock</span> <span class="n">import</span> <span class="n">MagicMock</span>
+
+<span class="n">def</span> <span class="n">side_effect</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">if</span> <span class="n">arg</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="nl">else:</span>
+        <span class="k">return</span> <span class="mi">2</span>
+
+<span class="n">mock</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">side_effect</span>
+
+<span class="n">print</span><span class="p">(</span><span class="n">mock</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">mock</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+</pre></div>
+
+
+<h2 id="patch">patch</h2>
+<p>给开发者提供了非常便利的函数mock方法。它可以应用Python的decoration模式或是context manager概念，快速自然地mock所需的函数</p>
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">unittest</span><span class="p">.</span><span class="n">mock</span> <span class="n">import</span> <span class="n">patch</span>
+
+<span class="err">@</span><span class="n">patch</span><span class="p">(</span><span class="err">&#39;</span><span class="n">sort</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">def</span> <span class="n">test_sort</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">mock_sort</span><span class="p">)</span><span class="o">:</span>
+        <span class="p">...</span>
+</pre></div>
+
+
+<p>另一种patch的常见用法，是mock类的成员函数，这个技巧我们在工作中也经常会用到，比如说一个类的构<br />
+造函数非常复杂，而测试其中一个成员函数并不依赖所有初始化的object</p>
+<div class="hlcode"><pre><span class="n">with</span> <span class="n">patch</span><span class="p">.</span><span class="n">object</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">__init__</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">lambda</span> <span class="n">x</span><span class="o">:</span> <span class="n">None</span><span class="p">)</span><span class="o">:</span>
+        <span class="p">...</span>
+</pre></div>
+
+
+<blockquote>
+<p>在with语句里面，我们通过patch，将A类的构造函数mock为一个do nothing的函<br />
+数，这样就可以很方便地避免一些复杂的初始化(initialization)</p>
+</blockquote>
+<h2 id="_2">模块化</h2>
+<p>高质量单元测试，不仅要求我们提高Test Coverage，尽量让所写的测试能够cover每个模块中的每条语句;<br />
+还要求我们从测试的角度审视codebase，去思考怎么模块化代码，以便写出高质量的单元测试。</p>
+<div class="hlcode"><pre><span class="n">def</span> <span class="n">work</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">:</span>
+      <span class="err">#</span> <span class="n">pre</span> <span class="n">process</span>
+      <span class="p">...</span>
+      <span class="p">...</span>
+      <span class="err">#</span> <span class="n">sort</span>
+      <span class="n">l</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span><span class="o">:</span>
+          <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span><span class="o">:</span>
+              <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">:</span>
+                  <span class="n">tmp</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                  <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                  <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+      <span class="err">#</span> <span class="n">post</span> <span class="n">process</span>
+      <span class="p">...</span>
+      <span class="p">...</span>
+      <span class="n">Return</span> <span class="n">arr</span>
+</pre></div>
+
+
+<p>正确的测试方法，应该是先模块化代码，写成下面的形式</p>
+<div class="hlcode"><pre><span class="n">def</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">:</span>
+      <span class="p">...</span>
+      <span class="p">...</span>
+      <span class="k">return</span> <span class="n">arr</span>
+  <span class="n">def</span> <span class="n">sort</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">:</span>
+      <span class="p">...</span>
+      <span class="p">...</span>
+      <span class="k">return</span> <span class="n">arr</span>
+  <span class="n">def</span> <span class="n">postprocess</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">:</span>
+      <span class="p">...</span>
+<span class="k">return</span> <span class="n">arr</span>
+  <span class="n">def</span> <span class="n">work</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+      <span class="n">arr</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+      <span class="n">arr</span> <span class="o">=</span> <span class="n">sort</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+      <span class="n">arr</span> <span class="o">=</span> <span class="n">postprocess</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">arr</span>
+</pre></div>
+
+
+<p>接着再进行相应的测试，测试三个子函数的功能正确性;然后通过mock子函数，调用work()函数，来验证<br />
+三个子函数被call过</p>
+<div class="hlcode"><pre><span class="n">from</span> <span class="n">unittest</span><span class="p">.</span><span class="n">mock</span> <span class="n">import</span> <span class="n">patch</span>
+  <span class="n">def</span> <span class="n">test_preprocess</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+      <span class="p">...</span>
+  <span class="n">def</span> <span class="n">test_sort</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+      <span class="p">...</span>
+  <span class="n">def</span> <span class="n">test_postprocess</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+      <span class="p">...</span>
+  <span class="err">@</span><span class="n">patch</span><span class="p">(</span><span class="err">&#39;</span><span class="o">%</span><span class="n">s</span><span class="p">.</span><span class="n">preprocess</span><span class="err">&#39;</span><span class="p">)</span>
+  <span class="err">@</span><span class="n">patch</span><span class="p">(</span><span class="err">&#39;</span><span class="o">%</span><span class="n">s</span><span class="p">.</span><span class="n">sort</span><span class="err">&#39;</span><span class="p">)</span>
+  <span class="err">@</span><span class="n">patch</span><span class="p">(</span><span class="err">&#39;</span><span class="o">%</span><span class="n">s</span><span class="p">.</span><span class="n">postprocess</span><span class="err">&#39;</span><span class="p">)</span>
+  <span class="n">def</span> <span class="n">test_work</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">mock_post_process</span><span class="p">,</span> <span class="n">mock_sort</span><span class="p">,</span> <span class="n">mock_preprocess</span><span class="p">)</span><span class="o">:</span>
+      <span class="n">work</span><span class="p">()</span>
+      <span class="n">self</span><span class="p">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">mock_post_process</span><span class="p">.</span><span class="n">called</span><span class="p">)</span>
+      <span class="n">self</span><span class="p">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">mock_sort</span><span class="p">.</span><span class="n">called</span><span class="p">)</span>
+      <span class="n">self</span><span class="p">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">mock_preprocess</span><span class="p">.</span><span class="n">called</span><span class="p">)</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-11-02 11:47:59</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

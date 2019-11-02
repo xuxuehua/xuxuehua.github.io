@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>gunicorn - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python_modules">Python_modules</a>&nbsp;&#187;&nbsp;gunicorn
+    <span class="updated">Page Updated&nbsp;
+      2019-10-24 22:16
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">gunicorn</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#gunicorn">gunicorn</a><ul>
+<li><a href="#-c-config-configconfig">-c CONFIG, --config=CONFIG</a></li>
+<li><a href="#-b-bind-bindbind">-b BIND, --bind=BIND</a></li>
+<li><a href="#-w-workers-workersworkers">-w WORKERS, --workers=WORKERS</a></li>
+<li><a href="#-k-workerclass-worker-classworkerclass">-k WORKERCLASS, --worker-class=WORKERCLASS</a></li>
+<li><a href="#-n-app_name-nameapp_name">-n APP_NAME, --name=APP_NAME</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="gunicorn">gunicorn</h1>
+<h2 id="-c-config-configconfig"><code>-c CONFIG, --config=CONFIG</code></h2>
+<p>Specify a config file in the form <code>$(PATH)</code>, <code>file:$(PATH)</code>, or <code>python:$(MODULE_NAME)</code>.</p>
+<h2 id="-b-bind-bindbind"><code>-b BIND, --bind=BIND</code></h2>
+<p>Specify a server socket to bind. Server sockets can be any of <code>$(HOST)</code>, <code>$(HOST):$(PORT)</code>, or <code>unix:$(PATH)</code>. An IP is a valid <code>$(HOST)</code>.</p>
+<h2 id="-w-workers-workersworkers"><code>-w WORKERS, --workers=WORKERS</code></h2>
+<p>The number of worker processes. This number should generally be between 2-4 workers per core in the server. Check the <a href="http://docs.gunicorn.org/en/latest/faq.html#faq">FAQ</a> for ideas on tuning this parameter.</p>
+<h2 id="-k-workerclass-worker-classworkerclass"><code>-k WORKERCLASS, --worker-class=WORKERCLASS</code></h2>
+<p>The type of worker process to run. You’ll definitely want to read the production page for the implications of this parameter. You can set this to <code>$(NAME)</code> where <code>$(NAME)</code> is one of <code>sync</code>, <code>eventlet</code>, <code>gevent</code>, <code>tornado</code>, <code>gthread</code>, <code>gaiohttp</code> (deprecated). <code>sync</code> is the default. See the <a href="http://docs.gunicorn.org/en/latest/settings.html#worker-class">worker_class</a> documentation for more information.</p>
+<h2 id="-n-app_name-nameapp_name"><code>-n APP_NAME, --name=APP_NAME</code></h2>
+<p>If <a href="https://pypi.python.org/pypi/setproctitle">setproctitle</a> is installed you can adjust the name of Gunicorn process as they appear in the process system table (which affects tools like <code>ps</code> and <code>top</code>).</p>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-11-02 11:47:59</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

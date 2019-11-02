@@ -52,7 +52,8 @@
 <li><a href="#__slots__">__slots__ 属性</a></li>
 </ul>
 </li>
-<li><a href="#_15">内置变量属性</a><ul>
+<li><a href="#_15">类及变量权限访问</a></li>
+<li><a href="#_16">内置变量属性</a><ul>
 <li><a href="#__all__">__all__</a></li>
 <li><a href="#__init__">__init__</a></li>
 <li><a href="#__dict__">__dict__</a></li>
@@ -68,24 +69,24 @@
 <li><a href="#__repr__">__repr__</a></li>
 <li><a href="#getitemsetitemdelitem">getitem、setitem、delitem`</a></li>
 <li><a href="#__iter__">__iter__</a></li>
-<li><a href="#_16">查询对象的属性</a></li>
+<li><a href="#_17">查询对象的属性</a></li>
 </ul>
 </li>
-<li><a href="#_17">实例化</a></li>
-<li><a href="#_18">实例化类原理</a></li>
-<li><a href="#_19">封装</a><ul>
-<li><a href="#_20">数据及行为封装</a></li>
+<li><a href="#_18">实例化</a></li>
+<li><a href="#_19">实例化类原理</a></li>
+<li><a href="#_20">封装</a><ul>
+<li><a href="#_21">数据及行为封装</a></li>
 </ul>
 </li>
 <li><a href="#type">type 类</a></li>
 <li><a href="#metaclass">元类 metaclass</a><ul>
-<li><a href="#_21">特性</a></li>
+<li><a href="#_22">特性</a></li>
 <li><a href="#metaclass_1">metaclass底层实现</a></li>
 </ul>
 </li>
 <li><a href="#instance">instance() 函数判断对象类型</a></li>
-<li><a href="#_22">函数重载</a></li>
-<li><a href="#_23">类拆分 （优化）</a></li>
+<li><a href="#_23">函数重载</a></li>
+<li><a href="#_24">类拆分 （优化）</a></li>
 </ul>
 </div>
 <h1 id="_1">类之间的关系</h1>
@@ -99,7 +100,6 @@
 <p>利用类之间的这些关系，我们可以在已有类的基础上来完成某些操作，也可以在已有类的基础上创建新的类，这些都是实现代码复用的重要手段。</p>
 <p><img alt="img" src="https://snag.gy/pDjZHr.jpg" /></p>
 <h1 id="_2">类的定义</h1>
-<p>类的最基本的作用就是封装</p>
 <p>类是现实世界或者思维世界中的实体在计算机中的反映</p>
 <p>它将数据以及这些数据上的操作封装在一起</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">ClassName</span><span class="p">:</span>
@@ -328,7 +328,7 @@
 </blockquote>
 <h2 id="self">self</h2>
 <p>self就是当前调用某一个方法的对象， self 代表的是一个实例，而不是一个类</p>
-<p>可以在类中定义成为任意的标识，比如this</p>
+<p>可以在类中定义成为任意的标识，比如this， 但约定统一使用self</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Rick&#39;</span>
     <span class="n">age</span> <span class="o">=</span> <span class="mi">18</span>
@@ -512,7 +512,77 @@
 
 <h2 id="__slots__"><code>__slots__</code> 属性</h2>
 <p>动态语言允许我们在程序运行时给对象绑定新的属性或方法，当然也可以对已经绑定的属性和方法进行解绑定。但是如果我们需要限定自定义类型的对象只能绑定某些属性，可以通过在类中定义<code>__slots__</code>变量来进行限定。需要注意的是<code>__slots__</code>的限定只对当前类的对象生效，对子类并不起任何作用。</p>
-<h1 id="_15">内置变量属性</h1>
+<h1 id="_15">类及变量权限访问</h1>
+<table>
+<thead>
+<tr>
+<th align="left">—-</th>
+<th align="left">类能否访问</th>
+<th align="left">实例能否访问</th>
+<th align="left">类是否能够通过公有类方法调用私有变量</th>
+<th align="left">实例是否能够通过公有实例方法调用私有变量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">私有类变量</td>
+<td align="left">×</td>
+<td align="left">×</td>
+<td align="left">√</td>
+<td align="left">√</td>
+</tr>
+<tr>
+<td align="left">私有类方法</td>
+<td align="left">×</td>
+<td align="left">×</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">私有实例变量</td>
+<td align="left">×</td>
+<td align="left">×</td>
+<td align="left">×</td>
+<td align="left">√</td>
+</tr>
+<tr>
+<td align="left">私有实例方法</td>
+<td align="left">×</td>
+<td align="left">×</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">公有类变量</td>
+<td align="left">√</td>
+<td align="left">√</td>
+<td align="left">√</td>
+<td align="left">√</td>
+</tr>
+<tr>
+<td align="left">公有类方法</td>
+<td align="left">√</td>
+<td align="left">√</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">公有实例变量</td>
+<td align="left">×</td>
+<td align="left">√</td>
+<td align="left">×</td>
+<td align="left">√</td>
+</tr>
+<tr>
+<td align="left">公有实例方法</td>
+<td align="left">×</td>
+<td align="left">√</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="_16">内置变量属性</h1>
 <h2 id="__all__"><code>__all__</code></h2>
 <p>指定所导入的变量</p>
 <div class="hlcode"><pre><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sc">&#39;b&#39;</span><span class="p">]</span>
@@ -844,7 +914,7 @@
 </pre></div>
 
 
-<h2 id="_16">查询对象的属性</h2>
+<h2 id="_17">查询对象的属性</h2>
 <p>除了使用dir()来查询对象属性，还可以使用built-in函数来确认</p>
 <div class="hlcode"><pre><span class="cp"># attr_name是一个字符串</span>
 <span class="n">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">)</span> 
@@ -856,7 +926,7 @@
 </pre></div>
 
 
-<h1 id="_17">实例化</h1>
+<h1 id="_18">实例化</h1>
 <p><code>__init__</code> 只是初始化类变量的作用</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
@@ -872,7 +942,7 @@
 </pre></div>
 
 
-<h1 id="_18">实例化类原理</h1>
+<h1 id="_19">实例化类原理</h1>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
     <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">:</span>
         <span class="n">print</span><span class="p">(</span><span class="s">&quot;call __new__&quot;</span><span class="p">)</span>
@@ -925,7 +995,7 @@
 </pre></div>
 
 
-<h1 id="_19">封装</h1>
+<h1 id="_20">封装</h1>
 <p>封装只能在类的内部访问</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
@@ -952,7 +1022,7 @@
 </pre></div>
 
 
-<h2 id="_20">数据及行为封装</h2>
+<h2 id="_21">数据及行为封装</h2>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">Door</span><span class="p">():</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">number</span> <span class="o">=</span> <span class="n">number</span>
@@ -1084,7 +1154,7 @@
 </pre></div>
 
 
-<h2 id="_21">特性</h2>
+<h2 id="_22">特性</h2>
 <p>yaml是一个家喻户晓的 Python 工具，可以方便地序列化 / 逆序列化结构数据。YAMLObject 的任意子类支持序列化和反序列化（serialization &amp; deserialization）。比如说下面这段代码：</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">Monster</span><span class="p">(</span><span class="n">yaml</span><span class="p">.</span><span class="n">YAMLObject</span><span class="p">)</span><span class="o">:</span>
   <span class="n">yaml_tag</span> <span class="o">=</span> <span class="n">u</span><span class="err">&#39;</span><span class="o">!</span><span class="n">Monster</span><span class="err">&#39;</span>
@@ -1203,7 +1273,7 @@
 </pre></div>
 
 
-<h1 id="_22">函数重载</h1>
+<h1 id="_23">函数重载</h1>
 <p>使子类必须重新写一遍 方法，来覆盖掉原有函数， 这里通过raise 一个exception来提示</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">Entity</span><span class="p">()</span><span class="o">:</span>
       <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">object_type</span><span class="p">)</span><span class="o">:</span>
@@ -1227,7 +1297,7 @@
 </pre></div>
 
 
-<h1 id="_23">类拆分 （优化）</h1>
+<h1 id="_24">类拆分 （优化）</h1>
 <p>job 在其中出现了很多次，而且它们表达的是一个意义实体，这种情况下，我们可以考虑将这部分分解出来，作为单独的类。</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">Person</span><span class="o">:</span>
     <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sex</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">job_title</span><span class="p">,</span> <span class="n">job_description</span><span class="p">,</span> <span class="n">company_name</span><span class="p">)</span><span class="o">:</span>
@@ -1259,7 +1329,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-09-22 23:06:24</p>
+        <p>Site Generated 2019-11-02 11:47:59</p>
       </span>
     </div>
 

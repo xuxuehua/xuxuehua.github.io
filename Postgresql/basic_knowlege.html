@@ -40,7 +40,11 @@
 <li><a href="#privilege">Privilege</a></li>
 </ul>
 </li>
-<li><a href="#_7">数据库操作</a></li>
+<li><a href="#_7">数据库操作</a><ul>
+<li><a href="#_8">导出</a></li>
+<li><a href="#_9">导入</a></li>
+</ul>
+</li>
 <li><a href="#concept">Concept</a><ul>
 <li><a href="#role">Role</a></li>
 </ul>
@@ -177,6 +181,32 @@
 </pre></div>
 
 
+<h2 id="_8">导出</h2>
+<div class="hlcode"><pre><span class="n">pg_dump</span>  <span class="o">-</span><span class="n">U</span>  <span class="n">postgres</span>  <span class="o">-</span><span class="n">f</span>  <span class="n">c</span><span class="o">:</span><span class="err">\</span><span class="n">db</span><span class="p">.</span><span class="n">sql</span> <span class="n">postgis</span>
+</pre></div>
+
+
+<p>或者</p>
+<div class="hlcode"><pre><span class="n">pg_dump</span>  <span class="o">-</span><span class="n">U</span> <span class="n">postgres</span>  <span class="n">postgis</span> <span class="o">&gt;</span> <span class="n">c</span><span class="o">:</span><span class="err">\</span><span class="n">db</span><span class="p">.</span><span class="n">sql</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">pg_dump</span> <span class="o">-</span><span class="n">Upostgres</span> <span class="o">-</span><span class="n">t</span> <span class="n">mytable</span> <span class="o">-</span><span class="n">f</span>  <span class="n">dump</span><span class="p">.</span><span class="n">sql</span>  <span class="n">postgres</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">pg_dump</span> <span class="o">-</span><span class="n">U</span> <span class="n">USER</span> <span class="o">-</span><span class="n">d</span> <span class="n">DATABASE_NAME</span> <span class="o">-</span><span class="n">t</span> <span class="n">SCHEMA</span><span class="p">.</span><span class="n">TABLE_NAME</span> <span class="o">-</span><span class="n">f</span> <span class="n">LOCALFILE_NAME</span><span class="p">.</span><span class="n">sql</span> <span class="o">-</span><span class="n">h</span> <span class="n">DB_INSTANCE</span> <span class="o">-</span><span class="n">p</span> <span class="mi">5432</span>
+</pre></div>
+
+
+<h2 id="_9">导入</h2>
+<div class="hlcode"><pre><span class="n">psql</span>  <span class="o">-</span><span class="n">d</span>  <span class="n">postgis</span>  <span class="o">-</span><span class="n">f</span>  <span class="n">c</span><span class="o">:</span><span class="err">\</span><span class="n">db</span><span class="p">.</span><span class="n">sql</span>  <span class="n">postgres</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">psql</span>  <span class="o">-</span><span class="n">d</span>  <span class="n">postgis</span>  <span class="o">-</span><span class="n">f</span>  <span class="n">c</span><span class="o">:</span><span class="err">\</span> <span class="n">dump</span><span class="p">.</span><span class="n">sql</span> <span class="n">postgres</span>
+</pre></div>
+
+
 <h1 id="concept">Concept</h1>
 <h2 id="role">Role</h2>
 <p>PostgreSQL manages database access permissions using the concept of <em>roles</em>. A role can be thought of as either a database user, or a group of database users, depending on how the role is set up. </p>
@@ -186,7 +216,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-09-22 23:06:24</p>
+        <p>Site Generated 2019-11-02 11:47:59</p>
       </span>
     </div>
 

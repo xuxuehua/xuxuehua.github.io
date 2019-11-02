@@ -1,0 +1,308 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>logging - Xu XueHua</title>
+    <meta name="keywords" content="Xu XueHua"/>
+    <meta name="description" content="Xu XueHua's public notes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python_modules">Python_modules</a>&nbsp;&#187;&nbsp;logging
+    <span class="updated">Page Updated&nbsp;
+      2019-10-11 09:47
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">logging</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#logging">logging</a><ul>
+<li><a href="#example">example</a></li>
+<li><a href="#_1">配置方式</a><ul>
+<li><a href="#basicconfig">basicConfig关键字参数</a></li>
+</ul>
+</li>
+<li><a href="#_2">日志格式</a></li>
+<li><a href="#_3">输出成文件</a></li>
+</ul>
+</li>
+<li><a href="#logging_1">logging 组件</a><ul>
+<li><a href="#logger">Logger</a></li>
+<li><a href="#handler">Handler</a><ul>
+<li><a href="#streamhandler">StreamHandler</a></li>
+<li><a href="#filehandler">FileHandler</a></li>
+<li><a href="#nullhandler">NullHandler</a></li>
+</ul>
+</li>
+<li><a href="#filter">Filter</a></li>
+<li><a href="#formatter">Formatter</a><ul>
+<li><a href="#format">format格式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="logging">logging</h1>
+<p>Logger是一个树形层级结构</p>
+<p>Logger可以包含一个或多个Handler和Filter，即Logger与Handler或Filter是一对多的关系;<br />
+一个Logger实例可以新增多个Handler，一个Handler可以新增多个格式化器或多个过滤器，而且日志级别将会继承</p>
+<div class="hlcode"><pre><span class="n">graph</span> <span class="n">TD</span>
+<span class="n">Logger</span> <span class="o">--&gt;</span> <span class="n">Filter</span>
+<span class="n">Logger</span> <span class="o">--&gt;</span> <span class="n">Handler</span>
+<span class="n">Handler</span> <span class="o">--&gt;</span> <span class="n">Filter</span>
+<span class="n">Handler</span> <span class="o">--&gt;</span> <span class="n">Formatter</span>
+</pre></div>
+
+
+<h2 id="example">example</h2>
+<p>默认情况下，logging模块将日志打印到屏幕上(stdout)，日志级别为WARNING(即只有日志级别高于WARNING的日志信息才会输出</p>
+<table class="hlcodetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="hlcode"><pre><span class="c">#!/usr/local/bin/python</span>
+<span class="c"># -*- coding:utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;debug message&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;info message&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&#39;warn message&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;error message&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s">&#39;critical message&#39;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">WARNING</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">warn</span> <span class="n">message</span>
+<span class="n">ERROR</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">error</span> <span class="n">message</span>
+<span class="n">CRITICAL</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">critical</span> <span class="n">message</span>
+</pre></div>
+</td></tr></table>
+
+<h2 id="_1">配置方式</h2>
+<ul>
+<li>显式创建记录器Logger、处理器Handler和格式化器Formatter，并进行相关设置；</li>
+<li>通过简单方式进行配置，使用<a href="https://links.jianshu.com/go?to=http%3A%2F%2Fpython.usyiyi.cn%2Fpython_278%2Flibrary%2Flogging.html%23logging.basicConfig">basicConfig()</a>函数直接进行配置；</li>
+<li>通过配置文件进行配置，使用<a href="https://links.jianshu.com/go?to=http%3A%2F%2Fpython.usyiyi.cn%2Fpython_278%2Flibrary%2Flogging.config.html%23logging.config.fileConfig">fileConfig()</a>函数读取配置文件；</li>
+<li>通过配置字典进行配置，使用<a href="https://links.jianshu.com/go?to=http%3A%2F%2Fpython.usyiyi.cn%2Fpython_278%2Flibrary%2Flogging.config.html%23logging.config.dictConfig">dictConfig()</a>函数读取配置信息；</li>
+<li>通过网络进行配置，使用<a href="https://links.jianshu.com/go?to=http%3A%2F%2Fpython.usyiyi.cn%2Fpython_278%2Flibrary%2Flogging.config.html%23logging.config.listen">listen()</a>函数进行网络配置。</li>
+</ul>
+<h3 id="basicconfig">basicConfig关键字参数</h3>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>filename</td>
+<td align="left">创建一个FileHandler，使用指定的文件名，而不是使用StreamHandler。</td>
+</tr>
+<tr>
+<td>filemode</td>
+<td align="left">如果指明了文件名，指明打开文件的模式（如果没有指明filemode，默认为'a'）。</td>
+</tr>
+<tr>
+<td>format</td>
+<td align="left">handler使用指明的格式化字符串。</td>
+</tr>
+<tr>
+<td>datefmt</td>
+<td align="left">使用指明的日期／时间格式。</td>
+</tr>
+<tr>
+<td>level</td>
+<td align="left">指明根logger的级别。</td>
+</tr>
+<tr>
+<td>stream</td>
+<td align="left">使用指明的流来初始化StreamHandler。该参数与'filename'不兼容，如果两个都有，'stream'被忽略。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_2">日志格式</h2>
+<div class="hlcode"><pre><span class="err">日志级别</span> <span class="o">:</span> <span class="n">Logger</span><span class="err">实例名称</span> <span class="o">:</span> <span class="err">日志消息内容</span>
+</pre></div>
+
+
+<h2 id="_3">输出成文件</h2>
+<table class="hlcodetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="hlcode"><pre><span class="c">#!/usr/local/bin/python</span>
+<span class="c"># -*- coding:utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c"># 通过下面的方式进行简单配置输出方式与日志级别</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&#39;logger.log&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;debug message&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;info message&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&#39;warn message&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;error message&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s">&#39;critical message&#39;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="err">标准输出</span><span class="p">(</span><span class="err">屏幕</span><span class="p">)</span><span class="err">未显示任何信息，发现当前工作目录下生成了</span><span class="n">logger</span><span class="o">.</span><span class="n">log</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">info</span> <span class="n">message</span>
+<span class="n">WARNING</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">warn</span> <span class="n">message</span>
+<span class="n">ERROR</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">error</span> <span class="n">message</span>
+<span class="n">CRITICAL</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">critical</span> <span class="n">message</span>
+</pre></div>
+</td></tr></table>
+
+<h1 id="logging_1">logging 组件</h1>
+<h2 id="logger">Logger</h2>
+<p>记录器，暴露了应用程序代码能直接使用的接口。</p>
+<p>即创建一个记录器，如果没有显式的进行创建，则默认创建一个root logger，并应用默认的日志级别(WARN)，处理器Handler(StreamHandler，即将日志信息打印输出在标准输出上)，和格式化器Formatter(默认的格式即为第一个简单使用程序中输出的格式)。</p>
+<div class="hlcode"><pre><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logger_name</span><span class="p">)</span>
+<span class="n">logger</span><span class="p">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="p">.</span><span class="n">ERROR</span><span class="p">)</span> <span class="err">#</span> <span class="err">设置日志级别为</span><span class="n">ERROR</span><span class="err">，即只有日志级别大于等于</span><span class="n">ERROR</span><span class="err">的日志才会输出</span>
+<span class="n">logger</span><span class="p">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler_name</span><span class="p">)</span> <span class="err">#</span> <span class="err">为</span><span class="n">Logger</span><span class="err">实例增加一个处理器</span>
+<span class="n">logger</span><span class="p">.</span><span class="n">removeHandler</span><span class="p">(</span><span class="n">handler_name</span><span class="p">)</span> <span class="err">#</span> <span class="err">为</span><span class="n">Logger</span><span class="err">实例删除一个处理器</span>
+</pre></div>
+
+
+<h2 id="handler">Handler</h2>
+<p>处理器，将（记录器产生的）日志记录发送至合适的目的地。</p>
+<p>Handler处理器类型有很多种，比较常用的有三个，<strong>StreamHandler</strong>，<strong>FileHandler</strong>，<strong>NullHandler</strong></p>
+<p>使用以下方法设置日志级别，设置格式化器Formatter，增加或删除过滤器Filter</p>
+<div class="hlcode"><pre><span class="n">ch</span><span class="p">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="p">.</span><span class="n">WARN</span><span class="p">)</span> <span class="err">#</span> <span class="err">指定日志级别，低于</span><span class="n">WARN</span><span class="err">级别的日志将被忽略</span>
+<span class="n">ch</span><span class="p">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter_name</span><span class="p">)</span> <span class="err">#</span> <span class="err">设置一个格式化器</span><span class="n">formatter</span>
+<span class="n">ch</span><span class="p">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">filter_name</span><span class="p">)</span> <span class="err">#</span> <span class="err">增加一个过滤器，可以增加多个</span>
+<span class="n">ch</span><span class="p">.</span><span class="n">removeFilter</span><span class="p">(</span><span class="n">filter_name</span><span class="p">)</span> <span class="err">#</span> <span class="err">删除一个过滤器</span>
+</pre></div>
+
+
+<h3 id="streamhandler">StreamHandler</h3>
+<div class="hlcode"><pre><span class="n">sh</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">None</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="filehandler">FileHandler</h3>
+<div class="hlcode"><pre><span class="n">fh</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="nullhandler">NullHandler</h3>
+<p>NullHandler类位于核心logging包，不做任何的格式化或者输出。<br />
+本质上它是个“什么都不做”的handler，由库开发者使用。</p>
+<h2 id="filter">Filter</h2>
+<p>过滤器，提供了更好的粒度控制，它可以决定输出哪些日志记录。</p>
+<p>Handlers和Loggers可以使用Filters来完成比级别更复杂的过滤。Filter基类只允许特定Logger层次以下的事件。例如用‘A.B’初始化的Filter允许Logger ‘A.B’, ‘A.B.C’, ‘A.B.C.D’, ‘A.B.D’等记录的事件，logger‘A.BB’, ‘B.A.B’ 等就不行。 如果用空字符串来初始化，所有的事件都接受。</p>
+<div class="hlcode"><pre><span class="n">filter</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">Filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="err">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h2 id="formatter">Formatter</h2>
+<p>格式化器，指明了最终输出中日志记录的布局。</p>
+<p>使用Formatter对象设置日志信息最后的规则、结构和内容，默认的时间格式为%Y-%m-%d %H:%M:%S。</p>
+<div class="hlcode"><pre><span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">Formatter</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="n">None</span><span class="p">,</span> <span class="n">datefmt</span><span class="o">=</span><span class="n">None</span><span class="p">)</span>
+</pre></div>
+
+
+<blockquote>
+<p>fmt是消息的格式化字符串，datefmt是日期字符串。如果不指明fmt，将使用'%(message)s'。如果不指明datefmt，将使用ISO8601日期格式</p>
+</blockquote>
+<h3 id="format">format格式</h3>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%(levelno)s</td>
+<td align="center">打印日志级别的数值</td>
+</tr>
+<tr>
+<td>%(levelname)s</td>
+<td align="center">打印日志级别名称</td>
+</tr>
+<tr>
+<td>%(pathname)s</td>
+<td align="center">打印当前执行程序的路径</td>
+</tr>
+<tr>
+<td>%(filename)s</td>
+<td align="center">打印当前执行程序名称</td>
+</tr>
+<tr>
+<td>%(funcName)s</td>
+<td align="center">打印日志的当前函数</td>
+</tr>
+<tr>
+<td>%(lineno)d</td>
+<td align="center">打印日志的当前行号</td>
+</tr>
+<tr>
+<td>%(asctime)s</td>
+<td align="center">打印日志的时间</td>
+</tr>
+<tr>
+<td>%(thread)d</td>
+<td align="center">打印线程id</td>
+</tr>
+<tr>
+<td>%(threadName)s</td>
+<td align="center">打印线程名称</td>
+</tr>
+<tr>
+<td>%(process)d</td>
+<td align="center">打印进程ID</td>
+</tr>
+<tr>
+<td>%(message)s</td>
+<td align="center">打印日志信息</td>
+</tr>
+</tbody>
+</table>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2019 Xu XueHua.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2019-11-02 11:47:59</p>
+      </span>
+    </div>
+
+    
+    
+  </body>
+</html>

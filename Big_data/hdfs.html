@@ -45,8 +45,13 @@
 <li><a href="#namenode_2">NameNode</a></li>
 </ul>
 </li>
-<li><a href="#installation">Installation</a><ul>
+<li><a href="#installation">Installation 伪分布式</a><ul>
 <li><a href="#jdk">jdk</a></li>
+<li><a href="#hadoop">hadoop</a><ul>
+<li><a href="#hdfs_1">启动hdfs</a></li>
+</ul>
+</li>
+<li><a href="#mysql">mysql</a></li>
 </ul>
 </li>
 </ul>
@@ -77,16 +82,117 @@
 <p>在实践中，HDFS集群的DataNode服务器会有很多台，一般在几百台到几千台这样的规模，每台服务器配有数块磁盘，整个集群的存储容量大概在几PB到数百PB。</p>
 <h2 id="namenode_2">NameNode</h2>
 <p><strong>NameNode负责整个分布式文件系统的元数据（MetaData）管理，也就是文件路径名、数据块的ID以及存储位置等信息，相当于操作系统中文件分配表（FAT）的角色</strong>。HDFS为了保证数据的高可用，会将一个数据块复制为多份（缺省情况为3份），并将多份相同的数据块存储在不同的服务器上，甚至不同的机架上。这样当有磁盘损坏，或者某个DataNode服务器宕机，甚至某个交换机宕机，导致其存储的数据块不能访问的时候，客户端会查找其备份的数据块进行访问。</p>
-<h1 id="installation">Installation</h1>
+<h1 id="installation">Installation 伪分布式</h1>
+<p>single-node in a pseudo-distributed mode</p>
+<p>https://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.7.0/hadoop-project-dist/hadoop-common/SingleCluster.html</p>
+<div class="hlcode"><pre><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">vim</span>
+</pre></div>
+
+
 <h2 id="jdk">jdk</h2>
-<div class="hlcode"><pre><span class="nl">https:</span><span class="c1">//download.oracle.com/otn/java/jdk/7u79-b15/jdk-7u79-linux-x64.tar.gz</span>
+<div class="hlcode"><pre><span class="nl">http:</span><span class="c1">//mirror.cnop.net/jdk/linux/jdk-7u79-linux-x64.tar.gz</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">hostname</span>
+<span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">hosts</span>
+<span class="n">hadoop000</span>
+
+<span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">~/</span><span class="n">app</span><span class="o">/</span><span class="n">tmp</span>
+<span class="n">tar</span> <span class="o">-</span><span class="n">xf</span> <span class="n">jdk</span><span class="o">-</span><span class="mi">7u79</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">x64</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">C</span> <span class="o">~/</span><span class="n">app</span><span class="o">/</span>
+
+<span class="n">cp</span> <span class="o">~/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="p">.</span><span class="n">pub</span> <span class="o">~/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">authorized_keys</span>
+
+<span class="n">vim</span> <span class="o">~/</span><span class="p">.</span><span class="n">bash_profile</span>
+<span class="n">export</span> <span class="n">JAVA_HOME</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">hadoop</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.7.0</span><span class="n">_79</span>
+<span class="n">export</span> <span class="n">PATH</span><span class="o">=</span><span class="err">$</span><span class="n">JAVA_HOME</span><span class="o">/</span><span class="n">bin</span><span class="o">:</span><span class="err">$</span><span class="n">PATH</span>
+
+<span class="n">source</span> <span class="o">~/</span><span class="p">.</span><span class="n">bash_profile</span>
+<span class="n">java</span> <span class="o">-</span><span class="n">version</span>
+</pre></div>
+
+
+<h2 id="hadoop">hadoop</h2>
+<div class="hlcode"><pre><span class="nl">https:</span><span class="c1">//archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.7.0.tar.gz</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">tar</span> <span class="o">-</span><span class="n">xf</span> <span class="n">hadoop</span><span class="o">-</span><span class="mf">2.6.0</span><span class="o">-</span><span class="n">cdh5</span><span class="mf">.7.0</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span>  <span class="o">-</span><span class="n">C</span> <span class="o">~/</span><span class="n">app</span><span class="o">/</span>
+
+<span class="n">vim</span>  <span class="n">etc</span><span class="o">/</span><span class="n">hadoop</span><span class="o">/</span><span class="n">hadoop</span><span class="o">-</span><span class="n">env</span><span class="p">.</span><span class="n">sh</span>
+<span class="n">export</span> <span class="n">JAVA_HOME</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">hadoop</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.7.0</span><span class="n">_79</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="nx">vim</span> <span class="nx">etc</span><span class="p">/</span><span class="nx">hadoop</span><span class="p">/</span><span class="nx">core</span><span class="na">-site.xml</span>
+<span class="o">&lt;</span><span class="nx">configuration</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">property</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nb">name</span><span class="o">&gt;</span><span class="nx">fs.defaultFS</span><span class="o">&lt;/</span><span class="nb">name</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nb">value</span><span class="o">&gt;</span><span class="nx">hdfs</span><span class="p">:</span><span class="c1">//hadoop000:8020&lt;/value&gt;</span>
+    <span class="o">&lt;/</span><span class="nx">property</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">property</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nb">name</span><span class="o">&gt;</span><span class="nx">hadoop.tmp.dir</span><span class="o">&lt;/</span><span class="nb">name</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nb">value</span><span class="o">&gt;/</span><span class="nb">home</span><span class="p">/</span><span class="nx">hadoop</span><span class="p">/</span><span class="nx">app</span><span class="p">/</span><span class="nx">tmp</span><span class="o">&lt;/</span><span class="nb">value</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">property</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">configuration</span><span class="o">&gt;</span>
+
+
+<span class="nx">vim</span> <span class="nx">etc</span><span class="p">/</span><span class="nx">hadoop</span><span class="p">/</span><span class="nx">hdfs</span><span class="na">-site.xml</span>
+<span class="o">&lt;</span><span class="nx">configuration</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">property</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nb">name</span><span class="o">&gt;</span><span class="nx">dfs.replication</span><span class="o">&lt;/</span><span class="nb">name</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nb">value</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="nb">value</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="nx">property</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">configuration</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3 id="hdfs_1">启动hdfs</h3>
+<p>仅仅第一次执行即可，不需要重复执行</p>
+<div class="hlcode"><pre><span class="n">bin</span><span class="o">/</span><span class="n">hdfs</span> <span class="n">namenode</span> <span class="o">-</span><span class="n">format</span>
+</pre></div>
+
+
+<p>启动</p>
+<div class="hlcode"><pre><span class="n">sbin</span><span class="o">/</span><span class="n">start</span><span class="o">-</span><span class="n">dfs</span><span class="p">.</span><span class="n">sh</span>
+</pre></div>
+
+
+<p>检查状态</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">jps</span>
+<span class="mi">11150</span> <span class="n">SecondaryNameNode</span>
+<span class="mi">10996</span> <span class="n">DataNode</span>
+<span class="mi">10881</span> <span class="n">NameNode</span>
+<span class="mi">11253</span> <span class="n">Jps</span>
+</pre></div>
+
+
+<p>或访问</p>
+<div class="hlcode"><pre><span class="nl">http:</span><span class="c1">//localhost:50070</span>
+</pre></div>
+
+
+<p>停止</p>
+<div class="hlcode"><pre><span class="n">sbin</span><span class="o">/</span><span class="n">stop</span><span class="o">-</span><span class="n">dfs</span><span class="p">.</span><span class="n">sh</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">vim</span> <span class="o">~/</span><span class="p">.</span><span class="n">bash_profile</span>
+<span class="n">export</span> <span class="n">HADOOP_HOME</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">hadoop</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">hadoop</span><span class="o">-</span><span class="mf">2.6.0</span><span class="o">-</span><span class="n">cdh5</span><span class="mf">.7.0</span>
+<span class="n">export</span> <span class="n">PATH</span><span class="o">=</span><span class="err">$</span><span class="n">HADOOP_HOME</span><span class="o">/</span><span class="n">bin</span><span class="o">:</span><span class="err">$</span><span class="n">PATH</span>
+</pre></div>
+
+
+<h2 id="mysql">mysql</h2>
+<p>mysql-connector-java-5.1.27-bin.jar</p>
+<div class="hlcode"><pre><span class="nl">http:</span><span class="c1">//repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.27/mysql-connector-java-5.1.27.jar</span>
 </pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-09-22 23:06:24</p>
+        <p>Site Generated 2019-11-02 11:47:59</p>
       </span>
     </div>
 
