@@ -29,6 +29,7 @@
 <li><a href="#git">git</a><ul>
 <li><a href="#add">add 添加到暂存区</a></li>
 <li><a href="#alias">alias 设置别名</a></li>
+<li><a href="#apply-diff">apply 合并diff变更</a></li>
 <li><a href="#branch">branch</a><ul>
 <li><a href="#-d">-D 强力删除</a></li>
 <li><a href="#-d_1">-d 删除</a></li>
@@ -147,6 +148,13 @@
 
 
 <div class="hlcode"><pre><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">global</span> <span class="n">alias</span><span class="p">.</span><span class="n">lg</span> <span class="s">&quot;log --color --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#39; --abbrev-commit&quot;</span>
+</pre></div>
+
+
+<h2 id="apply-diff">apply 合并diff变更</h2>
+<div class="hlcode"><pre><span class="n">git</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="n">diff</span><span class="p">.</span><span class="n">txt</span>
+
+<span class="n">git</span> <span class="n">apply</span> <span class="n">diff</span><span class="p">.</span><span class="n">txt</span>
 </pre></div>
 
 
@@ -566,7 +574,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-05 22:57:24</p>
+        <p>Site Generated 2019-11-25 09:39:55</p>
       </span>
     </div>
 

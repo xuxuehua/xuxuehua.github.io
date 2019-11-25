@@ -36,6 +36,7 @@
 <li><a href="#push">push 上传标记的镜像</a></li>
 </ul>
 </li>
+<li><a href="#registry_1">指定registry地址</a></li>
 </ul>
 </li>
 </ul>
@@ -153,12 +154,23 @@ docker tag 26ac9649d7da wdxtub/wdx-whale:latest
 <span class="n">REPOSITORY</span>                         <span class="n">TAG</span>                 <span class="n">IMAGE</span> <span class="n">ID</span>            <span class="n">CREATED</span>             <span class="n">VIRTUAL</span> <span class="n">SIZE</span>
 <span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">:</span><span class="n">latest</span>       <span class="n">latest</span>              <span class="n">ba5877dc9bec</span>        <span class="mi">6</span> <span class="n">weeks</span> <span class="n">ago</span>  
 </pre></div>
+
+
+<h2 id="registry_1">指定registry地址</h2>
+<p>找到可用IP</p>
+<div class="hlcode"><pre><span class="n">dig</span> <span class="err">@</span><span class="mf">114.114.114.114</span> <span class="n">registry</span><span class="o">-</span><span class="mf">1.</span><span class="n">docker</span><span class="p">.</span><span class="n">io</span>
+</pre></div>
+
+
+<p>修改<code>/etc/hosts</code>强制<code>docker.io</code>相关的域名解析到其它可用IP</p>
+<div class="hlcode"><pre><span class="mf">52.87.94.70</span> <span class="n">registry</span><span class="o">-</span><span class="mf">1.</span><span class="n">docker</span><span class="p">.</span><span class="n">io</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-05 22:57:24</p>
+        <p>Site Generated 2019-11-25 09:39:55</p>
       </span>
     </div>
 

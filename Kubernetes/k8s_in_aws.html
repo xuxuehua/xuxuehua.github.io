@@ -205,7 +205,7 @@ https://docs.aws.amazon.com/eks/latest/userguide/configure-kubectl.html</p>
 
 <h2 id="create-cluster-control-plane">Create cluster control plane</h2>
 <p>https://us-west-2.console.aws.amazon.com/eks</p>
-<p>We can launch via the EKS console: https://console.aws.amazon.com/ek</p>
+<p>We can launch via the EKS console: https://console.aws.amazon.com/eks</p>
 <p>Input Cluster Name with <code>classCluster</code>, click next</p>
 <p>The VPC we need is 192.168.0.0/16 subnet</p>
 <p>And Security Group is the right classEKSVPC </p>
@@ -220,6 +220,11 @@ https://docs.aws.amazon.com/eks/latest/userguide/configure-kubectl.html</p>
 
 <p>Enable variables</p>
 <div class="hlcode"><pre><span class="n">export</span> <span class="n">AWS_PROFILE</span><span class="o">=</span><span class="n">clusterAdmin</span> <span class="err">#</span> <span class="n">Re</span><span class="o">-</span><span class="n">enable</span> <span class="n">it</span> <span class="n">when</span> <span class="n">you</span> <span class="n">reset</span> <span class="n">your</span> <span class="n">terminal</span> <span class="p">(</span><span class="n">AWS</span> <span class="n">UID</span><span class="p">)</span>
+</pre></div>
+
+
+<p>If you assumed a role to create the Amazon EKS cluster, you must ensure that <strong>kubectl</strong> is configured to assume the same role. Use the following command to update your kubeconfig file to use an IAM role.</p>
+<div class="hlcode"><pre><span class="n">aws</span> <span class="o">--</span><span class="n">region</span> <span class="n">region</span> <span class="n">eks</span> <span class="n">update</span><span class="o">-</span><span class="n">kubeconfig</span> <span class="o">--</span><span class="n">name</span> <span class="n">cluster_name</span> <span class="o">--</span><span class="n">role</span><span class="o">-</span><span class="n">arn</span> <span class="n">arn</span><span class="o">:</span><span class="n">aws</span><span class="o">:</span><span class="n">iam</span><span class="o">::</span><span class="n">aws_account_id</span><span class="o">:</span><span class="n">role</span><span class="o">/</span><span class="n">role_name</span>
 </pre></div>
 
 
@@ -903,7 +908,7 @@ https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-windows-amd64.zip</p
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-05 22:57:24</p>
+        <p>Site Generated 2019-11-25 09:39:55</p>
       </span>
     </div>
 

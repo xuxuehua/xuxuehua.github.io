@@ -27,20 +27,20 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#apiversion">apiVersion</a></li>
-<li><a href="#kind">kind</a><ul>
+<li><a href="#kind">kind 资源类别</a><ul>
 <li><a href="#podpreset">PodPreset</a></li>
 </ul>
 </li>
 <li><a href="#metadata">Metadata</a><ul>
 <li><a href="#name">name</a></li>
 <li><a href="#namespace">namespace</a></li>
-<li><a href="#labels">labels</a></li>
+<li><a href="#labels">labels (重要)</a></li>
 <li><a href="#annotation">annotation</a></li>
 <li><a href="#ownerreference">ownerReference</a></li>
 <li><a href="#annotations">annotations</a></li>
 </ul>
 </li>
-<li><a href="#spec">Spec 期待状态</a><ul>
+<li><a href="#spec">Spec 用户期待状态</a><ul>
 <li><a href="#_1">仔细阅读</a></li>
 <li><a href="#kubectl-explain-specobject">Kubectl explain spec.[Object]</a></li>
 <li><a href="#containers">containers 容器列表</a><ul>
@@ -48,7 +48,14 @@
 <li><a href="#image-string">image &lt;string&gt;</a></li>
 <li><a href="#imagepullpolicy-string">imagePullPolicy &lt;string&gt;</a></li>
 <li><a href="#ports-object">ports &lt;[]Object&gt;</a></li>
-<li><a href="#command-string">command &lt;[]string&gt;</a></li>
+<li><a href="#command-string">command &lt;[]string&gt;</a><ul>
+<li><a href="#lifecycle">Lifecycle</a></li>
+<li><a href="#livenessprobe">livenessProbe</a></li>
+<li><a href="#node">node</a></li>
+<li><a href="#readinessprobe">readinessProbe</a></li>
+<li><a href="#restartpolicy">restartPolicy</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#selector">selector</a><ul>
@@ -56,19 +63,12 @@
 <li><a href="#matchexpressions">matchExpressions</a></li>
 </ul>
 </li>
+<li><a href="#nodeselector-deprecated-by-nodeaffinity">nodeSelector (Deprecated by nodeAffinity)</a></li>
+<li><a href="#nodename">nodeName</a></li>
+<li><a href="#nodeaffinity">nodeAffinity</a></li>
 </ul>
 </li>
-<li><a href="#status">status 当前状态</a><ul>
-<li><a href="#lifecycle">Lifecycle</a></li>
-<li><a href="#livenessprobe">livenessProbe</a><ul>
-<li><a href="#exec">exec</a></li>
-<li><a href="#httpget">httpGet</a></li>
-<li><a href="#tcpsocket">tcpSocket</a></li>
-</ul>
-</li>
-<li><a href="#node">node</a></li>
-<li><a href="#readinessprobe">readinessProbe</a></li>
-<li><a href="#restartpolicy">restartPolicy</a></li>
+<li><a href="#status-read-only">status 当前状态 (read-only)</a><ul>
 <li><a href="#activedeadlineseconds">activeDeadlineSeconds</a></li>
 <li><a href="#sessionaffinity">sessionAffinity</a></li>
 <li><a href="#parallelism">parallelism</a></li>
@@ -76,11 +76,6 @@
 <li><a href="#rollingupdatestrategy">RollingUpdateStrategy</a></li>
 <li><a href="#revisionhistorylimit">revisionHistoryLimit</a></li>
 <li><a href="#volumeclaimtemplates">volumeClaimTemplates</a></li>
-<li><a href="#nodeselector-deprecated-by-nodeaffinity">nodeSelector (Deprecated by nodeAffinity)</a><ul>
-<li><a href="#nodename">NodeName</a></li>
-</ul>
-</li>
-<li><a href="#nodeaffinity">nodeAffinity</a></li>
 <li><a href="#hostaliases">hostAliases</a><ul>
 <li><a href="#hostnetworkhostipchostpid">hostNetwork/hostIPC/hostPID</a></li>
 </ul>
@@ -101,6 +96,9 @@
 </pre></div>
 
 
+<blockquote>
+<p>group_name 省略表示 core核心群组</p>
+</blockquote>
 <p>指明资源所在群组以及版本</p>
 <div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">kubectl</span> <span class="n">api</span><span class="o">-</span><span class="n">versions</span>
 <span class="n">admissionregistration</span><span class="p">.</span><span class="n">k8s</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">v1beta1</span>
@@ -138,9 +136,9 @@
 </pre></div>
 
 
-<h1 id="kind">kind</h1>
-<p>资源类别</p>
-<p>如Pod，Replicas</p>
+<h1 id="kind">kind 资源类别</h1>
+<p>初始化资源对象时使用</p>
+<p>如Pod，Replicas， deployment， StatefulSet</p>
 <h2 id="podpreset">PodPreset</h2>
 <p>Pod预先设置</p>
 <p>pod.yaml</p>
@@ -225,16 +223,18 @@
 <h1 id="metadata">Metadata</h1>
 <p>API对象的“标识”，即元数据，也是从Kubernetes里找到这个对象的主要依据，对所有API对象来说，这一部分的格式和字段基本是一致的</p>
 <p>其中最主要使用到的字段是Labels</p>
+<p>嵌套字段</p>
 <h3 id="name">name</h3>
 <p>在同一类别中，name必须是唯一的</p>
 <p>实例化对象的名称</p>
 <h3 id="namespace">namespace</h3>
 <p>实例化对象资源的名称空间</p>
 <p>name是受限于namespace的</p>
-<h3 id="labels">labels</h3>
+<h3 id="labels">labels (重要)</h3>
 <p>key-value 数据</p>
 <p>key最多63个字符，只能使用字母，数字，下划线，横线</p>
 <p>value 可以为空，只能字母或者数字开头及结尾</p>
+<p>资源对象进行管理，可以添加多个标签</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
 <span class="n">metadata</span><span class="o">:</span>
@@ -274,7 +274,7 @@
 </pre></div>
 
 
-<h1 id="spec">Spec 期待状态</h1>
+<h1 id="spec">Spec 用户期待状态</h1>
 <p>specification 规格</p>
 <p>存放属于这个对象独有的定义，用来描述它要表达的功能</p>
 <p>即用户来定义资源所期望的目标状态</p>
@@ -422,31 +422,6 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 </tr>
 </tbody>
 </table>
-<h2 id="selector">selector</h2>
-<h3 id="matchlabels">matchLabels</h3>
-<p>通过直接给定键值来指定标签选择器</p>
-<div class="hlcode"><pre><span class="n">selector</span><span class="o">:</span>
-  <span class="n">matchLabels</span><span class="o">:</span>
-    <span class="n">component</span><span class="o">:</span> <span class="n">redis</span>
-</pre></div>
-
-
-<h3 id="matchexpressions">matchExpressions</h3>
-<p>基于表达式指定的标签选择器列表，每个选择器都形如</p>
-<div class="hlcode"><pre><span class="p">{</span><span class="n">key</span><span class="o">:</span> <span class="n">KEY_NAME</span><span class="p">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">OPERATOR</span><span class="p">,</span> <span class="n">values</span><span class="o">:</span> <span class="p">[</span><span class="n">VALUE1</span><span class="p">,</span> <span class="n">VALUE2</span><span class="p">,</span> <span class="p">...]}</span>
-</pre></div>
-
-
-<div class="hlcode"><pre><span class="n">selector</span><span class="o">:</span>
-  <span class="n">matchExpressions</span><span class="o">:</span>
-    <span class="o">-</span> <span class="o">{</span><span class="n">key</span><span class="o">:</span> <span class="n">tier</span><span class="o">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">In</span><span class="o">,</span> <span class="n">values</span><span class="o">:</span> <span class="o">[</span><span class="n">cache</span><span class="o">]}</span>
-    <span class="o">-</span> <span class="o">{</span><span class="n">key</span><span class="o">:</span> <span class="n">environment</span><span class="o">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">Exists</span><span class="o">,</span> <span class="n">values</span><span class="o">:}</span>
-</pre></div>
-
-
-<h1 id="status">status 当前状态</h1>
-<p>目标资源的当前状态</p>
-<p>由kubernetes集群维护，用户不能自定义</p>
 <h4 id="lifecycle">Lifecycle</h4>
 <p>定义了Container Lifecycle Hooks，即容器状态发生变化时触发的一系列钩子</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
@@ -474,7 +449,9 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 <p>由于是同步的，会阻塞之前的容器杀死流程，直到这个Hook定义的操作完成之后，才允许容器被杀死</p>
 </blockquote>
 <h4 id="livenessprobe">livenessProbe</h4>
-<h5 id="exec">exec</h5>
+<ul>
+<li>exec</li>
+</ul>
 <p>exec类型探针通过在目标容器中执行由用户自定义的命令来判断容器的健康状态</p>
 <p>返回0表示成功，其他均为失败</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
@@ -494,7 +471,9 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 </pre></div>
 
 
-<h5 id="httpget">httpGet</h5>
+<ul>
+<li>httpGet</li>
+</ul>
 <p>向目标容器发起一个http请求，根据响应状态码进行结果盘点</p>
 <p>2xx 或3xx表示通过</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
@@ -522,7 +501,9 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 </pre></div>
 
 
-<h5 id="tcpsocket">tcpSocket</h5>
+<ul>
+<li>tcpSocket</li>
+</ul>
 <p>基于TCP的存活性探测(TCPSocketAction) 向容器的特定端口发起TCP请求并尝试建立连接进行判定</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
 <span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
@@ -555,6 +536,103 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 </pre></div>
 
 
+<h2 id="selector">selector</h2>
+<h3 id="matchlabels">matchLabels</h3>
+<p>通过直接给定键值来指定标签选择器</p>
+<div class="hlcode"><pre><span class="n">selector</span><span class="o">:</span>
+  <span class="n">matchLabels</span><span class="o">:</span>
+    <span class="n">component</span><span class="o">:</span> <span class="n">redis</span>
+</pre></div>
+
+
+<h3 id="matchexpressions">matchExpressions</h3>
+<p>基于表达式指定的标签选择器列表，每个选择器都形如</p>
+<div class="hlcode"><pre><span class="p">{</span><span class="n">key</span><span class="o">:</span> <span class="n">KEY_NAME</span><span class="p">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">OPERATOR</span><span class="p">,</span> <span class="n">values</span><span class="o">:</span> <span class="p">[</span><span class="n">VALUE1</span><span class="p">,</span> <span class="n">VALUE2</span><span class="p">,</span> <span class="p">...]}</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="n">selector</span><span class="o">:</span>
+  <span class="n">matchExpressions</span><span class="o">:</span>
+    <span class="o">-</span> <span class="o">{</span><span class="n">key</span><span class="o">:</span> <span class="n">tier</span><span class="o">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">In</span><span class="o">,</span> <span class="n">values</span><span class="o">:</span> <span class="o">[</span><span class="n">cache</span><span class="o">]}</span>
+    <span class="o">-</span> <span class="o">{</span><span class="n">key</span><span class="o">:</span> <span class="n">environment</span><span class="o">,</span> <span class="n">operator</span><span class="o">:</span> <span class="n">Exists</span><span class="o">,</span> <span class="n">values</span><span class="o">:}</span>
+</pre></div>
+
+
+<h2 id="nodeselector-deprecated-by-nodeaffinity">nodeSelector (Deprecated by nodeAffinity)</h2>
+<p>供用户将Pod与Node进行绑定的字段</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="o">...</span>
+<span class="n">spec</span><span class="o">:</span>
+ <span class="n">nodeSelector</span><span class="o">:</span>
+   <span class="n">disktype</span><span class="o">:</span> <span class="n">ssd</span>
+</pre></div>
+
+
+<blockquote>
+<p>这样意味着Pod只能运行在携带disktype： ssd标签的节点上，否则将调度失败</p>
+</blockquote>
+<p>调度某些资源至指定设备节点，使用nodeSelector选择器</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">nodeselector</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">env</span><span class="o">:</span> <span class="n">testing</span>
+<span class="n">spec</span><span class="o">:</span> 
+  <span class="n">containers</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
+    <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
+  <span class="n">nodeSelector</span><span class="o">:</span>
+    <span class="n">disktype</span><span class="o">:</span> <span class="n">ssd</span>
+</pre></div>
+
+
+<h2 id="nodename">nodeName</h2>
+<p>一旦 Pod 的这个字段被赋值，Kubernetes 项目就会被认为这个 Pod 已经经过了调度，调度的结果就是赋值的节点名字。所以，这个字段一般由调度器负责设置，但用户也可以设置它来“骗过”调度器，当然这个做法一般是在测试或者调试的时候才会用到。</p>
+<p>即直接运行在指定节点上</p>
+<h2 id="nodeaffinity">nodeAffinity</h2>
+<p>spec.affinity字段，是Pod里跟调度相关的一个字段</p>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="k">with</span><span class="o">-</span><span class="n">node</span><span class="o">-</span><span class="n">affinity</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">affinity</span><span class="o">:</span>
+    <span class="n">nodeAffinity</span><span class="o">:</span>
+      <span class="n">requiredDuringSchedulingIgnoredDuringExecution</span><span class="o">:</span>
+        <span class="n">nodeSelectorTerms</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">matchExpressions</span><span class="o">:</span>
+          <span class="o">-</span> <span class="n">key</span><span class="o">:</span> <span class="n">metadata</span><span class="o">.</span><span class="na">name</span>
+            <span class="n">operator</span><span class="o">:</span> <span class="n">In</span>
+            <span class="n">values</span><span class="o">:</span>
+            <span class="o">-</span> <span class="n">node</span><span class="o">-</span><span class="n">geektime</span>
+</pre></div>
+
+
+<blockquote>
+<p>requiredDuringSchedulingIgnoredDuringExecution    指这个nodeAffinity必须在每次调度的时候予以考虑，也表示可以在设置某些情况下不考虑这个nodeAffinity</p>
+<p>当前Pod只会运行在metadata.name 是 node-geektime上面节点运行</p>
+</blockquote>
+<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="k">with</span><span class="o">-</span><span class="n">toleration</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">tolerations</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">key</span><span class="o">:</span> <span class="n">node</span><span class="o">.</span><span class="na">kubernetes</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">unschedulable</span>
+    <span class="n">operator</span><span class="o">:</span> <span class="n">Exists</span>
+    <span class="n">effect</span><span class="o">:</span> <span class="n">NoSchedule</span>
+</pre></div>
+
+
+<blockquote>
+<p>Toleration容忍”所有被标记为 unschedulable“污点”的 Node；“容忍”的效果是允许调度。</p>
+</blockquote>
+<h1 id="status-read-only">status 当前状态 (read-only)</h1>
+<p>显示目标资源的当前状态</p>
+<p>由kubernetes集群维护，用户不能自定义</p>
+<p>即status状态尽最大向spec状态转移</p>
 <h2 id="activedeadlineseconds">activeDeadlineSeconds</h2>
 <p>设置最长运行时间</p>
 <div class="hlcode"><pre><span class="n">spec</span><span class="o">:</span>
@@ -671,76 +749,6 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
 </pre></div>
 
 
-<h2 id="nodeselector-deprecated-by-nodeaffinity">nodeSelector (Deprecated by nodeAffinity)</h2>
-<p>供用户将Pod与Node进行绑定的字段</p>
-<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
-<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
-<span class="o">...</span>
-<span class="n">spec</span><span class="o">:</span>
- <span class="n">nodeSelector</span><span class="o">:</span>
-   <span class="n">disktype</span><span class="o">:</span> <span class="n">ssd</span>
-</pre></div>
-
-
-<blockquote>
-<p>这样意味着Pod只能运行在携带disktype： ssd标签的节点上，否则将调度失败</p>
-</blockquote>
-<p>调度某些资源至指定设备节点，使用nodeSelector选择器</p>
-<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
-<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
-<span class="n">metadata</span><span class="o">:</span>
-  <span class="n">name</span><span class="o">:</span> <span class="n">pod</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">nodeselector</span>
-  <span class="n">labels</span><span class="o">:</span>
-    <span class="n">env</span><span class="o">:</span> <span class="n">testing</span>
-<span class="n">spec</span><span class="o">:</span> 
-  <span class="n">containers</span><span class="o">:</span>
-  <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">myapp</span>
-    <span class="n">image</span><span class="o">:</span> <span class="n">ikubernetes</span><span class="o">/</span><span class="n">myapp</span><span class="o">:</span><span class="n">v1</span>
-  <span class="n">nodeSelector</span><span class="o">:</span>
-    <span class="n">disktype</span><span class="o">:</span> <span class="n">ssd</span>
-</pre></div>
-
-
-<h3 id="nodename">NodeName</h3>
-<p>一旦 Pod 的这个字段被赋值，Kubernetes 项目就会被认为这个 Pod 已经经过了调度，调度的结果就是赋值的节点名字。所以，这个字段一般由调度器负责设置，但用户也可以设置它来“骗过”调度器，当然这个做法一般是在测试或者调试的时候才会用到。</p>
-<h2 id="nodeaffinity">nodeAffinity</h2>
-<p>spec.affinity字段，是Pod里跟调度相关的一个字段</p>
-<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
-<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
-<span class="n">metadata</span><span class="o">:</span>
-  <span class="n">name</span><span class="o">:</span> <span class="k">with</span><span class="o">-</span><span class="n">node</span><span class="o">-</span><span class="n">affinity</span>
-<span class="n">spec</span><span class="o">:</span>
-  <span class="n">affinity</span><span class="o">:</span>
-    <span class="n">nodeAffinity</span><span class="o">:</span>
-      <span class="n">requiredDuringSchedulingIgnoredDuringExecution</span><span class="o">:</span>
-        <span class="n">nodeSelectorTerms</span><span class="o">:</span>
-        <span class="o">-</span> <span class="n">matchExpressions</span><span class="o">:</span>
-          <span class="o">-</span> <span class="n">key</span><span class="o">:</span> <span class="n">metadata</span><span class="o">.</span><span class="na">name</span>
-            <span class="n">operator</span><span class="o">:</span> <span class="n">In</span>
-            <span class="n">values</span><span class="o">:</span>
-            <span class="o">-</span> <span class="n">node</span><span class="o">-</span><span class="n">geektime</span>
-</pre></div>
-
-
-<blockquote>
-<p>requiredDuringSchedulingIgnoredDuringExecution    指这个nodeAffinity必须在每次调度的时候予以考虑，也表示可以在设置某些情况下不考虑这个nodeAffinity</p>
-<p>当前Pod只会运行在metadata.name 是 node-geektime上面节点运行</p>
-</blockquote>
-<div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
-<span class="n">kind</span><span class="o">:</span> <span class="n">Pod</span>
-<span class="n">metadata</span><span class="o">:</span>
-  <span class="n">name</span><span class="o">:</span> <span class="k">with</span><span class="o">-</span><span class="n">toleration</span>
-<span class="n">spec</span><span class="o">:</span>
-  <span class="n">tolerations</span><span class="o">:</span>
-  <span class="o">-</span> <span class="n">key</span><span class="o">:</span> <span class="n">node</span><span class="o">.</span><span class="na">kubernetes</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">unschedulable</span>
-    <span class="n">operator</span><span class="o">:</span> <span class="n">Exists</span>
-    <span class="n">effect</span><span class="o">:</span> <span class="n">NoSchedule</span>
-</pre></div>
-
-
-<blockquote>
-<p>Toleration容忍”所有被标记为 unschedulable“污点”的 Node；“容忍”的效果是允许调度。</p>
-</blockquote>
 <h2 id="hostaliases">hostAliases</h2>
 <p>定义了 Pod 的 hosts 文件（比如 /etc/hosts）里的内容</p>
 <div class="hlcode"><pre><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
@@ -855,7 +863,7 @@ Never 禁止从仓库中下载镜像，仅仅使用本地镜像</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-05 22:57:24</p>
+        <p>Site Generated 2019-11-25 09:39:55</p>
       </span>
     </div>
 

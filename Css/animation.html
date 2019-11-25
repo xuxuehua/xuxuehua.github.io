@@ -53,6 +53,10 @@
 <li><a href="#animation">animation</a></li>
 </ul>
 </li>
+<li><a href="#example">example</a><ul>
+<li><a href="#back-to-top">Back to top</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="_1">动画</h1>
@@ -171,12 +175,81 @@
     <span class="mi">100</span><span class="o">%</span><span class="p">{</span><span class="n">background</span><span class="o">:</span> <span class="n">red</span><span class="p">;</span> <span class="n">left</span><span class="o">:</span> <span class="mi">0</span><span class="n">px</span><span class="p">;</span> <span class="n">top</span><span class="o">:</span> <span class="mi">0</span><span class="n">px</span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+
+
+<h1 id="example">example</h1>
+<h2 id="back-to-top">Back to top</h2>
+<div class="hlcode"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content=</span><span class="s">&quot;width=device-width, initial-scale=1&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;style&gt;</span>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+}
+
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+#myBtn:hover {
+  background-color: #555;
+}
+<span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">&quot;topFunction()&quot;</span> <span class="na">id=</span><span class="s">&quot;myBtn&quot;</span> <span class="na">title=</span><span class="s">&quot;Go to top&quot;</span><span class="nt">&gt;</span>Top<span class="nt">&lt;/button&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">&quot;background-color:black;color:white;padding:30px&quot;</span><span class="nt">&gt;</span>Scroll Down<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">&quot;background-color:lightgrey;padding:30px 30px 2500px&quot;</span><span class="nt">&gt;</span>This example demonstrates how to create a &quot;scroll to top&quot; button that becomes visible 
+  <span class="nt">&lt;strong&gt;</span>when the user starts to scroll the page<span class="nt">&lt;/strong&gt;</span>.<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+//Get the button
+var mybutton = document.getElementById(&quot;myBtn&quot;);
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop &gt; 20 || document.documentElement.scrollTop &gt; 20) {
+    mybutton.style.display = &quot;block&quot;;
+  } else {
+    mybutton.style.display = &quot;none&quot;;
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  //document.body.scrollTop = 0;
+   $(&#39;html,body&#39;).animate({ scrollTop: 0 }, &#39;slow&#39;); // 慢速滚动
+  document.documentElement.scrollTop = 0;
+}
+<span class="nt">&lt;/script&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-05 22:57:24</p>
+        <p>Site Generated 2019-11-25 09:39:55</p>
       </span>
     </div>
 
