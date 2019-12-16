@@ -46,7 +46,10 @@
 </li>
 </ul>
 </li>
-<li><a href="#persistent-volume-claim-pvc">Persistent Volume Claim (PVC)</a></li>
+<li><a href="#persistent-volume-claim-pvc">Persistent Volume Claim (PVC) (常用)</a><ul>
+<li><a href="#_3">定义使用</a></li>
+</ul>
+</li>
 <li><a href="#persistent-volume-pv">Persistent Volume (PV)</a></li>
 </ul>
 </li>
@@ -277,9 +280,10 @@ metadata.annotations - Pod 的所有 Annotation
 
 <h4 id="inclusterconfig">InClusterConfig (推荐)</h4>
 <p>这种把 Kubernetes 客户端以容器的方式运行在集群里，然后使用 default Service Account 自动授权的方式，被称作“InClusterConfig”，也是我最推荐的进行 Kubernetes API 编程的授权方式。</p>
-<h2 id="persistent-volume-claim-pvc">Persistent Volume Claim (PVC)</h2>
+<h2 id="persistent-volume-claim-pvc">Persistent Volume Claim (PVC) (常用)</h2>
 <p>降低了用户声明和使用持久化 Volume 的门槛。</p>
 <p>PVC是一种特殊的Volume，但PVC所指定的volume类型，是和PV绑定之后才知道</p>
+<h3 id="_3">定义使用</h3>
 <p>声明PVC</p>
 <div class="hlcode"><pre><span class="n">kind</span><span class="o">:</span> <span class="n">PersistentVolumeClaim</span>
 <span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
@@ -361,7 +365,7 @@ metadata.annotations - Pod 的所有 Annotation
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-25 09:39:55</p>
+        <p>Site Generated 2019-12-16 08:46:05</p>
       </span>
     </div>
 

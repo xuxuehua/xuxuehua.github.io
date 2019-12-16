@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
-    <title>threading - Xu XueHua</title>
+    <title>threading 线程 - Xu XueHua</title>
     <meta name="keywords" content="Xu XueHua"/>
     <meta name="description" content="Xu XueHua's public notes"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -16,14 +16,14 @@
     <div id="container">
       
 <div id="header">
-  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python_modules">Python_modules</a>&nbsp;&#187;&nbsp;threading
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Python_modules">Python_modules</a>&nbsp;&#187;&nbsp;threading 线程
     <span class="updated">Page Updated&nbsp;
       2018-09-27 19:39
     </span></div>
 </div>
 <div class="clearfix"></div>
 
-<div class="page_title">threading</div>
+<div class="page_title">threading 线程</div>
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#threading">threading</a><ul>
@@ -52,9 +52,9 @@
 </div>
 <h1 id="threading">threading</h1>
 <p>线程是进程的一部分，比进程更灵活，小巧，切换起来更加节省CPU资源。</p>
-<p>进程一般是用来分配资源，</p>
-<p>线程是利用CPU执行代码，是不可以分配拥有资源。但是可以访问资源。</p>
-<p>多线程可以更加充分的利用CPU的性能优势</p>
+<p>进程一般是用来分配资源，线程可以访问进程的资源</p>
+<p>线程是利用CPU执行代码，不可以分配拥有资源。但是可以访问资源，即利用CPU执行代码。</p>
+<p>多线程可以更加充分的利用CPU的性能优势，相互切换是比进程小很多的</p>
 <p>threading是python中专门用作多线程，常用类是Thread</p>
 <p>服务器利用多线程的方式来处理大量的请求，以提高对网络端口的读写效率。</p>
 <p>Python实现多线程/多进程，大家常常会用到标准库中的threading和multiprocessing模块。<br />
@@ -63,6 +63,62 @@
 <p>查看线程数</p>
 <h2 id="threadingcurrent_thread">threading.current_thread()</h2>
 <p>当前线程名称</p>
+<p>单线程需要等所有的代码执行完成之后，才会执行下一步代码</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">threading</span>
+<span class="n">import</span> <span class="n">time</span>
+
+
+<span class="n">def</span> <span class="n">worker</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="s">&quot;I am a thread&quot;</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">current_thread</span><span class="p">()</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">getName</span><span class="p">())</span>
+
+
+<span class="n">worker</span><span class="p">()</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">current_thread</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">getName</span><span class="p">())</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">I</span> <span class="n">am</span> <span class="n">a</span> <span class="kr">thread</span>
+<span class="n">MainThread</span>
+<span class="n">MainThread</span>
+</pre></div>
+
+
+<blockquote>
+<p>这里会等待10秒再执行剩下的</p>
+</blockquote>
+<p>看起来会像是主线程和worker线程同时执行</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">threading</span>
+<span class="n">import</span> <span class="n">time</span>
+
+
+<span class="n">def</span> <span class="n">worker</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="s">&quot;I am a thread&quot;</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">current_thread</span><span class="p">()</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">getName</span><span class="p">())</span>
+
+
+<span class="cp"># worker()</span>
+<span class="kt">new_t</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="err">&#39;</span><span class="n">my_thread</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="kt">new_t</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">current_thread</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">getName</span><span class="p">())</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">I</span> <span class="n">am</span> <span class="n">a</span> <span class="kr">thread</span>
+<span class="n">MainThread</span>
+<span class="n">my_thread</span>
+</pre></div>
+
+
+<blockquote>
+<p>主线程执行不依赖于worker线程的执行结果</p>
+</blockquote>
 <h2 id="threadinglock">threading.Lock()</h2>
 <p>对修改全局变量的地方，需要加锁</p>
 <div class="hlcode"><pre><span class="n">gLock</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Lock</span><span class="p">()</span>
@@ -128,6 +184,30 @@
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="err">&#39;</span><span class="n">__main__</span><span class="err">&#39;</span><span class="o">:</span>
     <span class="n">main</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&lt;</span><span class="n">Producer</span><span class="p">(</span><span class="n">Producer</span> <span class="n">threading</span> <span class="mi">0</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145326419968</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">produced</span> <span class="mi">136</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">1136</span>
+<span class="o">&lt;</span><span class="n">Producer</span><span class="p">(</span><span class="n">Producer</span> <span class="n">threading</span> <span class="mi">1</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145331675136</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">produced</span> <span class="mi">967</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">2103</span>
+<span class="o">&lt;</span><span class="n">Producer</span><span class="p">(</span><span class="n">Producer</span> <span class="n">threading</span> <span class="mi">2</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145336930304</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">produced</span> <span class="mi">456</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">2559</span>
+<span class="o">&lt;</span><span class="n">Producer</span><span class="p">(</span><span class="n">Producer</span> <span class="n">threading</span> <span class="mi">3</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145342185472</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">produced</span> <span class="mi">571</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">3130</span>
+<span class="o">&lt;</span><span class="n">Producer</span><span class="p">(</span><span class="n">Producer</span> <span class="n">threading</span> <span class="mi">4</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145347440640</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">produced</span> <span class="mi">432</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">3562</span>
+<span class="o">&lt;</span><span class="n">Consumer</span><span class="p">(</span><span class="n">Consumer</span> <span class="n">threading</span> <span class="mi">0</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145352695808</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">costs</span> <span class="mi">190</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">3372</span>
+<span class="o">&lt;</span><span class="n">Consumer</span><span class="p">(</span><span class="n">Consumer</span> <span class="n">threading</span> <span class="mi">1</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145357950976</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">costs</span> <span class="mi">757</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">2615</span>
+<span class="o">&lt;</span><span class="n">Consumer</span><span class="p">(</span><span class="n">Consumer</span> <span class="n">threading</span> <span class="mi">2</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145363206144</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">costs</span> <span class="mi">869</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">1746</span>
+
+<span class="o">&lt;</span><span class="n">Producer</span><span class="p">(</span><span class="n">Producer</span> <span class="n">threading</span> <span class="mi">0</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145326419968</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">produced</span> <span class="mi">601</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">2347</span>
+<span class="o">&lt;</span><span class="n">Producer</span><span class="p">(</span><span class="n">Producer</span> <span class="n">threading</span> <span class="mi">4</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145347440640</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">produced</span> <span class="mi">745</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">3092</span>
+<span class="o">&lt;</span><span class="n">Producer</span><span class="p">(</span><span class="n">Producer</span> <span class="n">threading</span> <span class="mi">3</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145342185472</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">produced</span> <span class="mi">680</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">3772</span>
+<span class="o">&lt;</span><span class="n">Producer</span><span class="p">(</span><span class="n">Producer</span> <span class="n">threading</span> <span class="mi">1</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145331675136</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">produced</span> <span class="mi">641</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">4413</span>
+<span class="o">&lt;</span><span class="n">Producer</span><span class="p">(</span><span class="n">Producer</span> <span class="n">threading</span> <span class="mi">2</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145336930304</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">produced</span> <span class="mi">118</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">4531</span>
+<span class="o">&lt;</span><span class="n">Consumer</span><span class="p">(</span><span class="n">Consumer</span> <span class="n">threading</span> <span class="mi">1</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145357950976</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">costs</span> <span class="mi">866</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">3665</span>
+<span class="o">&lt;</span><span class="n">Consumer</span><span class="p">(</span><span class="n">Consumer</span> <span class="n">threading</span> <span class="mi">0</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145352695808</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">costs</span> <span class="mi">647</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">3018</span>
+<span class="o">&lt;</span><span class="n">Consumer</span><span class="p">(</span><span class="n">Consumer</span> <span class="n">threading</span> <span class="mi">2</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145363206144</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">costs</span> <span class="mi">511</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">2507</span>
+<span class="o">&lt;</span><span class="n">Consumer</span><span class="p">(</span><span class="n">Consumer</span> <span class="n">threading</span> <span class="mi">1</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145357950976</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">costs</span> <span class="mi">345</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">2162</span>
+<span class="o">&lt;</span><span class="n">Consumer</span><span class="p">(</span><span class="n">Consumer</span> <span class="n">threading</span> <span class="mi">0</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145352695808</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">costs</span> <span class="mi">338</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">1824</span>
+<span class="o">&lt;</span><span class="n">Consumer</span><span class="p">(</span><span class="n">Consumer</span> <span class="n">threading</span> <span class="mi">2</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145363206144</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">costs</span> <span class="mi">857</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">967</span>
+<span class="o">&lt;</span><span class="n">Consumer</span><span class="p">(</span><span class="n">Consumer</span> <span class="n">threading</span> <span class="mi">1</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145357950976</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">costs</span> <span class="mi">451</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">516</span>
+<span class="o">&lt;</span><span class="n">Consumer</span><span class="p">(</span><span class="n">Consumer</span> <span class="n">threading</span> <span class="mi">0</span><span class="p">,</span> <span class="n">started</span> <span class="mi">123145352695808</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">costs</span> <span class="mi">408</span><span class="p">,</span> <span class="n">remaining</span> <span class="mi">108</span>
 </pre></div>
 
 
@@ -299,7 +379,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-25 09:39:55</p>
+        <p>Site Generated 2019-12-16 08:46:05</p>
       </span>
     </div>
 

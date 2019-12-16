@@ -56,6 +56,10 @@
 <li><a href="#encryped-grub">Encryped grub</a></li>
 </ul>
 </li>
+<li><a href="#_1">中文语言显示</a><ul>
+<li><a href="#software-center">software center</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="ubuntu">Ubuntu</h1>
@@ -408,12 +412,50 @@ fi
 
 <div class="hlcode"><pre><span class="n">sudo</span> <span class="n">update</span><span class="o">-</span><span class="n">grub</span>
 </pre></div>
+
+
+<h1 id="_1">中文语言显示</h1>
+<p>首先，安装中文支持包language-pack-zh-hans：</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">language</span><span class="o">-</span><span class="n">pack</span><span class="o">-</span><span class="n">zh</span><span class="o">-</span><span class="n">hans</span>
+</pre></div>
+
+
+<p>然后，修改/etc/environment（在文件的末尾追加）：</p>
+<div class="hlcode"><pre><span class="n">LANG</span><span class="o">=</span><span class="s">&quot;zh_CN.UTF-8&quot;</span>
+<span class="n">LANGUAGE</span><span class="o">=</span><span class="s">&quot;zh_CN:zh:en_US:en&quot;</span>
+</pre></div>
+
+
+<p>再修改/var/lib/locales/supported.d/local(没有这个文件就新建，同样在末尾追加)：</p>
+<div class="hlcode"><pre><span class="n">en_US</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="n">UTF</span><span class="o">-</span><span class="mi">8</span>
+<span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="n">UTF</span><span class="o">-</span><span class="mi">8</span>
+<span class="n">zh_CN</span><span class="p">.</span><span class="n">GBK</span> <span class="n">GBK</span>
+<span class="n">zh_CN</span> <span class="n">GB2312</span>
+</pre></div>
+
+
+<p>最后，执行命令：</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">sudo</span> <span class="n">locale</span><span class="o">-</span><span class="n">gen</span>
+</pre></div>
+
+
+<p>对于中文乱码是空格的情况，安装中文字体解决。</p>
+<div class="hlcode"><pre><span class="err">$</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">fonts</span><span class="o">-</span><span class="n">droid</span><span class="o">-</span><span class="n">fallback</span> <span class="n">ttf</span><span class="o">-</span><span class="n">wqy</span><span class="o">-</span><span class="n">zenhei</span> <span class="n">ttf</span><span class="o">-</span><span class="n">wqy</span><span class="o">-</span><span class="n">microhei</span> <span class="n">fonts</span><span class="o">-</span><span class="n">arphic</span><span class="o">-</span><span class="n">ukai</span> <span class="n">fonts</span><span class="o">-</span><span class="n">arphic</span><span class="o">-</span><span class="n">uming</span>
+</pre></div>
+
+
+<p>以上，问题解决，中文显示正常。:)</p>
+<h2 id="software-center">software center</h2>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">snap</span>
+<span class="n">sudo</span> <span class="n">snap</span> <span class="n">install</span> <span class="n">snap</span><span class="o">-</span><span class="n">store</span>
+</pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-25 09:39:55</p>
+        <p>Site Generated 2019-12-16 08:46:05</p>
       </span>
     </div>
 

@@ -103,9 +103,13 @@
 </ul>
 </li>
 <li><a href="#str-bytes">STR 与 BYTES</a></li>
+<li><a href="#_13">转换</a><ul>
+<li><a href="#string-to-dict">string to dict</a></li>
 </ul>
 </li>
-<li><a href="#_13">优化</a></li>
+</ul>
+</li>
+<li><a href="#_14">优化</a></li>
 </ul>
 </div>
 <h1 id="python-string-files">字符串与文本操作 (python-string-files)</h1>
@@ -1144,7 +1148,49 @@ bytes使用decode方法转化为str</p>
 </pre></div>
 
 
-<h1 id="_13">优化</h1>
+<h2 id="_13">转换</h2>
+<h3 id="string-to-dict">string to dict</h3>
+<p>Starting in Python 2.6 you can use the built-in <a href="https://docs.python.org/library/ast.html#ast.literal_eval"><code>ast.literal_eval</code></a>:</p>
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">ast</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="s">&quot;{&#39;muffin&#39; : &#39;lolz&#39;, &#39;foo&#39; : &#39;kitty&#39;}&quot;</span><span class="p">)</span>
+<span class="p">{</span><span class="s">&#39;muffin&#39;</span><span class="p">:</span> <span class="s">&#39;lolz&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">:</span> <span class="s">&#39;kitty&#39;</span><span class="p">}</span>
+</pre></div>
+
+
+<p>This is safer than using <code>eval</code>. As its own docs say:</p>
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nx">help</span><span class="p">(</span><span class="nx">ast</span><span class="p">.</span><span class="nx">literal_eval</span><span class="p">)</span>
+<span class="nx">Help</span> <span class="nx">on</span> <span class="kd">function</span> <span class="nx">literal_eval</span> <span class="k">in</span> <span class="nx">module</span> <span class="nx">ast</span><span class="o">:</span>
+
+<span class="nx">literal_eval</span><span class="p">(</span><span class="nx">node_or_string</span><span class="p">)</span>
+    <span class="nx">Safely</span> <span class="nx">evaluate</span> <span class="nx">an</span> <span class="nx">expression</span> <span class="nx">node</span> <span class="nx">or</span> <span class="nx">a</span> <span class="nx">string</span> <span class="nx">containing</span> <span class="nx">a</span> <span class="nx">Python</span>
+    <span class="nx">expression</span><span class="p">.</span>  <span class="nx">The</span> <span class="nx">string</span> <span class="nx">or</span> <span class="nx">node</span> <span class="nx">provided</span> <span class="nx">may</span> <span class="nx">only</span> <span class="nx">consist</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">following</span>
+    <span class="nx">Python</span> <span class="nx">literal</span> <span class="nx">structures</span><span class="o">:</span> <span class="nx">strings</span><span class="p">,</span> <span class="nx">numbers</span><span class="p">,</span> <span class="nx">tuples</span><span class="p">,</span> <span class="nx">lists</span><span class="p">,</span> <span class="nx">dicts</span><span class="p">,</span> <span class="nx">booleans</span><span class="p">,</span>
+    <span class="nx">and</span> <span class="nx">None</span><span class="p">.</span>
+</pre></div>
+
+
+<p>For example:</p>
+<div class="hlcode"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nb">eval</span><span class="p">(</span><span class="s">&quot;shutil.rmtree(&#39;mongo&#39;)&quot;</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="s">&quot;&lt;string&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="s">&quot;/opt/Python-2.6.1/lib/python2.6/shutil.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">208</span><span class="p">,</span> <span class="ow">in</span> <span class="n">rmtree</span>
+    <span class="n">onerror</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">())</span>
+  <span class="n">File</span> <span class="s">&quot;/opt/Python-2.6.1/lib/python2.6/shutil.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">206</span><span class="p">,</span> <span class="ow">in</span> <span class="n">rmtree</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="ne">OSError</span><span class="p">:</span> <span class="p">[</span><span class="n">Errno</span> <span class="mi">2</span><span class="p">]</span> <span class="n">No</span> <span class="n">such</span> <span class="nb">file</span> <span class="ow">or</span> <span class="n">directory</span><span class="p">:</span> <span class="s">&#39;mongo&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="s">&quot;shutil.rmtree(&#39;mongo&#39;)&quot;</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="s">&quot;/opt/Python-2.6.1/lib/python2.6/ast.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">68</span><span class="p">,</span> <span class="ow">in</span> <span class="n">literal_eval</span>
+    <span class="k">return</span> <span class="n">_convert</span><span class="p">(</span><span class="n">node_or_string</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s">&quot;/opt/Python-2.6.1/lib/python2.6/ast.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">67</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_convert</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;malformed string&#39;</span><span class="p">)</span>
+<span class="ne">ValueError</span><span class="p">:</span> <span class="n">malformed</span> <span class="n">string</span>
+</pre></div>
+
+
+<h1 id="_14">优化</h1>
 <div class="hlcode"><pre><span class="n">s</span> <span class="o">=</span> <span class="err">&#39;&#39;</span>
 <span class="k">for</span> <span class="n">n</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span><span class="o">:</span>
     <span class="n">s</span> <span class="o">+=</span> <span class="n">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -1168,7 +1214,7 @@ bytes使用decode方法转化为str</p>
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-25 09:39:55</p>
+        <p>Site Generated 2019-12-16 08:46:05</p>
       </span>
     </div>
 

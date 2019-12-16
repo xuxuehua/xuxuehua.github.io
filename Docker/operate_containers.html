@@ -28,6 +28,7 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#operate_containers">operate_containers</a><ul>
 <li><a href="#create">create 创建容器</a></li>
+<li><a href="#container">container 容器操作</a></li>
 <li><a href="#run">run 运行容器</a><ul>
 <li><a href="#-t">-t 伪终端</a></li>
 <li><a href="#-i">-i 标准输入</a></li>
@@ -74,6 +75,17 @@
 <p>在 Docker 1.13+ 推荐使用 docker container 子命令来管理 Docker 容器。</p>
 <h2 id="create">create 创建容器</h2>
 <div class="hlcode"><pre><span class="n">docker</span> <span class="n">create</span>
+</pre></div>
+
+
+<h2 id="container">container 容器操作</h2>
+<p>Before performing the removal command, you can get a list of all non-running (stopped) containers that will be removed using the following command:</p>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">container</span> <span class="n">ls</span> <span class="o">-</span><span class="n">a</span> <span class="o">--</span><span class="n">filter</span> <span class="n">status</span><span class="o">=</span><span class="n">exited</span> <span class="o">--</span><span class="n">filter</span> <span class="n">status</span><span class="o">=</span><span class="n">created</span>
+</pre></div>
+
+
+<p>To remove all stopped containers</p>
+<div class="hlcode"><pre><span class="n">docker</span> <span class="n">container</span> <span class="n">prune</span>
 </pre></div>
 
 
@@ -313,7 +325,7 @@
 
 <h3 id="-f">-f 删除运行中的容器</h3>
 <h2 id="prune">prune 清理容器</h2>
-<p>用 docker container prune 可以清理掉所有处于终止状态的容器。</p>
+<p>用 docker system prune 可以清理掉所有处于终止状态的容器。</p>
 <h2 id="ps">ps 查看容器</h2>
 <p>用 docker ps -a 命令可以查看所有已经创建的包括终止状态的容器</p>
     </div>
@@ -321,7 +333,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-25 09:39:55</p>
+        <p>Site Generated 2019-12-16 08:46:05</p>
       </span>
     </div>
 

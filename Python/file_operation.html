@@ -283,6 +283,7 @@
 
 
 <h3 id="_8">实现原理</h3>
+<p>只要对象中实现了<code>__enter__</code> 和 <code>__exit__</code> 就可以使用with 语句</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
 
     <span class="n">def</span> <span class="n">__enter__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
@@ -316,6 +317,11 @@
 
 <span class="n">with</span> <span class="n">MyResource</span><span class="p">()</span> <span class="n">as</span> <span class="n">resource</span><span class="o">:</span>
     <span class="n">resource</span><span class="p">.</span><span class="n">query</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Connect</span> <span class="n">to</span> <span class="n">resource</span>
+<span class="n">Query</span> <span class="n">data</span>
+<span class="n">Disconnect</span> <span class="n">to</span> <span class="n">resource</span>
 </pre></div>
 
 
@@ -449,7 +455,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-25 09:39:55</p>
+        <p>Site Generated 2019-12-16 08:46:05</p>
       </span>
     </div>
 

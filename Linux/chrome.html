@@ -32,6 +32,11 @@
 <li><a href="#centos">Centos 安装</a></li>
 </ul>
 </li>
+<li><a href="#chrome-remote-desktop">chrome-remote-desktop</a><ul>
+<li><a href="#centos_1">Centos</a></li>
+<li><a href="#ubuntu_1">Ubuntu</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h1 id="chrome">Chrome</h1>
@@ -122,14 +127,35 @@
 </pre></div>
 
 
-<div class="hlcode"><pre><span class="n">yum</span> <span class="n">install</span> <span class="n">google</span><span class="o">-</span><span class="n">chrome</span><span class="o">-</span><span class="n">stable</span>
+<div class="hlcode"><pre><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">google</span><span class="o">-</span><span class="n">chrome</span><span class="o">-</span><span class="n">stable</span>
+</pre></div>
+
+
+<h1 id="chrome-remote-desktop">chrome-remote-desktop</h1>
+<h2 id="centos_1">Centos</h2>
+<div class="hlcode"><pre><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">epel</span><span class="o">-</span><span class="n">release</span> <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">upgrade</span> <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">chrome</span><span class="o">-</span><span class="n">remote</span><span class="o">-</span><span class="n">desktop</span> 
+</pre></div>
+
+
+<h2 id="ubuntu_1">Ubuntu</h2>
+<div class="hlcode"><pre><span class="n">echo</span> <span class="err">$</span><span class="p">(</span><span class="n">hostname</span> <span class="o">-</span><span class="n">I</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">d</span><span class="err">\</span>  <span class="o">-</span><span class="n">f1</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">hostname</span><span class="p">)</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">-</span><span class="n">a</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">hosts</span>
+</pre></div>
+
+
+<p>After installing the Debian package <code>chrome-remote-desktop_current_amd64.deb</code>, make sure the current user is part of the <code>chrome-remote-desktop</code> group:</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">usermod</span> <span class="o">-</span><span class="n">a</span> <span class="o">-</span><span class="n">G</span> <span class="n">chrome</span><span class="o">-</span><span class="n">remote</span><span class="o">-</span><span class="n">desktop</span> <span class="n">username</span>
+</pre></div>
+
+
+<p>Stop Chrome Remote Desktop:</p>
+<div class="hlcode"><pre><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">google</span><span class="o">/</span><span class="n">chrome</span><span class="o">-</span><span class="n">remote</span><span class="o">-</span><span class="n">desktop</span><span class="o">/</span><span class="n">chrome</span><span class="o">-</span><span class="n">remote</span><span class="o">-</span><span class="n">desktop</span> <span class="o">--</span><span class="n">stop</span>
 </pre></div>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-25 09:39:55</p>
+        <p>Site Generated 2019-12-16 08:46:05</p>
       </span>
     </div>
 

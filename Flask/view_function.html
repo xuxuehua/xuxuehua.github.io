@@ -95,6 +95,7 @@
 </div>
 <h1 id="_1">视图函数</h1>
 <p>负责管理URL和函数之间的映射</p>
+<p>即MVC中的Controller</p>
 <h2 id="_2">装饰器方法</h2>
 <p>常用方法, 但是其实调用的是add_url_rule实现的</p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Flask</span>
@@ -102,7 +103,7 @@
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
-<span class="err">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">hello</span><span class="o">/</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="err">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">hello</span><span class="err">&#39;</span><span class="p">)</span>  <span class="err">#</span> <span class="err">定义路由，</span> <span class="err">不加斜杠即不兼容用户输入唯一</span><span class="n">URL</span><span class="err">的情况</span>
 <span class="n">def</span> <span class="n">hello</span><span class="p">()</span><span class="o">:</span>
     <span class="k">return</span> <span class="err">&#39;</span><span class="n">Hello</span><span class="p">,</span> <span class="n">Rick</span><span class="err">&#39;</span>
 
@@ -206,7 +207,7 @@
 </pre></div>
 
 
-<p>但装饰器里面不需要输入view_func </p>
+<p>但装饰器里面不需要输入view_func ， 使用起来更方便</p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">Flask</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
@@ -412,7 +413,7 @@
 <h3 id="before_first_request">before_first_request</h3>
 <p>运行程序前的初始化操作，比如创建数据库表，添加管理员用户</p>
 <h3 id="before_request">before_request</h3>
-<p>如记录用户最后在线时间，通过用户发送的请求时间来实现，避免在每个视图函数都添加更新在线时间的代码，可以在此调用该袋米</p>
+<p>如记录用户最后在线时间，通过用户发送的请求时间来实现，避免在每个视图函数都添加更新在线时间的代码，可以在此调用该代码</p>
 <h3 id="after_request">after_request</h3>
 <p>对数据库进行更新，插入等，之后需要将更改提交到数据库中，可以在此调用</p>
 <h3 id="teardown_request">teardown_request</h3>
@@ -619,6 +620,7 @@
 <p>这里的secret string 需要时一段特殊的随机密钥值</p>
 </blockquote>
 <h2 id="session">session</h2>
+<p>Flask 的 session 默认是client side 的，session是写入到浏览器的cookie中，当浏览器关闭，cookie会自动消失</p>
 <p>将session数据加密，然后存储在cookie中，这种专业术语叫做client side session， flask采用这种方式</p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">flask</span> <span class="n">import</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">url_for</span>
 
@@ -705,7 +707,7 @@
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-25 09:39:55</p>
+        <p>Site Generated 2019-12-16 08:46:05</p>
       </span>
     </div>
 

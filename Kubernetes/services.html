@@ -27,7 +27,10 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#service">service 服务</a><ul>
-<li><a href="#_1">工作模式</a><ul>
+<li><a href="#_1">原理</a></li>
+</ul>
+</li>
+<li><a href="#_2">实现的工作模式</a><ul>
 <li><a href="#user-space">user space 模型</a></li>
 <li><a href="#iptables">iptables 模型</a></li>
 <li><a href="#ipvs">ipvs 模型</a></li>
@@ -37,34 +40,37 @@
 <li><a href="#externalname">ExternalName</a></li>
 <li><a href="#clusterip">ClusterIP 默认 （内部访问）</a></li>
 <li><a href="#nodeport">NodePort （外部访问）</a></li>
-<li><a href="#loadbalancer">LoadBalancer</a></li>
-<li><a href="#_2"></a></li>
-<li><a href="#no-clusterip-headless">No ClusterIP (Headless)</a></li>
+<li><a href="#loadbalancer">LoadBalancer</a><ul>
+<li><a href="#_3"></a></li>
 </ul>
 </li>
+<li><a href="#no-clusterip-headless">No ClusterIP (Headless)</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <h1 id="service">service 服务</h1>
 <p>依赖于kubernetes的dns 服务器，默认使用CoreDNS, 或kube-dns(1.11之前)</p>
-<h2 id="_1">工作模式</h2>
-<h3 id="user-space">user space 模型</h3>
-<p><img alt="img" src="https://snag.gy/0kHw5e.jpg" /></p>
+<h2 id="_1">原理</h2>
+<p>worker node上的kube-proxy通过master apiServer 获取任何一个和service相关的变动状态</p>
+<p>kube-proxy会watch apiServer中etcd的变化，然后转换为相应的规则</p>
+<h1 id="_2">实现的工作模式</h1>
+<h2 id="user-space">user space 模型</h2>
+<p><img alt="img" src="https://snipboard.io/0kHw5e.jpg" /></p>
 <p>来自外部，先到达当前节点内核空间的service 规则，kube-proxy是工作在用户空间的进程</p>
 <p>但是效率很低</p>
-<h3 id="iptables">iptables 模型</h3>
+<h2 id="iptables">iptables 模型</h2>
 <p><img alt="img" src="https://snag.gy/wMid4m.jpg" /></p>
-<p>直接工作在内核空间，直接由service的iptables负责调度</p>
-<h3 id="ipvs">ipvs 模型</h3>
+<p>直接工作在内核空间，直接由service的iptables负责调度相关的pod</p>
+<h2 id="ipvs">ipvs 模型</h2>
 <p><img alt="img" src="https://snag.gy/ad5SnY.jpg" /></p>
 <p>1.11之后使用ipvs，若没有安装ipvs模块，自动降级为iptables</p>
-<h2 id="type">类型 type</h2>
-<h3 id="externalname">ExternalName</h3>
-<p>把集群外部的服务映射到集群内部来使用</p>
+<h1 id="type">类型 type</h1>
+<h2 id="externalname">ExternalName</h2>
+<p>把集群外部的服务映射到集群内部来使用, 即service与外部联系</p>
 <p>使集群内部的Pod像使用集群内部的服务一样，使用集群外部的服务</p>
-<p>ExternalName需要被DNS服务解析，才能被访问</p>
-<h3 id="clusterip">ClusterIP 默认 （内部访问）</h3>
+<p>ExternalName (CNAME) 需要被DNS服务解析，才能被访问</p>
+<h2 id="clusterip">ClusterIP 默认 （内部访问）</h2>
 <p>私网地址，默认分配一个IP地址，仅用于集群内部通信</p>
 <div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">cat</span> <span class="n">redis</span><span class="o">-</span><span class="n">svc</span><span class="p">.</span><span class="n">yaml</span>
 <span class="nl">apiVersion:</span> <span class="n">v1</span>
@@ -81,6 +87,13 @@
   <span class="nl">ports:</span>
   <span class="o">-</span> <span class="n">port</span><span class="o">:</span> <span class="mi">6379</span>
     <span class="nl">targetPort:</span> <span class="mi">6379</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="err">#</span> <span class="nx">kubectl</span> <span class="nb">get</span> <span class="nx">svc</span>
+<span class="nb">NAME</span>         <span class="k">TYPE</span>        <span class="nx">CLUSTER</span><span class="na">-IP</span>    <span class="nx">EXTERNAL</span><span class="na">-IP</span>   <span class="nb">PORT</span><span class="p">(</span><span class="nb">S</span><span class="p">)</span>    <span class="nx">AGE</span>
+<span class="nx">kubernetes</span>   <span class="nx">ClusterIP</span>   <span class="mf">10.96.0.1</span>     <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>        <span class="mi">443</span><span class="p">/</span><span class="nx">TCP</span>    <span class="mi">6</span><span class="nx">d1h</span>
+<span class="nx">redis</span>        <span class="nx">ClusterIP</span>   <span class="mf">10.97.97.97</span>   <span class="o">&lt;</span><span class="kc">none</span><span class="o">&gt;</span>        <span class="mi">6379</span><span class="p">/</span><span class="nx">TCP</span>   <span class="mi">4</span><span class="nb">s</span>
 </pre></div>
 
 
@@ -109,7 +122,7 @@ redis.default.svc.cluster.local. <span class="m">5</span> IN   A       <span cla
 </pre></div>
 
 
-<h3 id="nodeport">NodePort （外部访问）</h3>
+<h2 id="nodeport">NodePort （外部访问）</h2>
 <p>接入集群外部流量，是以ClusterIP为前提的</p>
 <p>但是会将流量接入到同一个node节点之上，所以需要在NodeIP之前加上负载均衡器</p>
 <p>若为公有云，可以通过支持LBAAS的环境，通过调用对应的API实现后端servcie的添加和删除</p>
@@ -118,7 +131,7 @@ redis.default.svc.cluster.local. <span class="m">5</span> IN   A       <span cla
 </pre></div>
 
 
-<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">cat</span> <span class="n">myapp</span><span class="o">-</span><span class="n">svc</span><span class="p">.</span><span class="n">yaml</span>
+<div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">cat</span> <span class="n">myapp</span><span class="o">-</span><span class="n">svc</span><span class="p">.</span><span class="n">yaml</span> 
 <span class="nl">apiVersion:</span> <span class="n">v1</span>
 <span class="nl">kind:</span> <span class="n">Service</span>
 <span class="nl">metadata:</span>
@@ -151,7 +164,7 @@ redis        ClusterIP   10.97.97.97   <span class="nt">&lt;none&gt;</span>     
 
 
 <p>在集群外部访问</p>
-<div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="k">while</span> <span class="n">True</span><span class="p">;</span> <span class="k">do</span> <span class="n">curl</span> <span class="n">http</span><span class="o">:</span><span class="c1">//198.13.42.46:30080/hostname.html; sleep 1 ; done</span>
+<div class="hlcode"><pre><span class="n">xhxu</span><span class="o">-</span><span class="n">mac</span><span class="o">:~</span> <span class="n">xhxu</span><span class="err">$</span> <span class="k">while</span> <span class="n">True</span><span class="p">;</span> <span class="k">do</span> <span class="n">curl</span> <span class="n">http</span><span class="o">:</span><span class="c1">//worker_node_ip:30080/hostname.html; sleep 1 ; done</span>
 <span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">67</span><span class="n">b6dfcd8</span><span class="o">-</span><span class="n">rc7t8</span>
 <span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">67</span><span class="n">b6dfcd8</span><span class="o">-</span><span class="n">g2cnc</span>
 <span class="n">myapp</span><span class="o">-</span><span class="n">deployment</span><span class="o">-</span><span class="mi">67</span><span class="n">b6dfcd8</span><span class="o">-</span><span class="n">g2cnc</span>
@@ -160,11 +173,11 @@ redis        ClusterIP   10.97.97.97   <span class="nt">&lt;none&gt;</span>     
 </pre></div>
 
 
-<h3 id="loadbalancer">LoadBalancer</h3>
+<h2 id="loadbalancer">LoadBalancer</h2>
 <p>自动触发创建web的负载均衡器，是在NodePort上增强的功能</p>
 <p>将外部LoadBalancer(aliyun LBS)的请求分散到NodePort上，再由NodePort转发到Service上，Service再转发到Pod之上</p>
-<h3 id="_2"></h3>
-<h3 id="no-clusterip-headless">No ClusterIP (Headless)</h3>
+<h3 id="_3"></h3>
+<h2 id="no-clusterip-headless">No ClusterIP (Headless)</h2>
 <p>无头服务，将service name直接解析为Pod IP</p>
 <div class="hlcode"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">master</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">cat</span> <span class="n">myapp</span><span class="o">-</span><span class="n">svc</span><span class="o">-</span><span class="n">headless</span><span class="p">.</span><span class="n">yaml</span>
 <span class="nl">apiVersion:</span> <span class="n">v1</span>
@@ -233,7 +246,7 @@ myapp<span class="o">-</span>deployment<span class="m">-675558</span>bfc5<span c
       <span>
         <p>Copyright © 2019 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-11-25 09:39:55</p>
+        <p>Site Generated 2019-12-16 08:46:05</p>
       </span>
     </div>
 
