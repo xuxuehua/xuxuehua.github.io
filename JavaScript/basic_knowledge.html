@@ -64,7 +64,7 @@
 </li>
 </ul>
 </li>
-<li><a href="#localstorage">localStorage</a></li>
+<li><a href="#_13"></a></li>
 </ul>
 </div>
 <h1 id="basic-knowledge">Basic knowledge</h1>
@@ -394,39 +394,13 @@ if(x==&quot;&quot;||isNaN(x))
 </pre></div>
 
 
-<h1 id="localstorage">localStorage</h1>
-<p>本地缓存</p>
-<div class="hlcode"><pre>    <span class="nt">&lt;script&gt;</span>
-        $(function() {
-            var initial_sidebar = localStorage.getItem(&#39;sidebar_local&#39;) || &#39;on&#39;;
-            alert(&#39;var initial value: &#39; + initial_sidebar);
-
-            if (initial_sidebar === &#39;on&#39;) {
-                alert(&#39;current is on&#39;);
-            }
-            else {
-                alert(&#39;current is off&#39;);
-            }
-
-        $(&#39;#sideBarLogo&#39;).click(function() {
-            var current_initial_sidebar_value = localStorage.getItem(&#39;sidebar_local&#39;);
-            if ( current_initial_sidebar_value === &#39;on&#39;) {
-                localStorage.setItem(&#39;sidebar_local&#39;, &#39;off&#39;);
-            } 
-            else {
-                localStorage.setItem(&#39;sidebar_local&#39;, &#39;on&#39;);
-            }
-        })
-
-        });
-    <span class="nt">&lt;/script&gt;</span>
-</pre></div>
+<h1 id="_13"></h1>
     </div>
     <div id="footer">
       <span>
-        <p>Copyright © 2019 Xu XueHua.
+        <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-12-16 08:46:05</p>
+        <p>Site Generated 2020-01-02 08:56:17</p>
       </span>
     </div>
 

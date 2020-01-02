@@ -102,7 +102,7 @@
 <div class="hlcode"><pre><span class="n">def</span> <span class="n">deco</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">:</span>
     <span class="n">def</span> <span class="n">inside</span><span class="p">()</span><span class="o">:</span>
         <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">start</span> <span class="n">func</span><span class="err">&#39;</span><span class="p">)</span>
-        <span class="n">func</span><span class="p">()</span>
+        <span class="n">func</span><span class="p">()</span>   <span class="err">#</span> <span class="err">调用的时候真正调用的是</span><span class="n">test</span><span class="err">函数</span>
         <span class="n">print</span><span class="p">(</span><span class="err">&#39;</span><span class="n">end</span> <span class="n">func</span><span class="err">&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">inside</span>
 
@@ -357,7 +357,8 @@
 <h2 id="staticmethod">staticmethod 静态方法</h2>
 <p>静态方法并不能访问私有变量，只是给类方法加了类的属性</p>
 <p>静态函数可以用来做一些简单独立的任务，既方便测试，也能优化代码结构</p>
-<p>即和类以及对象都没有关系， 和普通的函数没有太多区别，常用于和类对象无任何关系的时候使用</p>
+<p>即和类以及对象都没有关系， 和普通的函数没有太多区别，常用于和类对象无任何关系的时候使用，即会使用到当前类里面的逻辑</p>
+<p>会使用到当前类里面的逻辑</p>
 <div class="hlcode"><pre><span class="nb">class</span> <span class="nx">A</span><span class="p">:</span>
     <span class="n">__val</span> <span class="o">=</span> <span class="mi">3</span>
 
@@ -400,7 +401,7 @@
 
 
 <h2 id="classmethod">classmethod 类方法</h2>
-<p>至少一个cls参数；</p>
+<p>至少一个cls参数</p>
 <p>执行类方法时，自动将调用该方法的类复制给cls, cls指代调用者即类对象自身,通过这个cls参数我们可以获取和类相关的信息并且可以创建出类的对象</p>
 <p>类方法传递类本身， 可以访问私有的类变量</p>
 <p>类函数最常用的功能是实现不同的 init 构造函数</p>
@@ -513,8 +514,8 @@
 <p>加上property 装饰器，在函数调用的时候，就不需要加上小括号</p>
 <p>property调用的时候，只能调用self参数</p>
 <p>将一个类方法转变成一个静态属性,只读属性。</p>
-<p>类属性可以直接被类调用，如果想要实现能被类直接调用的方法就可以借助staticmethod和classmethod了，区别在于staticmethod的方法没有self参数，通常用来直接定一个静态类方法，如果想将一个普通动态方法变成类方法就要使用classmethod了。</p>
 <p>property 属性必须在setter 和 deleter之前</p>
+<p>类属性可以直接被类调用，如果想要实现能被类直接调用的方法就可以借助staticmethod和classmethod了，区别在于staticmethod的方法没有self参数，通常用来直接定一个静态类方法，如果想将一个普通动态方法变成类方法就要使用classmethod了。</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__value</span> <span class="o">=</span> <span class="mi">0</span>
@@ -896,9 +897,9 @@
     </div>
     <div id="footer">
       <span>
-        <p>Copyright © 2019 Xu XueHua.
+        <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-12-16 08:46:05</p>
+        <p>Site Generated 2020-01-02 08:56:17</p>
       </span>
     </div>
 

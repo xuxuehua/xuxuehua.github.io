@@ -43,10 +43,10 @@
 </ul>
 </li>
 <li><a href="#notlink">否定选择器:not(.link){}</a></li>
-<li><a href="#_8">层级选择器</a></li>
-<li><a href="#_9">分组选择器</a></li>
+<li><a href="#ptarget">目标选择器 p:target{}</a></li>
+<li><a href="#pselection">选中选择器 p::selection{}</a></li>
 <li><a href="#typeradio">属性选择器[type=radio]{}</a></li>
-<li><a href="#_10">相邻兄弟选择器</a></li>
+<li><a href="#lili">相邻兄弟选择器 li+li</a></li>
 <li><a href="#hover">伪类选择器 :hover{}</a></li>
 <li><a href="#before">伪元素选择器 ::before{}</a></li>
 </ul>
@@ -185,8 +185,23 @@ p &gt; strong {
 
 
 <h2 id="notlink">否定选择器<code>:not(.link){}</code></h2>
-<h2 id="_8">层级选择器</h2>
-<h2 id="_9">分组选择器</h2>
+<h2 id="ptarget">目标选择器 <code>p:target{}</code></h2>
+<div class="hlcode"><pre><span class="n">p</span><span class="o">:</span><span class="n">target</span><span class="o">{</span>
+    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="o">:</span> <span class="n">green</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>找到锚点p</p>
+</blockquote>
+<h2 id="pselection">选中选择器 <code>p::selection{}</code></h2>
+<div class="hlcode"><pre><span class="n">p</span><span class="o">::</span><span class="n">selection</span><span class="p">{</span>
+    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="o">:</span> <span class="n">yellow</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
 <h2 id="typeradio">属性选择器<code>[type=radio]{}</code></h2>
 <p>属性和属性值必须完全匹配</p>
 <p><img alt="img" src="https://snag.gy/PCwbiW.jpg" /></p>
@@ -202,7 +217,34 @@ p &gt; strong {
 </pre></div>
 
 
-<h2 id="_10">相邻兄弟选择器</h2>
+<div class="hlcode"><pre><span class="n">a</span><span class="p">[</span><span class="n">href</span><span class="o">^=</span><span class="s">&quot;E&quot;</span><span class="p">]</span> <span class="p">{</span>
+    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="o">:</span> <span class="n">green</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>具有href 属性，并且属性以E开头的</p>
+</blockquote>
+<div class="hlcode"><pre><span class="n">a</span><span class="p">[</span><span class="n">href</span><span class="err">$</span><span class="o">=</span><span class="s">&quot;mp4&quot;</span><span class="p">]</span> <span class="p">{</span>
+    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="o">:</span> <span class="n">green</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>具有href属性，并且属性以mp4结尾</p>
+</blockquote>
+<div class="hlcode"><pre><span class="n">a</span><span class="p">[</span><span class="n">href</span><span class="o">*=</span><span class="s">&quot;l&quot;</span><span class="p">]</span> <span class="p">{</span>
+    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="o">:</span> <span class="n">green</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>具有href属性，并且属性含有l的</p>
+</blockquote>
+<h2 id="lili">相邻兄弟选择器 <code>li+li</code></h2>
 <p>可选择紧接在另一个元素后的元素，且二者有相同的父元素</p>
 <div class="hlcode"><pre><span class="nt">&lt;ul&gt;</span>
     <span class="nt">&lt;li&gt;</span>item1<span class="nt">&lt;/li&gt;</span>
@@ -229,7 +271,7 @@ li+li {
 <p><code>:visited</code></p>
 <p>伪类将应用于已经被访问过的链接</p>
 <p><code>:focus</code></p>
-<p>伪类将应用于拥有键盘输入焦点的元素， 获取到输入的焦点的时候  </p>
+<p>伪类将应用于拥有键盘输入焦点的元素， 获取到输入的焦点的时候    </p>
 <p>顺序遵循LVHA 原则</p>
 <div class="hlcode"><pre><span class="o">:</span><span class="n">link</span> <span class="o">&gt;</span> <span class="o">:</span><span class="n">visited</span> <span class="o">&gt;</span> <span class="o">:</span><span class="n">hover</span> <span class="o">&gt;</span> <span class="o">:</span><span class="n">active</span>
 </pre></div>
@@ -314,9 +356,9 @@ li+li {
     </div>
     <div id="footer">
       <span>
-        <p>Copyright © 2019 Xu XueHua.
+        <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-12-16 08:46:05</p>
+        <p>Site Generated 2020-01-02 08:56:17</p>
       </span>
     </div>
 

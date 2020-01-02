@@ -31,22 +31,39 @@
 <li><a href="#_3">可视化对象</a></li>
 </ul>
 </li>
-<li><a href="#_4">特殊方法</a><ul>
-<li><a href="#_5">运算符计算</a></li>
+<li><a href="#__all__">__all__</a></li>
+<li><a href="#__init__">__init__</a></li>
+<li><a href="#__dict__">__dict__</a></li>
+<li><a href="#__doc__">__doc__</a></li>
+<li><a href="#__name__">__name__</a></li>
+<li><a href="#__new__">__new__</a></li>
+<li><a href="#__module__">__module__</a></li>
+<li><a href="#__bases__">__bases__</a></li>
+<li><a href="#__class__">__class__</a></li>
+<li><a href="#__del__">__del__ 销毁对象</a></li>
+<li><a href="#__call__">__call__</a></li>
+<li><a href="#__slots__">__slots__ 限定绑定属性</a></li>
+<li><a href="#__str__">__str__ 默认输出其返回值</a></li>
+<li><a href="#__repr__">__repr__</a></li>
+<li><a href="#getitemsetitemdelitem">getitem、setitem、delitem</a></li>
+<li><a href="#__iter__">__iter__</a></li>
+<li><a href="#_4">查询对象的属性</a></li>
+<li><a href="#_5">特殊方法</a><ul>
+<li><a href="#_6">运算符计算</a></li>
 <li><a href="#__getattr__">__getattr__</a></li>
 <li><a href="#__setattr__">__setattr__</a></li>
 <li><a href="#__delattr__">__delattr__</a></li>
 <li><a href="#bool">bool 函数</a></li>
 <li><a href="#hashhash">hash与可hash对象</a></li>
-<li><a href="#_6">可调用对象</a></li>
+<li><a href="#_7">可调用对象</a></li>
 </ul>
 </li>
-<li><a href="#_7">运算符重载</a><ul>
-<li><a href="#_8">比较运算符重载</a></li>
-<li><a href="#_9">算数运算符重载</a></li>
+<li><a href="#_8">运算符重载</a><ul>
+<li><a href="#_9">比较运算符重载</a></li>
+<li><a href="#_10">算数运算符重载</a></li>
 </ul>
 </li>
-<li><a href="#_10">反射</a><ul>
+<li><a href="#_11">反射</a><ul>
 <li><a href="#getattr">getattr</a></li>
 <li><a href="#hasattr">hasattr</a></li>
 <li><a href="#setattr">setattr</a></li>
@@ -54,11 +71,11 @@
 </ul>
 </li>
 <li><a href="#with">with 语句实现的方法</a></li>
-<li><a href="#_11">描述器</a><ul>
+<li><a href="#_12">描述器</a><ul>
 <li><a href="#property">property 装饰器的实现</a></li>
 </ul>
 </li>
-<li><a href="#_12"></a></li>
+<li><a href="#_13"></a></li>
 </ul>
 </li>
 </ul>
@@ -122,9 +139,397 @@
 </pre></div>
 
 
-<h2 id="_4">特殊方法</h2>
+<p>内置变量属性（魔法方法）</p>
+<p>以前后双下划线显示</p>
+<h2 id="__all__"><code>__all__</code></h2>
+<p>指定所导入的变量</p>
+<div class="hlcode"><pre><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">a</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">b</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;]</span>
+</pre></div>
+
+
+<p>指定可导入的模块</p>
+<div class="hlcode"><pre><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">Module1</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">Module2</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;]</span>
+</pre></div>
+
+
+<h2 id="__init__"><code>__init__</code></h2>
+<p>构造函数, 通过类创建对象时，自动触发执行， 用于初始化类的特征值或属性值</p>
+<p>不能有返回值，也就是None， 而且只能返回None</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">ClassName</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">MyString</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>      <span class="c"># __init__构造函数, 通过构造函数对类进行初始化操作</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">str</span> <span class="o">=</span> <span class="s">&quot;MyString&quot;</span>
+
+    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">MyString</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">output</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">MyString</span>
+</pre></div>
+
+
+<p>构造方法无参数，可以省略构造方法</p>
+<div class="hlcode"><pre><span class="nb">class</span> <span class="nx">A</span><span class="p">:</span>
+    <span class="n">__val</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="nx">def</span> <span class="nx">get_val</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self.</span><span class="nx">__val</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="nx">A</span><span class="p">()</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">a.get_val</span><span class="p">())</span>
+<span class="nx">a.__val</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="nx">Traceback</span> <span class="p">(</span><span class="nx">most</span> <span class="nx">recent</span> <span class="nb">call</span> <span class="nb">last</span><span class="p">):</span>
+  <span class="nb">File</span> <span class="s2">&quot;/Users/xhxu/python/python3/test/9.py&quot;</span><span class="p">,</span> <span class="nb">line</span> <span class="mi">9</span><span class="p">,</span> <span class="k">in</span> <span class="o">&lt;</span><span class="nx">module</span><span class="o">&gt;</span>
+    <span class="nx">a.__val</span>
+<span class="nx">AttributeError</span><span class="p">:</span> <span class="o">&amp;</span><span class="vi">#39</span><span class="p">;</span><span class="nx">A</span><span class="o">&amp;</span><span class="vi">#39</span><span class="p">;</span> <span class="nb">object</span> <span class="nx">has</span> <span class="nx">no</span> <span class="nx">attribute</span> <span class="o">&amp;</span><span class="vi">#39</span><span class="p">;</span><span class="nx">__val</span><span class="o">&amp;</span><span class="vi">#39</span><span class="p">;</span>
+<span class="mi">3</span>
+</pre></div>
+
+
+<p>该模块中的代码在导入的时候会被自动执行，可以在其内部写入复用导入的模块名称</p>
+<div class="hlcode"><pre><span class="n">import</span> <span class="n">os</span>
+<span class="n">import</span> <span class="n">sys</span>
+<span class="n">import</span> <span class="n">datetime</span>
+</pre></div>
+
+
+<h2 id="__dict__"><code>__dict__</code></h2>
+<p>类或对象中的所有的变量信息</p>
+<p>对象的属性可能来自与其类定义，叫做类属性(class attribute)。</p>
+<p>类属性可能来自类定义自身，也可能根据类定义继承来的。一个对象的属性还可能是该对象实例定义的，叫做对象属性(object attribute)</p>
+<p>对象的属性存储在对象的<code>__dict__</code>属性中，<code>__dict__</code>为一个词典，键为属性名，对应的值为属性本身。</p>
+<div class="hlcode"><pre><span class="kr">class</span> <span class="nx">bird</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">feather</span> <span class="o">=</span> <span class="nx">True</span>
+
+<span class="kr">class</span> <span class="nx">chicken</span><span class="p">(</span><span class="nx">bird</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">fly</span> <span class="o">=</span> <span class="nx">False</span>
+    <span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span>
+
+<span class="nx">summer</span> <span class="o">=</span> <span class="nx">chicken</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nx">print</span><span class="p">(</span><span class="nx">bird</span><span class="p">.</span><span class="nx">__dict__</span><span class="p">)</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">chicken</span><span class="p">.</span><span class="nx">__dict__</span><span class="p">)</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">summer</span><span class="p">.</span><span class="nx">__dict__</span><span class="p">)</span>
+
+<span class="err">#</span> <span class="err">利用</span><span class="nx">__class__</span><span class="err">属性找到对象的类，然后调用类的</span><span class="nx">__base__</span><span class="err">属性来查询父类</span>
+<span class="nx">summer</span><span class="p">.</span><span class="nx">__dict__</span><span class="cp">[</span><span class="o">&amp;</span><span class="vi">#39</span><span class="p">;</span><span class="nx">age</span><span class="o">&amp;</span><span class="vi">#39</span><span class="p">;</span><span class="cp">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">summer</span><span class="p">.</span><span class="nx">__dict__</span><span class="cp">[</span><span class="o">&amp;</span><span class="vi">#39</span><span class="p">;</span><span class="nx">age</span><span class="o">&amp;</span><span class="vi">#39</span><span class="p">;</span><span class="cp">]</span><span class="p">)</span>
+
+<span class="nx">summer</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">summer</span><span class="p">.</span><span class="nx">age</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="p">{</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__weakref__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">attribute</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__weakref__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span> <span class="nx">of</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">bird</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span> <span class="nx">objects</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__doc__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="nx">None</span><span class="p">,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__module__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__main__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">feather</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="nx">True</span><span class="p">,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__dict__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">attribute</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__dict__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span> <span class="nx">of</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">bird</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span> <span class="nx">objects</span><span class="o">&gt;</span><span class="p">}</span>
+<span class="p">{</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__doc__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="nx">None</span><span class="p">,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__init__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="o">&lt;</span><span class="kd">function</span> <span class="nx">chicken</span><span class="p">.</span><span class="nx">__init__</span> <span class="nx">at</span> <span class="mh">0x10f1c6488</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__module__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__main__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">fly</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="nx">False</span><span class="p">}</span>
+<span class="p">{</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">age</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="mi">3</span>
+<span class="mi">5</span>
+</pre></div>
+
+
+<div class="hlcode"><pre><span class="kr">class</span> <span class="nx">Exam</span><span class="o">:</span>
+    <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">hahaha</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span>
+
+    <span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">score</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="nx">score</span>
+        <span class="nx">Exam</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;hehehe&quot;</span>
+
+<span class="nx">print</span><span class="p">(</span><span class="nx">Exam</span><span class="p">.</span><span class="nx">__dict__</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="p">{</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__module__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__main__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__weakref__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">attribute</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__weakref__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span> <span class="nx">of</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">Exam</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span> <span class="nx">objects</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__dict__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">attribute</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__dict__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span> <span class="nx">of</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">Exam</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span> <span class="nx">objects</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__init__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="o">&lt;</span><span class="kd">function</span> <span class="nx">Exam</span><span class="p">.</span><span class="nx">__init__</span> <span class="nx">at</span> <span class="mh">0x10f056488</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">__doc__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">:</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="nx">hahaha</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;}</span>
+</pre></div>
+
+
+<h2 id="__doc__"><code>__doc__</code></h2>
+<p><code>__doc__</code> 类的文档字符串</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Exam</span><span class="o">:</span>
+    <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">hahaha</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">score</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="n">Exam</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;hehehe&quot;</span>
+
+<span class="n">print</span><span class="p">(</span><span class="n">Exam</span><span class="p">.</span><span class="n">__doc__</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">hahaha</span>
+</pre></div>
+
+
+<h2 id="__name__"><code>__name__</code></h2>
+<p><code>__name__</code>: 类名， 即模块对象的名称， Python的魔术内置参数，即被赋值为该模块的名字</p>
+<p>查询对象所属的类和类名称</p>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="o">:</span> <span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">__class__</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">class</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">list</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">&gt;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]</span><span class="o">:</span> <span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">__class__</span><span class="p">.</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">list</span>
+</pre></div>
+
+
+<h2 id="__new__"><code>__new__</code></h2>
+<p>创建实例，即当前对象创建的时候，会被调用</p>
+<p>先调用<code>__new__</code>, 完成表示对象创建完成，然后调用<code>__init__</code> 方法实例化</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">Student</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Initializing&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+
+<span class="n">student</span> <span class="o">=</span> <span class="n">Student</span><span class="p">(</span><span class="s">&#39;Rick Xu&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="p">(</span><span class="s">&#39;Rick Xu&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span> <span class="p">{}</span>
+<span class="n">Initializing</span>
+</pre></div>
+
+
+<blockquote>
+<p>new 方法必须返回，相当于创建对象</p>
+</blockquote>
+<h2 id="__module__"><code>__module__</code></h2>
+<p><code>__module__</code>: 类定义所在的模块（类的全名是'<code>__main__</code>.className'，如果类位于一个导入模块mymod中，那么className.<code>__module__</code> 等于 mymod）</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Exam</span><span class="o">:</span>
+    <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">hahaha</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">score</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="n">Exam</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;hehehe&quot;</span>
+
+<span class="n">print</span><span class="p">(</span><span class="n">Exam</span><span class="p">.</span><span class="n">__module__</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">__main__</span>
+</pre></div>
+
+
+<h2 id="__bases__"><code>__bases__</code></h2>
+<p><code>__bases__</code> : 类的所有父类构成元素（包含了一个由所有父类组成的元组）</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Exam</span><span class="o">:</span>
+    <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">hahaha</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">score</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="n">Exam</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;hehehe&quot;</span>
+
+<span class="n">print</span><span class="p">(</span><span class="n">Exam</span><span class="p">.</span><span class="n">__bases__</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="p">(</span><span class="o">&lt;</span><span class="n">class</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">object</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">&gt;</span><span class="p">,)</span>
+</pre></div>
+
+
+<h2 id="__class__"><code>__class__</code></h2>
+<p>表示当前操作的对象的类是什么, 指向当前类</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">Rick</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span>
+
+
+<span class="n">obj</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">obj</span><span class="p">.</span><span class="n">__class__</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&lt;</span><span class="n">class</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">__main__</span><span class="p">.</span><span class="n">A</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h2 id="__del__"><code>__del__</code> 销毁对象</h2>
+<p>析构方法，当对象在内存中被释放时，自动触发执行。</p>
+<p>通常用于收尾工作，如数据库链接打开的临时文件</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">MyString</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c">#构造函数</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">str</span> <span class="o">=</span> <span class="s">&quot;MyString&quot;</span>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>   <span class="c">#析构函数</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Bye&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">MyString</span><span class="p">()</span>
+
+<span class="n">s</span><span class="o">.</span><span class="n">output</span><span class="p">()</span>
+<span class="k">del</span> <span class="n">s</span>   <span class="c"># 删除对象</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">MyString</span>
+<span class="n">Bye</span>
+</pre></div>
+
+
+<blockquote>
+<p>此方法一般无须定义，因为Python是一门高级语言，程序员在使用时无需关心内存的分配和释放，因为此工作都是交给Python解释器来执行，所以，析构函数的调用是由解释器在进行垃圾回收时自动触发执行的。</p>
+</blockquote>
+<h2 id="__call__"><code>__call__</code></h2>
+<p>对象后面加括号，触发执行。</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">pass</span>
+
+    <span class="n">def</span> <span class="n">__call__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">__call__</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;)</span>
+
+<span class="n">obj</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+<span class="n">obj</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">__call__</span>
+</pre></div>
+
+
+<p>构造方法的执行是由创建对象触发的，即：对象 = 类名() ；而对于 <code>__call__</code> 方法的执行是由对象后加括号触发的，即：对象() 或者 类()()</p>
+<h2 id="__slots__"><code>__slots__</code> 限定绑定属性</h2>
+<p>动态语言允许我们在程序运行时给对象绑定新的属性或方法，当然也可以对已经绑定的属性和方法进行解绑定。但是如果我们需要限定自定义类型的对象只能绑定某些属性，可以通过在类中定义<code>__slots__</code>变量来进行限定。需要注意的是<code>__slots__</code>的限定只对当前类的对象生效，对子类并不起任何作用。</p>
+<div class="hlcode"><pre><span class="k">class</span> <span class="nc">Student</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;age&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+
+<span class="n">student</span> <span class="o">=</span> <span class="n">Student</span><span class="p">(</span><span class="s">&#39;Rick Xu&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+
+<span class="n">student</span><span class="o">.</span><span class="n">gender</span> <span class="o">=</span> <span class="s">&#39;Male&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">&quot;c1.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">10</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="n">student</span><span class="o">.</span><span class="n">gender</span> <span class="o">=</span> <span class="s">&#39;Male&#39;</span>
+<span class="ne">AttributeError</span><span class="p">:</span> <span class="s">&#39;Student&#39;</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s">&#39;gender&#39;</span>
+</pre></div>
+
+
+<h2 id="__str__"><code>__str__</code> 默认输出其返回值</h2>
+<p>如果一个类中定义了<code>__str__</code>方法，那么在打印 对象时，默认输出该方法的返回值。</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__str__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">Rick</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span>
+
+<span class="n">obj</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Rick</span>
+</pre></div>
+
+
+<h2 id="__repr__"><code>__repr__</code></h2>
+<p><code>__repr__</code>和<code>__str__</code>这两个方法都是用于显示的，<code>__str__</code>是面向用户的，而<code>__repr__</code>面向程序员。</p>
+<p>打印操作会首先尝试<code>__str__</code>和str内置函数(print运行的内部等价形式)，它通常应该返回一个友好的显示。<code>__repr__</code>用于所有其他的环境中：用于交互模式下提示回应以及repr函数，如果没有使用<code>__str__</code>，会使用print和str。它通常应该返回一个编码字符串，可以用来重新创建对象，或者给开发者详细的显示。</p>
+<p>当我们想所有环境下都统一显示的话，可以重构<code>__repr__</code>方法；当我们想在不同环境下支持不同的显示，例如终端用户显示使用<code>__str__</code>，而程序员在开发期间则使用底层的<code>__repr__</code>来显示，实际上<code>__str__</code>只是覆盖了<code>__repr__</code>以得到更友好的用户显示。</p>
+<h2 id="getitemsetitemdelitem"><strong>getitem</strong>、<strong>setitem</strong>、<strong>delitem</strong></h2>
+<p>用于索引操作，如字典。以上分别表示获取、设置、删除数据</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__getitem__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">__setitem__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">__delitem__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+<span class="n">obj</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">key1</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;]</span> <span class="err">#</span> <span class="err">自动触发执行</span> <span class="n">__getitem__</span>
+<span class="n">obj</span><span class="p">[</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">key2</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">Value2</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span> <span class="err">#</span> <span class="err">自动触发执行</span> <span class="n">__getitem__</span>
+<span class="n">del</span> <span class="n">obj</span><span class="p">[</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">key1</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;]</span> <span class="err">#</span> <span class="err">自动触发执行</span> <span class="n">__getitem__</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">key1</span>
+<span class="n">key2</span> <span class="n">Value2</span>
+<span class="n">key1</span>
+</pre></div>
+
+
+<h2 id="__iter__"><code>__iter__</code></h2>
+<p>可迭代对象都有这个方法</p>
+<p>用于迭代器，之所以列表、字典、元组可以进行for循环，是因为类型内部定义了 <code>__iter__</code></p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">A</span><span class="o">:</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">sq</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">sq</span> <span class="o">=</span> <span class="n">sq</span>
+
+    <span class="n">def</span> <span class="n">__iter__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">iter</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">sq</span><span class="p">)</span>
+
+<span class="n">obj</span> <span class="o">=</span> <span class="n">A</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">obj</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span>
+</pre></div>
+
+
+<p>将<code>__iter__</code> 方法实现成生成器函数， 每次yield 返回一个素数</p>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">PrimeNum</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span> 
+
+    <span class="n">def</span> <span class="n">Is_Prime_num</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">:</span>
+            <span class="k">return</span> <span class="n">False</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="o">:</span>
+                <span class="k">return</span> <span class="n">False</span>
+        <span class="k">return</span> <span class="n">True</span>
+
+    <span class="n">def</span> <span class="n">__iter__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">start</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">Is_Prime_num</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">:</span>
+                <span class="n">yield</span> <span class="n">k</span> 
+
+<span class="k">for</span> <span class="n">x</span> <span class="n">in</span> <span class="n">PrimeNum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">5</span>
+<span class="mi">7</span>
+<span class="mi">11</span>
+<span class="mi">13</span>
+<span class="mi">17</span>
+<span class="mi">19</span>
+</pre></div>
+
+
+<h2 id="_4">查询对象的属性</h2>
+<p>除了使用dir()来查询对象属性，还可以使用built-in函数来确认</p>
+<div class="hlcode"><pre><span class="cp"># attr_name是一个字符串</span>
+<span class="n">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">)</span> 
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="n">print</span><span class="p">(</span><span class="n">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span><span class="n">append</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;))</span>
+<span class="n">True</span>
+</pre></div>
+
+
+<h2 id="_5">特殊方法</h2>
 <p>Python 的多范式依赖于Python对象中的特殊方法</p>
-<h3 id="_5">运算符计算</h3>
+<h3 id="_6">运算符计算</h3>
 <p>Python 中两个对象能否进行加法运算，需要确认相应的对象是否含有<code>__add__()</code>方法</p>
 <div class="hlcode"><pre><span class="err">&#39;</span><span class="n">abc</span><span class="err">&#39;</span> <span class="o">+</span> <span class="err">&#39;</span><span class="n">xyz</span><span class="err">&#39;</span>
 <span class="cp">#实际上执行了如下操作</span>
@@ -269,7 +674,7 @@
 </pre></div>
 
 
-<h3 id="_6">可调用对象</h3>
+<h3 id="_7">可调用对象</h3>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">InjectUser</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_user</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">default_user</span>
@@ -291,8 +696,8 @@
 </pre></div>
 
 
-<h2 id="_7">运算符重载</h2>
-<h3 id="_8">比较运算符重载</h3>
+<h2 id="_8">运算符重载</h2>
+<h3 id="_9">比较运算符重载</h3>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
@@ -335,7 +740,7 @@
 </pre></div>
 
 
-<h3 id="_9">算数运算符重载</h3>
+<h3 id="_10">算数运算符重载</h3>
 <p>在Python中，运算符也是通过相应函数实现的</p>
 <p>运算符对应的其实就是类中的一些魔术方法（专有方法）。比如加、减、乘、除对应的就是<code>__add__</code>、<code>__sub__</code>、<code>__mul__</code>、<code>__div__</code></p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">Mylist</span><span class="p">(</span><span class="n">object</span><span class="p">)</span><span class="o">:</span>
@@ -363,7 +768,7 @@
 </pre></div>
 
 
-<h2 id="_10">反射</h2>
+<h2 id="_11">反射</h2>
 <p>过字符串映射或修改程序运行时的状态、属性、方法,</p>
 <h3 id="getattr">getattr</h3>
 <p>getattr(object, name, default=None)</p>
@@ -421,7 +826,7 @@ TypeError: getattr(): attribute name must be string
 </pre></div>
 
 
-<h2 id="_11">描述器</h2>
+<h2 id="_12">描述器</h2>
 <p>实现了<code>__get__</code>, <code>__set__</code>, <code>__delete__</code> 的方法成为描述器</p>
 <div class="hlcode"><pre><span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
 
@@ -519,13 +924,13 @@ TypeError: getattr(): attribute name must be string
 </pre></div>
 
 
-<h2 id="_12"></h2>
+<h2 id="_13"></h2>
     </div>
     <div id="footer">
       <span>
-        <p>Copyright © 2019 Xu XueHua.
+        <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-12-16 08:46:05</p>
+        <p>Site Generated 2020-01-02 08:56:17</p>
       </span>
     </div>
 

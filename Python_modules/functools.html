@@ -30,6 +30,7 @@
 <li><a href="#_1">本质</a></li>
 </ul>
 </li>
+<li><a href="#_2"></a></li>
 <li><a href="#ordereddict">OrderedDict</a><ul>
 <li><a href="#base64">实现base64</a></li>
 </ul>
@@ -39,27 +40,27 @@
 <h1 id="partial">partial 偏函数</h1>
 <p>把函数部分的参数固定下来，相当于部分的参数添加了一个固定的默认值，形成一个新的函数并返回</p>
 <p>从partial生成的新函数，是对原函数的封装</p>
-<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">functools</span>
+<div class="hlcode"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">functools</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">def</span> <span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span><span class="o">:</span>
-   <span class="p">...</span><span class="o">:</span>     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
-   <span class="p">...</span><span class="o">:</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+   <span class="o">...</span><span class="p">:</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">newadd</span> <span class="o">=</span> <span class="n">functools</span><span class="p">.</span><span class="n">partial</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">newadd</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">newadd</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="mi">12</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">newadd</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="mi">12</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">newadd</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="mi">13</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">newadd</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="mi">13</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="n">newadd</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="mi">16</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">newadd</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="mi">16</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">inspect</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">inspect</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="n">inspect</span><span class="p">.</span><span class="n">signature</span><span class="p">(</span><span class="n">newadd</span><span class="p">)</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="o">&lt;</span><span class="n">Signature</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span><span class="o">&gt;</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">newadd</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">Signature</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="o">&gt;</span>
 </pre></div>
 
 
@@ -86,6 +87,7 @@
 </pre></div>
 
 
+<h1 id="_2"></h1>
 <h1 id="ordereddict">OrderedDict</h1>
 <h2 id="base64">实现base64</h2>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">collections</span> <span class="n">import</span> <span class="n">OrderedDict</span>
@@ -125,9 +127,9 @@
     </div>
     <div id="footer">
       <span>
-        <p>Copyright © 2019 Xu XueHua.
+        <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-12-16 08:46:05</p>
+        <p>Site Generated 2020-01-02 08:56:17</p>
       </span>
     </div>
 

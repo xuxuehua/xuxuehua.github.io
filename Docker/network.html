@@ -111,8 +111,8 @@
 
 
 <span class="n">root</span><span class="err">@</span><span class="n">w</span><span class="o">:~</span><span class="err">#</span> <span class="n">brctl</span> <span class="n">show</span>
-<span class="n">bridge</span> <span class="n">name</span> <span class="n">bridge</span> <span class="n">id</span>       <span class="n">STP</span> <span class="n">enabled</span> <span class="n">interfaces</span>
-<span class="n">docker0</span>     <span class="mf">8000.02422f</span><span class="n">c7d74c</span>   <span class="n">no</span>      <span class="n">vethdefab17</span>
+<span class="n">bridge</span> <span class="n">name</span>    <span class="n">bridge</span> <span class="n">id</span>        <span class="n">STP</span> <span class="n">enabled</span>    <span class="n">interfaces</span>
+<span class="n">docker0</span>        <span class="mf">8000.02422f</span><span class="n">c7d74c</span>    <span class="n">no</span>        <span class="n">vethdefab17</span>
 
 
 <span class="n">root</span><span class="err">@</span><span class="n">w</span><span class="o">:~</span><span class="err">#</span> <span class="n">ip</span> <span class="n">link</span> <span class="n">show</span>
@@ -723,8 +723,12 @@ Docker 容器网络就利用了这项技术。它在本地主机和容器内分�
 <p>通过第一部分中的介绍，我们知道使用一个 Dockerfile 模板文件，可以让用户很方便的定义一个单独的应用容器。然而，在日常工作中，经常会碰到需要多个容器相互配合来完成某项任务的情况。例如要实现一个 Web 项目，除了 Web 服务容器本身，往往还需要再加上后端的数据库服务容器，甚至还包括负载均衡容器等。</p>
 <p>Compose 恰好满足了这样的需求。它允许用户通过一个单独的 docker-compose.yml 模板文件（YAML 格式）来定义一组相关联的应用容器为一个项目（project）。</p>
 <ul>
-<li>Compose 中有两个重要的概念：</li>
-<li>服务 (service)：一个应用的容器，实际上可以包括若干运行相同镜像的容器实例。</li>
+<li>
+<p>Compose 中有两个重要的概念：</p>
+</li>
+<li>
+<p>服务 (service)：一个应用的容器，实际上可以包括若干运行相同镜像的容器实例。</p>
+</li>
 <li>
 <p>项目 (project)：由一组关联的应用容器组成的一个完整业务单元，在 docker-compose.yml 文件中定义。</p>
 </li>
@@ -839,9 +843,9 @@ Docker 容器网络就利用了这项技术。它在本地主机和容器内分�
     </div>
     <div id="footer">
       <span>
-        <p>Copyright © 2019 Xu XueHua.
+        <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-12-16 08:46:05</p>
+        <p>Site Generated 2020-01-02 08:56:17</p>
       </span>
     </div>
 

@@ -26,8 +26,13 @@
 <div class="page_title">socket</div>
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
-<li><a href="#socket">Socket 格式</a></li>
-<li><a href="#socket_1">socket缓冲区</a><ul>
+<li><a href="#socket">Socket</a><ul>
+<li><a href="#datagram-sockets-sock_dgram">Datagram Sockets (SOCK_DGRAM)</a></li>
+<li><a href="#stream-sockets-sock_stream">Stream Sockets (SOCK_STREAM)</a></li>
+</ul>
+</li>
+<li><a href="#socket_1">Socket 格式</a></li>
+<li><a href="#socket_2">socket缓冲区</a><ul>
 <li><a href="#send-buffer">send buffer</a></li>
 <li><a href="#recv-buffer">recv buffer</a></li>
 <li><a href="#close">close() 函数</a></li>
@@ -37,7 +42,7 @@
 <li><a href="#_1">分类</a><ul>
 <li><a href="#_2">监听套接字</a></li>
 <li><a href="#_3">已连接套接字</a></li>
-<li><a href="#socket_2">socket() 函数</a></li>
+<li><a href="#socket_3">socket() 函数</a></li>
 <li><a href="#bind">bind() 函数</a></li>
 <li><a href="#accept">accept() 函数</a></li>
 <li><a href="#connect">connect() 函数</a></li>
@@ -57,14 +62,22 @@
 <li><a href="#_5">地址/端口重用技术</a></li>
 </ul>
 </div>
-<h1 id="socket">Socket 格式</h1>
+<h1 id="socket">Socket</h1>
+<p>利用file descriptors 与其他程序沟通的一种方式，是内核封装与应用程序之间的一个接口</p>
+<p>在一切皆文件的Linux中，socket本质也是抽象出一个fd</p>
+<p>同时也是网络操作系统中IO的部分延伸，可以使用socket在进程与进程之间进行通信，也可以在网络中抽象出来的接口或者方法与远端的socket进行通信</p>
+<h2 id="datagram-sockets-sock_dgram">Datagram Sockets (SOCK_DGRAM)</h2>
+<p>无连接的数据报文，基于udp</p>
+<h2 id="stream-sockets-sock_stream">Stream Sockets (SOCK_STREAM)</h2>
+<p>面向连接的数据流，基于tcp</p>
+<h1 id="socket_1">Socket 格式</h1>
 <p>完整的套接字格式</p>
 <div class="hlcode"><pre><span class="p">{</span><span class="n">protocol</span><span class="p">,</span><span class="n">src_addr</span><span class="p">,</span><span class="n">src_port</span><span class="p">,</span><span class="n">dest_addr</span><span class="p">,</span><span class="n">dest_port</span><span class="p">}</span>
 </pre></div>
 
 
 <p>这常被称为套接字的五元组。其中protocol指定了是TCP还是UDP连接，其余的分别指定了源地址、源端口、目标地址、目标端口。</p>
-<h1 id="socket_1">socket缓冲区</h1>
+<h1 id="socket_2">socket缓冲区</h1>
 <h2 id="send-buffer">send buffer</h2>
 <p>要通过TCP连接发送出去的数据都先拷贝到send buffer，可能是从用户空间进程的app buffer拷入的，也可能是从内核的kernel buffer拷入的，拷入的过程是通过send()函数完成的，由于也可以使用write()函数写入数据，所以也把这个过程称为写数据，相应的send buffer也就有了别称write buffer。不过send()函数比write()函数更有效率。</p>
 <p>最终数据是通过网卡流出去的，所以send buffer中的数据需要拷贝到网卡中。由于一端是内存，一端是网卡设备，可以直接使用DMA的方式进行拷贝，无需CPU的参与。也就是说，send buffer中的数据通过DMA的方式拷贝到网卡中并通过网络传输给TCP连接的另一端：接收端。</p>
@@ -83,7 +96,7 @@
 <p>监听套接字是在服务进程读取配置文件时，从配置文件中解析出要监听的地址、端口，然后通过socket()函数创建的，然后再通过bind()函数将这个监听套接字绑定到对应的地址和端口上。随后，进程/线程就可以通过listen()函数来监听这个端口(严格地说是监控这个监听套接字)。</p>
 <h2 id="_3">已连接套接字</h2>
 <p>已连接套接字是在监听到TCP连接请求并三次握手后，通过accept()函数返回的套接字，后续进程/线程就可以通过这个已连接套接字和客户端进行TCP通信。</p>
-<h2 id="socket_2">socket() 函数</h2>
+<h2 id="socket_3">socket() 函数</h2>
 <p>socket()函数的作用就是生成一个用于通信的套接字文件描述符sockfd(socket() creates an endpoint for communication and returns a descriptor)。这个套接字描述符可以作为稍后bind()函数的绑定对象。</p>
 <h2 id="bind">bind() 函数</h2>
 <p>服务程序通过分析配置文件，从中解析出想要监听的地址和端口，再加上可以通过socket()函数生成的套接字sockfd，就可以使用bind()函数将这个套接字绑定到要监听的地址和端口组合"addr:port"上。绑定了端口的套接字可以作为listen()函数的监听对象。</p>
@@ -156,9 +169,9 @@
     </div>
     <div id="footer">
       <span>
-        <p>Copyright © 2019 Xu XueHua.
+        <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-12-16 08:46:05</p>
+        <p>Site Generated 2020-01-02 08:56:17</p>
       </span>
     </div>
 

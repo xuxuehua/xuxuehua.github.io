@@ -27,6 +27,9 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#background">background</a><ul>
+<li><a href="#background-origin">background-origin 设置背景从什么区域显示</a></li>
+<li><a href="#background-clip">background-clip 设置背景在什么区域显示</a></li>
+<li><a href="#background-size">background-size 背景图片尺寸</a></li>
 <li><a href="#background-attachment">background-attachment</a></li>
 <li><a href="#background-color">background-color</a></li>
 <li><a href="#background-image">background-image</a></li>
@@ -37,6 +40,17 @@
 </ul>
 </div>
 <h1 id="background">background</h1>
+<h2 id="background-origin">background-origin 设置背景从什么区域显示</h2>
+<p>padding-box 背景图片相对于内边距 （默认值）</p>
+<p>border-box 背景图片相对于边框定位 （以边框左上角为参照）</p>
+<p>content-box背景图片相对于内容区域定位 （以内容区域坐上叫为参照）</p>
+<h2 id="background-clip">background-clip 设置背景在什么区域显示</h2>
+<p>border-box 背景被裁切到边框盒子位置 （背景图在整个容器中显示）</p>
+<p>padding-box 背景被裁切到内边距区域（背景图片在内边距区域【包含内容区域】显示）</p>
+<p>content-box 背景被裁切到内容区域（背景图在内容区域显示）</p>
+<h2 id="background-size">background-size 背景图片尺寸</h2>
+<p>cover </p>
+<p>contain </p>
 <h2 id="background-attachment">background-attachment</h2>
 <p>背景图像是否固定或者随着页面的其余部分滚动</p>
 <div class="hlcode"><pre><span class="n">body</span> <span class="p">{</span>
@@ -46,7 +60,7 @@
 
 
 <p>scroll 默认值，背景图片随着滚动条滚动</p>
-<p>fixed   背景图片不滚动，其余部分滚动</p>
+<p>fixed    背景图片不滚动，其余部分滚动</p>
 <h2 id="background-color">background-color</h2>
 <p>设置元素的背景颜色</p>
 <div class="hlcode"><pre><span class="n">body</span> <span class="p">{</span>
@@ -92,9 +106,9 @@
     </div>
     <div id="footer">
       <span>
-        <p>Copyright © 2019 Xu XueHua.
+        <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-12-16 08:46:05</p>
+        <p>Site Generated 2020-01-02 08:56:17</p>
       </span>
     </div>
 

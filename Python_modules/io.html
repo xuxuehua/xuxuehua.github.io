@@ -27,16 +27,15 @@
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#io">io</a><ul>
-<li><a href="#stringio">stringIO</a></li>
+<li><a href="#stringio">StringIO</a></li>
 <li><a href="#bytesio">BytesIO</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <h1 id="io">io</h1>
-<h2 id="stringio">stringIO</h2>
-<p>内存中，开辟的一个文本模式的buffer，可以像文件对象一样操作他</p>
-<p>当close方法被调用的时候，这个buffer会被释放</p>
+<h2 id="stringio">StringIO</h2>
+<p>字符串写入内存</p>
 <p>一般来说， 磁盘的操作比内存的操作要慢得多，内存足够的情况下，一般优化的思路减少磁盘IO的过程，可以提高效率</p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">io</span> <span class="n">import</span> <span class="n">StringIO</span>
 <span class="cp"># 内存中构建</span>
@@ -59,8 +58,7 @@
 
 
 <h2 id="bytesio">BytesIO</h2>
-<p>内存中，开辟的一个二进制模式的buffer，可以像文件对象一样操作他</p>
-<p>当close方法被调用的时候，这个buffer会被释放</p>
+<p>二进制写入内存</p>
 <div class="hlcode"><pre><span class="n">from</span> <span class="n">io</span> <span class="n">import</span> <span class="n">BytesIO</span>
 <span class="n">bio</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
 
@@ -79,9 +77,9 @@
     </div>
     <div id="footer">
       <span>
-        <p>Copyright © 2019 Xu XueHua.
+        <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-12-16 08:46:05</p>
+        <p>Site Generated 2020-01-02 08:56:17</p>
       </span>
     </div>
 

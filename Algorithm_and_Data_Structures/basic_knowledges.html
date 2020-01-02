@@ -36,16 +36,16 @@
 <p>数组、链表、栈、队列、散列表、二叉树、堆、跳表、图、Trie树 </p>
 <h2 id="_4">常用算法</h2>
 <p>递归、排序、二分查找、搜索、哈希算法、贪心算法、分治算法、回溯算法、动态规划、字符串匹配算法 </p>
-<h1 id="o">大<strong>O</strong>复杂度表示法</h1>
+<h1 id="o">大O复杂度表示法</h1>
 <p>从CPU的角度来看，这段代码的每一行都执行着类似的操作:读数据-运算-写数据。</p>
 <p>尽管每行代码对应的CPU执行的个数、执行的时间都不一样，但是，我们这里 只是粗略估计，所以可以假设每行代码执行的时间都一样，为unit_time。 </p>
-<div class="hlcode"><pre><span class="kt">int</span> <span class="nf">cal</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
-   <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-   <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">i</span><span class="p">;</span>
-   <span class="p">}</span> 
-<span class="k">return</span> <span class="n">sum</span><span class="p">;</span>
+<div class="hlcode"><pre><span class="kt">int</span> <span class="nf">cal</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+   <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+   <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+   <span class="k">for</span> <span class="o">(;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+           <span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">i</span><span class="o">;</span>
+   <span class="o">}</span> 
+<span class="k">return</span> <span class="n">sum</span><span class="o">;</span>
 </pre></div>
 
 
@@ -81,7 +81,7 @@ $$</p>
 <p>f(n)表示每行代码执行的次数总和, 因为这是一个公式，所以用f(n)来表示。公式中的O，表示代码的执行时间T(n)与f(n)表达式成正比。 </p>
 </blockquote>
 <p>第一个例子中的T(n) = O(2n+2)，第二个例子中的T(n) = O(2n^2+2n+3) </p>
-<p>当n很大时，你可以把它想象成10000、100000。而公式中的低阶、常量、系数三部分并不左右增长趋势，所以都可以忽略。我们只需要记录一个最大量级就可以 了，如果用大O表示法表示刚讲的那两段代码的时间复杂度，就可以记为:T(n) = O(n); T(n) = O(n2)。 </p>
+<p>当n很大时，你可以把它想象成10000、100000。而公式中的低阶、常量、系数三部分并不左右增长趋势，所以都可以忽略。我们只需要记录一个最大量级就可以 了，如果用大O表示法表示刚讲的那两段代码的时间复杂度，就可以记为:T(n) = O(n); T(n) = O(n^2)。 </p>
 <h2 id="_6">时间复杂度</h2>
 <p>大O时间复杂度实际上并不具体表示代码真正的执行时间，而是表示代码执行时间随数据规模增长的变化趋势，所以，也叫作渐进时间复杂度(asymptotic time complexity)，简称时间复杂度 </p>
 <h1 id="_7">时间复杂度分析</h1>
@@ -189,8 +189,8 @@ $$</p>
 <h3 id="ologn">对数阶 O(logn)</h3>
 <p>$$<br />
 对数阶 O(logn)<br />
-$$<br />
-对数阶时间复杂度非常常见，同时也是最难分析的一种时间复杂度 </p>
+$$</p>
+<p>对数阶时间复杂度非常常见，同时也是最难分析的一种时间复杂度 </p>
 <div class="hlcode"><pre><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
 <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">)</span>  <span class="p">{</span>
         <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
@@ -296,16 +296,103 @@ $$</p>
 <blockquote>
 <p>第2行代码中，我们申请了一个空间存储变量i，但是它是常量阶的，跟数据规模n没有关系，所以我们可以忽略。第3行申请了一个大小为n的int类型数组，除此之外，剩下的代码都没有占用更多的空间，所以整段代码的空间复杂度就是O(n) </p>
 </blockquote>
-<h1 id="best-case-time-complexity">最好情况时间复杂度(best case time complexity)</h1>
-<h1 id="worst-case-time-complexity">最坏情况时间复杂度(worst case time complexity)</h1>
-<h1 id="average-case-time-complexity">平均情况时间复杂度(average case time complexity)</h1>
-<h1 id="amortized-time-complexity">均摊时间复杂度(amortized time complexity)</h1>
+<h1 id="_16">复杂度分析</h1>
+<div class="hlcode"><pre><span class="kt">int</span> <span class="nf">find</span><span class="p">(</span><span class="kt">int</span><span class="p">[]</span> <span class="n">array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">pos</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">pos</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">pos</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>这段代码要实现的功能是，在一个无序的数组(array)中，查找变量x出现的位置。如果没有找到，就返回-1 </p>
+<p>这段代码的复杂度是O(n)，其中，n代表数组的长度 </p>
+</blockquote>
+<p>优化后的代码</p>
+<div class="hlcode"><pre><span class="kt">int</span> <span class="nf">find</span><span class="p">(</span><span class="kt">int</span><span class="p">[]</span> <span class="n">array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">pos</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">pos</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">pos</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>要查找的变量x可能出现在数组的任意位置。如果数组中第一个元素正好是要查找的变量x，那就不需要继续遍历剩下的n-1个数据了，那时间复杂度就 </p>
+<p>是O(1)。但如果数组中不存在变量x，那我们就需要把整个数组都遍历一遍，时间复杂度就成了O(n)。所以，不同的情况下，这段代码的时间复杂度是不一样的 </p>
+</blockquote>
+<h2 id="best-case-time-complexity">最好情况时间复杂度(best case time complexity)</h2>
+<p>最好情况时间复杂度就是，在最理想的情况下，执行这段代码的时间复杂度 </p>
+<p>上述案例，在最理想的情况下，要查找的变量x正好是数组的 </p>
+<h2 id="worst-case-time-complexity">最坏情况时间复杂度(worst case time complexity)</h2>
+<p>最坏情况时间复杂度就是，在最糟糕的情况下，执行这段代码的时间复杂度 </p>
+<p>上述案例，如果数组中没有要查找的变量x，我们需要把整个数组 都遍历一遍才行，所以这种最糟糕情况下对应的时间复杂度就是最坏情况时间复杂度 </p>
+<h2 id="average-case-time-complexity">平均情况时间复杂度(average case time complexity)</h2>
+<p>要查找的变量x在数组中的位置，有n+1种情况:在数组的<strong>0</strong>~<strong>n-1</strong>位置中和不在数组中。我们把每种情况下，查找需要遍历的元素个数累加起来，然后再除以n+1， 就可以得到需要遍历的元素个数的平均值<br />
+$$<br />
+\frac{1+2+3+...+n+n}{n+1} = \frac{n(n+3)}{2(n+1)}<br />
+$$<br />
+时间复杂度的大O标记法中，可以省略掉系数、低阶、常量，所以，咱们把刚刚这个公式简化之后，得到的平均时间复杂度就是O(n) </p>
+<p>这个结论虽然是正确的，但是计算过程稍微有点儿问题。究竟是什么问题呢?我们刚讲的这n+1种情况，出现的概率并不是一样的 </p>
+<p>我们知道，要查找的变量x，要么在数组里，要么就不在数组里。这两种情况对应的概率统计起来很麻烦，为了方便你理解，我们假设在数组中与不在数组中的概 </p>
+<p>率都为1/2。另外，要查找的数据出现在0~n-1这n个位置的概率也是一样的，为1/n。所以，根据概率乘法法则，要查找的数据出现在0~n-1中任意位置的概率就 是1/(2n) </p>
+<p>因此，前面的推导过程中存在的最大问题就是，没有将各种情况发生的概率考虑进去。如果我们把每种情况发生的概率也考虑进去，那平均时间复杂度的计算过程就变成了这样<br />
+$$<br />
+1<em> \frac{1}{2n} + 2</em> \frac{1}{2n} + 3<em>\frac{1}{2n} + ... + n </em>\frac{1}{2n} + n*\frac{1}{2} = \frac{3n+1}{4}<br />
+$$<br />
+这个值就是概率论中的加权平均值，也叫作期望值，所以平均时间复杂度的全称应该叫加权平均时间复杂度或者期望时间复杂度。</p>
+<p>引入概率之后，前面那段代码的加权平均值为(3n+1)/4。用大O表示法来表示，去掉系数和常量，这段代码的加权平均时间复杂度仍然是O(n)。 </p>
+<p>你可能会说，平均时间复杂度分析好复杂啊，还要涉及概率论的知识。实际上，在大多数情况下，我们并不需要区分最好、最坏、平均情况时间复杂度三种情况。像我们上一节课举的那些例子那样，很多时候，我们使用一个复杂度就可以满足需求了。只有同一块代码在不同的情况下，时间复杂度有量级的差距，我们才会使用这三种复杂度表示法来区分</p>
+<h2 id="amortized-time-complexity">均摊时间复杂度(amortized time complexity)</h2>
+<p>大部分情况下，我们并不需要区分最好、最坏、平均三种复杂度。平均复杂度只在某些特殊情况下才会用到，而均摊时间复杂度应用的场景比它更加特殊、更加有限</p>
+<div class="hlcode"><pre><span class="kt">int</span><span class="p">[]</span> <span class="n">array</span> <span class="o">=</span> <span class="n">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">insert</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">count</span> <span class="o">==</span> <span class="n">array</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">array</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+                <span class="p">}</span>
+                <span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum</span><span class="p">;</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">array</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span>
+        <span class="o">++</span><span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>这段代码实现了一个往数组中插入数据的功能。当数组满了之后，也就是代码中的count == array.length时，我们用for循环遍历数组求和，并清空数组，将求和之后的sum值放到数组的第一个位置，然后再将新的数据插入。但如果数组一开始就有空闲空间，则直接将数据插入数组 </p>
+<p>最理想的情况下，数组中有空闲空间，我们只需要将数据插入到数组下标为count的位置就可以了，所以最好情况时间复杂度为O(1)。最坏的情况下，数组中没有 空闲空间了，我们需要先做一次数组的遍历求和，然后再将数据插入，所以最坏情况时间复杂度为O(n)。 </p>
+<p>平均时间复杂度是是O(1)</p>
+</blockquote>
+<p>我们还可以通过前面讲的概率论的方法来分析。 </p>
+<p>假设数组的长度是n，根据数据插入的位置的不同，我们可以分为n种情况，每种情况的时间复杂度是O(1)。除此之外，还有一种“额外”的情况，就是在数组没有空 闲空间时插入一个数据，这个时候的时间复杂度是O(n)。而且，这n+1种情况发生的概率一样，都是1/(n+1)。所以，根据加权平均的计算方法，我们求得的平均时 间复杂度就是 <br />
+$$<br />
+1<em>\frac{1}{n+1} + 1</em>\frac{1}{n+1} + ... + 1<em>\frac{1}{n+1} + n</em>\frac{1}{n+1} = O(i)<br />
+$$<br />
+每一次O(n)的插入操作，都会跟着n-1次O(1)的插入操作，所以把耗时多的那次操作均摊到接下来的n-1次耗时少的 操作上，均摊下来，这一组连续的操作的均摊时间复杂度就是O(1)。这就是均摊分析的大致思路 </p>
+<p>对一个数据结构进行一组连续操作中，大部分情况下时间复杂度都很低，只有个别情况下时间复杂度比较高，而且这些操作之间存在前后连贯的时序关系，这个时候，我们就可以将这一组操作放在一块儿分析，看是否能将较高时间复杂度那次操作的耗时，平摊到其他那些时间复杂度比较低的操作上。而且，在能够应用均摊时间复杂度分析的场合，一般均摊时间复杂度就等于最好情况时间复杂度</p>
     </div>
     <div id="footer">
       <span>
-        <p>Copyright © 2019 Xu XueHua.
+        <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2019-12-16 08:46:05</p>
+        <p>Site Generated 2020-01-02 08:56:17</p>
       </span>
     </div>
 
