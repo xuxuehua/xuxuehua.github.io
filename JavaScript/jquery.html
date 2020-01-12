@@ -33,6 +33,11 @@
 <li><a href="#_3">$符号</a></li>
 </ul>
 </li>
+<li><a href="#_4">添加属性</a><ul>
+<li><a href="#prop">prop 添加属性</a></li>
+<li><a href="#removeprop">removeProp 移除属性</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -84,12 +89,27 @@
 
 
 <p>这种黑魔法的原理是jQuery在占用<code>$</code>之前，先在内部保存了原来的<code>$</code>,调用<code>jQuery.noConflict()</code>时会把原来保存的变量还原</p>
+<h2 id="_4">添加属性</h2>
+<h3 id="prop">prop 添加属性</h3>
+<div class="hlcode"><pre><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;button&quot;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">$x</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">);</span>
+    <span class="nx">$x</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span><span class="s2">&quot;FF0000&quot;</span><span class="p">);</span>
+    <span class="nx">$x</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;The color 属性： &quot;</span> <span class="o">+</span> <span class="nx">$x</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">));</span>
+    <span class="nx">$x</span><span class="p">.</span><span class="nx">removeProp</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<blockquote>
+<p>添加并移除名为 "color" 的属性：</p>
+</blockquote>
+<h3 id="removeprop">removeProp 移除属性</h3>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2020-01-05 13:48:06</p>
+        <p>Site Generated 2020-01-12 22:09:53</p>
       </span>
     </div>
 

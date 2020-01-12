@@ -142,7 +142,7 @@
 <p>JobTracker进程和TaskTracker进程是主从关系，主服务器通常只有一台（或者另有一台备机提供高可用服务，但运行时只有一台服务器对外提供服务，真正起作用的只有一台），从服务器可能有几百上千台，所有的从服务器听从主服务器的控制和调度安排。主服务器负责为应用程序分配服务器资源以及作业执行的调度，而具体的计算操作则在从服务器上完成。</p>
 <h1 id="_5">运行机制</h1>
 <h2 id="mapreduce-1x">MapReduce 1.X</h2>
-<p><img alt="img" src="https://snag.gy/d1NEpn.jpg" /></p>
+<p><img alt="image-20200112210713957" src="image-20200112210713957.png" /></p>
 <p>1.应用进程JobClient将用户作业JAR包存储在HDFS中，将来这些JAR包会分发给Hadoop集群中的服务器执行MapReduce计算。</p>
 <p>2.应用程序提交job作业给JobTracker。</p>
 <p>3.JobTracker根据作业调度策略创建JobInProcess树，每个作业都会有一个自己的JobInProcess树。</p>
@@ -154,11 +154,11 @@
 <p>9.如果是Map进程，从HDFS读取数据（通常要读取的数据块正好存储在本机）；如果是Reduce进程，将结果数据写出到HDFS。</p>
 <p>做的仅仅是编写一个map函数和一个reduce函数就可以了，根本不用关心这两个函数是如何被分布启动到集群上的，也不用关心数据块又是如何分配给计算任务的。<strong>这一切都由MapReduce计算框架完成</strong></p>
 <h2 id="mapreduce-2x">MapReduce 2.X</h2>
-<p><img alt="img" src="https://snipboard.io/fZGOsL.jpg" /></p>
+<p><img alt="image-20200112210652388" src="image-20200112210652388.png" /></p>
 <h2 id="shuffle">shuffle</h2>
 <p>在map输出与reduce输入之间，MapReduce计算框架处理数据合并与连接操作，这个操作有个专门的词汇叫<strong>shuffle</strong></p>
 <p><strong>分布式计算需要将不同服务器上的相关数据合并到一起进行下一步计算，这就是shuffle</strong>。</p>
-<p><img alt="img" src="https://snag.gy/NJDsAq.jpg" /></p>
+<p><img alt="image-20200112210743247" src="image-20200112210743247.png" /></p>
 <p>每个Map任务的计算结果都会写入到本地文件系统，等Map任务快要计算完成的时候，MapReduce计算框架会启动shuffle过程，在Map任务进程调用一个Partitioner接口，对Map产生的每个<Key, Value>进行Reduce分区选择，然后通过HTTP通信发送给对应的Reduce进程。这样不管Map位于哪个服务器节点，相同的Key一定会被发送给相同的Reduce进程。Reduce任务进程对收到的<Key, Value>进行排序和合并，相同的Key放在一起，组成一个<Key, Value集合>传递给Reduce执行。</p>
 <p>map输出的<Key, Value>shuffle到哪个Reduce进程是这里的关键，它是由Partitioner来实现，MapReduce框架默认的Partitioner用Key的哈希值对Reduce任务数量取模，相同的Key一定会落在相同的Reduce任务ID上。</p>
 <p>从实现上来看的话，这样的Partitioner代码只需要一行。</p>
@@ -172,9 +172,9 @@
 <p>不管是MapReduce还是Spark，只要是大数据批处理计算，一定都会有shuffle过程，只有<strong>让数据关联起来</strong></p>
 <p>shuffle也是整个MapReduce过程中最难、最消耗性能的地方，在MapReduce早期代码中，一半代码都是关于shuffle处理的。</p>
 <h2 id="_6">多节点处理</h2>
-<p><img alt="img" src="https://snipboard.io/Q1UMNL.jpg" /></p>
+<p><img alt="image-20200112210806559" src="image-20200112210806559.png" /></p>
 <h1 id="_7">核心概念</h1>
-<p><img alt="img" src="https://snipboard.io/R1SU7w.jpg" /></p>
+<p><img alt="image-20200112210828853" src="image-20200112210828853.png" /></p>
 <h2 id="split">Split 最小计算单元</h2>
 <p>交由MapReduce作业来处理的数据块，是MapReduce中最小的计算单元</p>
 <p>默认情况下，其和HDFS中的blocksize( HDFS中最小的存储单元，128M) 是一一对应的，不建议手动设置其之间的关系</p>
@@ -183,7 +183,7 @@
       <span>
         <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2020-01-05 13:48:06</p>
+        <p>Site Generated 2020-01-12 22:09:53</p>
       </span>
     </div>
 
