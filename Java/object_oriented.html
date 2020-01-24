@@ -28,49 +28,49 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#_1">面向对象</a></li>
 <li><a href="#class">class</a><ul>
-<li><a href="#_2"></a></li>
 <li><a href="#class_1">定义class</a></li>
-<li><a href="#_3">实例字段</a></li>
+<li><a href="#_2">实例字段</a></li>
 <li><a href="#static">static 静态字段</a></li>
 </ul>
 </li>
-<li><a href="#_4">对象</a></li>
+<li><a href="#_3">对象</a></li>
 <li><a href="#method">method 方法</a><ul>
-<li><a href="#_5">定义方法</a></li>
-<li><a href="#private">private方法</a></li>
-<li><a href="#_6">静态方法</a></li>
+<li><a href="#_4">定义方法</a></li>
+<li><a href="#public">public 方法</a></li>
+<li><a href="#private">private 方法</a></li>
+<li><a href="#_5">静态方法</a></li>
 <li><a href="#this">this变量</a></li>
-<li><a href="#_7">方法参数</a></li>
-<li><a href="#_8">可变参数</a></li>
-<li><a href="#_9">参数绑定</a></li>
-<li><a href="#_10">构造方法</a><ul>
-<li><a href="#_11">默认构造方法</a></li>
-<li><a href="#_12">多构造方法</a></li>
+<li><a href="#_6">方法参数</a></li>
+<li><a href="#_7">可变参数</a></li>
+<li><a href="#_8">参数绑定</a></li>
 </ul>
 </li>
-<li><a href="#_13">方法重载</a></li>
+<li><a href="#_9">构造方法</a><ul>
+<li><a href="#_10">默认构造方法</a></li>
+<li><a href="#_11">多构造方法</a></li>
+<li><a href="#_12">方法重载</a></li>
 </ul>
 </li>
-<li><a href="#_14">作用域</a><ul>
-<li><a href="#public">public</a></li>
+<li><a href="#_13">作用域</a><ul>
+<li><a href="#public_1">public</a></li>
 <li><a href="#private_1">private</a><ul>
-<li><a href="#_15">嵌套类</a></li>
+<li><a href="#_14">嵌套类</a></li>
 </ul>
 </li>
 <li><a href="#protected">protected</a></li>
 <li><a href="#package">package</a></li>
 </ul>
 </li>
-<li><a href="#_16">局部变量</a></li>
+<li><a href="#_15">局部变量</a></li>
 <li><a href="#final">final 修饰符</a><ul>
-<li><a href="#_17">阻止被继承</a></li>
-<li><a href="#_18">阻止被子类覆写</a></li>
+<li><a href="#_16">阻止被继承</a></li>
+<li><a href="#_17">阻止被子类覆写</a></li>
+<li><a href="#_18">阻止被重新赋值</a></li>
 <li><a href="#_19">阻止被重新赋值</a></li>
-<li><a href="#_20">阻止被重新赋值</a></li>
 </ul>
 </li>
 <li><a href="#instance">instance</a><ul>
-<li><a href="#_21">创建实例</a></li>
+<li><a href="#_20">创建实例</a></li>
 </ul>
 </li>
 </ul>
@@ -93,7 +93,6 @@
 </ul>
 <h1 id="class">class</h1>
 <p>class是一种对象模版，它定义了如何创建实例，因此，class本身就是一种数据类型</p>
-<h3 id="_2"></h3>
 <h2 id="class_1">定义class</h2>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">Person</span> <span class="p">{</span>
         <span class="n">public</span> <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
@@ -120,7 +119,7 @@
 </pre></div>
 
 
-<h2 id="_3">实例字段</h2>
+<h2 id="_2">实例字段</h2>
 <p>在一个<code>class</code>中定义的字段，我们称之为实例字段。实例字段的特点是，每个实例都有独立的字段，各个实例的同名字段互不影响</p>
 <h2 id="static">static 静态字段</h2>
 <p>实例字段在每个实例中都有自己的一个独立“空间”，但是静态字段只有一个共享“空间”，所有实例都会共享该字段</p>
@@ -137,7 +136,7 @@
 <p>虽然实例可以访问静态字段，但是它们指向的其实都是<code>Person class</code>的静态字段。所以，所有实例共享一个静态字段。</p>
 <p>因此，不推荐用<code>实例变量.静态字段</code>去访问静态字段，因为在Java程序中，实例对象并没有静态字段。在代码中，实例对象能访问静态字段只是因为编译器可以根据实例类型自动转换为<code>类名.静态字段</code>来访问静态对象。</p>
 <p>推荐用类名来访问静态字段。可以把静态字段理解为描述<code>class</code>本身的字段（非实例字段）</p>
-<h1 id="_4">对象</h1>
+<h1 id="_3">对象</h1>
 <p>对象的行为(behavior)： 可以对对象施加哪些操作，或可以对对象施加哪些方法</p>
 <p>对象的状态(state)： 当施加哪些方法时，对象如何响应？必须通过调用方法是实现</p>
 <p>对象的标识(identity)： 如何辨别具有相同行为与状态的不同对象</p>
@@ -186,7 +185,7 @@
 <blockquote>
 <p>外部代码可以调用方法<code>setName()</code>和<code>setAge()</code>来间接修改<code>private</code>字段</p>
 </blockquote>
-<h2 id="_5">定义方法</h2>
+<h2 id="_4">定义方法</h2>
 <div class="hlcode"><pre><span class="err">修饰符</span> <span class="err">方法返回类型</span> <span class="err">方法名</span><span class="p">(</span><span class="err">方法参数列表</span><span class="p">)</span> <span class="p">{</span>
     <span class="err">若干方法语句</span><span class="p">;</span>
     <span class="k">return</span> <span class="err">方法返回值</span><span class="p">;</span>
@@ -194,7 +193,17 @@
 </pre></div>
 
 
-<h2 id="private">private方法</h2>
+<h2 id="public">public 方法</h2>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Book</span> <span class="p">{</span>
+        <span class="n">public</span> <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
+        <span class="n">public</span> <span class="n">String</span> <span class="n">author</span><span class="p">;</span>
+        <span class="n">public</span> <span class="n">String</span> <span class="n">isbn</span><span class="p">;</span>
+        <span class="n">public</span> <span class="kt">double</span> <span class="n">price</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2 id="private">private 方法</h2>
 <p>有<code>public</code>方法，自然就有<code>private</code>方法。和<code>private</code>字段一样，<code>private</code>方法不允许外部调用</p>
 <p>定义<code>private</code>方法的理由是内部方法是可以调用<code>private</code>方法的</p>
 <div class="hlcode"><pre><span class="n">public</span> <span class="n">class</span> <span class="n">Main</span> <span class="p">{</span>
@@ -231,7 +240,7 @@
 <p><code>calcAge()</code>是一个<code>private</code>方法，外部代码无法调用，但是，内部方法<code>getAge()</code>可以调用它</p>
 <p>这个<code>Person</code>类只定义了<code>birth</code>字段，没有定义<code>age</code>字段，获取<code>age</code>时，通过方法<code>getAge()</code>返回的是一个实时计算的值，并非存储在某个字段的值。这说明方法可以封装一个类的对外接口，调用方不需要知道也不关心<code>Person</code>实例在内部到底有没有<code>age</code>字段</p>
 </blockquote>
-<h2 id="_6">静态方法</h2>
+<h2 id="_5">静态方法</h2>
 <p>有静态字段，就有静态方法。用<code>static</code>修饰的方法称为静态方法。</p>
 <p>因为静态方法属于<code>class</code>而不属于实例，因此，静态方法内部，无法访问<code>this</code>变量，也无法访问实例字段，它只能访问静态字段。</p>
 <p>通过实例变量也可以调用静态方法，但这只是编译器自动帮我们把实例改写成类名而已。</p>
@@ -287,7 +296,7 @@
 </pre></div>
 
 
-<h2 id="_7">方法参数</h2>
+<h2 id="_6">方法参数</h2>
 <p>方法可以包含0个或任意个参数。方法参数用于接收传递给方法的变量值。调用方法时，必须严格按照参数的定义一一传递</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">Person</span> <span class="p">{</span>
     <span class="p">...</span>
@@ -301,7 +310,7 @@
 </pre></div>
 
 
-<h2 id="_8">可变参数</h2>
+<h2 id="_7">可变参数</h2>
 <p>可变参数用<code>类型...</code>定义，可变参数相当于数组类型：</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">Group</span> <span class="p">{</span>
     <span class="n">private</span> <span class="n">String</span><span class="p">[]</span> <span class="n">names</span><span class="p">;</span>
@@ -346,7 +355,7 @@
 
 
 <p>而可变参数可以保证无法传入<code>null</code>，因为传入0个参数时，接收到的实际值是一个空数组而不是<code>null</code>。</p>
-<h2 id="_9">参数绑定</h2>
+<h2 id="_8">参数绑定</h2>
 <p>调用方把参数传递给实例方法时，调用时传递的值会按参数位置一一绑定</p>
 <p>基本类型参数的传递，是调用方值的复制。双方各自的后续修改，互不影响</p>
 <div class="hlcode"><pre><span class="n">public</span> <span class="n">class</span> <span class="n">Main</span> <span class="p">{</span>
@@ -382,7 +391,7 @@
 <blockquote>
 <p>修改外部的局部变量<code>n</code>，不影响实例<code>p</code>的<code>age</code>字段，原因是<code>setAge()</code>方法获得的参数，复制了<code>n</code>的值，因此，<code>p.age</code>和局部变量<code>n</code>互不影响</p>
 </blockquote>
-<h2 id="_10">构造方法</h2>
+<h1 id="_9">构造方法</h1>
 <p>创建实例的时候，实际上是通过构造方法来初始化实例的</p>
 <p>由于构造方法是如此特殊，所以构造方法的名称就是类名。构造方法的参数没有限制，在方法内部，也可以编写任意语句。但是，和普通方法相比，构造方法没有返回值（也没有<code>void</code>），调用构造方法，必须用<code>new</code>操作符。</p>
 <div class="hlcode"><pre><span class="n">public</span> <span class="n">class</span> <span class="n">Main</span> <span class="p">{</span>
@@ -413,7 +422,7 @@
 </pre></div>
 
 
-<h3 id="_11">默认构造方法</h3>
+<h2 id="_10">默认构造方法</h2>
 <p>如果一个类没有定义构造方法，编译器会自动为我们生成一个默认构造方法，它没有参数，也没有执行语句，类似这样：</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">Person</span> <span class="p">{</span>
     <span class="n">public</span> <span class="n">Person</span><span class="p">()</span> <span class="p">{</span>
@@ -513,7 +522,7 @@
 </pre></div>
 
 
-<h3 id="_12">多构造方法</h3>
+<h2 id="_11">多构造方法</h2>
 <p>可以定义多个构造方法，在通过<code>new</code>操作符调用的时候，编译器通过构造方法的参数数量、位置和类型自动区分：</p>
 <div class="hlcode"><pre><span class="n">class</span> <span class="n">Person</span> <span class="p">{</span>
     <span class="n">private</span> <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
@@ -559,7 +568,7 @@
 </pre></div>
 
 
-<h2 id="_13">方法重载</h2>
+<h2 id="_12">方法重载</h2>
 <p>如果有一系列方法，它们的功能都是类似的，只有参数有所不同，那么，可以把这一组方法名做成<em>同名</em>方法</p>
 <p>这种方法名相同，但各自的参数不同，称为方法重载（<code>Overload</code>）</p>
 <p>方法重载的返回值类型通常都是相同的</p>
@@ -583,8 +592,8 @@
 </pre></div>
 
 
-<h1 id="_14">作用域</h1>
-<h2 id="public">public</h2>
+<h1 id="_13">作用域</h1>
+<h2 id="public_1">public</h2>
 <p>定义为<code>public</code>的<code>class</code>、<code>interface</code>可以被其他任何类访问：</p>
 <div class="hlcode"><pre><span class="n">package</span> <span class="n">abc</span><span class="p">;</span>
 <span class="n">public</span> <span class="n">class</span> <span class="n">Hello</span> <span class="p">{</span>
@@ -614,7 +623,7 @@
 </pre></div>
 
 
-<h3 id="_15">嵌套类</h3>
+<h3 id="_14">嵌套类</h3>
 <p>由于Java支持嵌套类，如果一个类内部还定义了嵌套类，那么，嵌套类拥有访问<code>private</code>的权限</p>
 <div class="hlcode"><pre><span class="n">public</span> <span class="n">class</span> <span class="n">Main</span> <span class="p">{</span>
     <span class="n">public</span> <span class="k">static</span> <span class="kt">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
@@ -693,7 +702,7 @@
 
 
 <p>把方法定义为<code>package</code>权限有助于测试，因为测试类和被测试类只要位于同一个<code>package</code>，测试代码就可以访问被测试类的<code>package</code>权限方法</p>
-<h1 id="_16">局部变量</h1>
+<h1 id="_15">局部变量</h1>
 <p>在方法内部定义的变量称为局部变量，局部变量作用域从变量声明处开始到对应的块结束。方法参数也是局部变量</p>
 <div class="hlcode"><pre><span class="n">package</span> <span class="n">abc</span><span class="p">;</span>
 
@@ -723,7 +732,7 @@
 </blockquote>
 <h1 id="final">final 修饰符</h1>
 <p>Java还提供了一个<code>final</code>修饰符。<code>final</code>与访问权限不冲突，可以修饰<code>class</code>、<code>field</code>和<code>method</code></p>
-<h2 id="_17">阻止被继承</h2>
+<h2 id="_16">阻止被继承</h2>
 <p>用<code>final</code>修饰<code>class</code>可以阻止被继承</p>
 <div class="hlcode"><pre><span class="n">package</span> <span class="n">abc</span><span class="p">;</span>
 
@@ -737,7 +746,7 @@
 </pre></div>
 
 
-<h2 id="_18">阻止被子类覆写</h2>
+<h2 id="_17">阻止被子类覆写</h2>
 <p>用<code>final</code>修饰<code>method</code>可以阻止被子类覆写</p>
 <div class="hlcode"><pre><span class="n">package</span> <span class="n">abc</span><span class="p">;</span>
 
@@ -749,7 +758,7 @@
 </pre></div>
 
 
-<h2 id="_19">阻止被重新赋值</h2>
+<h2 id="_18">阻止被重新赋值</h2>
 <p>用<code>final</code>修饰<code>field</code>可以阻止被重新赋值</p>
 <div class="hlcode"><pre><span class="n">package</span> <span class="n">abc</span><span class="p">;</span>
 
@@ -762,7 +771,7 @@
 </pre></div>
 
 
-<h2 id="_20">阻止被重新赋值</h2>
+<h2 id="_19">阻止被重新赋值</h2>
 <p>用<code>final</code>修饰局部变量可以阻止被重新赋值</p>
 <div class="hlcode"><pre><span class="n">package</span> <span class="n">abc</span><span class="p">;</span>
 
@@ -776,10 +785,15 @@
 
 <h1 id="instance">instance</h1>
 <p>nstance是对象实例，instance是根据class创建的实例，可以创建多个instance，每个instance类型相同，但各自属性可能不相同</p>
-<h2 id="_21">创建实例</h2>
+<h2 id="_20">创建实例</h2>
 <p>定义了class，只是定义了对象模版，而要根据对象模版创建出真正的对象实例，必须用new操作符。</p>
 <p>new操作符可以创建一个实例，然后，我们需要定义一个引用类型的变量来指向这个实例</p>
-<div class="hlcode"><pre><span class="n">Person</span> <span class="n">rick</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Person</span><span class="p">();</span>
+<div class="hlcode"><pre><span class="n">class</span> <span class="n">Person</span> <span class="p">{</span>
+        <span class="n">public</span> <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
+        <span class="n">public</span> <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Person</span> <span class="n">rick</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Person</span><span class="p">();</span>
 </pre></div>
 
 
@@ -793,7 +807,7 @@
       <span>
         <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2020-01-12 22:09:53</p>
+        <p>Site Generated 2020-01-24 16:55:26</p>
       </span>
     </div>
 

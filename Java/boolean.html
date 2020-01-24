@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
-    <title>boolean - Xu XueHua</title>
+    <title>boolean 布尔 - Xu XueHua</title>
     <meta name="keywords" content="Xu XueHua"/>
     <meta name="description" content="Xu XueHua's public notes"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -16,25 +16,29 @@
     <div id="container">
       
 <div id="header">
-  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Java">Java</a>&nbsp;&#187;&nbsp;boolean
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#Java">Java</a>&nbsp;&#187;&nbsp;boolean 布尔
     <span class="updated">Page Updated&nbsp;
       2019-10-06 11:38
     </span></div>
 </div>
 <div class="clearfix"></div>
 
-<div class="page_title">boolean</div>
+<div class="page_title">boolean 布尔</div>
 
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#boolean">boolean</a><ul>
-<li><a href="#_1">运算</a></li>
-<li><a href="#_2">短路运算</a></li>
-<li><a href="#_3">三元运算符</a></li>
+<li><a href="#_1">运算</a><ul>
+<li><a href="#_2">运算符优先级</a></li>
+</ul>
+</li>
+<li><a href="#_3">短路运算</a></li>
+<li><a href="#_4">三元运算符</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <h1 id="boolean">boolean</h1>
+<p>永远只有<code>true</code>和<code>false</code>两个值。</p>
 <p>Java语言对布尔类型的存储并没有做规定，因为理论上存储布尔类型只需要1 bit，但是通常JVM内部会把<code>boolean</code>表示为4字节整数。</p>
 <div class="hlcode"><pre><span class="n">boolean</span> <span class="n">b1</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
 <span class="n">boolean</span> <span class="n">b2</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
@@ -61,7 +65,17 @@
 </pre></div>
 
 
-<h2 id="_2">短路运算</h2>
+<h3 id="_2">运算符优先级</h3>
+<p>关系运算符的优先级从高到低依次是</p>
+<ul>
+<li><code>(</code> <code>)</code></li>
+<li><code>!</code></li>
+<li><code>&gt;</code>，<code>&gt;=</code>，<code>&lt;</code>，<code>&lt;=</code></li>
+<li><code>==</code>，<code>!=</code></li>
+<li><code>&amp;&amp;</code></li>
+<li><code>||</code></li>
+</ul>
+<h2 id="_3">短路运算</h2>
 <p>布尔运算的一个重要特点是短路运算。如果一个布尔运算的表达式能提前确定结果，则后续的计算不再执行，直接返回结果。</p>
 <p>因为<code>false &amp;&amp; x</code>的结果总是<code>false</code>，无论<code>x</code>是<code>true</code>还是<code>false</code>，因此，与运算在确定第一个值为<code>false</code>后，不再继续计算，而是直接返回<code>false</code></p>
 <p>如果没有短路运算，<code>&amp;&amp;</code>后面的表达式会由于除数为<code>0</code>而报错，但实际上该语句并未报错，原因在于与运算是短路运算符，提前计算出了结果<code>false</code></p>
@@ -70,7 +84,7 @@
 </pre></div>
 
 
-<h2 id="_3">三元运算符</h2>
+<h2 id="_4">三元运算符</h2>
 <p>Java还提供一个三元运算符<code>b ? x : y</code>，它根据第一个布尔表达式的结果，分别返回后续两个表达式之一的计算结果。</p>
 <div class="hlcode"><pre><span class="n">public</span> <span class="n">class</span> <span class="n">Main</span> <span class="p">{</span>
     <span class="n">public</span> <span class="k">static</span> <span class="kt">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
@@ -88,7 +102,7 @@
       <span>
         <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2020-01-12 22:09:53</p>
+        <p>Site Generated 2020-01-24 16:55:26</p>
       </span>
     </div>
 

@@ -41,12 +41,18 @@
 <li><a href="#_6">三元操作符 ?</a></li>
 </ul>
 </li>
-<li><a href="#_7">移位运算</a></li>
-<li><a href="#_8">位运算</a></li>
-<li><a href="#_9">类型转换</a><ul>
+<li><a href="#_7">移位运算</a><ul>
+<li><a href="#_8"></a></li>
+<li><a href="#_9">&lt;&lt; 左移</a></li>
+<li><a href="#_10">&gt;&gt; 右移</a></li>
+<li><a href="#_11">&gt;&gt;&gt; 不带符号右移</a></li>
+</ul>
+</li>
+<li><a href="#_12">位运算</a></li>
+<li><a href="#_13">类型转换</a><ul>
 <li><a href="#short-to-int">short to int</a></li>
 <li><a href="#int-to-short">int to short</a></li>
-<li><a href="#_10">强制类型转换</a></li>
+<li><a href="#_14">强制类型转换</a></li>
 </ul>
 </li>
 </ul>
@@ -55,12 +61,11 @@
 <p>Java只定义了带符号的整型，没有无符号的整型</p>
 <p>应该选择合适范围的整型（<code>int</code>或<code>long</code>），没有必要为了节省内存而使用<code>byte</code>和<code>short</code>进行整数运算</p>
 <h2 id="_1">整型范围</h2>
-<ul>
-<li>byte：-128 ~ 127</li>
-<li>short: -32768 ~ 32767</li>
-<li>int: -2147483648 ~ 2147483647</li>
-<li>long: -9223372036854775808 ~ 9223372036854775807</li>
-</ul>
+<p>各种整型能表示的最大范围小·</p>
+<p>byte：-128 ~ 127</p>
+<p>short: -32768 ~ 32767</p>
+<p>int: -2147483648 ~ 2147483647</p>
+<p>long: -9223372036854775808 ~ 9223372036854775807</p>
 <h2 id="byte">byte</h2>
 <p>1个字节存储</p>
 <h2 id="short">short</h2>
@@ -154,6 +159,8 @@
 <p>若条件为true， 为第一个表达式的值，否则为第二个表达式的值</p>
 </blockquote>
 <h1 id="_7">移位运算</h1>
+<h2 id="_8"></h2>
+<h2 id="_9">&lt;&lt; 左移</h2>
 <p>在计算机中，整数总是以二进制的形式表示。例如，<code>int</code>类型的整数<code>7</code>使用4字节表示的二进制如下：</p>
 <div class="hlcode"><pre><span class="mo">00000000</span> <span class="mo">0000000</span> <span class="mo">0000000</span> <span class="mo">00000111</span>
 </pre></div>
@@ -169,6 +176,7 @@
 
 
 <p>左移29位时，由于最高位变成<code>1</code>，因此结果变成了负数。</p>
+<h2 id="_10">&gt;&gt; 右移</h2>
 <p>类似的，对整数28进行右移，结果如下：</p>
 <div class="hlcode"><pre><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>       <span class="c1">// 00000000 0000000 0000000 00000111</span>
 <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">n</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// 00000000 0000000 0000000 00000011 &lt;= 3</span>
@@ -186,6 +194,7 @@
 </pre></div>
 
 
+<h2 id="_11">&gt;&gt;&gt; 不带符号右移</h2>
 <p>还有一种不带符号的右移运算，使用<code>&gt;&gt;&gt;</code>，它的特点是符号位跟着动，因此，对一个负数进行<code>&gt;&gt;&gt;</code>右移，它会变成正数，原因是最高位的<code>1</code>变成了<code>0</code>：</p>
 <div class="hlcode"><pre><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="o">-</span><span class="mi">536870912</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">n</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// 01110000 0000000 0000000 00000000 &lt;= 1879048192</span>
@@ -197,7 +206,7 @@
 
 <p>对<code>byte</code>和<code>short</code>类型进行移位时，会首先转换为<code>int</code>再进行位移。</p>
 <p>仔细观察可发现，左移实际上就是不断地×2，右移实际上就是不断地÷2。</p>
-<h1 id="_8">位运算</h1>
+<h1 id="_12">位运算</h1>
 <p>位运算是按位进行与、或、非和异或的运算。</p>
 <p>与运算的规则是，必须两个数同时为<code>1</code>，结果才为<code>1</code>：</p>
 <div class="hlcode"><pre><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">&amp;</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 0</span>
@@ -229,7 +238,7 @@
 </pre></div>
 
 
-<h1 id="_9">类型转换</h1>
+<h1 id="_13">类型转换</h1>
 <p>虚线会丢失精度</p>
 <p><img alt="img" src="https://snipboard.io/1dsbL4.jpg" /></p>
 <h2 id="short-to-int">short to int</h2>
@@ -270,7 +279,7 @@
 </pre></div>
 
 
-<h2 id="_10">强制类型转换</h2>
+<h2 id="_14">强制类型转换</h2>
 <p>通过(cast) 实现这个操作, 括号中是想要转换的目标类型</p>
 <div class="hlcode"><pre><span class="kt">double</span> <span class="n">x</span> <span class="o">=</span> <span class="mf">9.997</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">nx</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// 9</span>
@@ -280,7 +289,7 @@
       <span>
         <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2020-01-12 22:09:53</p>
+        <p>Site Generated 2020-01-24 16:55:26</p>
       </span>
     </div>
 

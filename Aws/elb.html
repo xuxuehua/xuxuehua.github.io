@@ -28,6 +28,7 @@
   <div class="toc"><span class="toctitle">Table of Contents</span><ul>
 <li><a href="#elastic-load-balance">Elastic Load Balance</a><ul>
 <li><a href="#characteristics">Characteristics</a></li>
+<li><a href="#alb">ALB</a></li>
 </ul>
 </li>
 </ul>
@@ -36,12 +37,16 @@
 <h2 id="characteristics">Characteristics</h2>
 <p>Single CNAME for DNS configuration</p>
 <p>Automatically scales based on demands placed on it</p>
+<h2 id="alb">ALB</h2>
+<p>ALB 是 Amazon Elastic Load Balancing（ELB） 服务的一个负载均衡选项，支持您在运行于一个或多个 EC2 实例上的多个服务或容器之间基于 内容定义路由规则。</p>
+<p>可以基于主机的路由：您可以基于 HTTP 标头的“主机”字段路由客户端请求，以 便您从同一个负载均衡器路由到多个域。</p>
+<p>也可以基于路径的路由：您可以基于 HTTP 标头的 URL 路径路由客户端请求。</p>
     </div>
     <div id="footer">
       <span>
         <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2020-01-12 22:09:53</p>
+        <p>Site Generated 2020-01-24 16:55:26</p>
       </span>
     </div>
 

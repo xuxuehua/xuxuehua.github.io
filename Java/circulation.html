@@ -213,9 +213,9 @@
 <p><code>break</code>语句通常都是配合<code>if</code>语句使用。要特别注意，<code>break</code>语句总是跳出自己所在的那一层循环</p>
 <div class="hlcode"><pre><span class="n">public</span> <span class="n">class</span> <span class="n">Main</span> <span class="p">{</span>
     <span class="n">public</span> <span class="k">static</span> <span class="kt">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;i = &quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
-            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;=</span><span class="mi">10</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
                 <span class="n">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;j = &quot;</span> <span class="o">+</span> <span class="n">j</span><span class="p">);</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">&gt;=</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
                     <span class="k">break</span><span class="p">;</span>
@@ -230,79 +230,16 @@
 <span class="o">&gt;&gt;&gt;</span>
 <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">Breaked</span>
+<span class="n">breaked</span>
 <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">Breaked</span>
+<span class="n">breaked</span>
 <span class="n">i</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">j</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">Breaked</span>
-<span class="n">i</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">Breaked</span>
-<span class="n">i</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">Breaked</span>
-<span class="n">i</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">Breaked</span>
-<span class="n">i</span> <span class="o">=</span> <span class="mi">7</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">7</span>
-<span class="n">Breaked</span>
-<span class="n">i</span> <span class="o">=</span> <span class="mi">8</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">7</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">8</span>
-<span class="n">Breaked</span>
-<span class="n">i</span> <span class="o">=</span> <span class="mi">9</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">7</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">8</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">9</span>
-<span class="n">Breaked</span>
-<span class="n">i</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">7</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">8</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">9</span>
-<span class="n">j</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">Breaked</span>
+<span class="n">breaked</span>
 </pre></div>
 
 
@@ -374,7 +311,7 @@
       <span>
         <p>Copyright © 2020 Xu XueHua.
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
-        <p>Site Generated 2020-01-12 22:09:53</p>
+        <p>Site Generated 2020-01-24 16:55:26</p>
       </span>
     </div>
 
